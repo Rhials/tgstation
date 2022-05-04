@@ -332,3 +332,39 @@
 	QDEL_IN(mod.wearer, FLY_TIME)
 
 #undef FLY_TIME
+
+/obj/item/mod/module/cranial_shrinkdown
+	name = "MOD cranial shrinkdown+ module"
+	desc = "An abandoned prototype for a combat module developed for use by the TerraGov Marine Corps. \
+	Physically compresses the user to reduce visibilty in combat environments, and tactically impedes \
+	unnecessary brain activity to increase combat effectiveness among marines. The design was not well \
+	recieved by marines not due to its highly dangerous long-term effects, but due to a rumor that frequent \
+	use would permenantly make wearers shorter."
+	icon_state = "cranial_shrinkdown"
+	module_type = MODULE_TOGGLE
+	complexity = 2
+	active_power_cost = DEFAULT_CHARGE_DRAIN
+	incompatible_modules = list(/obj/item/mod/module/cranial_shrinkdown)
+	cooldown_time = 0.5 SECONDS
+
+/obj/item/mod/module/cranial_shrinkdown/on_activation()
+	. = ..()
+	if(!.)
+		return
+	var/matrix/new_transform = matrix()
+	new_transform.Scale(1, 0.80)
+	mod.wearer.transform = new_transform.Multiply(mod.wearer.transform)
+
+/obj/item/mod/module/cranial_shrinkdown/on_deactivation(display_message = TRUE, deleting = FALSE)
+	. = ..()
+	if(!.)
+		return
+	var/matrix/new_transform = matrix()
+	new_transform.Scale(1, 1.25)
+	mod.wearer.transform = new_transform.Multiply(mod.wearer.transform)
+
+/obj/item/mod/module/cranial_shrinkdown/on_process(delta_time)
+	. = ..()
+	if(!.)
+		return
+	mod.wearer.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.4, 160)
