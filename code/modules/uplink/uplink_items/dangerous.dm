@@ -102,7 +102,7 @@
 
 /datum/uplink_item/dangerous/skullgun_implanter
 	name = "Skullgun Implanter"
-	desc = "A prototype Skullgun, fires a projectile with a payload of concussive explosive compounds.\
+	desc = "A prototype Skullgun, fires a projectile containing a payload of concussive explosive compounds.\
 			Side effects may include seizures, concussion, headaches, and loss of depth perception."
 	/obj/item/clothing/glasses/skullgun
 	progression_minimum = 30 MINUTES
