@@ -645,3 +645,11 @@
 	inhand_icon_state = "glasses"
 	glass_colour_type = /datum/client_colour/glass_colour/nightmare
 	forced_glass_color = TRUE
+
+/obj/item/clothing/glasses/skullgun
+	name = "skullgun implant"
+	desc = "a prototype Hermann-Gunt brand skullgun implant. "
+
+	//Fires explosive rounds, meant to throw off/discombobulate opponents in a fight, and less to deal damage. Fires directly forward from user, triggered by HUD icon button
+	//Flashes screen white and deals ?? brain damage per shot on a 15 second cooldown. Explosion (make seperate bullet type that explodes on impact? Does something like that
+	//exist already?) should have 0 devastation/very minor heavy damage but high minor.

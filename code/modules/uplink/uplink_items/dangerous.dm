@@ -99,3 +99,4 @@
 	cost = 13
 	surplus = 50
 	purchasable_from = ~UPLINK_CLOWN_OPS
+
