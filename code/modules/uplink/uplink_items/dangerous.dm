@@ -99,13 +99,3 @@
 	cost = 13
 	surplus = 50
 	purchasable_from = ~UPLINK_CLOWN_OPS
-
-/datum/uplink_item/dangerous/skullgun_implanter
-	name = "Skullgun Implanter"
-	desc = "A prototype Skullgun, fires a projectile containing a payload of concussive explosive compounds. \
-			Side effects may include seizures, concussion, headaches, and reduced visual awareness."
-	item = /obj/item/clothing/glasses/skullgun
-	progression_minimum = 30 MINUTES
-	cost = 15
-	surplus = 50
-	purchasable_from = ~UPLINK_CLOWN_OPS
