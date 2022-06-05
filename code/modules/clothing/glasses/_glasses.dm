@@ -651,6 +651,17 @@
 	desc = "a prototype Hermann-Gunt brand skullgun implant."
 	icon_state = "nightmare"
 	inhand_icon_state = "glasses"
-	//Fires explosive rounds, meant to throw off/discombobulate opponents in a fight, and less to deal damage. Fires targeted spell from user, triggered by HUD icon button
+	///Used to determine the HUD icon for the firing spell, as well as the projectile that will be fired
+	var/obj/projectile/bullet/loaded_round = /obj/projectile/bullet/a3mm
+	//Fires explosive round (one at a time, manually loaded into glasses), , and less to deal damage. Fires targeted spell from user, triggered by HUD icon button
 	//Flashes screen white and deals ?? brain damage per shot on a 15 second cooldown. Explosion bullets implemented
 	//Maybe do FOV later. I dunno.
+
+/obj/item/clothing/glasses/skullgun/equipped(mob/living/user, slot)
+	. = ..()
+	if(ishuman(user) && slot == ITEM_SLOT_EYES)
+		ADD_TRAIT(src, TRAIT_NODROP, SKULLGUN_TRAIT)
+		user.applyOrganDamage(rand(3,6))
+		user.emote("scream")
+		user.flash_act()
+		playsound(get_turf(user), 'sound/weapons/circsawhit.ogg', 50, TRUE)
