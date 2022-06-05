@@ -661,7 +661,6 @@
 	. = ..()
 	if(ishuman(user) && slot == ITEM_SLOT_EYES)
 		ADD_TRAIT(src, TRAIT_NODROP, SKULLGUN_TRAIT)
-		user.applyOrganDamage(rand(3,6))
 		user.emote("scream")
 		user.flash_act()
 		playsound(get_turf(user), 'sound/weapons/circsawhit.ogg', 50, TRUE)
