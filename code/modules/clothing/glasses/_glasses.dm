@@ -646,7 +646,7 @@
 	glass_colour_type = /datum/client_colour/glass_colour/nightmare
 	forced_glass_color = TRUE
 
-/obj/item/clothing/glasses/skullgun
+/obj/item/clothing/glasses/skullgun //MAKE THIS DISSAPEAR ON MICROBOMB EXPLOSION
 	name = "skullgun implant"
 	desc = "a prototype Hermann-Gunt brand skullgun implant."
 	icon_state = "nightmare"
