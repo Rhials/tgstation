@@ -664,3 +664,4 @@
 		user.emote("scream")
 		user.flash_act()
 		playsound(get_turf(user), 'sound/weapons/circsawhit.ogg', 50, TRUE)
+		to_chat(user, span_notice("Your head throbs in pain as the Skullgun digs itself into your eye socket!"))
