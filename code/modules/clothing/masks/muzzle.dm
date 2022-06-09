@@ -25,3 +25,11 @@
 	clothing_flags = MASKINTERNALS | BLOCKS_SPEECH
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 0, ACID = 0)
 	equip_delay_other = 25 // my sprite has 4 straps, a-la a head harness. takes a while to equip, longer than a muzzle
+
+/obj/item/clothing/mask/muzzle/tape //This should only ever be seen in the mask slot, and should never appear in-hand. Created when tape is used targeting mouth, and is deleted on removal.
+	name = "tape strip"
+	desc = "Great for stopping leaks and securing packages. That's not what its currently being used for, I assume."
+	icon_state = "breathmuzzle"
+	inhand_icon_state = "breathmuzzle"
+	body_parts_covered = NONE
+	clothing_flags = BLOCKS_SPEECH
