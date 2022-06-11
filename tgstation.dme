@@ -619,6 +619,7 @@
 #include "code\datums\achievements\misc_scores.dm"
 #include "code\datums\achievements\skill_achievements.dm"
 #include "code\datums\actions\beam_rifle.dm"
+#include "code\datums\actions\skullgun.dm"
 #include "code\datums\actions\mobs\blood_warp.dm"
 #include "code\datums\actions\mobs\charge.dm"
 #include "code\datums\actions\mobs\dash.dm"

@@ -651,11 +651,21 @@
 	desc = "a prototype Hermann-Gunt brand skullgun implant."
 	icon_state = "nightmare"
 	inhand_icon_state = "glasses"
-	///Used to determine the HUD icon for the firing spell, as well as the projectile that will be fired
+	///Used to determine the HUD icon for the firing spell, as well as the projectile that will be fired. Not yet implemented
 	var/obj/projectile/bullet/loaded_round = /obj/projectile/bullet/a3mm
+
+	///Used for granting the ability to fire the skullgun
+	var/datum/action/skullgun_fire
+
+
+
 	//Fires explosive round (one at a time, manually loaded into glasses), , and less to deal damage. Fires targeted spell from user, triggered by HUD icon button
 	//Flashes screen white and deals ?? brain damage per shot on a 15 second cooldown. Explosion bullets implemented
 	//Maybe do FOV later. I dunno.
+
+/obj/item/clothing/glasses/skullgun/Initialize(mapload)
+	. = ..()
+	skullgun_fire = new(src) //this line is bugged
 
 /obj/item/clothing/glasses/skullgun/equipped(mob/living/user, slot)
 	. = ..()
@@ -664,4 +674,5 @@
 		user.emote("scream")
 		user.flash_act()
 		playsound(get_turf(user), 'sound/weapons/circsawhit.ogg', 50, TRUE)
-		to_chat(user, span_notice("Your head throbs in pain as the Skullgun digs itself into your eye socket!"))
+		to_chat(user, span_warning("Your head throbs in pain as the Skullgun digs itself into your eye socket!"))
+		skullgun_fire.Grant(user)
