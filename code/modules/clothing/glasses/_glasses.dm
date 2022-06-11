@@ -665,7 +665,7 @@
 
 /obj/item/clothing/glasses/skullgun/Initialize(mapload)
 	. = ..()
-	skullgun_fire = new(src) //this line is bugged
+	skullgun_fire = new(src)
 
 /obj/item/clothing/glasses/skullgun/equipped(mob/living/user, slot)
 	. = ..()
