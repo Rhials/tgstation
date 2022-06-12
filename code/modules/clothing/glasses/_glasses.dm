@@ -659,7 +659,7 @@
 
 
 
-	//Fires explosive round (one at a time, manually loaded into glasses), , and less to deal damage. Fires targeted spell from user, triggered by HUD icon button
+	//Fires explosive round (one at a time, manually loaded into glasses), and less to deal damage. Fires targeted spell from user, triggered by HUD icon button
 	//Flashes screen white and deals ?? brain damage per shot on a 15 second cooldown. Explosion bullets implemented
 	//Maybe do FOV later. I dunno.
 
