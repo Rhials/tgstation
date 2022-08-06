@@ -2971,7 +2971,7 @@
 #include "code\modules\food_and_drinks\kitchen_machinery\oven.dm"
 #include "code\modules\food_and_drinks\kitchen_machinery\processor.dm"
 #include "code\modules\food_and_drinks\kitchen_machinery\smartfridge.dm"
-#include "code\modules\food_and_drinks\kitchen_machinery\soup_pot.dm"
+#include "code\modules\food_and_drinks\kitchen_machinery\stewing_cauldron.dm"
 #include "code\modules\food_and_drinks\recipes\drinks_recipes.dm"
 #include "code\modules\food_and_drinks\recipes\food_mixtures.dm"
 #include "code\modules\food_and_drinks\recipes\processor_recipes.dm"
