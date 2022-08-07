@@ -14,7 +14,7 @@
 
 /obj/machinery/stewing_cauldron/Initialize(mapload)
 	. = ..()
-	create_reagents(50, OPENCONTAINER)
+	create_reagents(250, OPENCONTAINER)
 
 /obj/machinery/stewing_cauldron/examine(mob/user)
 	. = ..()
@@ -25,5 +25,26 @@
 
 /obj/machinery/stewing_cauldron/Destroy()
 	for(var/obj/item/food/ingredient in cooking_contents)
-		igredient.forceMove(loc)
+		ingredient.forceMove(loc)
 	. = ..()
+
+/obj/machinery/stewing_cauldron/wrench_act(mob/living/user, obj/item/tool)
+	. = ..()
+	default_unfasten_wrench(user, tool)
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
+/obj/machinery/stewing_cauldron/attackby(obj/item/weapon, mob/user, params)
+	if(istype(weapon, /obj/item/food))
+		dissolve(weapon)
+	else
+		to_chat(user, "That is not edible, and would spoil the stew!")
+
+/**
+ * handles moving reagents from food in the cauldron into the cauldron's reagent holder
+ *
+ * moves all reagents from an obj/item/food item into the pot, then deletes the food. Called after
+ * Arguments:
+ * * ingredient - the piece of food having its reagents transferred into the pot.
+ */
+/obj/machinery/stewing_cauldron/dissolve(obj/item/food/ingredient)
+
