@@ -16,10 +16,14 @@
 	. = ..()
 	create_reagents(50, OPENCONTAINER)
 
-
 /obj/machinery/stewing_cauldron/examine(mob/user)
 	. = ..()
 	if(!cooking_contents.len)
 		. += "It appears to not be melting anything down right now."
 	else
-		. += "You can see something moving in the pot as it boils."
+		. += "You can see something moving in the pot as it boils." //Make this show contents of pot and explain the yet-to-be-thought-of method of removing things from it
+
+/obj/machinery/stewing_cauldron/Destroy()
+	for(var/obj/item/food/ingredient in cooking_contents)
+		igredient.forceMove(loc)
+	. = ..()
