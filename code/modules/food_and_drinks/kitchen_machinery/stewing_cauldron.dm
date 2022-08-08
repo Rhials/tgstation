@@ -8,6 +8,7 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = FALSE
 	use_power = NO_POWER_USE
+	can_buckle = TRUE
 
 	///objects "inside" of the pot. Will be released on destruction (or if I decide to add some way of removing uncooked items from the pot)
 	var/list/cooking_contents = list()
@@ -34,14 +35,17 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/stewing_cauldron/attackby(obj/item/weapon, mob/user, params)
-	if(istype(weapon, /obj/item/food))
-		if(!do_after(user, 2 SECONDS, target = src))
+	if(anchored)
+		if(istype(weapon, /obj/item/food))
+			if(!do_after(user, 2 SECONDS, target = src))
+				return
+			dissolve(weapon)
+		else if(istype(weapon, /obj/item/reagent_containers/glass))
 			return
-		dissolve(weapon)
-	else if(istype(weapon, /obj/item/reagent_containers/glass))
-		return
+		else
+			user.balloon_alert(user, "That's not edible!")
 	else
-		user.balloon_alert(user, "That's not edible!")
+		user.balloon_alert(user, "Secure the [name] first!")
 
 /**
  * handles moving reagents from food in the cauldron into the cauldron's reagent holder
