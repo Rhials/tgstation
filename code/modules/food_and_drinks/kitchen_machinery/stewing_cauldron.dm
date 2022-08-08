@@ -10,11 +10,11 @@
 	use_power = NO_POWER_USE
 
 	///objects "inside" of the pot. Will be released on destruction (or if I decide to add some way of removing uncooked items from the pot)
-	var/list/cooking_contents
+	var/list/cooking_contents = list()
 
 /obj/machinery/stewing_cauldron/Initialize(mapload)
 	. = ..()
-	create_reagents(250, OPENCONTAINER)
+	create_reagents(250, OPENCONTAINER | DRAINABLE)
 
 /obj/machinery/stewing_cauldron/examine(mob/user)
 	. = ..()
@@ -35,9 +35,13 @@
 
 /obj/machinery/stewing_cauldron/attackby(obj/item/weapon, mob/user, params)
 	if(istype(weapon, /obj/item/food))
+		if(!do_after(user, 2 SECONDS, target = src))
+			return
 		dissolve(weapon)
+	else if(istype(weapon, /obj/item/reagent_containers/glass))
+		return
 	else
-		to_chat(user, "That is not edible, and would spoil the stew!")
+		user.balloon_alert(user, "That's not edible!")
 
 /**
  * handles moving reagents from food in the cauldron into the cauldron's reagent holder
@@ -46,5 +50,9 @@
  * Arguments:
  * * ingredient - the piece of food having its reagents transferred into the pot.
  */
-/obj/machinery/stewing_cauldron/dissolve(obj/item/food/ingredient)
-
+/obj/machinery/stewing_cauldron/proc/dissolve(obj/item/food/ingredient)
+	for(var/datum/reagent/ingredient_reagent in ingredient.reagents.reagent_list)
+		ingredient.reagents.trans_to(reagents, ingredient.reagents.total_volume)
+	visible_message(span_notice("[ingredient] sinks into the [name], melting into stew!"))
+	playsound(src, 'sound/chemistry/heatdam.ogg', 25)
+	qdel(ingredient)
