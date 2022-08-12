@@ -1,7 +1,7 @@
 /obj/machinery/stewing_cauldron
 	name = "stewing cauldron"
 	desc = "A gigantic, cast-iron Lay-zee Chef brand soup cauldron. For when your company-catered lunches aren't bland and tasteless enough."
-	icon = 'icons/obj/kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi' //NEW SPRITE PLS
 	icon_state = "fryer_off"
 	density = TRUE
 	pass_flags_self = PASSMACHINE | LETPASSTHROW

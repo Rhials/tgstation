@@ -157,3 +157,49 @@
 
 	else if(istype(A) && (src in user))
 		start_cleaning(src, A, user)
+
+/obj/item/reagent_containers/syringe/novelty_syringe
+	name = "novelty size medical syringe"
+	desc = "A steel-point behemoth, capable of holding up to 150 units. Injects all contents at once. The tip looks like it could go through pretty much anything \
+			and makes you shiver when you look at it."
+	icon = 'icons/obj/syringe.dmi' //sprites need updating
+	base_icon_state = "syringe"
+	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
+	icon_state = "syringe_0"
+	worn_icon_state = "pen"
+	amount_per_transfer_from_this = 150
+	possible_transfer_amounts = list(150)
+	volume = 150
+	custom_materials = list(/datum/material/iron=250, /datum/material/glass=160)
+	reagent_flags = TRANSPARENT
+	sharpness = SHARP_POINTY
+	inject_flags = INJECT_CHECK_PENETRATE_THICK
+	force = 12
+	throwforce = 16
+	w_class = WEIGHT_CLASS_BULKY
+	slot_flags = ITEM_SLOT_BACK
+	attack_verb_continuous = list("pierces", "stabs", "perforates", "skewers", "punctures", "impales")
+	attack_verb_simple = list("pierce", "stab", "perforate", "skewer", "puncture", "impale")
+	hitsound = 'sound/weapons/rapierhit.ogg'
+	sharpness = SHARP_POINTY
+	/// How much damage to do unwielded
+	var/force_unwielded = 5
+	/// How much damage to do wielded
+	var/force_wielded = 14
+
+/obj/item/reagent_containers/syringe/novelty_syringe/Initialize(mapload)
+	. = ..()
+
+/obj/item/reagent_containers/syringe/novelty_syringe/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/two_handed, force_unwielded=force_unwielded, force_wielded=force_wielded, icon_wielded="[base_icon_state]1")
+
+/obj/item/reagent_containers/syringe/novelty_syringe/try_syringe(atom/target, mob/user, proximity)
+	if(!HAS_TRAIT(src, TRAIT_WIELDED)) //currently you cant wield the syringe
+		to_chat(user, span_notice("You need to wield the [name] first!"))
+		return
+	. = ..()
+
+/obj/item/reagent_containers/syringe/novelty_syringe/attack_self(mob/user)
+	return
