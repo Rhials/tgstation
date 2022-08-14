@@ -160,8 +160,8 @@
 
 /obj/item/reagent_containers/syringe/novelty_syringe
 	name = "novelty size medical syringe"
-	desc = "A steel-point behemoth, capable of holding up to 150 units. Injects all contents at once. The tip looks like it could go through pretty much anything \
-			and makes you shiver when you look at it."
+	desc = "A steel-point behemoth, with a gargantuan . Takes two hands to wield, and injects all of its contents at once. \
+			The tip looks like it could go through pretty much anything."
 	icon = 'icons/obj/syringe.dmi' //sprites need updating
 	base_icon_state = "syringe"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
