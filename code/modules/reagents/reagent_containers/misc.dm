@@ -160,7 +160,7 @@
 
 /obj/item/reagent_containers/syringe/novelty_syringe
 	name = "novelty size medical syringe"
-	desc = "A steel-point behemoth, with a gargantuan . Takes two hands to wield, and injects all of its contents at once. \
+	desc = "A steel-point behemoth, with a freakishly sharp tip. Takes two hands to wield, and injects all of its contents at once. \
 			The tip looks like it could go through pretty much anything."
 	icon = 'icons/obj/syringe.dmi' //sprites need updating
 	base_icon_state = "syringe"
@@ -169,7 +169,6 @@
 	icon_state = "syringe_0"
 	worn_icon_state = "pen"
 	amount_per_transfer_from_this = 150
-	possible_transfer_amounts = list(150)
 	volume = 150
 	custom_materials = list(/datum/material/iron=250, /datum/material/glass=160)
 	reagent_flags = TRANSPARENT
