@@ -132,11 +132,11 @@
 	victim.cure_blind(HYPNOCHAIR_TRAIT)
 	REMOVE_TRAIT(victim, TRAIT_DEAF, HYPNOCHAIR_TRAIT)
 	if(!(victim.get_eye_protection() > 0))
-		victim.cure_trauma_type(/datum/brain_trauma/severe/hypnotic_trigger, TRAUMA_RESILIENCE_SURGERY)
+		victim.cure_trauma_type(/datum/brain_trauma/hypnosis/hypnotic_trigger, TRAUMA_RESILIENCE_SURGERY)
 		if(prob(90))
-			victim.gain_trauma(new /datum/brain_trauma/severe/hypnotic_trigger(temp_trigger), TRAUMA_RESILIENCE_SURGERY)
+			victim.gain_trauma(new /datum/brain_trauma/hypnosis/hypnotic_trigger(temp_trigger), TRAUMA_RESILIENCE_SURGERY)
 		else
-			victim.gain_trauma(new /datum/brain_trauma/severe/hypnotic_stupor(), TRAUMA_RESILIENCE_SURGERY)
+			victim.gain_trauma(new /datum/brain_trauma/hypnosis/hypnotic_stupor(), TRAUMA_RESILIENCE_SURGERY)
 	victim = null
 
 /obj/machinery/hypnochair/proc/interrupt_interrogation()
