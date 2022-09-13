@@ -37,7 +37,7 @@
 /datum/round_event/market_crash/tick()
 	market_dip = rand(1000,10000) * length(SSeconomy.bank_accounts_by_id)
 	SSeconomy.station_target = max(SSeconomy.station_target - market_dip, 1)
-	SSeconomy.price_update()
+	SSeconomy.price_update(announce = FALSE)
 
 /datum/round_event/market_crash/end()
 	. = ..()
