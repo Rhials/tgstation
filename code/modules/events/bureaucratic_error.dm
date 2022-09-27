@@ -4,17 +4,37 @@
 	max_occurrences = 1
 	weight = 5
 	category = EVENT_CATEGORY_BUREAUCRATIC
-	description = "Randomly opens and closes job slots, along with changing the overflow role."
+	description = "Randomly opens and closes job slots, or changes the overflow role."
+	///will the error change the overflow? // CHANGE THIS
+	var/do_overflow
+
+/datum/round_event_control/bureaucratic_error/admin_setup()
+	if(!check_rights(R_FUN))
+		return
+
+	//if(tgui_input_list(user, ""))
 
 /datum/round_event/bureaucratic_error
 	announce_when = 1
+	var/is_overflow = FALSE
+
+/datum/round_event/bureaucratic_error/setup()
+	var/datum/round_event_control/bureaucratic_error/error_event = control
+	if(error_event.do_overflow)
+		is_overflow = error_event.do_overflow
+	else
+		if(prob(33))
+			is_overflow = TRUE
 
 /datum/round_event/bureaucratic_error/announce(fake)
-	priority_announce("A recent bureaucratic error in the Organic Resources Department may result in personnel shortages in some departments and redundant staffing in others.", "Paperwork Mishap Alert")
+	if(is_overflow)
+		priority_announce("A catastrophic bureaucratic error in the Organic Resources Department may result in extreme personnel shortages in some departments and redundant staffing in others.", "Paperwork Mishap Alert")
+	else
+		priority_announce("A minor bureaucratic error in the Organic Resources Department may result in personnel shortages in some departments and redundant staffing in others.", "Paperwork Mishap Alert")
 
 /datum/round_event/bureaucratic_error/start()
 	var/list/jobs = SSjob.joinable_occupations.Copy()
-	if(prob(33)) // Only allows latejoining as a single role. Add latejoin AI bluespace pods for fun later.
+	if(is_overflow) // Only allows latejoining as a single role. Add latejoin AI bluespace pods for fun later.
 		var/datum/job/overflow = pick_n_take(jobs)
 		overflow.spawn_positions = -1
 		overflow.total_positions = -1 // Ensures infinite slots as this role. Assistant will still be open for those that cant play it.
