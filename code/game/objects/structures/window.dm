@@ -348,20 +348,6 @@
 	else
 		set_opacity(initial(opacity))
 
-/obj/structure/window/wash(clean_types)
-	. = ..()
-	if(!(clean_types & CLEAN_SCRUB))
-		return
-	set_opacity(initial(opacity))
-	remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-	for(var/atom/movable/cleanables as anything in src)
-		if(cleanables == src)
-			continue
-		if(!cleanables.wash(clean_types))
-			continue
-		vis_contents -= cleanables
-	bloodied = FALSE
-
 /obj/structure/window/Destroy()
 	set_density(FALSE)
 	air_update_turf(TRUE, FALSE)
@@ -446,7 +432,7 @@
 	damage_deflection = 11
 	state = RWINDOW_SECURE
 	glass_type = /obj/item/stack/sheet/rglass
-	rad_insulation = RAD_LIGHT_INSULATION
+	rad_insulation = RAD_HEAVY_INSULATION
 	receive_ricochet_chance_mod = 1.1
 
 //this is shitcode but all of construction is shitcode and needs a refactor, it works for now
@@ -567,7 +553,7 @@
 	max_integrity = 200
 	explosion_block = 1
 	glass_type = /obj/item/stack/sheet/plasmaglass
-	rad_insulation = RAD_MEDIUM_INSULATION
+	rad_insulation = RAD_NO_INSULATION
 
 /obj/structure/window/plasma/Initialize(mapload, direct)
 	. = ..()
@@ -605,7 +591,6 @@
 	damage_deflection = 21
 	explosion_block = 2
 	glass_type = /obj/item/stack/sheet/plasmarglass
-	rad_insulation = RAD_HEAVY_INSULATION
 
 /obj/structure/window/reinforced/plasma/block_superconductivity()
 	return TRUE
@@ -652,7 +637,7 @@
 	icon = 'icons/obj/smooth_structures/plasma_window.dmi'
 	icon_state = "plasma_window-0"
 	base_icon_state = "plasma_window"
-	max_integrity = 400
+	max_integrity = 300
 	fulltile = TRUE
 	flags_1 = PREVENT_CLICK_UNDER_1
 	smoothing_flags = SMOOTH_BITMASK
@@ -737,7 +722,6 @@
 	glass_type = /obj/item/stack/sheet/titaniumglass
 	glass_amount = 2
 	receive_ricochet_chance_mod = 1.2
-	rad_insulation = RAD_MEDIUM_INSULATION
 
 /obj/structure/window/reinforced/shuttle/spawnDebris(location)
 	. = list()
@@ -777,7 +761,7 @@
 	damage_deflection = 21 //The same as reinforced plasma windows.3
 	glass_type = /obj/item/stack/sheet/plastitaniumglass
 	glass_amount = 2
-	rad_insulation = RAD_EXTREME_INSULATION
+	rad_insulation = RAD_HEAVY_INSULATION
 
 /obj/structure/window/reinforced/plasma/plastitanium/spawnDebris(location)
 	. = list()

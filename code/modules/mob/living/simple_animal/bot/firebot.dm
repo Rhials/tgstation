@@ -265,9 +265,7 @@
 
 /mob/living/simple_animal/bot/firebot/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(COOLDOWN_FINISHED(src, foam_cooldown))
-		var/datum/effect_system/fluid_spread/foam/firefighting/foam = new
-		foam.set_up(3, holder = src, location = loc)
-		foam.start()
+		new /obj/effect/particle_effect/fluid/foam/firefighting(loc)
 		COOLDOWN_START(src, foam_cooldown, FOAM_INTERVAL)
 
 /mob/living/simple_animal/bot/firebot/proc/spray_water(atom/target, mob/user)
@@ -292,7 +290,7 @@
 	var/atom/Tsec = drop_location()
 
 	new /obj/item/assembly/prox_sensor(Tsec)
-	new /obj/item/clothing/head/utility/hardhat/red(Tsec)
+	new /obj/item/clothing/head/hardhat/red(Tsec)
 
 	var/turf/T = get_turf(Tsec)
 

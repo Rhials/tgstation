@@ -55,8 +55,6 @@
 
 	/// don't show any chat messages regarding inserting items
 	var/silent = FALSE
-	/// same as above but only for the user, useful to cut on chat spam without removing feedback for other players
-	var/silent_for_user = FALSE
 	/// play a rustling sound when interacting with the bag
 	var/rustle_sound = TRUE
 
@@ -314,9 +312,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(!resolve_location)
 		return
 
-	if(QDELETED(to_insert))
-		return FALSE
-
 	if(!isitem(to_insert))
 		return FALSE
 
@@ -332,7 +327,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return FALSE
 
 	if(resolve_location.contents.len >= max_slots)
-		if(messages && user && !silent_for_user)
+		if(messages && user)
 			to_chat(user, span_warning("\The [to_insert] can't fit into \the [resolve_parent]! Make some space!"))
 		return FALSE
 
@@ -342,7 +337,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		total_weight += thing.w_class
 
 	if(total_weight > max_total_storage)
-		if(messages && user && !silent_for_user)
+		if(messages && user)
 			to_chat(user, span_warning("\The [to_insert] can't fit into \the [resolve_parent]! Make some space!"))
 		return FALSE
 
@@ -459,8 +454,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(rustle_sound)
 		playsound(resolve_parent, SFX_RUSTLE, 50, TRUE, -5)
 
-	if(!silent_for_user)
-		to_chat(user, span_notice("You put [thing] [insert_preposition]to [resolve_parent]."))
+	to_chat(user, span_notice("You put [thing] [insert_preposition]to [resolve_parent]."))
 
 	for(var/mob/viewing in oviewers(user, null))
 		if(in_range(user, viewing))

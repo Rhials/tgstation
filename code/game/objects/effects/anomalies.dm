@@ -145,8 +145,7 @@
 	. = ..()
 	if(same_z_layer)
 		return
-	if(warp)
-		SET_PLANE(warp, PLANE_TO_TRUE(warp.plane), new_turf)
+	SET_PLANE(warp, PLANE_TO_TRUE(warp.plane), new_turf)
 
 /obj/effect/anomaly/grav/anomalyEffect(delta_time)
 	..()
@@ -471,13 +470,13 @@
 	if(!heads)
 		heads = typesof(/obj/item/bodypart/head)
 	if(!l_arms)
-		l_arms = typesof(/obj/item/bodypart/arm/left)
+		l_arms = typesof(/obj/item/bodypart/l_arm)
 	if(!r_arms)
-		r_arms = typesof(/obj/item/bodypart/arm/right)
+		r_arms = typesof(/obj/item/bodypart/r_arm)
 	if(!l_legs)
-		l_legs = typesof(/obj/item/bodypart/leg/left)
+		l_legs = typesof(/obj/item/bodypart/l_leg)
 	if(!r_legs)
-		r_legs = typesof(/obj/item/bodypart/leg/right)
+		r_legs = typesof(/obj/item/bodypart/r_leg)
 
 /obj/effect/anomaly/bioscrambler/anomalyEffect(delta_time)
 	. = ..()

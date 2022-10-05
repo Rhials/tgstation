@@ -279,9 +279,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 			else
 				M.log_message("was cremated", LOG_ATTACK)
 
-			if(user.stat != DEAD)
-				user.investigate_log("has died from being cremated.", INVESTIGATE_DEATHS)
-			M.death(TRUE)
+			M.death(1)
 			if(M) //some animals get automatically deleted on death.
 				M.ghostize()
 				qdel(M)
@@ -294,7 +292,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		if(!locate(/obj/effect/decal/cleanable/ash) in get_step(src, dir))//prevent pile-up
 			new/obj/effect/decal/cleanable/ash/crematorium(src)
 
-		sleep(3 SECONDS)
+		sleep(30)
 
 		if(!QDELETED(src))
 			locked = FALSE

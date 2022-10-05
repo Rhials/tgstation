@@ -112,7 +112,10 @@
 	to_chat(attacker, span_danger("You karate chop [defender]'s neck, rendering [defender.p_them()] unable to speak!"))
 	playsound(get_turf(attacker), 'sound/effects/hit_punch.ogg', 50, TRUE, -1)
 	defender.apply_damage(10, attacker.get_attack_type(), BODY_ZONE_HEAD)
-	defender.adjust_silence_up_to(20 SECONDS, 20 SECONDS)
+	if(iscarbon(defender))
+		var/mob/living/carbon/carbon_defender = defender
+		if(carbon_defender.silent <= 10)
+			carbon_defender.silent = clamp(carbon_defender.silent + 10, 0, 10)
 	log_combat(attacker, defender, "neck chopped")
 	return TRUE
 

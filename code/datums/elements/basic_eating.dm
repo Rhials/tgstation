@@ -4,7 +4,7 @@
  * Small behavior for non-carbons to eat certain stuff they interact with
  */
 /datum/element/basic_eating
-	element_flags = ELEMENT_BESPOKE
+	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
 	id_arg_index = 2
 	///Path of the reagent added
 	var/heal_amt

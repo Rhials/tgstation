@@ -6,7 +6,7 @@
 	button_icon_state = "random"
 
 /datum/action/item_action/chameleon/drone/randomise/Trigger(trigger_flags)
-	if(!IsAvailable(feedback = TRUE))
+	if(!IsAvailable())
 		return
 
 	// Damn our lack of abstract interfeces
@@ -33,7 +33,7 @@
 		button_icon_state = "drone_camogear_mask"
 
 /datum/action/item_action/chameleon/drone/togglehatmask/Trigger(trigger_flags)
-	if(!IsAvailable(feedback = TRUE))
+	if(!IsAvailable())
 		return
 
 	// No point making the code more complicated if no non-drone
@@ -91,12 +91,12 @@
 	return select_outfit(owner)
 
 /datum/action/chameleon_outfit/proc/select_outfit(mob/user)
-	if(!user || !IsAvailable(feedback = TRUE))
+	if(!user || !IsAvailable())
 		return FALSE
 	var/selected = tgui_input_list(user, "Select outfit to change into", "Chameleon Outfit", outfit_options)
 	if(isnull(selected))
 		return FALSE
-	if(!IsAvailable(feedback = TRUE) || QDELETED(src) || QDELETED(user))
+	if(!IsAvailable() || QDELETED(src) || QDELETED(user))
 		return FALSE
 	if(isnull(outfit_options[selected]))
 		return FALSE
@@ -244,7 +244,7 @@
 		atom_target.icon = initial(picked_item.icon)
 
 /datum/action/item_action/chameleon/change/Trigger(trigger_flags)
-	if(!IsAvailable(feedback = TRUE))
+	if(!IsAvailable())
 		return
 
 	select_look(owner)
@@ -497,9 +497,8 @@
 /obj/item/clothing/head/chameleon
 	name = "grey cap"
 	desc = "It's a baseball hat in a tasteful grey colour."
-	icon = 'icons/obj/clothing/head/hats.dmi'
-	worn_icon = 'icons/mob/clothing/head/hats.dmi'
 	icon_state = "greysoft"
+
 	resistance_flags = NONE
 	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 

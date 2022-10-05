@@ -120,7 +120,9 @@ Industrial extracts:
 	..()
 
 /obj/item/slimecross/industrial/silver/do_after_spawn(obj/item/spawned)
-	ADD_TRAIT(spawned, TRAIT_FOOD_SILVER, INNATE_TRAIT)
+	if(istype(spawned, /obj/item/food))
+		var/obj/item/food/food_object = spawned
+		food_object.mark_silver_slime_reaction()
 
 /obj/item/slimecross/industrial/bluespace
 	colour = "bluespace"

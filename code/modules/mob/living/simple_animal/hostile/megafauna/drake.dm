@@ -133,14 +133,15 @@
 			fire_cone.StartCooldown(0)
 			fire_cone.Trigger(target = target)
 			meteors.StartCooldown(0)
-			meteors.Trigger(target = target)
+			INVOKE_ASYNC(meteors, /datum/action/proc/Trigger, target)
 			return
 	else if(prob(10+anger_modifier) && DRAKE_ENRAGED)
 		mass_fire.Trigger(target = target)
 		return
-	if(fire_cone.Trigger(target = target) && prob(50))
-		meteors.StartCooldown(0)
-		meteors.Trigger(target = target)
+	if(fire_cone.Trigger(target = target))
+		if(prob(50))
+			meteors.StartCooldown(0)
+			meteors.Trigger(target = target)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/start_attack(mob/living/owner, datum/action/cooldown/activated)
 	SIGNAL_HANDLER
@@ -204,7 +205,7 @@
 				continue
 			hit_list += M
 			M.take_damage(45, BRUTE, MELEE, 1)
-		sleep(0.15 SECONDS)
+		sleep(1.5)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/ex_act(severity, target)
 	if(severity <= EXPLODE_LIGHT)

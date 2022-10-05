@@ -15,7 +15,7 @@
 
 GLOBAL_LIST_INIT(human_recipes, list( \
 	new/datum/stack_recipe("bloated human costume", /obj/item/clothing/suit/hooded/bloated_human, 5), \
-	new/datum/stack_recipe("human skin hat", /obj/item/clothing/head/fedora/human_leather, 1), \
+	new/datum/stack_recipe("human skin hat", /obj/item/clothing/head/human_leather, 1), \
 	))
 
 /obj/item/stack/sheet/animalhide/human/get_main_recipes()
@@ -112,7 +112,7 @@ GLOBAL_LIST_INIT(monkey_recipes, list ( \
 	merge_type = /obj/item/stack/sheet/animalhide/xeno
 
 GLOBAL_LIST_INIT(xeno_recipes, list ( \
-	new/datum/stack_recipe("alien helmet", /obj/item/clothing/head/costume/xenos, 1), \
+	new/datum/stack_recipe("alien helmet", /obj/item/clothing/head/xenos, 1), \
 	new/datum/stack_recipe("alien suit", /obj/item/clothing/suit/costume/xenos, 2), \
 	))
 
@@ -194,15 +194,15 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
 	new/datum/stack_recipe("bandolier", /obj/item/storage/belt/bandolier, 5), \
 	new/datum/stack_recipe("leather jacket", /obj/item/clothing/suit/jacket/leather, 7), \
 	new/datum/stack_recipe("leather shoes", /obj/item/clothing/shoes/laceup, 2), \
-	new/datum/stack_recipe("biker jacket", /obj/item/clothing/suit/jacket/leather/biker, 7), \
+	new/datum/stack_recipe("leather overcoat", /obj/item/clothing/suit/jacket/leather/overcoat, 10), \
 	new/datum/stack_recipe("saddle", /obj/item/saddle, 5), \
 	new/datum/stack_recipe("sheriff vest", /obj/item/clothing/accessory/vest_sheriff, 4), \
 	new/datum/stack_recipe_list("cowboy hats", list( \
-		new/datum/stack_recipe("sheriff hat", /obj/item/clothing/head/cowboy/brown, 2), \
-		new/datum/stack_recipe("desperado hat", /obj/item/clothing/head/cowboy/black, 2), \
-		new/datum/stack_recipe("ten-gallon hat", /obj/item/clothing/head/cowboy/white, 2), \
-		new/datum/stack_recipe("deputy hat", /obj/item/clothing/head/cowboy/red, 2), \
-		new/datum/stack_recipe("drifter hat", /obj/item/clothing/head/cowboy/grey, 2), \
+		new/datum/stack_recipe("sheriff hat", /obj/item/clothing/head/cowboy_hat_brown, 2), \
+		new/datum/stack_recipe("desperado hat", /obj/item/clothing/head/cowboy_hat_black, 2), \
+		new/datum/stack_recipe("ten-gallon hat", /obj/item/clothing/head/cowboy_hat_white, 2), \
+		new/datum/stack_recipe("deputy hat", /obj/item/clothing/head/cowboy_hat_red, 2), \
+		new/datum/stack_recipe("drifter hat", /obj/item/clothing/head/cowboy_hat_grey, 2), \
 		)),
 ))
 
@@ -287,12 +287,6 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 //Step two - washing..... it's actually in washing machine code.
 
 //Step three - drying
-/obj/item/stack/sheet/wethide
-
-/obj/item/stack/sheet/wethide/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/microwavable, /obj/item/stack/sheet/leather)
-
 /obj/item/stack/sheet/wethide/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	return (exposed_temperature > drying_threshold_temperature)
 
@@ -302,6 +296,11 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 		new /obj/item/stack/sheet/leather(drop_location(), 1)
 		wetness = initial(wetness)
 		use(1)
+
+/obj/item/stack/sheet/wethide/microwave_act(obj/machinery/microwave/MW)
+	..()
+	new /obj/item/stack/sheet/leather(drop_location(), amount)
+	qdel(src)
 
 /obj/item/stack/sheet/animalhide/carp
 	name = "carp scales"

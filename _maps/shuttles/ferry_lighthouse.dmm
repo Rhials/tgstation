@@ -3,13 +3,13 @@
 /turf/template_noop,
 /area/template_noop)
 "ab" = (
-/obj/machinery/power/shuttle_engine/propulsion/left{
+/obj/structure/shuttle/engine/propulsion/left{
 	dir = 4
 	},
 /turf/open/floor/plating/airless,
 /area/shuttle/transport)
 "ac" = (
-/obj/machinery/power/shuttle_engine/heater{
+/obj/structure/shuttle/engine/heater{
 	dir = 8
 	},
 /turf/open/floor/plating/airless,
@@ -259,11 +259,11 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/transport)
 "bi" = (
-/obj/machinery/power/shuttle_engine/heater,
+/obj/structure/shuttle/engine/heater,
 /turf/open/floor/plating/airless,
 /area/shuttle/transport)
 "bj" = (
-/obj/machinery/power/shuttle_engine/propulsion/right,
+/obj/structure/shuttle/engine/propulsion/right,
 /turf/open/floor/plating/airless,
 /area/shuttle/transport)
 

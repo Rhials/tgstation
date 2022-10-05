@@ -18,7 +18,7 @@
 		return FALSE
 
 /datum/surgery_step/bionecrosis
-	name = "start bionecrosis (syringe)"
+	name = "start bionecrosis"
 	implements = list(
 		/obj/item/reagent_containers/syringe = 100,
 		/obj/item/pen = 30)

@@ -44,7 +44,6 @@
 			else if(victim.stat != DEAD)
 				to_chat(victim, span_notice("You feel great!"))
 			return
-		victim.investigate_log("has been killed by a bolt of death.", INVESTIGATE_DEATHS)
 		victim.death()
 
 	if(istype(target, /obj/machinery/hydroponics))
@@ -68,7 +67,6 @@
 		var/mob/living/victim = target
 
 		if(victim.mob_biotypes & MOB_UNDEAD) //positive energy harms the undead
-			victim.investigate_log("has been killed by a bolt of life.", INVESTIGATE_DEATHS)
 			victim.death()
 			return
 
@@ -368,15 +366,14 @@
 		var/atom/throw_target = get_edge_target_turf(target, get_dir(target, firer))
 		target.throw_at(throw_target, 200, 4)
 
-/obj/projectile/magic/babel
-	name = "bolt of babel"
-	icon_state = "babel"
+/obj/projectile/magic/sapping
+	name = "bolt of sapping"
+	icon_state = "sapping"
 
-/obj/projectile/magic/babel/on_hit(mob/living/carbon/target)
+/obj/projectile/magic/sapping/on_hit(mob/living/target)
 	. = ..()
-	if(iscarbon(target))
-		if(curse_of_babel(target))
-			target.add_mood_event("curse_of_babel", /datum/mood_event/tower_of_babel)
+	if(isliving(target))
+		target.add_mood_event(REF(src), /datum/mood_event/sapped)
 
 /obj/projectile/magic/necropotence
 	name = "bolt of necropotence"

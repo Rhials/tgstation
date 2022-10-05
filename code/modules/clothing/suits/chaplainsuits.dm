@@ -69,8 +69,6 @@
 /obj/item/clothing/head/hooded/monkhabit
 	name = "monk's hood"
 	desc = "For when a man wants to cover up his tonsure."
-	icon = 'icons/obj/clothing/head/chaplain.dmi'
-	worn_icon = 'icons/mob/clothing/head/chaplain.dmi'
 	icon_state = "monkhood"
 	inhand_icon_state = null
 	body_parts_covered = HEAD
@@ -124,8 +122,6 @@
 /obj/item/clothing/head/helmet/chaplain
 	name = "crusader helmet"
 	desc = "Deus Vult."
-	icon = 'icons/obj/clothing/head/chaplain.dmi'
-	worn_icon = 'icons/mob/clothing/head/chaplain.dmi'
 	icon_state = "knight_templar"
 	inhand_icon_state = null
 	armor = list(MELEE = 50, BULLET = 10, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
@@ -214,8 +210,6 @@
 /obj/item/clothing/head/hooded/chaplain_hood
 	name = "follower hood"
 	desc = "Hood made for acolytes of the chaplain."
-	icon = 'icons/obj/clothing/head/chaplain.dmi'
-	worn_icon = 'icons/mob/clothing/head/chaplain.dmi'
 	icon_state = "chaplain_hood"
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEFACE|HIDEEARS
@@ -231,11 +225,3 @@
 	name = "leader hood"
 	desc = "I mean, you don't /have/ to seek bling water. I just think you should."
 	icon_state = "chaplain_hood_leader"
-
-/obj/item/clothing/suit/chaplainsuit/shrinehand
-	name = "shrinehand robe"
-	desc = "Won't help you communicate with spirits, but you'll certainly look the part."
-	icon_state = "shrinehand"
-	inhand_icon_state = "shrinehand"
-	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	flags_inv = HIDEJUMPSUIT

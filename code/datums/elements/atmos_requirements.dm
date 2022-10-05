@@ -1,24 +1,25 @@
+	///Atmos effect - Yes, you can make creatures that require plasma or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
+	///Leaving something at 0 means it's off - has no maximum.
+
+	///This damage is taken when atmos doesn't fit all the requirements above.
+
+
 /**
  * ## atmos requirements element!
  *
  * bespoke element that deals damage to the attached mob when the atmos requirements aren't satisfied
  */
 /datum/element/atmos_requirements
-	element_flags = ELEMENT_BESPOKE
+	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
 	id_arg_index = 2
-	/// An assoc list of "what atmos does this mob require to survive in".
 	var/list/atmos_requirements
-	/// How much (brute) damage we take from being in unsuitable atmos.
 	var/unsuitable_atmos_damage
 
-/datum/element/atmos_requirements/Attach(datum/target, list/atmos_requirements, unsuitable_atmos_damage = 5)
+/datum/element/atmos_requirements/Attach(datum/target, list/atmos_requirements, unsuitable_atmos_damage)
 	. = ..()
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
-	if(!atmos_requirements)
-		stack_trace("[type] added to [target] without any requirements specified.")
-	src.atmos_requirements = atmos_requirements
-	src.unsuitable_atmos_damage = unsuitable_atmos_damage
+	src.atmos_requirements = string_assoc_list(atmos_requirements)
 	RegisterSignal(target, COMSIG_LIVING_HANDLE_BREATHING, .proc/on_non_stasis_life)
 
 /datum/element/atmos_requirements/Detach(datum/target)
@@ -55,21 +56,20 @@
 
 	open_turf.air.garbage_collect()
 
+	. = TRUE
 	if(atmos_requirements["min_oxy"] && oxy < atmos_requirements["min_oxy"])
-		return FALSE
+		. = FALSE
 	else if(atmos_requirements["max_oxy"] && oxy > atmos_requirements["max_oxy"])
-		return FALSE
+		. = FALSE
 	else if(atmos_requirements["min_plas"] && plas < atmos_requirements["min_plas"])
-		return FALSE
+		. = FALSE
 	else if(atmos_requirements["max_plas"] && plas > atmos_requirements["max_plas"])
-		return FALSE
+		. = FALSE
 	else if(atmos_requirements["min_n2"] && n2 < atmos_requirements["min_n2"])
-		return FALSE
+		. = FALSE
 	else if(atmos_requirements["max_n2"] && n2 > atmos_requirements["max_n2"])
-		return FALSE
+		. = FALSE
 	else if(atmos_requirements["min_co2"] && co2 < atmos_requirements["min_co2"])
-		return FALSE
+		. = FALSE
 	else if(atmos_requirements["max_co2"] && co2 > atmos_requirements["max_co2"])
-		return FALSE
-
-	return TRUE
+		. = FALSE

@@ -1,5 +1,5 @@
 /datum/element/snailcrawl
-	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
+	element_flags = ELEMENT_DETACH
 
 /datum/element/snailcrawl/Attach(datum/target)
 	. = ..()

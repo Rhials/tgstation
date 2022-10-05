@@ -133,7 +133,7 @@ Striking a noncultist, however, will tear their flesh."}
 	phasein = /obj/effect/temp_visual/dir_setting/cult/phase
 	phaseout = /obj/effect/temp_visual/dir_setting/cult/phase/out
 
-/datum/action/innate/dash/cult/IsAvailable(feedback = FALSE)
+/datum/action/innate/dash/cult/IsAvailable()
 	if(IS_CULTIST(owner) && current_charges)
 		return TRUE
 	else
@@ -173,8 +173,6 @@ Striking a noncultist, however, will tear their flesh."}
 
 /obj/item/clothing/head/hooded/cult_hoodie
 	name = "ancient cultist hood"
-	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
 	icon_state = "culthood"
 	inhand_icon_state = "culthood"
 	desc = "A torn, dust-caked hood. Strange letters line the inside."
@@ -224,7 +222,8 @@ Striking a noncultist, however, will tear their flesh."}
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CULT_TRAIT)
 
-/obj/item/clothing/head/wizard/magus
+
+/obj/item/clothing/head/magus
 	name = "magus helm"
 	icon_state = "magus"
 	inhand_icon_state = null
@@ -266,7 +265,7 @@ Striking a noncultist, however, will tear their flesh."}
 	icon_state = "cult_helmet"
 	inhand_icon_state = null
 	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 60, BOMB = 50, BIO = 100, FIRE = 100, ACID = 100)
-	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | PLASMAMAN_HELMET_EXEMPT | HEADINTERNALS
+	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | PLASMAMAN_HELMET_EXEMPT
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
@@ -784,7 +783,7 @@ Striking a noncultist, however, will tear their flesh."}
 		if(!charging)
 			break
 		if(i > 1)
-			sleep(1.5 SECONDS)
+			sleep(15)
 		if(i < 4)
 			O = new /obj/effect/temp_visual/cult/rune_spawn/rune1/inner(user.loc, 30, "#ff0000")
 		else
@@ -803,7 +802,7 @@ Striking a noncultist, however, will tear their flesh."}
 			set_angle = angle - spread
 			spread -= 8
 		else
-			sleep(1.5 SECONDS)
+			sleep(15)
 			set_angle = angle + spread
 		second = !second //Handles beam firing in pairs
 		if(!firing)
@@ -848,7 +847,6 @@ Striking a noncultist, however, will tear their flesh."}
 	name = "mirror shield"
 	desc = "An infamous shield used by Nar'Sien sects to confuse and disorient their enemies. Its edges are weighted for use as a throwing weapon - capable of disabling multiple foes with preternatural accuracy."
 	icon_state = "mirror_shield" // eshield1 for expanded
-	inhand_icon_state = "mirror_shield"
 	lefthand_file = 'icons/mob/inhands/equipment/shields_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
 	force = 5

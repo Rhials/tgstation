@@ -34,7 +34,7 @@
 		if("threatening")
 			wave_type = GLOB.meteors_threatening
 		if("catastrophic")
-			if(check_holidays(HALLOWEEN))
+			if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
 				wave_type = GLOB.meteorsSPOOKY
 			else
 				wave_type = GLOB.meteors_catastrophic

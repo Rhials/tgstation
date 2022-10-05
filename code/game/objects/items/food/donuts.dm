@@ -24,8 +24,18 @@
 
 ///Override for checkliked callback
 /obj/item/food/donut/MakeEdible()
-	. = ..()
-	AddComponent(/datum/component/edible, check_liked = CALLBACK(src, .proc/check_liked))
+	AddComponent(/datum/component/edible,\
+				initial_reagents = food_reagents,\
+				food_flags = food_flags,\
+				foodtypes = foodtypes,\
+				volume = max_volume,\
+				eat_time = eat_time,\
+				tastes = tastes,\
+				eatverbs = eatverbs,\
+				bite_consumption = bite_consumption,\
+				microwaved_type = microwaved_type,\
+				junkiness = junkiness,\
+				check_liked = CALLBACK(src, .proc/check_liked))
 
 /obj/item/food/donut/proc/decorate_donut()
 	if(is_decorated || !decorated_icon)
@@ -42,8 +52,7 @@
 
 ///Override for checkliked in edible component, because all cops LOVE donuts
 /obj/item/food/donut/proc/check_liked(fraction, mob/living/carbon/human/consumer)
-	var/obj/item/organ/internal/liver/liver = consumer.getorganslot(ORGAN_SLOT_LIVER)
-	if(!HAS_TRAIT(consumer, TRAIT_AGEUSIA) && liver && HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
+	if(!HAS_TRAIT(consumer, TRAIT_AGEUSIA) && consumer.mind && HAS_TRAIT(consumer.mind, TRAIT_DONUT_LOVER))
 		return FOOD_LIKED
 
 //Use this donut ingame

@@ -67,7 +67,6 @@
 	to_chat(A, span_danger("You hit [D] with THE PLASMA FIST TECHNIQUE!"))
 	log_combat(A, D, "gibbed (Plasma Fist)")
 	var/turf/Dturf = get_turf(D)
-	D.investigate_log("has been gibbed by plasma fist.", INVESTIGATE_DEATHS)
 	D.gib()
 	if(nobomb)
 		return
@@ -121,7 +120,6 @@
 	REMOVE_TRAIT(dying, TRAIT_BOMBIMMUNE, type)
 	if(dying.stat == DEAD)
 		return
-	dying.investigate_log("has been killed by plasma fist apotheosis.", INVESTIGATE_DEATHS)
 	dying.death()
 
 /datum/martial_art/plasma_fist/harm_act(mob/living/A, mob/living/D)

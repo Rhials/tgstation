@@ -41,8 +41,7 @@
 /mob/living/simple_animal/hostile/retaliate/clown/Initialize(mapload)
 	. = ..()
 	if(attack_reagent)
-		var/static/list/injection_range = list(1, 5)
-		AddElement(/datum/element/venomous, attack_reagent, injection_range)
+		AddElement(/datum/element/venomous, attack_reagent, list(1, 5))
 
 /mob/living/simple_animal/hostile/retaliate/clown/attack_hand(mob/living/carbon/human/user, list/modifiers)
 	..()
@@ -500,7 +499,7 @@
 	on_who.icon_state = initial(on_who.icon_state)
 	on_who.update_appearance(UPDATE_ICON)
 
-/datum/action/cooldown/regurgitate/IsAvailable(feedback = FALSE)
+/datum/action/cooldown/regurgitate/IsAvailable()
 	. = ..()
 	if(!.)
 		return FALSE

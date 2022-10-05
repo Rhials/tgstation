@@ -25,7 +25,7 @@
 	severity = rand(1,3)
 	for(var/i in 1 to severity)
 		var/picked_area = pick_n_take(potential_areas)
-		for(var/area/A as anything in GLOB.areas)
+		for(var/area/A in world)
 			if(istype(A, picked_area))
 				areasToOpen += A
 

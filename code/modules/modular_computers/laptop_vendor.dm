@@ -20,6 +20,7 @@
 
 	// Device loadout
 	var/dev_battery = 1 // 1: Default, 2: Upgraded, 3: Advanced
+	var/dev_disk = 1 // 1: Default, 2: Upgraded, 3: Advanced
 	var/dev_card = 0 // 0: None, 1: Standard
 
 // Removes all traces of old order and allows you to begin configuration from scratch.
@@ -33,6 +34,7 @@
 		qdel(fabricated_tablet)
 		fabricated_tablet = null
 	dev_battery = 1
+	dev_disk = 1
 	dev_card = 0
 
 // Recalculates the price and optionally even fabricates the device.
@@ -58,6 +60,18 @@
 				if(fabricate)
 					battery_module.try_insert(new /obj/item/stock_parts/cell/computer/super)
 				total_price += 499
+		switch(dev_disk)
+			if(1) // Basic(128GQ)
+				if(fabricate)
+					fabricated_laptop.install_component(new /obj/item/computer_hardware/hard_drive)
+			if(2) // Upgraded(256GQ)
+				if(fabricate)
+					fabricated_laptop.install_component(new /obj/item/computer_hardware/hard_drive/advanced)
+				total_price += 99
+			if(3) // Advanced(512GQ)
+				if(fabricate)
+					fabricated_laptop.install_component(new /obj/item/computer_hardware/hard_drive/super)
+				total_price += 299
 		if(dev_card)
 			total_price += 199
 			if(fabricate)
@@ -84,6 +98,18 @@
 				if(fabricate)
 					battery_module.try_insert(new /obj/item/stock_parts/cell/computer)
 				total_price += 499
+		switch(dev_disk)
+			if(1) // Basic(32GQ)
+				if(fabricate)
+					fabricated_tablet.install_component(new /obj/item/computer_hardware/hard_drive/micro)
+			if(2) // Upgraded(64GQ)
+				if(fabricate)
+					fabricated_tablet.install_component(new /obj/item/computer_hardware/hard_drive/small)
+				total_price += 99
+			if(3) // Advanced(128GQ)
+				if(fabricate)
+					fabricated_tablet.install_component(new /obj/item/computer_hardware/hard_drive)
+				total_price += 299
 		if(dev_card)
 			total_price += 199
 			if(fabricate)
@@ -125,6 +151,10 @@
 			dev_battery = text2num(params["battery"])
 			fabricate_and_recalc_price(FALSE)
 			return TRUE
+		if("hw_disk")
+			dev_disk = text2num(params["disk"])
+			fabricate_and_recalc_price(FALSE)
+			return TRUE
 		if("hw_card")
 			dev_card = text2num(params["card"])
 			fabricate_and_recalc_price(FALSE)
@@ -163,7 +193,7 @@
 		var/obj/item/card/id/ID = I
 		var/datum/bank_account/account = ID.registered_account
 		var/target_credits = total_price - credits
-		if(!account.adjust_money(-target_credits, "Vending: Laptop Vendor"))
+		if(!account.adjust_money(-target_credits))
 			say("Insufficient credits on card to purchase!")
 			return
 		credits += target_credits
@@ -186,6 +216,7 @@
 	if(state == 1)
 		data["devtype"] = devtype
 		data["hw_battery"] = dev_battery
+		data["hw_disk"] = dev_disk
 		data["hw_card"] = dev_card
 	if(state == 1 || state == 2)
 		data["totalprice"] = total_price

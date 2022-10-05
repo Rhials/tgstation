@@ -9,7 +9,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	attack_verb_continuous = list("pokes")
 	attack_verb_simple = list("poke")
-	var/fail_message = "invalid user!"
+	var/fail_message = "<span class='warning'>INVALID USER.</span>"
 	var/selfdestruct = FALSE // Explode when user check is failed.
 	var/force_replace = FALSE // Can forcefully replace other pins.
 	var/pin_removeable = FALSE // Can be replaced by any pin.
@@ -64,7 +64,7 @@
 
 /obj/item/firing_pin/proc/auth_fail(mob/living/user)
 	if(user)
-		balloon_alert(user, fail_message)
+		user.show_message(fail_message, MSG_VISUAL)
 	if(selfdestruct)
 		if(user)
 			user.show_message("[span_danger("SELF-DESTRUCTING...")]<br>", MSG_VISUAL)
@@ -83,7 +83,7 @@
 /obj/item/firing_pin/test_range
 	name = "test-range firing pin"
 	desc = "This safety firing pin allows weapons to be fired within proximity to a firing range."
-	fail_message = "test range check failed!"
+	fail_message = "<span class='warning'>TEST RANGE CHECK FAILED.</span>"
 	pin_removeable = TRUE
 
 /obj/item/firing_pin/test_range/pin_auth(mob/living/user)
@@ -98,7 +98,7 @@
 /obj/item/firing_pin/implant
 	name = "implant-keyed firing pin"
 	desc = "This is a security firing pin which only authorizes users who are implanted with a certain device."
-	fail_message = "implant check failed!"
+	fail_message = "<span class='warning'>IMPLANT CHECK FAILED.</span>"
 	var/obj/item/implant/req_implant = null
 
 /obj/item/firing_pin/implant/pin_auth(mob/living/user)
@@ -127,7 +127,7 @@
 	name = "hilarious firing pin"
 	desc = "Advanced clowntech that can convert any firearm into a far more useful object."
 	color = "#FFFF00"
-	fail_message = "honk!"
+	fail_message = "<span class='warning'>HONK!</span>"
 	force_replace = TRUE
 
 /obj/item/firing_pin/clown/pin_auth(mob/living/user)
@@ -176,7 +176,7 @@
 	name = "DNA-keyed firing pin"
 	desc = "This is a DNA-locked firing pin which only authorizes one user. Attempt to fire once to DNA-link."
 	icon_state = "firing_pin_dna"
-	fail_message = "dna check failed!"
+	fail_message = "<span class='warning'>DNA CHECK FAILED.</span>"
 	var/unique_enzymes = null
 
 /obj/item/firing_pin/dna/afterattack(atom/target, mob/user, proximity_flag)
@@ -185,7 +185,7 @@
 		var/mob/living/carbon/M = target
 		if(M.dna && M.dna.unique_enzymes)
 			unique_enzymes = M.dna.unique_enzymes
-			balloon_alert(user, "dna lock set")
+			to_chat(user, span_notice("DNA-LOCK SET."))
 
 /obj/item/firing_pin/dna/pin_auth(mob/living/carbon/user)
 	if(user && user.dna && user.dna.unique_enzymes)
@@ -197,7 +197,7 @@
 	if(!unique_enzymes)
 		if(user && user.dna && user.dna.unique_enzymes)
 			unique_enzymes = user.dna.unique_enzymes
-			balloon_alert(user, "dna lock set")
+			to_chat(user, span_notice("DNA-LOCK SET."))
 	else
 		..()
 
@@ -276,8 +276,8 @@
 	var/datum/bank_account/credit_card_details = user.get_bank_account()
 	if(user in gun_owners)
 		if(multi_payment && credit_card_details)
-			if(credit_card_details.adjust_money(-payment_amount, "Firing Pin: Gun Rent"))
-				pin_owner.registered_account.adjust_money(payment_amount, "Firing Pin: Payout For Gun Rent")
+			if(credit_card_details.adjust_money(-payment_amount))
+				pin_owner.registered_account.adjust_money(payment_amount)
 				return TRUE
 			to_chat(user, span_warning("ERROR: User balance insufficent for successful transaction!"))
 			return FALSE
@@ -290,8 +290,8 @@
 			return FALSE
 		switch(license_request)
 			if("Yes")
-				if(credit_card_details.adjust_money(-payment_amount, "Firing Pin: Gun License"))
-					pin_owner.registered_account.adjust_money(payment_amount, "Firing Pin: Gun License Bought")
+				if(credit_card_details.adjust_money(-payment_amount))
+					pin_owner.registered_account.adjust_money(payment_amount)
 					gun_owners += user
 					to_chat(user, span_notice("Gun license purchased, have a secure day!"))
 					active_prompt = FALSE
@@ -309,12 +309,13 @@
 	name = "outback firing pin"
 	desc = "A firing pin used by the austrailian defense force, retrofit to prevent weapon discharge on the station."
 	icon_state = "firing_pin_explorer"
-	fail_message = "cannot fire while on station, mate!"
+	fail_message = "<span class='warning'>CANNOT FIRE WHILE ON STATION, MATE!</span>"
 
 // This checks that the user isn't on the station Z-level.
 /obj/item/firing_pin/explorer/pin_auth(mob/living/user)
 	var/turf/station_check = get_turf(user)
 	if(!station_check||is_station_level(station_check.z))
+		to_chat(user, span_warning("You cannot use your weapon while on the station!"))
 		return FALSE
 	return TRUE
 
@@ -322,7 +323,7 @@
 /obj/item/firing_pin/tag
 	name = "laser tag firing pin"
 	desc = "A recreational firing pin, used in laser tag units to ensure users have their vests on."
-	fail_message = "suit check failed!"
+	fail_message = "<span class='warning'>SUIT CHECK FAILED.</span>"
 	var/obj/item/clothing/suit/suit_requirement = null
 	var/tagcolor = ""
 

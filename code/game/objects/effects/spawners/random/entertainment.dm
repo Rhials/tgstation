@@ -37,7 +37,7 @@
 	icon_state = "dice"
 	loot = list(
 		/obj/item/gun/ballistic/revolver/russian = 5,
-		/obj/item/clothing/head/costume/ushanka = 3,
+		/obj/item/clothing/head/ushanka = 3,
 		/obj/effect/spawner/random/entertainment/coin = 3,
 		/obj/effect/spawner/random/entertainment/money = 3,
 		/obj/item/dice/d6 = 3,
@@ -238,7 +238,8 @@
 
 /obj/effect/spawner/random/entertainment/toy/Initialize(mapload)
 	loot += GLOB.arcade_prize_pool
-	return ..()
+	. = ..()
+	return INITIALIZE_HINT_QDEL
 
 /obj/effect/spawner/random/entertainment/plushie
 	name = "plushie spawner"

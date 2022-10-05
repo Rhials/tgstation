@@ -35,11 +35,11 @@
 	if(!select)
 		burst_size = 1
 		fire_delay = 0
-		balloon_alert(user, "switched to semi-automatic")
+		to_chat(user, span_notice("You switch to semi-automatic."))
 	else
 		burst_size = initial(burst_size)
 		fire_delay = initial(fire_delay)
-		balloon_alert(user, "switched to [burst_size]-round burst")
+		to_chat(user, span_notice("You switch to [burst_size]-round burst."))
 
 	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)
 	update_appearance()
@@ -193,6 +193,23 @@
 		if(1)
 			. += "[initial(icon_state)]_burst"
 
+/obj/item/gun/ballistic/automatic/m90/burst_select()
+	var/mob/living/carbon/human/user = usr
+	switch(select)
+		if(0)
+			select = 1
+			burst_size = initial(burst_size)
+			fire_delay = initial(fire_delay)
+			to_chat(user, span_notice("You switch to [burst_size]-rnd burst."))
+		if(1)
+			select = 0
+			burst_size = 1
+			fire_delay = 0
+			to_chat(user, span_notice("You switch to semi-auto."))
+	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)
+	update_appearance()
+	return
+
 /obj/item/gun/ballistic/automatic/tommygun
 	name = "\improper Thompson SMG"
 	desc = "Based on the classic 'Chicago Typewriter'."
@@ -272,7 +289,7 @@
 	if(!user.canUseTopic(src))
 		return
 	cover_open = !cover_open
-	balloon_alert(user, "cover [cover_open ? "opened" : "closed"]")
+	to_chat(user, span_notice("You [cover_open ? "open" : "close"] [src]'s cover."))
 	playsound(src, 'sound/weapons/gun/l6/l6_door.ogg', 60, TRUE)
 	update_appearance()
 
@@ -287,7 +304,7 @@
 
 /obj/item/gun/ballistic/automatic/l6_saw/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, flag, params)
 	if(cover_open)
-		balloon_alert(user, "close the cover!")
+		to_chat(user, span_warning("[src]'s cover is open! Close it before firing!"))
 		return
 	else
 		. = ..()
@@ -299,13 +316,13 @@
 		..()
 		return
 	if (!cover_open)
-		balloon_alert(user, "open the cover!")
+		to_chat(user, span_warning("[src]'s cover is closed! Open it before trying to remove the magazine!"))
 		return
 	..()
 
 /obj/item/gun/ballistic/automatic/l6_saw/attackby(obj/item/A, mob/user, params)
 	if(!cover_open && istype(A, mag_type))
-		balloon_alert(user, "open the cover!")
+		to_chat(user, span_warning("[src]'s dust cover prevents a magazine from being fit."))
 		return
 	..()
 
@@ -328,7 +345,7 @@
 	recoil = 2
 	weapon_weight = WEAPON_HEAVY
 	mag_type = /obj/item/ammo_box/magazine/sniper_rounds
-	fire_delay = 4 SECONDS
+	fire_delay = 40
 	burst_size = 1
 	w_class = WEIGHT_CLASS_NORMAL
 	slot_flags = ITEM_SLOT_BACK
@@ -340,13 +357,6 @@
 /obj/item/gun/ballistic/automatic/sniper_rifle/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 2)
-
-/obj/item/gun/ballistic/automatic/sniper_rifle/reset_semicd()
-	. = ..()
-	if(suppressed)
-		playsound(src, 'sound/machines/eject.ogg', 25, TRUE, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
-	else
-		playsound(src, 'sound/machines/eject.ogg', 50, TRUE)
 
 /obj/item/gun/ballistic/automatic/sniper_rifle/syndicate
 	name = "syndicate sniper rifle"

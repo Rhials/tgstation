@@ -10,7 +10,6 @@
 	supervisors = SUPERVISOR_QM
 	selection_color = "#dcba97"
 	exp_granted_type = EXP_TYPE_CREW
-	config_tag = "CARGO_TECHNICIAN"
 
 	outfit = /datum/outfit/job/cargo_tech
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
@@ -47,7 +46,7 @@
 	uniform = /obj/item/clothing/under/rank/cargo/tech
 	belt = /obj/item/modular_computer/tablet/pda/cargo
 	ears = /obj/item/radio/headset/headset_cargo
-	l_hand = /obj/item/universal_scanner
+	l_hand = /obj/item/export_scanner
 
 /datum/outfit/job/cargo_tech/mod
 	name = "Cargo Technician (MODsuit)"

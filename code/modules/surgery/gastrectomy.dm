@@ -24,7 +24,7 @@
 ////Gastrectomy, because we truly needed a way to repair stomachs.
 //95% chance of success to be consistent with most organ-repairing surgeries.
 /datum/surgery_step/gastrectomy
-	name = "remove lower duodenum (scalpel)"
+	name = "remove lower duodenum"
 	implements = list(
 		TOOL_SCALPEL = 95,
 		/obj/item/melee/energy/sword = 65,

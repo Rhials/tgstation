@@ -65,7 +65,7 @@ Slimecrossing Armor
 	button_icon_state = "prismcolor"
 
 /datum/action/item_action/change_prism_colour/Trigger(trigger_flags)
-	if(!IsAvailable(feedback = TRUE))
+	if(!IsAvailable())
 		return
 	var/obj/item/clothing/glasses/prism_glasses/glasses = target
 	var/new_color = input(owner, "Choose the lens color:", "Color change",glasses.glasses_color) as color|null
@@ -79,7 +79,7 @@ Slimecrossing Armor
 	button_icon_state = "lightprism"
 
 /datum/action/item_action/place_light_prism/Trigger(trigger_flags)
-	if(!IsAvailable(feedback = TRUE))
+	if(!IsAvailable())
 		return
 	var/obj/item/clothing/glasses/prism_glasses/glasses = target
 	if(locate(/obj/structure/light_prism) in get_turf(owner))
@@ -96,12 +96,12 @@ Slimecrossing Armor
 	name = "heroine bud"
 	desc = "An extremely addictive flower, full of peace magic."
 	icon = 'icons/obj/xenobiology/slimecrossing.dmi'
-	worn_icon = 'icons/mob/clothing/head/costume.dmi'
 	icon_state = "peaceflower"
 	inhand_icon_state = null
 	slot_flags = ITEM_SLOT_HEAD
 	clothing_traits = list(TRAIT_PACIFISM)
 	body_parts_covered = NONE
+
 	force = 0
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY

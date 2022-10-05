@@ -231,8 +231,6 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		SSmove_manager.stop_looping(convayable, SSconveyors)
 
 /obj/machinery/conveyor/proc/start_conveying(atom/movable/moving)
-	if(QDELETED(moving))
-		return
 	var/datum/move_loop/move/moving_loop = SSmove_manager.processing_on(moving, SSconveyors)
 	if(moving_loop)
 		moving_loop.direction = movedir
@@ -409,7 +407,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		return TRUE
 
 /obj/machinery/conveyor_switch/multitool_act(mob/living/user, obj/item/I)
-	var/input_speed = tgui_input_number(user, "Set the speed of the conveyor belts in seconds", "Speed", conveyor_speed, 20, 0.2, round_value = FALSE)
+	var/input_speed = tgui_input_number(user, "Set the speed of the conveyor belts in seconds", "Speed", conveyor_speed, 20, 0.2)
 	if(!input_speed || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, be_close = TRUE, no_dexterity = FALSE, no_tk = TRUE))
 		return
 	conveyor_speed = input_speed

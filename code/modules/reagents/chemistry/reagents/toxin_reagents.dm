@@ -176,16 +176,6 @@
 			C.emote("gasp")
 	..()
 
-/datum/reagent/toxin/lexorin/on_mob_metabolize(mob/living/L)
-	RegisterSignal(L, COMSIG_CARBON_ATTEMPT_BREATHE, .proc/block_breath)
-
-/datum/reagent/toxin/lexorin/on_mob_end_metabolize(mob/living/L)
-	UnregisterSignal(L, COMSIG_CARBON_ATTEMPT_BREATHE, .proc/block_breath)
-
-/datum/reagent/toxin/lexorin/proc/block_breath(mob/living/source)
-	SIGNAL_HANDLER
-	return COMSIG_CARBON_BLOCK_BREATH
-
 /datum/reagent/toxin/slimejelly
 	name = "Slime Jelly"
 	description = "A gooey semi-liquid produced from one of the deadliest lifeforms in existence. SO REAL."
@@ -217,7 +207,6 @@
 
 /datum/reagent/toxin/minttoxin/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	if(HAS_TRAIT(M, TRAIT_FAT))
-		M.investigate_log("has been gibbed by consuming [src] while fat.", INVESTIGATE_DEATHS)
 		M.inflate_gib()
 	return ..()
 
@@ -320,11 +309,11 @@
 
 /datum/reagent/toxin/mindbreaker/on_mob_metabolize(mob/living/metabolizer)
 	. = ..()
-	ADD_TRAIT(metabolizer, TRAIT_RDS_SUPPRESSED, type)
+	ADD_TRAIT(metabolizer, TRAIT_HALLUCINATION_SUPPRESSED, type)
 
 /datum/reagent/toxin/mindbreaker/on_mob_end_metabolize(mob/living/metabolizer)
 	. = ..()
-	REMOVE_TRAIT(metabolizer, TRAIT_RDS_SUPPRESSED, type)
+	REMOVE_TRAIT(metabolizer, TRAIT_HALLUCINATION_SUPPRESSED, type)
 
 /datum/reagent/toxin/mindbreaker/on_mob_life(mob/living/carbon/metabolizer, delta_time, times_fired)
 	// mindbreaker toxin assuages hallucinations in those plagued with it, mentally
@@ -486,7 +475,7 @@
 	..()
 
 /datum/reagent/toxin/fakebeer //disguised as normal beer for use by emagged brobots
-	name = "B33r"
+	name = "Beer...?"
 	description = "A specially-engineered sedative disguised as beer. It induces instant sleep in its target."
 	color = "#664300" // rgb: 102, 67, 0
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
@@ -548,8 +537,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/toxin/mutetoxin/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	// Gain approximately 12 seconds * creation purity seconds of silence every metabolism tick.
-	M.set_silence_if_lower(6 SECONDS * REM * normalise_creation_purity() * delta_time)
+	M.silent = max(M.silent, 3 * REM * normalise_creation_purity() * delta_time)
 	..()
 
 /datum/reagent/toxin/staminatoxin
@@ -1250,5 +1238,5 @@
 	health_required = 10
 
 /datum/reagent/toxin/viperspider/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjust_hallucinations(10 SECONDS * REM * delta_time)
+	M.hallucination += 5 * REM * delta_time
 	return ..()

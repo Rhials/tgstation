@@ -1,4 +1,4 @@
-/obj/item/clothing/head/costume/justice
+/obj/item/clothing/head/justice
 	name = "justice hat"
 	desc = "Fight for what's righteous!"
 	icon_state = "justicered"
@@ -7,18 +7,18 @@
 	flags_inv = HIDEHAIR|HIDEEARS|HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES
 
-/obj/item/clothing/head/costume/justice/blue
+/obj/item/clothing/head/justice/blue
 	icon_state = "justiceblue"
 	inhand_icon_state = null
 
-/obj/item/clothing/head/costume/justice/yellow
+/obj/item/clothing/head/justice/yellow
 	icon_state = "justiceyellow"
 	inhand_icon_state = null
 
-/obj/item/clothing/head/costume/justice/green
+/obj/item/clothing/head/justice/green
 	icon_state = "justicegreen"
 	inhand_icon_state = null
 
-/obj/item/clothing/head/costume/justice/pink
+/obj/item/clothing/head/justice/pink
 	icon_state = "justicepink"
 	inhand_icon_state = null

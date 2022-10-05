@@ -34,8 +34,9 @@
 	if(enabled) // Shut down the computer
 		if(active_program)
 			active_program.event_powerfailure(0)
-		for(var/datum/computer_file/program/programs as anything in idle_threads)
-			programs.event_powerfailure(background = TRUE)
+		for(var/I in idle_threads)
+			var/datum/computer_file/program/PRG = I
+			PRG.event_powerfailure(1)
 		shutdown_computer(0)
 
 // Handles power-related things, such as battery interaction, recharging, shutdown when it's discharged

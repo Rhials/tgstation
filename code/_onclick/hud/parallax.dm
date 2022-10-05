@@ -83,12 +83,9 @@
 			return FALSE
 
 /datum/hud/proc/update_parallax_pref(mob/viewmob)
-	var/mob/screen_mob = viewmob || mymob
-	if(!screen_mob.client)
-		return
-	remove_parallax(screen_mob)
-	create_parallax(screen_mob)
-	update_parallax(screen_mob)
+	remove_parallax(viewmob)
+	create_parallax(viewmob)
+	update_parallax(viewmob)
 
 // This sets which way the current shuttle is moving (returns true if the shuttle has stopped moving so the caller can append their animation)
 /datum/hud/proc/set_parallax_movedir(new_parallax_movedir = 0, skip_windups, mob/viewmob)

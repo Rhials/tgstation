@@ -14,7 +14,6 @@
 	weapon_weight = WEAPON_HEAVY
 	w_class = WEIGHT_CLASS_BULKY
 	internal_magazine = TRUE
-	cartridge_wording = "arrow"
 	bolt_type = BOLT_TYPE_NO_BOLT
 	var/drawn = FALSE
 
@@ -39,7 +38,7 @@
 
 /obj/item/gun/ballistic/bow/attack_self(mob/user)
 	if(chambered)
-		balloon_alert(user, "[drawn ? "string released" : "string drawn"]")
+		to_chat(user, span_notice("You [drawn ? "release the tension on" : "draw the string on"] [src]."))
 		drawn = !drawn
 	update_appearance()
 
@@ -69,7 +68,6 @@
 	name = "arrow"
 	desc = "Stabby Stabman!"
 	icon_state = "arrow"
-	inhand_icon_state = "arrow"
 	flags_1 = NONE
 	throwforce = 1
 	projectile_type = /obj/projectile/bullet/reusable/arrow

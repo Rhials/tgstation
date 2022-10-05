@@ -53,9 +53,7 @@
 	ADD_TRAIT(src, TRAIT_SPRAY_PAINTABLE, INNATE_TRAIT)
 
 /mob/living/simple_animal/bot/hygienebot/explode()
-	var/datum/effect_system/fluid_spread/foam/foam = new
-	foam.set_up(2, holder = src, location = loc)
-	foam.start()
+	new /obj/effect/particle_effect/fluid/foam(loc)
 
 	return ..()
 

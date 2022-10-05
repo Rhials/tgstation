@@ -64,9 +64,7 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/nutriment/vitamin = 2)
 	gender = PLURAL
 	w_class = WEIGHT_CLASS_TINY
-
-/obj/item/food/onion_slice/make_microwavable()
-	AddElement(/datum/element/microwavable, /obj/item/food/onionrings)
+	microwaved_type = /obj/item/food/onionrings
 
 /obj/item/food/onion_slice/red
 	name = "red onion slices"

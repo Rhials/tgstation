@@ -333,7 +333,7 @@
 /turf/open/floor/plating,
 /area/shuttle/pirate)
 "aH" = (
-/obj/machinery/power/shuttle_engine/propulsion/left,
+/obj/structure/shuttle/engine/propulsion/left,
 /turf/open/floor/plating/airless,
 /area/shuttle/pirate)
 "aI" = (
@@ -354,7 +354,7 @@
 /turf/open/floor/plating,
 /area/shuttle/pirate)
 "aK" = (
-/obj/machinery/power/shuttle_engine/propulsion,
+/obj/structure/shuttle/engine/propulsion,
 /turf/open/floor/plating/airless,
 /area/shuttle/pirate)
 "aL" = (
@@ -792,11 +792,11 @@
 	dir = 1;
 	pixel_y = 1
 	},
-/obj/machinery/power/shuttle_engine/heater,
+/obj/structure/shuttle/engine/heater,
 /turf/open/floor/plating/airless,
 /area/shuttle/pirate)
 "er" = (
-/obj/machinery/power/shuttle_engine/propulsion/right,
+/obj/structure/shuttle/engine/propulsion/right,
 /turf/open/floor/plating/airless,
 /area/shuttle/pirate)
 "et" = (

@@ -20,7 +20,7 @@
 		return FALSE
 
 /datum/surgery_step/pacify
-	name = "rewire brain (hemostat)"
+	name = "rewire brain"
 	implements = list(
 		TOOL_HEMOSTAT = 100,
 		TOOL_SCREWDRIVER = 35,

@@ -34,7 +34,6 @@ All ShuttleMove procs go here
 				M.visible_message(span_warning("[shuttle] slams into [M]!"))
 				SSblackbox.record_feedback("tally", "shuttle_gib", 1, M.type)
 				log_shuttle("[key_name(M)] was shuttle gibbed by [shuttle].")
-				investigate_log("has been gibbed by [shuttle].", INVESTIGATE_DEATHS)
 				M.gib()
 
 
@@ -155,9 +154,7 @@ All ShuttleMove procs go here
 		return TRUE
 
 	contents -= oldT
-	turfs_to_uncontain += oldT
 	underlying_old_area.contents += oldT
-	underlying_old_area.contained_turfs += oldT
 	oldT.transfer_area_lighting(src, underlying_old_area)
 	//The old turf has now been given back to the area that turf originaly belonged to
 
@@ -165,9 +162,7 @@ All ShuttleMove procs go here
 	parallax_movedir = old_dest_area.parallax_movedir
 
 	old_dest_area.contents -= newT
-	old_dest_area.turfs_to_uncontain += newT
 	contents += newT
-	contained_turfs += newT
 	newT.transfer_area_lighting(old_dest_area, src)
 	return TRUE
 
@@ -333,7 +328,7 @@ All ShuttleMove procs go here
 	Connect_cable(TRUE)
 	propagate_if_no_network()
 
-/obj/machinery/power/shuttle_engine/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
+/obj/structure/shuttle/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
 	if(. & MOVE_AREA)
 		. |= MOVE_CONTENTS

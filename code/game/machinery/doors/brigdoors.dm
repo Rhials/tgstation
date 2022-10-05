@@ -201,7 +201,7 @@
 		if(!flasher)
 			flashers -= flash_ref
 			continue
-		if(!COOLDOWN_FINISHED(flasher, flash_cooldown))
+		if(flasher.last_flash && (flasher.last_flash + 15 SECONDS) > world.time)
 			data["flash_charging"] = TRUE
 			break
 	return data

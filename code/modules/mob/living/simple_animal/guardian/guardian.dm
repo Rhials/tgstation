@@ -308,7 +308,6 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 /mob/living/simple_animal/hostile/guardian/ex_act(severity, target)
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			investigate_log("has been gibbed by an explosion.", INVESTIGATE_DEATHS)
 			gib()
 			return TRUE
 		if(EXPLODE_HEAVY)
@@ -319,7 +318,6 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 /mob/living/simple_animal/hostile/guardian/gib()
 	if(summoner)
 		to_chat(summoner, "[span_danger("<B>Your [src] was blown up!")]</B>")
-		summoner.investigate_log("has been gibbed by an explosion.", INVESTIGATE_DEATHS)
 		summoner.gib()
 	ghostize()
 	qdel(src)
@@ -510,7 +508,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	to_chat(chosen_guardian, span_holoparasite("Your user reset you, and your body was taken over by a ghost. Looks like they weren't happy with your performance."))
 	to_chat(src, "<span class='holoparasite bold'>Your <font color=\"[chosen_guardian.guardiancolor]\">[chosen_guardian.real_name]</font> has been successfully reset.</span>")
 	message_admins("[key_name_admin(candidate)] has taken control of ([ADMIN_LOOKUPFLW(chosen_guardian)])")
-	chosen_guardian.ghostize(FALSE)
+	chosen_guardian.ghostize(0)
 	chosen_guardian.guardianrecolor()
 	chosen_guardian.guardianrename() //give it a new color and name, to show it's a new person
 	chosen_guardian.key = candidate.key
@@ -777,7 +775,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 /obj/item/guardiancreator/carp
 	name = "holocarp fishsticks"
 	desc = "Using the power of Carp'sie, you can catch a carp from byond the veil of Carpthulu, and bind it to your fleshy flesh form."
-	icon = 'icons/obj/food/meat.dmi'
+	icon = 'icons/obj/food/food.dmi'
 	icon_state = "fishfingers"
 	theme = "carp"
 	mob_name = "Holocarp"

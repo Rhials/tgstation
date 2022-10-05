@@ -81,6 +81,9 @@
 	messages += "remain before resonance-induced stabilization."
 	return messages
 
+/datum/sm_delam/cascade/mole_power_damage_limit(obj/machinery/power/supermatter_crystal/sm)
+	return 0.25
+
 /datum/sm_delam/cascade/proc/announce_cascade(obj/machinery/power/supermatter_crystal/sm)
 	if(QDELETED(sm))
 		return FALSE

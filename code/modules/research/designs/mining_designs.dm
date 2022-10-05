@@ -123,7 +123,7 @@
 	departmental_flags = DEPARTMENT_BITFLAG_CARGO
 
 /datum/design/damage_mod/borg
-	id = "borg_upgrade_damagemod"
+	id = "damagemod_b"
 	build_type = MECHFAB
 	category = list(
 		RND_CATEGORY_MECHFAB_CYBORG_MODULES + RND_SUBCATEGORY_MECHFAB_CYBORG_MODULES_MINING
@@ -143,7 +143,7 @@
 	departmental_flags = DEPARTMENT_BITFLAG_CARGO
 
 /datum/design/cooldown_mod/borg
-	id = "borg_upgrade_cooldownmod"
+	id = "cooldownmod_b"
 	build_type = MECHFAB
 	category = list(
 		RND_CATEGORY_MECHFAB_CYBORG_MODULES + RND_SUBCATEGORY_MECHFAB_CYBORG_MODULES_MINING
@@ -163,7 +163,7 @@
 	departmental_flags = DEPARTMENT_BITFLAG_CARGO
 
 /datum/design/range_mod/borg
-	id = "borg_upgrade_rangemod"
+	id = "rangemod_b"
 	build_type = MECHFAB
 	category = list(
 		RND_CATEGORY_MECHFAB_CYBORG_MODULES + RND_SUBCATEGORY_MECHFAB_CYBORG_MODULES_MINING
@@ -183,7 +183,7 @@
 	departmental_flags = DEPARTMENT_BITFLAG_CARGO
 
 /datum/design/hyperaccelerator/borg
-	id = "borg_upgrade_hypermod"
+	id = "hypermod_b"
 	build_type = MECHFAB
 	category = list(
 		RND_CATEGORY_MECHFAB_CYBORG_MODULES + RND_SUBCATEGORY_MECHFAB_CYBORG_MODULES_MINING

@@ -174,13 +174,25 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			return
 		COOLDOWN_START(client, say_slowmode, SSlag_switch.slowmode_cooldown)
 
-	if(!try_speak(original_message, ignore_spam, forced))
+	if(!can_speak_basic(original_message, ignore_spam, forced))
 		return
 
 	language = message_mods[LANGUAGE_EXTENSION]
 
 	if(!language)
 		language = get_selected_language()
+	var/mob/living/carbon/human/H = src
+	if(!can_speak_vocal(message))
+		if(H.mind?.miming)
+			if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
+				to_chat(src, span_warning("You stop yourself from signing in favor of the artform of mimery!"))
+				return
+			else
+				to_chat(src, span_green("Your vow of silence prevents you from speaking!"))
+				return
+		else
+			to_chat(src, span_warning("You find yourself unable to speak!"))
+			return
 
 	var/succumbed = FALSE
 
@@ -257,7 +269,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	var/turf/T = get_turf(src)
 	var/datum/gas_mixture/environment = T.return_air()
 	var/pressure = (environment)? environment.return_pressure() : 0
-	if(pressure < SOUND_MINIMUM_PRESSURE && !HAS_TRAIT(src, TRAIT_SIGN_LANG))
+	if(pressure < SOUND_MINIMUM_PRESSURE && !HAS_TRAIT(H, TRAIT_SIGN_LANG))
 		message_range = 1
 
 	if(pressure < ONE_ATMOSPHERE*0.4) //Thin air, let's italicise the message
@@ -336,6 +348,24 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		eavesdrop_range = EAVESDROP_EXTRA_RANGE
 	var/list/listening = get_hearers_in_view(message_range+eavesdrop_range, source)
 	var/list/the_dead = list()
+	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))	// Sign language
+		var/mob/living/carbon/mute = src
+		if(istype(mute))
+			switch(mute.check_signables_state())
+				if(SIGN_CUFFED) // Cuffed
+					mute.visible_message("tries to sign, but can't with [src.p_their()] hands bound!", visible_message_flags = EMOTE_MESSAGE)
+					return FALSE
+				if(SIGN_ARMLESS) // No arms
+					to_chat(src, span_warning("You can't sign with no hands!"))
+					return FALSE
+				if(SIGN_TRAIT_BLOCKED) // Hands Blocked or Emote Mute traits
+					to_chat(src, span_warning("You can't sign at the moment!"))
+					return FALSE
+				if(SIGN_HANDS_FULL) // Full hands
+					mute.visible_message("tries to sign, but can't with [src.p_their()] hands full!", visible_message_flags = EMOTE_MESSAGE)
+					return FALSE
+				if(SIGN_ONE_HAND) // One arm
+					message = stars(message)
 
 	if(client) //client is so that ghosts don't have to listen to mice
 		for(var/mob/player_mob as anything in GLOB.player_list)
@@ -344,10 +374,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			if(player_mob.stat != DEAD) //not dead, not important
 				continue
 			if(player_mob.z != z || get_dist(player_mob, src) > 7) //they're out of range of normal hearing
-				if(player_mob.client && !player_mob.client?.prefs)
-					stack_trace("[player_mob] ([player_mob.ckey]) had null prefs, which shouldn't be possible!")
-					continue
-
 				if(eavesdrop_range)
 					if(!(player_mob.client?.prefs.chat_toggles & CHAT_GHOSTWHISPER)) //they're whispering and we have hearing whispers at any range off
 						continue
@@ -392,39 +418,30 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 /mob/proc/binarycheck()
 	return FALSE
 
-/mob/living/try_speak(message, ignore_spam = FALSE, forced = FALSE)
-	if(client && !(ignore_spam || forced))
-		if(client.prefs.muted & MUTE_IC)
-			to_chat(src, span_danger("You cannot speak IC (muted)."))
-			return FALSE
-		if(client.handle_spam_prevention(message, MUTE_IC))
-			return FALSE
-
-	var/sigreturn = SEND_SIGNAL(src, COMSIG_LIVING_TRY_SPEECH, message, ignore_spam, forced)
-	if(sigreturn & COMPONENT_CAN_ALWAYS_SPEAK)
+/mob/living/can_speak(message) //For use outside of Say()
+	if(can_speak_basic(message) && can_speak_vocal(message))
 		return TRUE
 
-	if(sigreturn & COMPONENT_CANNOT_SPEAK)
-		return FALSE
-
-	if(!can_speak())
-		if(mind?.miming)
-			to_chat(src, span_green("Your vow of silence prevents you from speaking!"))
-		else
-			to_chat(src, span_warning("You find yourself unable to speak!"))
-		return FALSE
+/mob/living/proc/can_speak_basic(message, ignore_spam = FALSE, forced = FALSE) //Check BEFORE handling of xeno and ling channels
+	if(client)
+		if(client.prefs.muted & MUTE_IC)
+			to_chat(src, span_danger("You cannot speak in IC (muted)."))
+			return FALSE
+		if(!(ignore_spam || forced) && client.handle_spam_prevention(message,MUTE_IC))
+			return FALSE
 
 	return TRUE
 
-/mob/living/can_speak(allow_mimes = FALSE)
-	if(!allow_mimes && mind?.miming)
-		return FALSE
-
+/mob/living/proc/can_speak_vocal(message) //Check AFTER handling of xeno and ling channels
+	var/mob/living/carbon/human/H = src
 	if(HAS_TRAIT(src, TRAIT_MUTE))
-		return FALSE
+		return (HAS_TRAIT(src, TRAIT_SIGN_LANG) && !H.mind.miming) //Makes sure mimes can't speak using sign language
 
 	if(is_muzzled())
-		return FALSE
+		return (HAS_TRAIT(src, TRAIT_SIGN_LANG) && !H.mind.miming)
+
+	if(!IsVocal())
+		return (HAS_TRAIT(src, TRAIT_SIGN_LANG) && !H.mind.miming)
 
 	return TRUE
 
@@ -477,7 +494,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 /mob/living/say_mod(input, list/message_mods = list())
 	if(message_mods[WHISPER_MODE] == MODE_WHISPER)
 		. = verb_whisper
-	else if(message_mods[WHISPER_MODE] == MODE_WHISPER_CRIT && !HAS_TRAIT(src, TRAIT_SUCCUMB_OVERRIDE))
+	else if(message_mods[WHISPER_MODE] == MODE_WHISPER_CRIT)
 		. = "[verb_whisper] in [p_their()] last breath"
 	else if(message_mods[MODE_SING])
 		. = verb_sing

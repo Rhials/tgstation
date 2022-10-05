@@ -627,12 +627,12 @@
 
 /datum/greyscale_config/heck_helmet
 	name = "H.E.C.K. Helmet"
-	icon_file = 'icons/obj/clothing/head/helmet.dmi'
+	icon_file = 'icons/obj/clothing/hats.dmi'
 	json_config = 'code/datums/greyscale/json_configs/heck_helmet.json'
 
 /datum/greyscale_config/heck_helmet/worn
 	name = "H.E.C.K. Helmet Worn"
-	icon_file = 'icons/mob/clothing/head/helmet.dmi'
+	icon_file = 'icons/mob/clothing/head.dmi'
 	json_config = 'code/datums/greyscale/json_configs/heck_helmet_worn.json'
 
 /datum/greyscale_config/plaidskirt
@@ -677,12 +677,12 @@
 
 /datum/greyscale_config/beanie
 	name = "Beanie"
-	icon_file = 'icons/obj/clothing/head/beanie.dmi'
+	icon_file = 'icons/obj/clothing/hats.dmi'
 	json_config = 'code/datums/greyscale/json_configs/beanie.json'
 
 /datum/greyscale_config/beanie_worn
 	name = "Worn Beanie"
-	icon_file = 'icons/mob/clothing/head/beanie.dmi'
+	icon_file = 'icons/mob/clothing/head.dmi'
 	json_config = 'code/datums/greyscale/json_configs/beanie_worn.json'
 
 /datum/greyscale_config/scarf
@@ -775,31 +775,6 @@
 	icon_file = 'icons/obj/tapes.dmi'
 	json_config = 'code/datums/greyscale/json_configs/tape_piece_spikes_worn.json'
 
-/datum/greyscale_config/buckets
-	name = "Buckets"
-	icon_file = 'icons/obj/janitor.dmi'
-	json_config = 'code/datums/greyscale/json_configs/buckets.json'
-
-/datum/greyscale_config/buckets_worn
-	name = "Buckets Worn"
-	icon_file = 'icons/mob/clothing/head/utility.dmi'
-	json_config = 'code/datums/greyscale/json_configs/buckets.json'
-
-/datum/greyscale_config/buckets_inhands_left
-	name = "Buckets Inhands Left"
-	icon_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
-	json_config = 'code/datums/greyscale/json_configs/buckets.json'
-
-/datum/greyscale_config/buckets_inhands_right
-	name = "Buckets Inhands Right"
-	icon_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
-	json_config = 'code/datums/greyscale/json_configs/buckets.json'
-
-/datum/greyscale_config/buckets_cleanbot
-	name = "Buckets - Cleanbot"
-	icon_file = 'icons/mob/silicon/aibots.dmi'
-	json_config = 'code/datums/greyscale/json_configs/buckets_bot.json'
-
 /datum/greyscale_config/buttondown_slacks
 	name = "Buttondown with Slacks"
 	icon_file = 'icons/obj/clothing/under/shorts_pants_shirts.dmi'
@@ -852,12 +827,12 @@
 
 /datum/greyscale_config/football_helmet
 	name = "Football Helmet"
-	icon_file = 'icons/obj/clothing/head/costume.dmi'
+	icon_file = 'icons/obj/clothing/hats.dmi'
 	json_config = 'code/datums/greyscale/json_configs/football_helmet.json'
 
 /datum/greyscale_config/football_helmet_worn
 	name = "Worn Football Helmet"
-	icon_file = 'icons/mob/clothing/head/costume.dmi'
+	icon_file = 'icons/mob/clothing/head.dmi'
 	json_config = 'code/datums/greyscale/json_configs/football_helmet_worn.json'
 
 /datum/greyscale_config/football_suit
@@ -892,12 +867,12 @@
 
 /datum/greyscale_config/fancy_hat
 	name = "Fancy Hat"
-	icon_file = 'icons/obj/clothing/head/costume.dmi'
+	icon_file = 'icons/obj/clothing/hats.dmi'
 	json_config = 'code/datums/greyscale/json_configs/fancy_hat.json'
 
 /datum/greyscale_config/fancy_hat_worn
 	name = "Worn Fancy Hat"
-	icon_file = 'icons/mob/clothing/head/costume.dmi'
+	icon_file = 'icons/mob/clothing/head.dmi'
 	json_config = 'code/datums/greyscale/json_configs/fancy_hat_worn.json'
 
 /datum/greyscale_config/fancy_coat

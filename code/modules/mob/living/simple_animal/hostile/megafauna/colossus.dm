@@ -161,7 +161,6 @@
 
 /mob/living/simple_animal/hostile/megafauna/colossus/devour(mob/living/victim)
 	visible_message(span_colossus("[src] disintegrates [victim]!"))
-	victim.investigate_log("has been devoured by [src].", INVESTIGATE_DEATHS)
 	victim.dust()
 
 /obj/effect/temp_visual/at_shield
@@ -203,7 +202,6 @@
 	if(isliving(target))
 		var/mob/living/dust_mob = target
 		if(dust_mob.stat == DEAD)
-			dust_mob.investigate_log("has been dusted by a death bolt (colossus).", INVESTIGATE_DEATHS)
 			dust_mob.dust()
 		return
 	if(!explode_hit_objects || istype(target, /obj/vehicle/sealed))
@@ -573,7 +571,6 @@
 	if(holder_animal)
 		if(holder_animal.stat == DEAD)
 			dump_contents()
-			holder_animal.investigate_log("has been gibbed by [src].", INVESTIGATE_DEATHS)
 			holder_animal.gib()
 			return
 
@@ -594,7 +591,7 @@
 		escape.Grant(holder_animal)
 		remove_verb(holder_animal, /mob/living/verb/pulled)
 
-/obj/structure/closet/stasis/dump_contents(kill = TRUE)
+/obj/structure/closet/stasis/dump_contents(kill = 1)
 	STOP_PROCESSING(SSobj, src)
 	for(var/mob/living/L in src)
 		REMOVE_TRAIT(L, TRAIT_MUTE, STASIS_MUTE)
@@ -604,8 +601,7 @@
 			holder_animal.mind.transfer_to(L)
 			holder_animal.gib()
 		if(kill || !isanimal(loc))
-			L.investigate_log("has died from [src].", INVESTIGATE_DEATHS)
-			L.death(FALSE)
+			L.death(0)
 	..()
 
 /obj/structure/closet/stasis/emp_act()
@@ -620,7 +616,7 @@
 	icon_icon = 'icons/mob/actions/actions_spells.dmi'
 	button_icon_state = "exit_possession"
 
-/datum/action/exit_possession/IsAvailable(feedback = FALSE)
+/datum/action/exit_possession/IsAvailable()
 	return ..() && isfloorturf(owner.loc)
 
 /datum/action/exit_possession/Trigger(trigger_flags)

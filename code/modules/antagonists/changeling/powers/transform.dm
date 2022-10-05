@@ -96,6 +96,7 @@
 /obj/item/changeling
 	name = "flesh"
 	slot_flags = ALL
+	allowed = list(/obj/item/changeling)
 	item_flags = DROPDEL
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE

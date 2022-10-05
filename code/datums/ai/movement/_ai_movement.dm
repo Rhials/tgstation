@@ -15,9 +15,7 @@
 /datum/ai_movement/proc/stop_moving_towards(datum/ai_controller/controller)
 	controller.pathing_attempts = 0
 	moving_controllers -= controller
-	// We got deleted as we finished an action
-	if(!QDELETED(controller.pawn))
-		SSmove_manager.stop_looping(controller.pawn, SSai_movement)
+	SSmove_manager.stop_looping(controller.pawn, SSai_movement)
 
 /datum/ai_movement/proc/increment_pathing_failures(datum/ai_controller/controller)
 	controller.pathing_attempts++

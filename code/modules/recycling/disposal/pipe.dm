@@ -46,28 +46,15 @@
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
 
+// pipe is deleted
+// ensure if holder is present, it is expelled
 /obj/structure/disposalpipe/Destroy()
-	qdel(stored)
-	return ..()
-
-/obj/structure/disposalpipe/deconstruct()
-	spew_forth()
-	return ..()
-
-/**
- * Expells the pipe's contents.
- *
- * This proc checks through src's contents for holder objects,
- * and then tells each one to empty onto the tile. Called when
- * the pipe is deconstructed or someone struggles out.
- */
-/obj/structure/disposalpipe/proc/spew_forth()
-	for(var/obj/structure/disposalholder/holdplease in src)
-		if(!istype(holdplease))
-			continue
-		holdplease.active = FALSE
-		expel(holdplease, get_turf(src), 0)
+	var/obj/structure/disposalholder/H = locate() in src
+	if(H)
+		H.active = FALSE
+		expel(H, get_turf(src), 0)
 	stored = null //The qdel is handled in expel()
+	return ..()
 
 /obj/structure/disposalpipe/handle_atom_del(atom/A)
 	if(A == stored && !QDELETED(src))
@@ -94,10 +81,8 @@
 	// find other holder in next loc, if inactive merge it with current
 	var/obj/structure/disposalholder/H2 = locate() in P
 	if(H2 && !H2.active)
-		if(H2.hasmob) //If it's stopped and there's a mob, add to the pile
-			H2.merge(H)
-			return
-		H.merge(H2)//Otherwise, we push it along through.
+		H.merge(H2)
+
 	H.forceMove(P)
 	return P
 
@@ -241,11 +226,6 @@
 	getlinked()
 
 /obj/structure/disposalpipe/trunk/Destroy()
-	null_linked_ref_to_us()
-	linked = null
-	return ..()
-
-/obj/structure/disposalpipe/trunk/proc/null_linked_ref_to_us()
 	if(linked)
 		if(istype(linked, /obj/structure/disposaloutlet))
 			var/obj/structure/disposaloutlet/D = linked
@@ -253,21 +233,20 @@
 		else if(istype(linked, /obj/machinery/disposal))
 			var/obj/machinery/disposal/D = linked
 			D.trunk = null
-
-/obj/structure/disposalpipe/trunk/proc/set_linked(obj/to_link)
-	null_linked_ref_to_us()
-	linked = to_link
+	return ..()
 
 /obj/structure/disposalpipe/trunk/proc/getlinked()
-	null_linked_ref_to_us()
 	linked = null
 	var/turf/T = get_turf(src)
 	var/obj/machinery/disposal/D = locate() in T
 	if(D)
-		set_linked(D)
+		linked = D
+		if (!D.trunk)
+			D.trunk = src
+
 	var/obj/structure/disposaloutlet/O = locate() in T
 	if(O)
-		set_linked(O)
+		linked = O
 
 
 /obj/structure/disposalpipe/trunk/can_be_deconstructed(mob/user)

@@ -182,7 +182,7 @@
 			new /obj/effect/temp_visual/hierophant/blast/visual(t, user, TRUE)
 		for(var/mob/living/L in range(1, source))
 			INVOKE_ASYNC(src, .proc/teleport_mob, source, L, T, user)
-		sleep(0.6 SECONDS) //at this point the blasts detonate
+		sleep(6) //at this point the blasts detonate
 		if(beacon)
 			beacon.icon_state = "hierophant_tele_off"
 	else
@@ -199,19 +199,19 @@
 	if(!turf_to_teleport_to || turf_to_teleport_to.is_blocked_turf(TRUE))
 		return
 	animate(teleporting, alpha = 0, time = 2, easing = EASE_OUT) //fade out
-	sleep(0.1 SECONDS)
+	sleep(1)
 	if(!teleporting)
 		return
 	teleporting.visible_message(span_hierophant_warning("[teleporting] fades out!"))
-	sleep(0.2 SECONDS)
+	sleep(2)
 	if(!teleporting)
 		return
 	var/success = do_teleport(teleporting, turf_to_teleport_to, no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC)
-	sleep(0.1 SECONDS)
+	sleep(1)
 	if(!teleporting)
 		return
 	animate(teleporting, alpha = 255, time = 2, easing = EASE_IN) //fade IN
-	sleep(0.1 SECONDS)
+	sleep(1)
 	if(!teleporting)
 		return
 	teleporting.visible_message(span_hierophant_warning("[teleporting] fades in!"))
@@ -284,8 +284,6 @@
 
 /obj/item/clothing/head/hooded/hostile_environment
 	name = "H.E.C.K. helmet"
-	icon = 'icons/obj/clothing/head/helmet.dmi'
-	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
 	desc = "Hostile Environiment Cross-Kinetic Helmet: A helmet designed to withstand the wide variety of hazards from Lavaland. It wasn't enough for its last owner."
 	icon_state = "hostile_env"
 	w_class = WEIGHT_CLASS_NORMAL
@@ -819,7 +817,6 @@
 	lefthand_file = 'icons/mob/inhands/64x64_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/64x64_righthand.dmi'
 	icon_state = "cleaving_saw"
-	inhand_icon_state = "cleaving_saw"
 	worn_icon_state = "cleaving_saw"
 	attack_verb_continuous = list("attacks", "saws", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "saw", "slice", "tear", "lacerate", "rip", "dice", "cut")
@@ -865,7 +862,7 @@
 	. += span_notice("Both modes will build up existing bleed effects, doing a burst of high damage if the bleed is built up high enough.")
 	. += span_notice("Transforming it immediately after an attack causes the next attack to come out faster.")
 
-/obj/item/melee/cleaving_saw/suicide_act(mob/living/user)
+/obj/item/melee/cleaving_saw/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is [is_open ? "closing [src] on [user.p_their()] neck" : "opening [src] into [user.p_their()] chest"]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	attack_self(user)
 	return BRUTELOSS

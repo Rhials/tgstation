@@ -371,13 +371,13 @@
 	if(!heads)
 		heads = typesof(/obj/item/bodypart/head)
 	if(!l_arms)
-		l_arms = typesof(/obj/item/bodypart/arm/left)
+		l_arms = typesof(/obj/item/bodypart/l_arm)
 	if(!r_arms)
-		r_arms = typesof(/obj/item/bodypart/arm/right)
+		r_arms = typesof(/obj/item/bodypart/r_arm)
 	if(!l_legs)
-		l_legs = typesof(/obj/item/bodypart/leg/left)
+		l_legs = typesof(/obj/item/bodypart/l_leg)
 	if(!r_legs)
-		r_legs = typesof(/obj/item/bodypart/leg/right)
+		r_legs = typesof(/obj/item/bodypart/r_leg)
 
 /obj/item/clothing/suit/armor/reactive/bioscrambling/cooldown_activation(mob/living/carbon/human/owner)
 	var/datum/effect_system/spark_spread/sparks = new /datum/effect_system/spark_spread

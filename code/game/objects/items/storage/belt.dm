@@ -1,6 +1,6 @@
 /obj/item/storage/belt
-	name = "not actually a toolbelt"
-	desc = "Can hold various things. This is the base type of /belt, are you sure you should have this?"
+	name = "belt"
+	desc = "Can hold various things."
 	icon = 'icons/obj/clothing/belts.dmi'
 	icon_state = "utility"
 	inhand_icon_state = "utility"
@@ -28,7 +28,6 @@
 
 /obj/item/storage/belt/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/attack_equip)
 	update_appearance()
 
 /obj/item/storage/belt/utility
@@ -382,13 +381,12 @@
 		/obj/item/extinguisher/mini,
 		/obj/item/flashlight,
 		/obj/item/gps,
-		/obj/item/mining_stabilizer,
 		/obj/item/key/lasso,
 		/obj/item/knife,
 		/obj/item/lighter,
 		/obj/item/mining_scanner,
 		/obj/item/multitool,
-		/obj/item/organ/internal/monster_core,
+		/obj/item/organ/internal/regenerative_core,
 		/obj/item/pickaxe,
 		/obj/item/radio,
 		/obj/item/reagent_containers/cup/glass,
@@ -765,7 +763,7 @@
 	name = "sabre sheath"
 	desc = "An ornate sheath designed to hold an officer's blade."
 	icon_state = "sheath"
-	inhand_icon_state = "sheath"
+	inhand_icon_state = null
 	worn_icon_state = "sheath"
 	w_class = WEIGHT_CLASS_BULKY
 

@@ -251,8 +251,7 @@
 			RegisterSignal(new_holder, COMSIG_MOVABLE_MOVED, .proc/on_holder_moved)
 		if(directional)
 			RegisterSignal(new_holder, COMSIG_ATOM_DIR_CHANGE, .proc/on_holder_dir_change)
-	if(directional && current_direction != new_holder.dir)
-		current_direction = new_holder.dir
+			set_direction(new_holder.dir)
 	if(overlay_lighting_flags & LIGHTING_ON)
 		add_dynamic_lumi()
 		make_luminosity_update()
@@ -449,7 +448,7 @@
 	if(current_holder)
 		remove_dynamic_lumi()
 	overlay_lighting_flags &= ~LIGHTING_ON
-	if(current_holder && current_holder != parent && current_holder != parent_attached_to)
+	if(current_holder)
 		UnregisterSignal(current_holder, COMSIG_MOVABLE_MOVED)
 	clean_old_turfs()
 

@@ -44,6 +44,9 @@
 		return TRUE
 	return FALSE
 
+/obj/item/grown/microwave_act(obj/machinery/microwave/M)
+	return
+
 /obj/item/grown/on_grind()
 	. = ..()
 	for(var/i in 1 to grind_results.len)

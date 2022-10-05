@@ -1,4 +1,4 @@
-/client/proc/jumptoarea(area/A in get_sorted_areas())
+/client/proc/jumptoarea(area/A in GLOB.sortedAreas)
 	set name = "Jump to Area"
 	set desc = "Area to jump to"
 	set category = "Admin.Game"
@@ -159,11 +159,10 @@
 	if(!src.holder)
 		to_chat(src, "Only administrators may use this command.", confidential = TRUE)
 		return
-	var/list/sorted_areas = get_sorted_areas()
-	if(!length(sorted_areas))
+	if(!length(GLOB.sortedAreas))
 		to_chat(src, "No areas found.", confidential = TRUE)
 		return
-	var/area/target_area = tgui_input_list(src, "Pick an area", "Send Mob", sorted_areas)
+	var/area/target_area = tgui_input_list(src, "Pick an area", "Send Mob", GLOB.sortedAreas)
 	if(isnull(target_area))
 		return
 	if(!istype(target_area))

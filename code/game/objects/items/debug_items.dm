@@ -117,6 +117,11 @@
 		if("Wire Brush")
 			tool_behaviour = TOOL_RUSTSCRAPER
 
+	if(tool_behaviour == TOOL_SCREWDRIVER)
+		AddElement(/datum/element/eyestab)
+	else
+		RemoveElement(/datum/element/eyestab)
+
 /obj/item/debug/omnitool/item_spawner/attack_self(mob/user)
 	if(!user || !user.client)
 		return
@@ -140,7 +145,6 @@
 			to_chat(user, span_reallybig("You shouldn't have done that..."))
 			playsound(src, 'sound/voice/borg_deathsound.ogg')
 			sleep(3 SECONDS)
-			living_user.investigate_log("has been gibbed by [src].", INVESTIGATE_DEATHS)
 			living_user.gib()
 			return
 	var/turf/loc_turf = get_turf(src)

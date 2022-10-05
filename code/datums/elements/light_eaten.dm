@@ -2,7 +2,7 @@
  * Makes anything that it attaches to incapable of producing light
  */
 /datum/element/light_eaten
-	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY // Detach for turfs
+	element_flags = ELEMENT_DETACH
 
 /datum/element/light_eaten/Attach(atom/target)
 	if(!isatom(target))

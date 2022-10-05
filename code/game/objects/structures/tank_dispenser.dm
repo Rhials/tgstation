@@ -19,6 +19,10 @@
 
 /obj/structure/tank_dispenser/Initialize(mapload)
 	. = ..()
+	for(var/i in 1 to oxygentanks)
+		new /obj/item/tank/internals/oxygen(src)
+	for(var/i in 1 to plasmatanks)
+		new /obj/item/tank/internals/plasma(src)
 	update_appearance()
 
 /obj/structure/tank_dispenser/update_overlays()
@@ -87,20 +91,18 @@
 		return
 	switch(action)
 		if("plasma")
-			if (plasmatanks == 0)
-				return TRUE
-
-			dispense(/obj/item/tank/internals/plasma, usr)
-			plasmatanks--
+			var/obj/item/tank/internals/plasma/tank = locate() in src
+			if(tank && Adjacent(usr))
+				usr.put_in_hands(tank)
+				plasmatanks--
+			. = TRUE
 		if("oxygen")
-			if (oxygentanks == 0)
-				return TRUE
-
-			dispense(/obj/item/tank/internals/oxygen, usr)
-			oxygentanks--
-
+			var/obj/item/tank/internals/oxygen/tank = locate() in src
+			if(tank && Adjacent(usr))
+				usr.put_in_hands(tank)
+				oxygentanks--
+			. = TRUE
 	update_appearance()
-	return TRUE
 
 
 /obj/structure/tank_dispenser/deconstruct(disassembled = TRUE)
@@ -110,11 +112,5 @@
 			I.forceMove(loc)
 		new /obj/item/stack/sheet/iron (loc, 2)
 	qdel(src)
-
-/obj/structure/tank_dispenser/proc/dispense(tank_type, mob/receiver)
-	var/existing_tank = locate(tank_type) in src
-	if (isnull(existing_tank))
-		existing_tank = new tank_type
-	receiver.put_in_hands(existing_tank)
 
 #undef TANK_DISPENSER_CAPACITY

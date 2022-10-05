@@ -37,7 +37,6 @@
 	desc = "It's probably <B>not</B> wise to touch it with bare hands..."
 	icon = 'icons/obj/weapons/items_and_weapons.dmi'
 	icon_state = "nettle"
-	inhand_icon_state = "nettle"
 	bite_consumption_mod = 2
 	lefthand_file = 'icons/mob/inhands/weapons/plants_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/plants_righthand.dmi'
@@ -51,7 +50,7 @@
 	attack_verb_continuous = list("stings")
 	attack_verb_simple = list("sting")
 
-/obj/item/food/grown/nettle/suicide_act(mob/living/user)
+/obj/item/food/grown/nettle/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is eating some of [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (BRUTELOSS|TOXLOSS)
 
@@ -60,7 +59,6 @@
 	name = "\improper deathnettle"
 	desc = "The <span class='danger'>glowing</span> nettle incites <span class='boldannounce'>rage</span> in you just from looking at it!"
 	icon_state = "deathnettle"
-	inhand_icon_state = "deathnettle"
 	bite_consumption_mod = 4 // I guess if you really wanted to
 	force = 30
 	wound_bonus = CANT_WOUND

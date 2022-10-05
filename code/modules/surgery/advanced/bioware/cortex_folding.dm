@@ -20,7 +20,7 @@
 	return ..()
 
 /datum/surgery_step/fold_cortex
-	name = "fold cortex (hand)"
+	name = "fold cortex"
 	accept_hand = TRUE
 	time = 125
 

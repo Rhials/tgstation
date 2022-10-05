@@ -4,6 +4,7 @@
  * Applies and removes the cult halo
  */
 /datum/element/cult_halo
+	element_flags = ELEMENT_DETACH
 
 /datum/element/cult_halo/Attach(datum/target, initial_delay = 20 SECONDS)
 	. = ..()

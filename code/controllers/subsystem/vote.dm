@@ -49,7 +49,12 @@ SUBSYSTEM_DEF(vote)
 	current_vote?.reset()
 	current_vote = null
 
-	QDEL_LIST(generated_actions)
+	for(var/datum/action/vote/voting_action as anything in generated_actions)
+		if(QDELETED(voting_action))
+			continue
+		voting_action.Remove(voting_action.owner)
+
+	generated_actions.Cut()
 
 	SStgui.update_uis(src)
 
@@ -194,7 +199,7 @@ SUBSYSTEM_DEF(vote)
 		new_voter.player_details.player_actions += voting_action
 		generated_actions += voting_action
 
-		if(current_vote.vote_sound && (new_voter.prefs.read_preference(/datum/preference/toggle/sound_announcements)))
+		if(current_vote.vote_sound && (new_voter.prefs.toggles & SOUND_ANNOUNCEMENTS))
 			SEND_SOUND(new_voter, sound(current_vote.vote_sound))
 
 	return TRUE
@@ -311,7 +316,7 @@ SUBSYSTEM_DEF(vote)
 	name = "Vote!"
 	button_icon_state = "vote"
 
-/datum/action/vote/IsAvailable(feedback = FALSE)
+/datum/action/vote/IsAvailable()
 	return TRUE // Democracy is always available to the free people
 
 /datum/action/vote/Trigger(trigger_flags)

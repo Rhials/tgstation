@@ -13,7 +13,7 @@
 	bioware_target = BIOWARE_CIRCULATION
 
 /datum/surgery_step/thread_veins
-	name = "thread veins (hand)"
+	name = "thread veins"
 	accept_hand = TRUE
 	time = 125
 

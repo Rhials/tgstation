@@ -105,7 +105,7 @@
 	QDEL_NULL(dampening_field)
 	visible_message(span_warning("\The [src] shuts off!"))
 	for(var/projectile in tracked)
-		restore_projectile(projectile = projectile)
+		restore_projectile(projectile)
 	active = FALSE
 
 	var/mob/living/silicon/robot/owner = get_host()
@@ -160,17 +160,13 @@
 		host.cell.use(energy_recharge * delta_time * energy_recharge_cyborg_drain_coefficient)
 		energy += energy_recharge * delta_time
 
-/obj/item/borg/projectile_dampen/proc/dampen_projectile(datum/source, obj/projectile/projectile)
-	SIGNAL_HANDLER
-
+/obj/item/borg/projectile_dampen/proc/dampen_projectile(obj/projectile/projectile)
 	tracked[projectile] = projectile.damage
 	projectile.damage *= projectile_damage_coefficient
 	projectile.speed *= projectile_speed_coefficient
 	projectile.add_overlay(projectile_effect)
 
-/obj/item/borg/projectile_dampen/proc/restore_projectile(datum/source, obj/projectile/projectile)
-	SIGNAL_HANDLER
-
+/obj/item/borg/projectile_dampen/proc/restore_projectile(obj/projectile/projectile)
 	tracked -= projectile
 	projectile.damage *= (1 / projectile_damage_coefficient)
 	projectile.speed *= (1 / projectile_speed_coefficient)

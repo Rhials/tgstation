@@ -29,11 +29,7 @@
 	weather_immunities = list(TRAIT_SNOWSTORM_IMMUNE)
 	vision_range = 5
 	aggro_vision_range = 7
-	butcher_results = list(
-		/obj/item/food/meat/crab = 2,
-		/obj/item/stack/sheet/bone = 2,
-		/obj/item/organ/internal/monster_core/rush_gland = 1,
-	)
+	butcher_results = list(/obj/item/food/meat/crab = 2, /obj/item/stack/sheet/bone = 2)
 	robust_searching = TRUE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	crusher_loot = /obj/item/crusher_trophy/lobster_claw

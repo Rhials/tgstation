@@ -6,7 +6,7 @@
  *
  */
 /datum/element/weapon_description
-	element_flags = ELEMENT_BESPOKE
+	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH
 	id_arg_index = 2
 
 	// Additional proc to be run for specific object types

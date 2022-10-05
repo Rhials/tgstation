@@ -548,7 +548,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/balloon_clusters = 2
 
 /obj/effect/mapping_helpers/ianbirthday/LateInitialize()
-	if(check_holidays("Ian's Birthday"))
+	if(locate(/datum/holiday/ianbirthday) in SSevents.holidays)
 		birthday()
 	qdel(src)
 
@@ -616,7 +616,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	icon_state = "iansnewyrshelper"
 
 /obj/effect/mapping_helpers/iannewyear/LateInitialize()
-	if(check_holidays(NEW_YEAR))
+	if(SSevents.holidays && SSevents.holidays[NEW_YEAR])
 		fireworks()
 	qdel(src)
 
@@ -630,7 +630,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 			table += thing
 		else if(isopenturf(thing))
 			if(locate(/obj/structure/bed/dogbed/ian) in thing)
-				new /obj/item/clothing/head/costume/festive(thing)
+				new /obj/item/clothing/head/festive(thing)
 				var/obj/item/reagent_containers/cup/glass/bottle/champagne/iandrink = new(thing)
 				iandrink.name = "dog champagne"
 				iandrink.pixel_y += 8

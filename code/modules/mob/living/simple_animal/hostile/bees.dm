@@ -193,8 +193,7 @@
 		real_name = name
 		//clear the old since this one is going to have some new value
 		RemoveElement(/datum/element/venomous)
-		var/static/list/injection_range = list(1, 5)
-		AddElement(/datum/element/venomous, beegent.type, injection_range)
+		AddElement(/datum/element/venomous, beegent.type, list(1, 5))
 		generate_bee_visuals()
 
 /mob/living/simple_animal/hostile/bee/proc/pollinate(obj/machinery/hydroponics/Hydro)
@@ -353,7 +352,7 @@
 				to_chat(user, span_warning("You don't have enough units of that chemical to modify the bee's DNA!"))
 	..()
 
-/obj/item/queen_bee/suicide_act(mob/living/user)
+/obj/item/queen_bee/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] eats [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.say("IT'S HIP TO EAT BEES!")
 	qdel(src)

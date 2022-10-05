@@ -13,7 +13,7 @@
 	bioware_target = BIOWARE_NERVES
 
 /datum/surgery_step/ground_nerves
-	name = "ground nerves (hand)"
+	name = "ground nerves"
 	accept_hand = TRUE
 	time = 155
 

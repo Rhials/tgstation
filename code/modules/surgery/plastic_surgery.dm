@@ -9,7 +9,7 @@
 
 //reshape_face
 /datum/surgery_step/reshape_face
-	name = "reshape face (scalpel)"
+	name = "reshape face"
 	implements = list(
 		TOOL_SCALPEL = 100,
 		/obj/item/knife = 50,

@@ -18,7 +18,7 @@
 	return ..() && wings?.burnt
 
 /datum/surgery_step/wing_reconstruction
-	name = "start wing reconstruction (hemostat)"
+	name = "start wing reconstruction"
 	implements = list(
 		TOOL_HEMOSTAT = 85,
 		TOOL_SCREWDRIVER = 35,

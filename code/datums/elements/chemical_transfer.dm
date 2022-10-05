@@ -12,7 +12,7 @@
  * victim_message uses %ATTACKER for the same.
  */
 /datum/element/chemical_transfer
-	element_flags = ELEMENT_BESPOKE
+	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
 	id_arg_index = 2
 	///chance for the chemical transfer to proc.
 	var/transfer_prob

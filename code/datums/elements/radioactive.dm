@@ -3,7 +3,7 @@
 /// This atom will regularly pulse radiation.
 /// As this is only applied on uranium objects for now, this defaults to uranium constants.
 /datum/element/radioactive
-	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
+	element_flags = ELEMENT_DETACH
 
 	var/list/radioactive_objects = list()
 

@@ -114,39 +114,34 @@
 	update_appearance()
 	var/obj/item/bodypart/affecting = null
 	if(ishuman(target))
-		var/mob/living/carbon/human/victim = target
-		if(HAS_TRAIT(victim, TRAIT_PIERCEIMMUNE))
+		var/mob/living/carbon/human/H = target
+		if(HAS_TRAIT(H, TRAIT_PIERCEIMMUNE))
 			playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 			pulse(FALSE)
 			return FALSE
 		switch(type)
 			if("feet")
-				if(!victim.shoes)
-					affecting = victim.get_bodypart(pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
-					victim.Paralyze(60)
-				else
-					to_chat(victim, span_notice("Your [victim.shoes] protects you from [src]."))
+				if(!H.shoes)
+					affecting = H.get_bodypart(pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
+					H.Paralyze(60)
 			if(BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND)
-				if(!victim.gloves)
-					affecting = victim.get_bodypart(type)
-					victim.Stun(60)
-				else
-					to_chat(victim, span_notice("Your [victim.gloves] protects you from [src]."))
+				if(!H.gloves)
+					affecting = H.get_bodypart(type)
+					H.Stun(60)
 		if(affecting)
 			if(affecting.receive_damage(1, 0))
-				victim.update_damage_overlays()
+				H.update_damage_overlays()
 	else if(ismouse(target))
-		var/mob/living/basic/mouse/splatted = target
+		var/mob/living/simple_animal/mouse/M = target
 		visible_message(span_boldannounce("SPLAT!"))
-		if(splatted.health <= 5)
-			splatted.splat()
-		else
-			splatted.adjust_health(5)
-			splatted.Stun(1 SECONDS)
-
+		M.splat()
+	else if(israt(target))
+		var/mob/living/simple_animal/hostile/rat/ratt = target
+		visible_message(span_boldannounce("Clink!"))
+		ratt.apply_damage(5) //Not lethal, but just enought to make a mark.
+		ratt.Stun(1 SECONDS)
 	else if(isregalrat(target))
 		visible_message(span_boldannounce("Skreeeee!")) //He's simply too large to be affected by a tiny mouse trap.
-
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 	pulse(FALSE)
 
@@ -200,7 +195,7 @@
 						INVOKE_ASYNC(src, .proc/triggered, H)
 						H.visible_message(span_warning("[H] accidentally steps on [src]."), \
 							span_warning("You accidentally step on [src]"))
-				else if(ismouse(MM) || isregalrat(MM))
+				else if(ismouse(MM) || israt(MM) || isregalrat(MM))
 					INVOKE_ASYNC(src, .proc/triggered, MM)
 		else if(AM.density) // For mousetrap grenades, set off by anything heavy
 			INVOKE_ASYNC(src, .proc/triggered, AM)

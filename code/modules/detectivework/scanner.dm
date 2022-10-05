@@ -31,15 +31,12 @@
 		scanner.displayDetectiveScanResults(usr)
 
 /obj/item/detective_scanner/attack_self(mob/user)
-	if(!LAZYLEN(log))
-		balloon_alert(user, "no logs!")
-		return
-	if(scanning)
-		balloon_alert(user, "scanner busy!")
-		return
-	scanning = TRUE
-	balloon_alert(user, "printing report...")
-	addtimer(CALLBACK(src, .proc/PrintReport), 10 SECONDS)
+	if(log.len && !scanning)
+		scanning = TRUE
+		to_chat(user, span_notice("Printing report, please wait..."))
+		addtimer(CALLBACK(src, .proc/PrintReport), 100)
+	else
+		to_chat(user, span_notice("The scanner has no logs or is in use."))
 
 /obj/item/detective_scanner/proc/PrintReport()
 	// Create our paper
@@ -57,9 +54,9 @@
 	report_paper.update_appearance()
 
 	if(ismob(loc))
-		var/mob/printer = loc
-		printer.put_in_hands(report_paper)
-		balloon_alert(printer, "logs cleared")
+		var/mob/M = loc
+		M.put_in_hands(report_paper)
+		to_chat(M, span_notice("Report printed. Log cleared."))
 
 	// Clear the logs
 	log = list()
@@ -83,10 +80,7 @@
 
 		scanning = TRUE
 
-		user.visible_message(
-			span_notice("\The [user] points the [src.name] at \the [A] and performs a forensic scan."),
-			ignored_mobs = user
-		)
+		user.visible_message(span_notice("\The [user] points the [src.name] at \the [A] and performs a forensic scan."))
 		to_chat(user, span_notice("You scan \the [A]. The scanner is now analysing the results..."))
 
 
@@ -134,7 +128,7 @@
 
 		// Fingerprints
 		if(length(fingerprints))
-			sleep(3 SECONDS)
+			sleep(30)
 			add_log(span_info("<B>Prints:</B>"))
 			for(var/finger in fingerprints)
 				add_log("[finger]")
@@ -142,7 +136,7 @@
 
 		// Blood
 		if (length(blood))
-			sleep(3 SECONDS)
+			sleep(30)
 			add_log(span_info("<B>Blood:</B>"))
 			found_something = TRUE
 			for(var/B in blood)
@@ -150,7 +144,7 @@
 
 		//Fibers
 		if(length(fibers))
-			sleep(3 SECONDS)
+			sleep(30)
 			add_log(span_info("<B>Fibers:</B>"))
 			for(var/fiber in fibers)
 				add_log("[fiber]")
@@ -158,7 +152,7 @@
 
 		//Reagents
 		if(length(reagents))
-			sleep(3 SECONDS)
+			sleep(30)
 			add_log(span_info("<B>Reagents:</B>"))
 			for(var/R in reagents)
 				add_log("Reagent: <font color='red'>[R]</font> Volume: <font color='red'>[reagents[R]]</font>")
@@ -184,8 +178,8 @@
 /obj/item/detective_scanner/proc/add_log(msg, broadcast = 1)
 	if(scanning)
 		if(broadcast && ismob(loc))
-			var/mob/logger = loc
-			to_chat(logger, msg)
+			var/mob/M = loc
+			to_chat(M, msg)
 		log += "&nbsp;&nbsp;[msg]"
 	else
 		CRASH("[src] [REF(src)] is adding a log when it was never put in scanning mode!")
@@ -198,15 +192,13 @@
 	if(!user.canUseTopic(src, be_close=TRUE))
 		return
 	if(!LAZYLEN(log))
-		balloon_alert(user, "no logs!")
+		to_chat(user, span_notice("Cannot clear logs, the scanner has no logs."))
 		return
 	if(scanning)
-		balloon_alert(user, "scanner busy!")
+		to_chat(user, span_notice("Cannot clear logs, the scanner is in use."))
 		return
-	balloon_alert(user, "deleting logs...")
-	if(do_after(user, 3 SECONDS, target = src))
-		balloon_alert(user, "logs cleared")
-		log = list()
+	to_chat(user, span_notice("The scanner logs are cleared."))
+	log = list()
 
 /obj/item/detective_scanner/examine(mob/user)
 	. = ..()
@@ -216,10 +208,10 @@
 /obj/item/detective_scanner/proc/displayDetectiveScanResults(mob/living/user)
 	// No need for can-use checks since the action button should do proper checks
 	if(!LAZYLEN(log))
-		balloon_alert(user, "no logs!")
+		to_chat(user, span_notice("Cannot display logs, the scanner has no logs."))
 		return
 	if(scanning)
-		balloon_alert(user, "scanner busy!")
+		to_chat(user, span_notice("Cannot display logs, the scanner is in use."))
 		return
 	to_chat(user, span_notice("<B>Scanner Report</B>"))
 	for(var/iterLog in log)

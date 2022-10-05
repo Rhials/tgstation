@@ -1,5 +1,5 @@
 /datum/element/decal
-	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH_ON_HOST_DESTROY
+	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
 	id_arg_index = 2
 	/// Whether this decal can be cleaned.
 	var/cleanable

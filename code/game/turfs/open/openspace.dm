@@ -88,8 +88,8 @@
 		return TRUE
 	return FALSE
 
-/turf/open/openspace/zPassOut(atom/movable/A, direction, turf/destination, allow_anchored_movement)
-	if(A.anchored && !allow_anchored_movement)
+/turf/open/openspace/zPassOut(atom/movable/A, direction, turf/destination)
+	if(A.anchored)
 		return FALSE
 	if(direction == DOWN)
 		for(var/obj/contained_object in contents)

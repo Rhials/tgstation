@@ -4599,7 +4599,7 @@
 /turf/open/floor/plating,
 /area/awaymission/moonoutpost19/arrivals)
 "lD" = (
-/obj/machinery/power/shuttle_engine/heater{
+/obj/structure/shuttle/engine/heater{
 	dir = 4
 	},
 /obj/structure/window/reinforced{
@@ -5775,7 +5775,7 @@
 	},
 /area/awaymission/moonoutpost19/main)
 "rq" = (
-/obj/machinery/power/shuttle_engine/propulsion/burst/right{
+/obj/structure/shuttle/engine/propulsion/burst/right{
 	dir = 4
 	},
 /turf/open/misc/asteroid{
@@ -6005,8 +6005,8 @@
 /area/awaymission/moonoutpost19/hive)
 "CG" = (
 /obj/structure/table,
-/obj/item/computer_disk/ordnance,
-/obj/item/computer_disk/ordnance,
+/obj/item/computer_hardware/hard_drive/portable/ordnance,
+/obj/item/computer_hardware/hard_drive/portable/ordnance,
 /obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron/cafeteria{
 	dir = 5
@@ -6053,7 +6053,7 @@
 	pixel_x = -5;
 	pixel_y = -2
 	},
-/obj/item/bodypart/arm/left/robot,
+/obj/item/bodypart/l_arm/robot,
 /turf/open/floor/iron/white{
 	heat_capacity = 1e+006
 	},
@@ -6381,7 +6381,7 @@
 	},
 /area/awaymission/moonoutpost19/research)
 "Zx" = (
-/obj/machinery/power/shuttle_engine/propulsion/burst/left{
+/obj/structure/shuttle/engine/propulsion/burst/left{
 	dir = 4
 	},
 /turf/open/misc/asteroid{

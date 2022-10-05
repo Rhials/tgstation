@@ -20,7 +20,7 @@
 	return ..()
 
 /datum/surgery_step/imprint_cortex
-	name = "imprint cortex (hand)"
+	name = "imprint cortex"
 	accept_hand = TRUE
 	time = 125
 
