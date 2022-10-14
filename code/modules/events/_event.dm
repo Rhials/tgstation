@@ -29,6 +29,8 @@
 
 	/// Whether or not dynamic should hijack this event
 	var/dynamic_should_hijack = FALSE
+	///Will we tell the round_event to perform a secondary setup() after the initial object is done being created and assigned a round_event_control
+	var/do_admin_setup = FALSE
 
 /datum/round_event_control/New()
 	if(config && !wizardevent) // Magic is unaffected by configs
