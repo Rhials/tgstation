@@ -29,8 +29,6 @@
 
 	/// Whether or not dynamic should hijack this event
 	var/dynamic_should_hijack = FALSE
-	///Will we tell the round_event to perform a secondary setup() after the initial object is done being created and assigned a round_event_control
-	var/do_admin_setup = FALSE
 
 /datum/round_event_control/New()
 	if(config && !wizardevent) // Magic is unaffected by configs
@@ -117,6 +115,8 @@ Runs the event
 	var/datum/round_event/E = new typepath()
 	E.current_players = get_active_player_count(alive_check = 1, afk_check = 1, human_check = 1)
 	E.control = src
+	if(admin_forced)
+		E.admin_event_setup()
 	occurrences++
 
 	if(announce_chance_override != null)
@@ -267,6 +267,17 @@ Runs the event
 /datum/round_event/proc/kill()
 	SSevents.running -= src
 
+
+/**
+ * Used for transferring variables between the round_event_control and round_event
+ *
+ * Only called if the round_event object is created when the round_event_control fires runEvent with admin_forced
+ * set to true. This handles moving the admin variables between the round_event_control and the round_event
+ * between setup() (it can't be done in setup as there is no control assigned at the time) and announce() or start().
+ */
+
+/datum/round_event/proc/admin_event_setup()
+	return
 
 //Sets up the event then adds the event to the the list of running events
 /datum/round_event/New(my_processing = TRUE)
