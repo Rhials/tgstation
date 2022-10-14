@@ -14,13 +14,18 @@
 	if(!check_rights(R_FUN))
 		return
 
-	var/choice = tgui_alert(usr, "What kind of paperwork error do you want to cause?", "Who cares about paperwork anyways?", list("Change overflow", "Randomize slots", "Suprise Me"))
-	var/list/jobs = SSjob.joinable_occupations.Copy()
+	var/choice = tgui_alert(usr, "What kind of paperwork error do you want to cause?", "Who cares about paperwork anyways?", list("Change overflow", "Randomize slots", "Suprise me!"))
+
+	switch(choice)
+		if("Change overflow")
+			var/list/jobs = SSjob.joinable_occupations.Copy()
+			new_overflow = tgui_input_list(usr, "Pick a new overflow role!", "Office Space, in Space", jobs)
+
 
 
 /datum/round_event/bureaucratic_error
 	announce_when = 1
-	var/is_overflow = FALSE
+	var/is_overflow = FALSE //Replace this with two seperate round_events for the round_event_control to pick from
 
 /datum/round_event/bureaucratic_error/announce(fake)
 	if(is_overflow)
