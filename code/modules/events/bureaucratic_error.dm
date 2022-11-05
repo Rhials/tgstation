@@ -14,16 +14,24 @@
 	if(!check_rights(R_FUN))
 		return
 
+	do_overflow = null
+	new_overflow = null //We only need to scrub these values in admin_setup, because the event only ever runs naturally once
+
 	var/choice = tgui_alert(usr, "What kind of paperwork error do you want to cause?", "Who cares about paperwork anyways?", list("Change overflow", "Randomize slots", "Suprise me!"))
 
 	switch(choice)
 		if("Change overflow")
 			var/list/jobs = SSjob.joinable_occupations.Copy()
 			new_overflow = tgui_input_list(usr, "Pick a new overflow role!", "Office Space, in Space", jobs)
+		if("Randomize slots")
+			do_overflow = FALSE
 
 /datum/round_event/bureaucratic_error
 	announce_when = 1
+	///Will we be overflowing a random role? (If not, the event will scramble the job slots)
 	var/modify_overflow = FALSE
+	///The selected overflow role, passed down from the round_event_control
+	var/datum/job/new_overflow
 
 /datum/round_event/bureaucratic_error/announce(fake)
 	if(modify_overflow)
@@ -33,11 +41,12 @@
 
 /datum/round_event/bureaucratic_error/start()
 	var/datum/round_event_control/bureaucratic_error/error_event = control
-	if(error_event.do_overflow)
-		modify_overflow = error_event.do_overflow
-	else
+	if(isnull(error_event.do_overflow)) //If no admin preference has been passed down, we randomly decide to overflow or not
 		if(prob(33))
 			modify_overflow = TRUE
+	else if(error_event.do_overflow) //If an admin has decided that yes, we will absolutely have an overflow event
+		modify_overflow = error_event.do_overflow
+		new_overflow = error_event.new_overflow
 
 	var/list/joinable_jobs = SSjob.joinable_occupations.Copy()
 	if(modify_overflow)
@@ -56,9 +65,9 @@
  */
 
 /datum/round_event/bureaucratic_error/proc/do_overflow(/list/jobs)
-	var/datum/job/overflow = pick_n_take(jobs)
-	overflow.spawn_positions = -1
-	overflow.total_positions = -1 // Ensures infinite slots as this role. Assistant will still be open for those that cant play it.
+	new_overflow = pick_n_take(jobs)
+	new_overflow.spawn_positions = -1
+	new_overflow.total_positions = -1 // Ensures infinite slots as this role. Assistant will still be open for those that cant play it.
 	for(var/job in jobs)
 		var/datum/job/current = job
 		if(!current.allow_bureaucratic_error)
