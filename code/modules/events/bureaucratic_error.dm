@@ -76,7 +76,7 @@
  * * jobs - The joinable occupations to iterate through and modify.
  */
 
-/datum/round_event/bureaucratic_error/proc/do_overflow(/list/jobs)
+/datum/round_event/bureaucratic_error/proc/do_overflow(list/jobs)
 	if(!new_overflow) // If no overflow role has been passed by the round_event_control, we pick one.
 		new_overflow = pick_n_take(jobs)
 
@@ -98,7 +98,7 @@
  * * jobs - The joinable occupations to iterate through and modify.
  */
 
-/datum/round_event/bureaucratic_error/proc/scramble_jobs(/list/jobs)
+/datum/round_event/bureaucratic_error/proc/scramble_jobs(list/jobs)
 	for(var/datum/job/current as anything in jobs)
 		if(!current.allow_bureaucratic_error)
 			continue
