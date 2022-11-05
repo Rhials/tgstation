@@ -42,7 +42,7 @@
 	var/datum/job/new_overflow
 
 /datum/round_event/bureaucratic_error/announce(fake)
-	if(modify_overflow)
+	if(modify_overflow) //This triggers 1 tick after the event runs start(), so the value has already been recieved from the parent.
 		priority_announce("A catastrophic bureaucratic error in the Organic Resources Department may result in extreme personnel shortages in most departments and redundant staffing in others.", "Paperwork Mishap Alert")
 	else
 		priority_announce("A minor bureaucratic error in the Organic Resources Department may result in personnel shortages in some departments and redundant staffing in others.", "Paperwork Mishap Alert")
@@ -62,7 +62,7 @@
 
 	var/list/joinable_jobs = SSjob.joinable_occupations.Copy() // Grab the jobs that we're going to modify.
 
-	if(modify_overflow)
+	if(modify_overflow) // Run the event.
 		do_overflow(joinable_jobs)
 	else
 		scramble_jobs(joinable_jobs)
