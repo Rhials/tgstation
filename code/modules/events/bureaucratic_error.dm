@@ -63,9 +63,9 @@
 	var/list/joinable_jobs = SSjob.joinable_occupations.Copy() // Grab the jobs that we're going to modify.
 
 	if(modify_overflow)
-		do_overflow(joinable_jobs) // Only allows latejoining as a single role. Add latejoin AI bluespace pods for fun later.
+		do_overflow(joinable_jobs)
 	else
-		scramble_jobs(joinable_jobs) // Adds/removes a random amount of job slots from all jobs.
+		scramble_jobs(joinable_jobs)
 
 /**
  * Closes all job slots except for one randomly selected job, which becomes an overflow role.
@@ -78,11 +78,11 @@
  */
 
 /datum/round_event/bureaucratic_error/proc/do_overflow(list/jobs)
-	if(!new_overflow) // If no overflow role has been passed by the round_event_control, we pick one.
+	if(!new_overflow) // If no overflow role has been passed by the round_event_control (regardless of if the overflow was forced), we pick one here.
 		new_overflow = pick_n_take(jobs)
 
 	new_overflow.spawn_positions = -1
-	new_overflow.total_positions = -1 // Ensures infinite slots as this role. Assistant will still be open for those that cant play it.
+	new_overflow.total_positions = -1 // Ensures infinite slots as this role. Assistant will still be open for those that can't play it.
 	for(var/job in jobs)
 		var/datum/job/current = job
 		if(!current.allow_bureaucratic_error)
