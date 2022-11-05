@@ -21,39 +21,63 @@
 			var/list/jobs = SSjob.joinable_occupations.Copy()
 			new_overflow = tgui_input_list(usr, "Pick a new overflow role!", "Office Space, in Space", jobs)
 
-
-
 /datum/round_event/bureaucratic_error
 	announce_when = 1
-	var/is_overflow = FALSE //Replace this with two seperate round_events for the round_event_control to pick from
+	var/modify_overflow = FALSE
 
 /datum/round_event/bureaucratic_error/announce(fake)
-	if(is_overflow)
-		priority_announce("A catastrophic bureaucratic error in the Organic Resources Department may result in extreme personnel shortages in some departments and redundant staffing in others.", "Paperwork Mishap Alert")
+	if(modify_overflow)
+		priority_announce("A catastrophic bureaucratic error in the Organic Resources Department may result in extreme personnel shortages in most departments and redundant staffing in others.", "Paperwork Mishap Alert")
 	else
 		priority_announce("A minor bureaucratic error in the Organic Resources Department may result in personnel shortages in some departments and redundant staffing in others.", "Paperwork Mishap Alert")
 
 /datum/round_event/bureaucratic_error/start()
 	var/datum/round_event_control/bureaucratic_error/error_event = control
 	if(error_event.do_overflow)
-		is_overflow = error_event.do_overflow
+		modify_overflow = error_event.do_overflow
 	else
 		if(prob(33))
-			is_overflow = TRUE
+			modify_overflow = TRUE
 
-	var/list/jobs = SSjob.joinable_occupations.Copy()
-	if(is_overflow) // Only allows latejoining as a single role. Add latejoin AI bluespace pods for fun later.
-		var/datum/job/overflow = pick_n_take(jobs)
-		overflow.spawn_positions = -1
-		overflow.total_positions = -1 // Ensures infinite slots as this role. Assistant will still be open for those that cant play it.
-		for(var/job in jobs)
-			var/datum/job/current = job
-			if(!current.allow_bureaucratic_error)
-				continue
-			current.total_positions = 0
-	else // Adds/removes a random amount of job slots from all jobs.
-		for(var/datum/job/current as anything in jobs)
-			if(!current.allow_bureaucratic_error)
-				continue
-			var/ran = rand(-2,4)
-			current.total_positions = max(current.total_positions + ran, 0)
+	var/list/joinable_jobs = SSjob.joinable_occupations.Copy()
+	if(modify_overflow)
+		do_overflow(joinable_jobs) // Only allows latejoining as a single role. Add latejoin AI bluespace pods for fun later.
+	else
+		scramble_jobs(joinable_jobs) // Adds/removes a random amount of job slots from all jobs.
+
+/**
+ * Closes all job slots except for one randomly selected job, which becomes an overflow role.
+ *
+ * Selects one job to be a overflow role (in addition to assistant), closes all other job slots.
+ * This is the functionality for if the event decides to modify the overflow role.
+ *
+ * Arguments:
+ * * jobs - The joinable occupations to iterate through and modify.
+ */
+
+/datum/round_event/bureaucratic_error/proc/do_overflow(/list/jobs)
+	var/datum/job/overflow = pick_n_take(jobs)
+	overflow.spawn_positions = -1
+	overflow.total_positions = -1 // Ensures infinite slots as this role. Assistant will still be open for those that cant play it.
+	for(var/job in jobs)
+		var/datum/job/current = job
+		if(!current.allow_bureaucratic_error)
+			continue
+		current.total_positions = 0
+
+/**
+ * Closes all job slots except for one randomly selected job, which becomes an overflow role.
+ *
+ * Picks out the jobs in the passed list and modifies their available slots by anywhere from -2 to +4.
+ * This is the functionality for if the event decides to scramble the available job slots.
+ *
+ * Arguments:
+ * * jobs - The joinable occupations to iterate through and modify.
+ */
+
+/datum/round_event/bureaucratic_error/proc/scramble_jobs(/list/jobs)
+	for(var/datum/job/current as anything in jobs)
+		if(!current.allow_bureaucratic_error)
+			continue
+		var/ran = rand(-2,4)
+		current.total_positions = max(current.total_positions + ran, 0)
