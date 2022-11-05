@@ -21,6 +21,7 @@
 
 	switch(choice)
 		if("Change overflow")
+			do_overflow = TRUE
 			var/list/jobs = SSjob.joinable_occupations.Copy()
 			new_overflow = tgui_input_list(usr, "Pick a new overflow role!", "Office Space, in Space", jobs)
 		if("Randomize slots")
