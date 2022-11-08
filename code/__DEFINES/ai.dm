@@ -225,3 +225,8 @@
 #define BB_BILEWORM_SPEW_BILE "BB_bileworm_spew_bile"
 #define BB_BILEWORM_RESURFACE "BB_bileworm_resurface"
 #define BB_BILEWORM_DEVOUR "BB_bileworm_devour"
+
+///Crate mimic AI keys (currently planned stuff that is subject to change based on whether or not I actually figure out how to do it)
+
+#define BB_CRATE_HIDE "BB_crate_hide"
+#define BB_CRATE_CAPTURE "BB_crate_capture"

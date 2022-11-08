@@ -26,6 +26,8 @@
 	var/storage_capacity = 50
 	///A cap for mobs. Mobs count towards the item cap. Same purpose as above.
 	var/mob_storage_capacity = 10
+	///The turf this mob was initialized on. Will return to this turf if nearby and without targets
+	var/turf/home
 
 // Aggro when you try to open them. Will also pickup loot when spawns and drop it when dies.
 /mob/living/basic/mimic/crate
@@ -36,13 +38,16 @@
 
 /mob/living/basic/mimic/crate/Initialize(mapload)
 	. = ..()
+
+	home = get_turf(src)
+
 	if(mapload) //eat shit
-		for(var/obj/item/I in loc)
-			I.forceMove(src)
+		for(var/obj/item/contents in loc)
+			contents.forceMove(src)
 
 /mob/living/basic/mimic/crate/death()
-	var/obj/structure/closet/crate/C = new(get_turf(src))
+	var/obj/structure/closet/crate/corpse = new(get_turf(src))
 	// Put loot in crate
-	for(var/obj/O in src)
-		O.forceMove(C)
+	for(var/obj/loot in src)
+		loot.forceMove(corpse)
 	..()
