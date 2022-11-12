@@ -459,12 +459,19 @@
 	description = "A luxurious casino packed to the brim with everything you need to start new gambling addicitions!"
 	admin_notes = "The ship is a bit chunky, so watch where you park it."
 	credit_cost = 7777
-	
+
 /datum/map_template/shuttle/emergency/shadow
 	suffix = "shadow"
 	name = "The NTSS Shadow"
 	description = "Guaranteed to get you somewhere FAST. With a custom-built plasma engine, this bad boy will put more distance between you and certain danger than any other!"
 	credit_cost = CARGO_CRATE_VALUE * 50
+
+/datum/map_template/shuttle/emergency/welding
+	suffix = "welding"
+	name = "Experimental Hyper-Propulsion Shuttle"
+	description = "A shuttle with an experimental engine that can speed up your ride home if fueled properly."
+	credit_cost = CARGO_CRATE_VALUE * 10
+	who_can_purchase = list(ACCESS_CAPTAIN, ACCESS_CE)
 
 /datum/map_template/shuttle/ferry/base
 	suffix = "base"

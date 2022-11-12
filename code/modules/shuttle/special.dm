@@ -439,3 +439,18 @@
 
 /obj/effect/decal/hammerandsickle/shuttleRotate(rotation)
 	setDir(angle2dir(rotation+dir2angle(dir))) // No parentcall, rest of the rotate code breaks the pixel offset.
+
+/obj/machinery/fuel_extractor
+	name = "experimental fuel extractor"
+	desc = "A slab of heavy plating designed to withstand orbital-drop impacts. Through some sort of advanced bluespace tech, this one seems able to send and receive Mechs. Requires linking to a console to function."
+	icon = 'icons/obj/telescience.dmi'
+	icon_state = "mechpad"
+	circuit = /obj/item/circuitboard/machine/mechpad
+	///The amount of fuel consumed
+	var/guzzled_fuel = 0
+
+/obj/item/circuitboard/machine/fuel_extractor
+	name = "Fuel Extractor"
+	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+	build_path = /obj/machinery/fuel_extractor
+	req_components = list() //Maybe make it have components and upgrade effects for More Content:tm:
