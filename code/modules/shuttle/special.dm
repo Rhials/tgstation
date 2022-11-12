@@ -443,8 +443,8 @@
 /obj/machinery/fuel_extractor
 	name = "experimental fuel extractor"
 	desc = "An drainage device that will consume the contents of any welding tanks placed near it. The fuel will be used to provide the shuttle with an extra boost when it"
-	icon = 'icons/obj/telescience.dmi'
-	icon_state = "mechpad"
+	icon = 'icons/turf/shuttle.dmi'
+	icon_state = "extractor"
 	circuit = /obj/item/circuitboard/machine/fuel_extractor
 	/// The amount of fuel consumed
 	var/guzzled_fuel = 0
