@@ -22,7 +22,7 @@
 "O" = (/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "R" = (/turf/open/floor/pod/light,/area/shuttle/escape)
 "S" = (/obj/structure/chair/stool/directional/east,/turf/open/floor/pod,/area/shuttle/escape)
-"V" = (/obj/machinery/door/airlock/shuttle,/obj/docking_port/mobile/emergency/shuttle_build{name = "Welding Fuel Shuttle"},/turf/open/space/basic,/area/shuttle/escape)
+"V" = (/obj/machinery/door/airlock/shuttle,/obj/docking_port/mobile/emergency/shuttle_build{height = 30; name = "Welding Fuel Shuttle"; width = 9},/turf/open/space/basic,/area/shuttle/escape)
 "X" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/shuttle/escape)
 "Y" = (/obj/effect/mapping_helpers/airlock/access/all/command,/obj/machinery/door/airlock/command/glass,/turf/open/floor/plating,/area/shuttle/escape)
 
