@@ -1,62 +1,60 @@
-"a" = (/turf/open/space/basic,/area/space)
-"b" = (/obj/effect/mapping_helpers/airlock/access/all/command,/obj/machinery/door/airlock/command/glass,/turf/open/floor/plating,/area/shuttle/escape)
-"c" = (/obj/machinery/computer/emergency_shuttle,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"e" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
-"f" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/space)
-"g" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/space/basic,/area/shuttle/escape)
-"i" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/space)
-"k" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape)
-"m" = (/obj/structure/chair/stool/directional/east,/turf/open/floor/pod,/area/shuttle/escape)
-"n" = (/obj/machinery/door/airlock/shuttle,/turf/open/space/basic,/area/space)
-"o" = (/turf/open/floor/engine/air,/area/shuttle/escape/engine)
-"t" = (/obj/machinery/door/airlock/shuttle,/obj/docking_port/mobile/emergency/shuttle_build{name = "Welding Fuel Shuttle"},/turf/open/space/basic,/area/space)
-"v" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape)
-"y" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/shuttle/escape)
-"z" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape/engine)
-"A" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"C" = (/obj/structure/table,/obj/machinery/recharger,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"D" = (/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"F" = (/obj/structure/chair/stool/directional/west,/turf/open/floor/pod,/area/shuttle/escape)
-"I" = (/turf/open/floor/mineral/titanium/yellow,/area/space)
-"J" = (/obj/structure/tramwall/plastitanium,/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/space)
-"M" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/space)
-"P" = (/obj/machinery/computer/communications,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"a" = (/turf/template_noop,/area/template_noop)
+"b" = (/turf/open/floor/engine/air,/area/shuttle/escape/engine)
+"e" = (/obj/machinery/door/airlock/shuttle,/turf/open/space/basic,/area/shuttle/escape)
+"g" = (/obj/machinery/door/airlock/engineering/glass,/obj/effect/mapping_helpers/airlock/access/all/engineering,/turf/open/floor/plating,/area/shuttle/escape/engine)
+"h" = (/turf/open/floor/mineral/titanium/blue,/area/space)
+"k" = (/obj/machinery/door/airlock/shuttle,/obj/docking_port/mobile/emergency/shuttle_build{name = "Welding Fuel Shuttle"},/turf/open/space/basic,/area/shuttle/escape)
+"l" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/shuttle/escape)
+"m" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape/engine)
+"n" = (/obj/machinery/power/shuttle_engine/propulsion,/turf/open/floor/plating/airless,/area/shuttle/escape)
+"r" = (/obj/machinery/computer/emergency_shuttle,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"u" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape)
+"w" = (/obj/structure/table,/obj/machinery/recharger,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"x" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
+"y" = (/turf/open/floor/pod,/area/shuttle/escape)
+"z" = (/obj/effect/mapping_helpers/airlock/access/all/engineering,/obj/machinery/door/airlock/engineering/glass,/turf/open/floor/plating,/area/shuttle/escape/engine)
+"A" = (/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"C" = (/obj/effect/mapping_helpers/airlock/access/all/command,/obj/machinery/door/airlock/command/glass,/turf/open/floor/plating,/area/shuttle/escape)
+"E" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/shuttle/escape)
+"F" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"M" = (/obj/structure/chair/stool/directional/east,/turf/open/floor/pod,/area/shuttle/escape)
+"N" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/obj/machinery/power/shuttle_engine/heater,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape)
 "Q" = (/turf/open/floor/pod/light,/area/shuttle/escape)
-"U" = (/turf/open/floor/mineral/titanium/blue,/area/space)
-"V" = (/turf/open/floor/pod,/area/shuttle/escape)
-"W" = (/obj/effect/mapping_helpers/airlock/access/all/engineering,/obj/machinery/door/airlock/engineering/glass,/turf/open/floor/plating,/area/shuttle/escape/engine)
-"Y" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/shuttle/escape)
-"Z" = (/obj/machinery/door/airlock/engineering/glass,/obj/effect/mapping_helpers/airlock/access/all/engineering,/turf/open/floor/plating,/area/shuttle/escape/engine)
+"R" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/space/basic,/area/shuttle/escape)
+"W" = (/obj/structure/chair/stool/directional/west,/turf/open/floor/pod,/area/shuttle/escape)
+"X" = (/obj/machinery/computer/communications,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"Y" = (/obj/structure/tramwall/plastitanium,/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape)
+"Z" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape)
 
 (1,1,1) = {"
-aifffffia
-afDcDPDya
-agDUDUDga
-iADDDDDAi
-iCDDDDDCi
-ivvbvbvvi
-imVVVVVFi
-fVQQQQQFM
-MmQVVVQVf
-nVQFvmQVf
-imQFvmQVy
-tVQFvmQFY
-imQFvmQVf
-fVQFvmQVf
-fVQVVVQVf
-fVQFvmQVf
-imQFvmQFi
-nVQFvmQVf
-imQFvmQVf
-nVQFvmQVf
-imQVVVQFi
-vmVVVVVFv
-izzZzWzzi
-feeeeeeef
-yeeoooeey
-yeeoooeey
-YkeoooekY
-ivkkkkkvi
-aiIIIIIJa
-aiiiiiiia
+aZEEEEEZa
+aEArAXAEa
+aRAhAhARa
+ZFAAAAAFZ
+ZwAAAAAwZ
+ZZZCZCZZZ
+ZMyyyyyWZ
+EyQQQQQWl
+lMQyyyQyE
+eyQWZMQyE
+ZMQWZMQyE
+kyQWZMQWl
+ZMQWZMQyE
+EyQWZMQyE
+EyQyyyQyE
+EyQWZMQyE
+ZMQWZMQWZ
+eyQWZMQyE
+ZMQWZMQyE
+eyQWZMQyE
+ZMQyyyQWZ
+ZMyyyyyWZ
+ZmmgmzmmZ
+ExxxxxxxE
+ExxbbbxxE
+ExxbbbxxE
+luxbbbxul
+ZZuuuuuZZ
+aZNNNNNYa
+aZnnnnnZa
 "}

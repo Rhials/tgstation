@@ -464,14 +464,14 @@
 
 	if(istype(AM, /obj/structure/reagent_dispensers/fueltank))
 		if(AM.reagents)
-			src.visible_message("The [src] begins to drain fuel from the [AM]")
-			AM.reagents.trans_to(reagents, 50) // You can spam this in case of an emergency refueling I guess
-			addtimer(CALLBACK(src, .proc/drain, AM), 3)
+			src.visible_message(span_notice("[src] begins to drain fuel from the [AM]"))
+			AM.reagents.trans_to(reagents, 20) // You can spam this in case of an emergency refueling I guess
+			addtimer(CALLBACK(src, .proc/drain, AM), 30)
 
 /obj/machinery/fuel_extractor/proc/drain(atom/movable/AM)
 	if(get_turf(AM) == get_turf(src))
-		AM.reagents.trans_to(reagents, 100)
-		addtimer(CALLBACK(src, .proc/drain, AM), 3)
+		AM.reagents.trans_to(reagents, 50)
+		addtimer(CALLBACK(src, .proc/drain, AM), 30)
 
 /obj/item/circuitboard/machine/fuel_extractor
 	name = "Fuel Extractor"
