@@ -1,58 +1,62 @@
 "a" = (/turf/open/space/basic,/area/space)
-"b" = (/obj/structure/table,/obj/machinery/recharger,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"c" = (/obj/machinery/door/airlock/shuttle,/turf/open/space/basic,/area/space)
-"d" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape/engine)
-"e" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/space)
-"i" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
-"n" = (/turf/open/floor/mineral/titanium/blue,/area/space)
-"p" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/space)
-"r" = (/obj/machinery/computer/communications,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"v" = (/turf/open/floor/mineral/titanium/yellow,/area/space)
-"x" = (/obj/structure/tramwall/plastitanium,/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/space)
-"y" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/space)
-"B" = (/obj/effect/mapping_helpers/airlock/access/all/engineering,/obj/machinery/door/airlock/engineering/glass,/turf/open/floor/plating,/area/shuttle/escape/engine)
-"D" = (/turf/open/floor/engine/air,/area/shuttle/escape/engine)
-"E" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape)
-"F" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/space/basic,/area/shuttle/escape)
-"J" = (/obj/machinery/door/airlock/engineering/glass,/obj/effect/mapping_helpers/airlock/access/all/engineering,/turf/open/floor/plating,/area/shuttle/escape/engine)
-"N" = (/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"O" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape)
-"R" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"S" = (/turf/open/floor/pod,/area/shuttle/escape)
-"V" = (/obj/effect/mapping_helpers/airlock/access/all/command,/obj/machinery/door/airlock/command/glass,/turf/open/floor/plating,/area/shuttle/escape)
-"X" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/shuttle/escape)
-"Y" = (/obj/machinery/computer/emergency_shuttle,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"Z" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/shuttle/escape)
+"b" = (/obj/effect/mapping_helpers/airlock/access/all/command,/obj/machinery/door/airlock/command/glass,/turf/open/floor/plating,/area/shuttle/escape)
+"c" = (/obj/machinery/computer/emergency_shuttle,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"e" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
+"f" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/space)
+"g" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/space/basic,/area/shuttle/escape)
+"i" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/space)
+"k" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape)
+"m" = (/obj/structure/chair/stool/directional/east,/turf/open/floor/pod,/area/shuttle/escape)
+"n" = (/obj/machinery/door/airlock/shuttle,/turf/open/space/basic,/area/space)
+"o" = (/turf/open/floor/engine/air,/area/shuttle/escape/engine)
+"t" = (/obj/machinery/door/airlock/shuttle,/obj/docking_port/mobile/emergency/shuttle_build{name = "Welding Fuel Shuttle"},/turf/open/space/basic,/area/space)
+"v" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape)
+"y" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/shuttle/escape)
+"z" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape/engine)
+"A" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"C" = (/obj/structure/table,/obj/machinery/recharger,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"D" = (/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"F" = (/obj/structure/chair/stool/directional/west,/turf/open/floor/pod,/area/shuttle/escape)
+"I" = (/turf/open/floor/mineral/titanium/yellow,/area/space)
+"J" = (/obj/structure/tramwall/plastitanium,/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/space)
+"M" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/space)
+"P" = (/obj/machinery/computer/communications,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"Q" = (/turf/open/floor/pod/light,/area/shuttle/escape)
+"U" = (/turf/open/floor/mineral/titanium/blue,/area/space)
+"V" = (/turf/open/floor/pod,/area/shuttle/escape)
+"W" = (/obj/effect/mapping_helpers/airlock/access/all/engineering,/obj/machinery/door/airlock/engineering/glass,/turf/open/floor/plating,/area/shuttle/escape/engine)
+"Y" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/shuttle/escape)
+"Z" = (/obj/machinery/door/airlock/engineering/glass,/obj/effect/mapping_helpers/airlock/access/all/engineering,/turf/open/floor/plating,/area/shuttle/escape/engine)
 
 (1,1,1) = {"
-aepppppea
-apNYNrNZa
-aFNnNnNFa
-eRNNNNNRe
-ebNNNNNbe
-eEEVEVEEe
-eSSSSSSSe
-pSSSSSSSy
-ySSSSSSSp
-cSSSESSSp
-eSSSESSSZ
-cSSSESSSX
-eSSSESSSp
-pSSSESSSp
-pSSSSSSSp
-pSSSESSSp
-eSSSESSSe
-cSSSESSSp
-eSSSESSSp
-cSSSESSSp
-eSSSSSSSe
-ESSSSSSSE
-eddJdBdde
-piiiiiiip
-ZiiDDDiiZ
-ZiiDDDiiZ
-XOiDDDiOX
-eEOOOOOEe
-aevvvvvxa
-aeeeeeeea
+aifffffia
+afDcDPDya
+agDUDUDga
+iADDDDDAi
+iCDDDDDCi
+ivvbvbvvi
+imVVVVVFi
+fVQQQQQFM
+MmQVVVQVf
+nVQFvmQVf
+imQFvmQVy
+tVQFvmQFY
+imQFvmQVf
+fVQFvmQVf
+fVQVVVQVf
+fVQFvmQVf
+imQFvmQFi
+nVQFvmQVf
+imQFvmQVf
+nVQFvmQVf
+imQVVVQFi
+vmVVVVVFv
+izzZzWzzi
+feeeeeeef
+yeeoooeey
+yeeoooeey
+YkeoooekY
+ivkkkkkvi
+aiIIIIIJa
+aiiiiiiia
 "}

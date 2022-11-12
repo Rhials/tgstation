@@ -442,15 +442,47 @@
 
 /obj/machinery/fuel_extractor
 	name = "experimental fuel extractor"
-	desc = "A slab of heavy plating designed to withstand orbital-drop impacts. Through some sort of advanced bluespace tech, this one seems able to send and receive Mechs. Requires linking to a console to function."
+	desc = "An drainage device that will consume the contents of any welding tanks placed near it. The fuel will be used to provide the shuttle with an extra boost when it"
 	icon = 'icons/obj/telescience.dmi'
 	icon_state = "mechpad"
-	circuit = /obj/item/circuitboard/machine/mechpad
-	///The amount of fuel consumed
+	circuit = /obj/item/circuitboard/machine/fuel_extractor
+	/// The amount of fuel consumed
 	var/guzzled_fuel = 0
+
+/obj/machinery/fuel_extractor/Initialize(mapload)
+	. = ..()
+
+	create_reagents(50000, AMOUNT_VISIBLE) //big boye
+
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = .proc/on_entered,
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
+
+/obj/machinery/fuel_extractor/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+
+	if(istype(AM, /obj/structure/reagent_dispensers/fueltank))
+		if(AM.reagents)
+			src.visible_message("The [src] begins to drain fuel from the [AM]")
+			AM.reagents.trans_to(reagents, 50) // You can spam this in case of an emergency refueling I guess
+			addtimer(CALLBACK(src, .proc/drain, AM), 3)
+
+/obj/machinery/fuel_extractor/proc/drain(atom/movable/AM)
+	if(get_turf(AM) == get_turf(src))
+		AM.reagents.trans_to(reagents, 100)
+		addtimer(CALLBACK(src, .proc/drain, AM), 3)
 
 /obj/item/circuitboard/machine/fuel_extractor
 	name = "Fuel Extractor"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/fuel_extractor
-	req_components = list() //Maybe make it have components and upgrade effects for More Content:tm:
+	req_components = list(
+		/obj/item/assembly/igniter
+	) //Maybe make it have components and upgrade effects for More Content:tm:
+
+
+
+
+//on shuttle launch, check all engines in the emergency shuttle area and modify values.
+//look into /obj/docking_port/mobile/proc/get_engine_coeff(engine_mod)
