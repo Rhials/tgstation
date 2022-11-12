@@ -1054,3 +1054,14 @@
 
 /obj/docking_port/mobile/emergency/on_emergency_dock()
 	return
+
+/obj/docking_port/mobile/emergency/shuttle_build/experimental/get_engine_coeff(engine_mod) //Gives a FLAT bonus to the engine coefficient based on the fuel fullness.
+	. = ..()
+
+	var/thrust_boost = 0
+
+	for(var/area/shuttle/shuttle_area as anything in shuttle_areas)
+		var/obj/machinery/fuel_extractor/extractor = locate(/obj/machinery/fuel_extractor) in shuttle_area
+			thrust_boost += extractor.reagents.get_reagent_amount(/datum/reagent/fuel)
+
+		return . + thrust_boost
