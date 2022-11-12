@@ -1,21 +1,21 @@
 "a" = (/turf/template_noop,/area/template_noop)
-"d" = (/obj/machinery/power/shuttle_engine/propulsion,/turf/open/floor/plating/airless,/area/shuttle/escape)
+"d" = (/obj/machinery/power/shuttle_engine/propulsion,/turf/open/floor/plating/airless,/area/shuttle/escape/engine)
 "g" = (/obj/machinery/door/airlock/shuttle,/turf/open/space/basic,/area/shuttle/escape)
 "h" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape/engine)
 "k" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/shuttle/escape)
-"n" = (/obj/structure/tramwall/plastitanium,/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape)
+"n" = (/obj/structure/tramwall/plastitanium,/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape/engine)
 "o" = (/obj/structure/table,/obj/machinery/recharger,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "p" = (/obj/effect/mapping_helpers/airlock/access/all/engineering,/obj/machinery/door/airlock/engineering/glass,/turf/open/floor/plating,/area/shuttle/escape/engine)
 "s" = (/turf/open/floor/engine/air,/area/shuttle/escape/engine)
-"t" = (/turf/open/floor/mineral/titanium/blue,/area/space)
+"t" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/floor/plating,/area/shuttle/escape/engine)
 "w" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/turf/open/space/basic,/area/shuttle/escape)
 "y" = (/obj/machinery/computer/emergency_shuttle,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "z" = (/turf/open/floor/pod,/area/shuttle/escape)
-"B" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape)
+"B" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/shuttle/escape/engine)
 "C" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "D" = (/obj/machinery/computer/communications,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "E" = (/obj/structure/chair/stool/directional/west,/turf/open/floor/pod,/area/shuttle/escape)
-"G" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/obj/machinery/power/shuttle_engine/heater,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape)
+"G" = (/obj/effect/spawner/structure/window/reinforced/shuttle,/obj/machinery/power/shuttle_engine/heater,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "K" = (/obj/structure/tramwall/plastitanium,/turf/open/space/basic,/area/shuttle/escape)
 "L" = (/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "N" = (/obj/machinery/door/airlock/engineering/glass,/obj/effect/mapping_helpers/airlock/access/all/engineering,/turf/open/floor/plating,/area/shuttle/escape/engine)
@@ -29,7 +29,7 @@
 (1,1,1) = {"
 aKkkkkkKa
 akOyODOka
-awOtOtOwa
+awOOOOOwa
 KCOOOOOCK
 KoOOOOOoK
 KKKYKYKKK
@@ -49,12 +49,12 @@ KSREKSRzk
 gzREKSRzk
 KSRzzzREK
 KSzzzzzEK
-KhhNhphhK
-kLLLLLLLk
-kLLsssLLk
-kLLsssLLk
-XBLsssLBX
-KKBBBBBKK
-aKGGGGGna
-aKdddddKa
+hhhNhphhh
+tLLLLLLLt
+tLLsssLLt
+tLLsssLLt
+BLLsssLLB
+hhLLLLLhh
+ahGGGGGna
+ahdddddha
 "}
