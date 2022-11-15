@@ -24,7 +24,6 @@
 	icon = 'icons/obj/boogie_ball.dmi'
 	icon_state = "ball"
 	anchored = TRUE
-	invisibility = INVISIBILITY_MAXIMUM
 
 /obj/machinery/jukebox/disco/boogie_ball/Initialize(mapload, duration=10)
 	. = ..()
@@ -34,4 +33,6 @@
 	INVOKE_ASYNC(src, .proc/begin_playing)
 
 /obj/machinery/jukebox/disco/boogie_ball/proc/begin_playing()
-	activate_music()
+	//handle music playing here
+	dance_setup()
+	lights_spin()
