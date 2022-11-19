@@ -99,3 +99,17 @@
 	open_sound_volume = 35
 	close_sound_volume = 50
 	material_drop = /obj/item/stack/sheet/plasteel
+
+/obj/structure/closet/cardboard/car //Box car. Use mime spray paint (or cargo orderable paint) to spray decals to make it look like a car.
+	name = "cardboard car box boxcar" //Iron out the pun later
+	desc = "It's a miracle this thing hasn't crashed into a wall yet."
+	mob_storage_capacity = 4 //Two doors, four seats. Perfect for taxi services.
+	move_speed_multiplier = 0.5
+	COOLDOWN_DECLARE(move_sound_cooldown)
+
+/obj/structure/closet/cardboard/car/relaymove(mob/living/user, direction)
+	. = ..()
+
+	if(COOLDOWN_FINISHED(src, move_sound_cooldown))
+		COOLDOWN_START(src, move_sound_cooldown, 2 SECONDS)
+		playsound(get_turf(src), 'sound/vehicles/carrev.ogg', 100, TRUE)
