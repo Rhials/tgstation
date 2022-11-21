@@ -38,6 +38,17 @@
 	else
 		move_delay = FALSE
 
+/obj/structure/closet/cardboard/attackby(obj/item/W, mob/user, params)
+	. = ..()
+
+	if(!.)  //doesnt work rn
+		return .
+
+	if(istype(W, /obj/item/toy/crayon/spraycan/boxcar_spraycan))
+		var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
+		to_chat(user, span_notice("You apply the decals using the [W], converting the [name] into a [new_car]"))
+		qdel(src)
+
 /obj/structure/closet/cardboard/proc/ResetMoveDelay()
 	move_delay = FALSE
 
@@ -102,7 +113,7 @@
 
 /obj/structure/closet/cardboard/car //Box car. Use mime spray paint (or cargo orderable paint) to spray decals to make it look like a car.
 	name = "cardboard car box boxcar" //Iron out the pun later
-	desc = "It's a miracle this thing hasn't crashed into a wall yet."
+	desc = "Oh my goodness, how can the driver even see where he's going?"
 	mob_storage_capacity = 4 //Two doors, four seats. Perfect for taxi services.
 	move_speed_multiplier = 0.5
 	COOLDOWN_DECLARE(move_sound_cooldown)
@@ -113,3 +124,12 @@
 	if(COOLDOWN_FINISHED(src, move_sound_cooldown))
 		COOLDOWN_START(src, move_sound_cooldown, 2 SECONDS)
 		playsound(get_turf(src), 'sound/vehicles/carrev.ogg', 100, TRUE)
+
+/obj/item/toy/crayon/spraycan/boxcar_spraycan //absolutely horrid item name
+	name = "boxcar spraycan"
+	desc = "this thing turns boxes into box cars"
+
+/obj/item/toy/crayon/spraycan/boxcar_spraycan/Initialize(mapload)
+	. = ..()
+
+	set_painting_tool_color("#C0C0C0")
