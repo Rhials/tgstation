@@ -40,10 +40,15 @@
 
 /obj/structure/closet/cardboard/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/boxcar_spraycan))
+		if(opened)
+			to_chat(user, span_alert("The [src] needs to be closed before you can convert it!"))
+			return
+
 		user.visible_message(span_notice("[user] begins spraying the [src] with the [W]."),
-			span_notice("You begin spraying down the [src] with the [W].")
-			span_notice("You hear the sound of someone frantically spraying something.")
+			span_notice("You begin spraying down the [src] with the [W]."),
+			span_notice("You hear the sound of someone frantically spraying something."),
 		)
+
 		if(do_after(user, 6 SECONDS, src))
 			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
 			user.visible_message(span_notice("[user] finishes applying the decals to [W], transforming it into a [new_car]!"))
