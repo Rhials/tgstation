@@ -39,15 +39,16 @@
 		move_delay = FALSE
 
 /obj/structure/closet/cardboard/attackby(obj/item/W, mob/user, params)
-	. = ..()
-
-	if(!.)  //doesnt work rn
-		return .
-
-	if(istype(W, /obj/item/toy/crayon/spraycan/boxcar_spraycan))
-		var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
-		to_chat(user, span_notice("You apply the decals using the [W], converting the [name] into a [new_car]"))
-		qdel(src)
+	if(istype(W, /obj/item/boxcar_spraycan))
+		user.visible_message(span_notice("[user] begins spraying the [src] with the [W]."),
+			span_notice("You begin spraying down the [src] with the [W].")
+			span_notice("You hear the sound of someone frantically spraying something.")
+		)
+		if(do_after(user, 6 SECONDS, src))
+			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
+			user.visible_message(span_notice("[user] finishes applying the decals to [W], transforming it into a [new_car]!"))
+			qdel(src)
+	return
 
 /obj/structure/closet/cardboard/proc/ResetMoveDelay()
 	move_delay = FALSE
@@ -114,9 +115,10 @@
 /obj/structure/closet/cardboard/car //Box car. Use mime spray paint (or cargo orderable paint) to spray decals to make it look like a car.
 	name = "cardboard car box boxcar" //Iron out the pun later
 	desc = "Oh my goodness, how can the driver even see where he's going?"
-	mob_storage_capacity = 4 //Two doors, four seats. Perfect for taxi services.
+	mob_storage_capacity = 4 //One door, four seats. Perfect for taxi services.
 	move_speed_multiplier = 0.5
 	COOLDOWN_DECLARE(move_sound_cooldown)
+	time_between_alerts = INFINITY
 
 /obj/structure/closet/cardboard/car/relaymove(mob/living/user, direction)
 	. = ..()
@@ -125,11 +127,12 @@
 		COOLDOWN_START(src, move_sound_cooldown, 2 SECONDS)
 		playsound(get_turf(src), 'sound/vehicles/carrev.ogg', 100, TRUE)
 
-/obj/item/toy/crayon/spraycan/boxcar_spraycan //absolutely horrid item name
+/obj/item/boxcar_spraycan //absolutely horrid item name
 	name = "boxcar spraycan"
-	desc = "this thing turns boxes into box cars"
-
-/obj/item/toy/crayon/spraycan/boxcar_spraycan/Initialize(mapload)
-	. = ..()
-
-	set_painting_tool_color("#C0C0C0")
+	desc = "A Donk Co. brand Cardboard Box to Cardboard Boxcar Car Conversion Kit. Can be used to convert a cardboard box into a fully functional car, provided you apply the decals correctly." //You cannot apply them correctly
+	icon = 'icons/obj/art/crayons.dmi'
+	icon_state = "boxcar_can"
+	inhand_icon_state = "spraycan"
+	lefthand_file = 'icons/mob/inhands/equipment/hydroponics_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/hydroponics_righthand.dmi'
+	w_class = WEIGHT_CLASS_SMALL
