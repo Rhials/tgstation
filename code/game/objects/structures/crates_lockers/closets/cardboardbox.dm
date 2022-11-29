@@ -118,8 +118,8 @@
 	material_drop = /obj/item/stack/sheet/plasteel
 
 /obj/structure/closet/cardboard/car //Box car. Use mime spray paint (or cargo orderable paint) to spray decals to make it look like a car.
-	name = "cardboard car box boxcar" //Iron out the pun later
-	desc = "Oh my goodness, how can the driver even see where he's going?"
+	name = "cardboard box boxcar car" //Iron out the pun later
+	desc = "A cardboard box, painted to distantly resemble a car. How can the driver even see where he's going?"
 	icon_state = "boxcar"
 	mob_storage_capacity = 4 //One door, four seats. Perfect for taxi services.
 	move_speed_multiplier = 0.5
