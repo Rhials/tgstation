@@ -54,7 +54,10 @@
 			span_notice("You hear the sound of someone frantically spraying something."),
 		)
 
+		playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
+
 		if(do_after(user, 6 SECONDS, src))
+			playsound(user.loc, 'sound/effects/spray3.ogg', 5, TRUE, 5)
 			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
 			user.visible_message(span_notice("[user] finishes applying the decals to [W], transforming it into a [new_car]!"))
 			qdel(src)
