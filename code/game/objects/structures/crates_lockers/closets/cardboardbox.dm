@@ -128,12 +128,13 @@
 	material_drop = /obj/item/stack/sheet/plasteel
 
 /obj/structure/closet/cardboard/car //Box car. Use a special spraycan (via cargo or elsewhere, figure this out later) to spray decals to make it look like a car.
-	name = "cardboard box boxcar car" //Iron out the pun later
+	name = "cardboard box box-car car" //Iron out the pun later
 	desc = "A cardboard box, painted to distantly resemble a car. How can the driver even see where they're going?"
 	icon_state = "boxcar"
 	mob_storage_capacity = 4 //One door, four seats. Perfect for taxi services.
 	move_speed_multiplier = 0.5
 	COOLDOWN_DECLARE(move_sound_cooldown)
+	should_alert = FALSE
 
 /obj/structure/closet/cardboard/car/relaymove(mob/living/user, direction)
 	. = ..()
@@ -153,12 +154,11 @@
 			bumped_door.bumpopen(occupant)
 
 /obj/item/boxcar_spraycan //absolutely horrid item name
-	name = "boxcar spraycan"
-	desc = "A Donk Co. brand Cardboard Box to Cardboard Boxcar Car Conversion Kit. Can be used to convert a cardboard box into a fully functional car, provided you apply the decals correctly." //You cannot apply them correctly
+	name = "box-car spraycan"
+	desc = "A Donk Co. brand Cardboard Box to Cardboard Box-Car Car Conversion Kit. Can be used to convert a cardboard box into a fully functional car, provided you apply the decals correctly." //You cannot apply them correctly
 	icon = 'icons/obj/art/crayons.dmi'
 	icon_state = "boxcar_can"
 	inhand_icon_state = "spraycan"
 	lefthand_file = 'icons/mob/inhands/equipment/hydroponics_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/hydroponics_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
-	should_alert = FALSE
