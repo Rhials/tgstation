@@ -17,9 +17,14 @@
 	close_sound_volume = 35
 	has_closed_overlay = FALSE
 	door_anim_time = 0 // no animation
-	var/move_speed_multiplier = 1
-	var/move_delay = FALSE
 	can_install_electronics = FALSE
+
+	/// Multiplier for calculating move delay. Higher means slower, lower means faster
+	var/move_speed_multiplier = 1
+	/// Is your movement on cooldown? Used to manage whether or not relaymove actually does anything.
+	var/move_delay = FALSE
+	/// Should the box make the occupant(s) perform an alert animation upon bein opened?
+	var/should_alert = TRUE
 
 	/// Cooldown controlling when the box can trigger the Metal Gear Solid-style '!' alert.
 	COOLDOWN_DECLARE(alert_cooldown)
@@ -77,15 +82,17 @@
 	if(!.)
 		return
 
-	COOLDOWN_START(src, alert_cooldown, time_between_alerts)
 
-	for(var/mob/living/alerted_mob in alerted)
-		if(alerted_mob.stat == CONSCIOUS)
-			if(!alerted_mob.incapacitated(IGNORE_RESTRAINTS))
-				alerted_mob.face_atom(src)
-			alerted_mob.do_alert_animation()
+	if(should_alert)
+		COOLDOWN_START(src, alert_cooldown, time_between_alerts)
 
-	playsound(loc, 'sound/machines/chime.ogg', 50, FALSE, -5)
+		for(var/mob/living/alerted_mob in alerted)
+			if(alerted_mob.stat == CONSCIOUS)
+				if(!alerted_mob.incapacitated(IGNORE_RESTRAINTS))
+					alerted_mob.face_atom(src)
+				alerted_mob.do_alert_animation()
+
+		playsound(loc, 'sound/machines/chime.ogg', 50, FALSE, -5)
 
 /// Does the MGS ! animation
 /atom/proc/do_alert_animation()
@@ -124,7 +131,6 @@
 	mob_storage_capacity = 4 //One door, four seats. Perfect for taxi services.
 	move_speed_multiplier = 0.5
 	COOLDOWN_DECLARE(move_sound_cooldown)
-	time_between_alerts = INFINITY
 
 /obj/structure/closet/cardboard/car/relaymove(mob/living/user, direction)
 	. = ..()
@@ -142,3 +148,4 @@
 	lefthand_file = 'icons/mob/inhands/equipment/hydroponics_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/hydroponics_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
+	should_alert = FALSE
