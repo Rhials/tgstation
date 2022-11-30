@@ -57,7 +57,7 @@
 		playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
 
 		if(do_after(user, 6 SECONDS, src))
-			playsound(user.loc, 'sound/effects/spray3.ogg', 5, TRUE, 5)
+			playsound(user.loc, 'sound/effects/spray2.ogg', 5, TRUE, 5)
 			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
 			user.visible_message(span_notice("[user] finishes applying the decals to [W], transforming it into a [new_car]!"))
 			qdel(src)
@@ -141,6 +141,16 @@
 	if(COOLDOWN_FINISHED(src, move_sound_cooldown))
 		COOLDOWN_START(src, move_sound_cooldown, 2 SECONDS)
 		playsound(get_turf(src), 'sound/vehicles/carrev.ogg', 100, TRUE)
+
+/obj/structure/closet/cardboard/car/Bump(atom/A) //Now you dont have to pop out every time you want to open a door
+	. = ..()
+
+	if(istype(A, /obj/machinery/door))
+		var/obj/machinery/door/bumped_door = A
+		for(var/mob/occupant as anything in contents)
+			if(bumped_door.try_safety_unlock(occupant))
+				return
+			bumped_door.bumpopen(occupant)
 
 /obj/item/boxcar_spraycan //absolutely horrid item name
 	name = "boxcar spraycan"
