@@ -51,7 +51,13 @@
 			return
 
 		if(!spraycan.worthiness_check(user))
-			user.visible_message(span_notice("[user] attempts to spray the [src] with the [spraycan], but nothing happens!."))
+			user.visible_message(span_notice("[user] attempts to spray the [src] with the [spraycan], but nothing happens!"))
+			return
+
+		if(spraycan.used)
+			user.visible_message(span_alert("[user] begins trying to spraying \the [src] with the [spraycan], but nothing comes out of the nozzle!"),
+			span_alert("You begin trying to spray \the [src] with \the [spraycan], but nothing comes out of the nozzle! It looks like this spraycan has already been used up."),
+		)
 			return
 
 		user.visible_message(span_notice("[user] begins spraying \the [src] with the [spraycan]."),
@@ -62,6 +68,7 @@
 		if(do_after(user, 6 SECONDS, src))
 			playsound(get_turf(user), 'sound/effects/spray2.ogg', 5, TRUE, 5)
 			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
+			spraycan.used = TRUE
 			user.visible_message(span_notice("[user] finishes applying the decals to [spraycan], transforming it into a [new_car]!"),
 			span_notice("You finish applying the decals to \the [src]."),
 			span_notice("You hear continued spraying, which quickly subsides."),
@@ -183,6 +190,8 @@
 	custom_price = PAYCHECK_CREW * 5
 	///Prevents spamming the confirmation/denial message and noise
 	COOLDOWN_DECLARE(confirmation_cooldown)
+	///Whether or not this has been used to paint a box already.
+	var/used = FALSE
 
 /obj/item/boxcar_spraycan/examine_more(mob/user)
 	. = ..()
@@ -200,7 +209,7 @@
 		COOLDOWN_START(src, confirmation_cooldown, 5 SECONDS)
 		worthiness_check(user)
 
-/obj/item/lightreplacer/emag_act(mob/user)
+/obj/item/boxcar_spraycan/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
 		return
 	to_chat(user, span_warning("You short \the [src]'s spray nozzle lock."))
