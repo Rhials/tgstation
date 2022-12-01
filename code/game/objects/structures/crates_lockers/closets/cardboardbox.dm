@@ -54,10 +54,10 @@
 			span_notice("You hear the sound of someone frantically spraying something."),
 		)
 
-		playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
+		playsound(get_turf(user), 'sound/machines/buzz-sigh.ogg', 5, TRUE, 5)
 
 		if(do_after(user, 6 SECONDS, src))
-			playsound(user.loc, 'sound/effects/spray2.ogg', 5, TRUE, 5)
+			playsound(get_turf(user), 'sound/effects/spray2.ogg', 5, TRUE, 5)
 			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
 			user.visible_message(span_notice("[user] finishes applying the decals to [W], transforming it into a [new_car]!"))
 			qdel(src)
@@ -155,7 +155,7 @@
 
 /obj/item/boxcar_spraycan //absolutely horrid item name
 	name = "box-car spraycan"
-	desc = "A Decroux brand decal spraycan, exported directly from the mime planet. Used to convert a cardboard box into a fully functional car. It looks like there's a label on the back..." //Mime planet is fucking stupid ask EOB for better lore
+	desc = "A Decroux brand decal spraycan. The nozzle is secured by a cutting edge electronic lock. Used to convert a cardboard box into a fully functional car. It looks like there's a label on the back..."
 	icon = 'icons/obj/art/crayons.dmi'
 	icon_state = "boxcar_can"
 	inhand_icon_state = "spraycan"
@@ -163,12 +163,30 @@
 	righthand_file = 'icons/mob/inhands/equipment/hydroponics_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	custom_price = PAYCHECK_CREW * 5
+	///Prevents spamming the confirmation/denial message and noise
+	COOLDOWN_DECLARE(confirmation_cooldown)
 
 /obj/item/boxcar_spraycan/examine_more(mob/user)
 	. = ..()
 
 	. += span_notice("The label on the back reads: 'Thank you for purchasing a Decroux Box-Car Spraycan. ")
-	. += span_notice("The spray nozzle will be electronically locked unless used by someone who meets these requirements. ")
+	. += span_notice("The spray nozzle will be electronically locked unless used by someone adhering to a vow of silence. ")
+	. += span_notice("Those who are bound to silence through other means may also qualify, due to their innate closeness to the spirit of mimery. ")
 	. += span_notice("This is a precaution to ensure excellence in mimery, and that a mockery isn't made of our craft. ")
-	. += span_notice("") //detail goes here
 	. += span_notice("Lastly -- <i>No clowns.</i>'")
+
+/obj/item/boxcar_spraycan/attack_self(mob/living/user, direction) //Used to test if you're "worthy" without using it on a box.
+	. = ..()
+
+	if(COOLDOWN_FINISHED(src, confirmation_cooldown))
+		COOLDOWN_START(src, confirmation_cooldown, 5 SECONDS)
+	// || !HAS_TRAIT(user, TRAIT_MUTE) I FORGOT TO REBASE OOPS
+		if((user.mind?.miming != TRUE) && obj_flags & EMAGGED) //Mimes, mutes, and NO CLOWNS, unless emagged, in which case it will always succeed
+			to_chat(user, "You test the spray nozzle... but it doesn't budge!")
+			playsound(get_turf(src), 'sound/machines/scanbuzz.ogg', 100, TRUE)
+			if(is_clown_job(user.mind?.assigned_role) && prob(10))
+				to_chat(user, "The [src] shocks your hand with a jolt of electricity. Distant French laughter echoes in the back of your mind.")
+				user.electrocute_act(5, src, flags = SHOCK_SUPPRESS_MESSAGE)
+		else
+			to_chat(user, "You test the spray nozzle... and it moves!")
+			playsound(get_turf(src), 'sound/machines/ping.ogg', 100, TRUE)
