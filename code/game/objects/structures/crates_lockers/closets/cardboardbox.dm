@@ -50,7 +50,7 @@
 			to_chat(user, span_alert("\The [src] needs to be closed before you can convert it!"))
 			return
 
-		if(!spraycan.worthiness_check(user, TRUE))
+		if(!spraycan.worthiness_check(user))
 			user.visible_message(span_notice("[user] attempts to spray the [src] with the [spraycan], but nothing happens!"))
 			return
 
@@ -226,16 +226,14 @@
  * * user - The mob whose worthiness is being tested
  */
 
-/obj/item/boxcar_spraycan/proc/worthiness_check(mob/living/user, silent = FALSE)
+/obj/item/boxcar_spraycan/proc/worthiness_check(mob/living/user)
 	if(user.mind?.miming == TRUE || HAS_TRAIT(user, TRAIT_MUTE) || obj_flags & EMAGGED) //Mimes n' mutes, unless its emagged
-		if(silent)
-			to_chat(user, span_notice("You test the spray nozzle... and it moves!"))
-			playsound(get_turf(src), 'sound/machines/ping.ogg', 35, TRUE)
+		to_chat(user, span_notice("You test the spray nozzle... and it moves!"))
+		playsound(get_turf(src), 'sound/machines/ping.ogg', 35, TRUE)
 		return TRUE
 	else
-		if(silent)
-			to_chat(user, span_notice("You test the spray nozzle... but it doesn't budge!"))
-			playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 35, TRUE)
+		to_chat(user, span_notice("You test the spray nozzle... but it doesn't budge!"))
+		playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 35, TRUE)
 		if(is_clown_job(user.mind?.assigned_role) && prob(10)) //You had your warning, clown
 			to_chat(user, span_alert("\The [src] shocks your hand with a jolt of electricity! Distant, mocking French laughter echoes in the back of your mind..."))
 			user.electrocute_act(5, src, flags = SHOCK_SUPPRESS_MESSAGE)
