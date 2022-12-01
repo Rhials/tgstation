@@ -47,15 +47,15 @@
 	if(istype(W, /obj/item/boxcar_spraycan))
 		var/obj/item/boxcar_spraycan/spraycan = W
 		if(opened)
-			to_chat(user, span_alert("The [src] needs to be closed before you can convert it!"))
+			to_chat(user, span_alert("\The [src] needs to be closed before you can convert it!"))
 			return
 
 		if(!spraycan.worthiness_check(user))
 			user.visible_message(span_notice("[user] attempts to spray the [src] with the [spraycan], but nothing happens!."))
 			return
 
-		user.visible_message(span_notice("[user] begins spraying the [src] with the [spraycan]."),
-			span_notice("You begin spraying down the [src] with the [spraycan]."),
+		user.visible_message(span_notice("[user] begins spraying \the [src] with the [spraycan]."),
+			span_notice("You begin spraying down \the [src] with \the [spraycan]."),
 			span_notice("You hear the sound of someone frantically spraying something."),
 		)
 
@@ -63,7 +63,7 @@
 			playsound(get_turf(user), 'sound/effects/spray2.ogg', 5, TRUE, 5)
 			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
 			user.visible_message(span_notice("[user] finishes applying the decals to [spraycan], transforming it into a [new_car]!"),
-			span_notice("You finish applying the decals to the [src]."),
+			span_notice("You finish applying the decals to \the [src]."),
 			span_notice("You hear continued spraying, which quickly subsides."),
 		)
 			qdel(src)
@@ -138,7 +138,7 @@
 	desc = "A cardboard box, painted to distantly resemble a car. How can the driver even see where they're going?"
 	icon_state = "boxcar"
 	mob_storage_capacity = 4 //One door, four seats. Perfect for taxi services.
-	move_speed_multiplier = 0.5 //Make this change based on the number of ppl inside
+	move_speed_multiplier = 0.5
 	COOLDOWN_DECLARE(move_sound_cooldown)
 	should_alert = FALSE
 
@@ -158,6 +158,18 @@
 			if(bumped_door.try_safety_unlock(occupant))
 				return
 			bumped_door.bumpopen(occupant)
+
+/obj/structure/closet/cardboard/car/close(mob/living/user)
+	. = ..()
+
+	for(var/mob/living/carbon/human/passenger in contents)
+		if(passenger) //live check
+			move_speed_multiplier -= 0.05 //multi-man taxi action
+
+/obj/structure/closet/cardboard/car/open(mob/living/user, force)
+	. = ..()
+
+	move_speed_multiplier = initial(move_speed_multiplier)
 
 /obj/item/boxcar_spraycan //absolutely horrid item name
 	name = "box-car spraycan"
@@ -191,7 +203,7 @@
 /obj/item/lightreplacer/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
 		return
-	to_chat(user, span_warning("You short \the [src]'s nozzle lock."))
+	to_chat(user, span_warning("You short \the [src]'s spray nozzle lock."))
 	obj_flags |= EMAGGED
 
 /**
@@ -214,6 +226,6 @@
 		to_chat(user, span_notice("You test the spray nozzle... but it doesn't budge!"))
 		playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 35, TRUE)
 		if(is_clown_job(user.mind?.assigned_role) && prob(10)) //You had your warning, clown
-			to_chat(user, span_alert("The [src] shocks your hand with a jolt of electricity! Distant, mocking French laughter echoes in the back of your mind..."))
+			to_chat(user, span_alert("\The [src] shocks your hand with a jolt of electricity! Distant, mocking French laughter echoes in the back of your mind..."))
 			user.electrocute_act(5, src, flags = SHOCK_SUPPRESS_MESSAGE)
 	return FALSE
