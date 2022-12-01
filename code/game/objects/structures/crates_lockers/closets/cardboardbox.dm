@@ -155,7 +155,7 @@
 
 /obj/item/boxcar_spraycan //absolutely horrid item name
 	name = "box-car spraycan"
-	desc = "A Donk Co. brand Cardboard Box to Cardboard Box-Car Car Conversion Kit. Can be used to convert a cardboard box into a fully functional car, provided you apply the decals correctly." //You cannot apply them correctly
+	desc = "A Decroux brand decal spraycan, exported directly from the mime planet. Used to convert a cardboard box into a fully functional car. It looks like there's a label on the back..." //Mime planet is fucking stupid ask EOB for better lore
 	icon = 'icons/obj/art/crayons.dmi'
 	icon_state = "boxcar_can"
 	inhand_icon_state = "spraycan"
@@ -163,3 +163,12 @@
 	righthand_file = 'icons/mob/inhands/equipment/hydroponics_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	custom_price = PAYCHECK_COMMAND * 3
+
+/obj/item/boxcar_spraycan/examine_more(mob/user)
+	. = ..()
+
+	. += span_notice("The label on the back reads: 'Thank you for purchasing a Decroux Box-Car Spraycan. ")
+	. += span_notice("The spray nozzle will be electronically locked unless used by someone who meets these requirements. ")
+	. += span_notice("This is a precaution to ensure excellence in mimery, and that a mockery isn't made of our craft. ")
+	. += span_notice("") //detail goes here
+	. += span_notice("Lastly -- <i>No clowns.</i>'")
