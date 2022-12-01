@@ -133,8 +133,8 @@
 	close_sound_volume = 50
 	material_drop = /obj/item/stack/sheet/plasteel
 
-/obj/structure/closet/cardboard/car //Box car. Use a special spraycan (via cargo or elsewhere, figure this out later) to spray decals to make it look like a car.
-	name = "cardboard box box-car car" //Iron out the pun later
+/obj/structure/closet/cardboard/car
+	name = "cardboard box-car"
 	desc = "A cardboard box, painted to distantly resemble a car. How can the driver even see where they're going?"
 	icon_state = "boxcar"
 	mob_storage_capacity = 4 //One door, four seats. Perfect for taxi services.
@@ -173,7 +173,7 @@
 
 /obj/item/boxcar_spraycan //absolutely horrid item name
 	name = "box-car spraycan"
-	desc = "A Decroux brand decal spraycan. The nozzle is secured by a cutting edge electronic lock. Used to convert a cardboard box into a fully functional car. It looks like there's a label on the back..."
+	desc = "A Decroux brand decal box-car spraycan. The nozzle is secured by a cutting edge electronic lock. Used to convert a cardboard box into a fully functional car. It looks like there's a label on the back..."
 	icon = 'icons/obj/art/crayons.dmi'
 	icon_state = "boxcar_can"
 	inhand_icon_state = "spraycan"
