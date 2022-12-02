@@ -180,7 +180,7 @@
 
 /obj/item/boxcar_spraycan //absolutely horrid item name
 	name = "box-car spraycan"
-	desc = "A Decroux brand decal box-car spraycan. The nozzle is secured by a cutting edge electronic lock. Used to convert a cardboard box into a fully functional car. It looks like there's a label on the back..."
+	desc = "A Decroux brand box-car decal spraycan. The nozzle is secured by a cutting edge electronic lock. Used to convert a large enough box into a fully functional car. It looks like there's a label on the back..."
 	icon = 'icons/obj/art/crayons.dmi'
 	icon_state = "boxcar_can"
 	inhand_icon_state = "spraycan"
@@ -201,6 +201,9 @@
 	. += span_notice("Those who are bound to silence through other means may also qualify, due to their innate closeness to the spirit of mimery. ")
 	. += span_notice("This is a precaution to ensure excellence in mimery, and that a mockery isn't made of our craft. ")
 	. += span_notice("Lastly -- <i>No clowns.</i>'")
+
+	if(used)
+		. += span_notice("It feels considerably lighter than it should be. Maybe it's empty?")
 
 /obj/item/boxcar_spraycan/attack_self(mob/living/user, direction) //Used to test if you're "worthy" without using it on a box.
 	. = ..()
