@@ -240,6 +240,6 @@
 			to_chat(user, span_notice("You test the spray nozzle... but it doesn't budge!"))
 			playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 35, TRUE)
 		if(is_clown_job(user.mind?.assigned_role) && prob(10)) //You had your warning, clown
-			to_chat(user, span_alert("\The [src] shocks your hand with a jolt of electricity! Distant, mocking French laughter echoes in the back of your mind..."))
+			to_chat(user, span_alert("\The nozzle on the [src] sends a jolt of electricity through your hand! Distant, mocking French laughter echoes in the back of your mind..."))
 			user.electrocute_act(5, src, flags = SHOCK_SUPPRESS_MESSAGE)
 	return FALSE
