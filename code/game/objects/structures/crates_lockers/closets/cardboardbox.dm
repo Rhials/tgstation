@@ -231,12 +231,12 @@
 
 /obj/item/boxcar_spraycan/proc/worthiness_check(mob/living/user, silent = FALSE)
 	if(user.mind?.miming == TRUE || HAS_TRAIT(user, TRAIT_MUTE) || obj_flags & EMAGGED) //Mimes n' mutes, unless its emagged
-		if(silent)
+		if(!silent)
 			to_chat(user, span_notice("You test the spray nozzle... and it moves!"))
 			playsound(get_turf(src), 'sound/machines/ping.ogg', 35, TRUE)
 		return TRUE
 	else
-		if(silent)
+		if(!silent)
 			to_chat(user, span_notice("You test the spray nozzle... but it doesn't budge!"))
 			playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 35, TRUE)
 		if(is_clown_job(user.mind?.assigned_role) && prob(10)) //You had your warning, clown
