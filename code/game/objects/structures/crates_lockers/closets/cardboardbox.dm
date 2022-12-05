@@ -47,32 +47,24 @@
 	if(istype(W, /obj/item/boxcar_spraycan))
 		var/obj/item/boxcar_spraycan/spraycan = W
 		if(opened)
-			to_chat(user, span_alert("\The [src] needs to be closed before you can convert it!"))
+			balloon_alert(user, "close the box first!")
 			return
 
 		if(!spraycan.worthiness_check(user, TRUE))
-			user.visible_message(span_notice("[user] attempts to spray the [src] with the [spraycan], but nothing happens!"))
+			balloon_alert(user, "the nozzle doesn't budge!")
 			return
 
 		if(spraycan.used)
-			user.visible_message(span_alert("[user] begins trying to spraying \the [src] with the [spraycan], but nothing comes out of the nozzle!"),
-			span_alert("You begin trying to spray \the [src] with \the [spraycan], but nothing comes out of the nozzle! It looks like this spraycan has already been used up."),
-		)
+			balloon_alert(user, "can is empty!")
 			return
 
-		user.visible_message(span_notice("[user] begins spraying \the [src] with the [spraycan]."),
-			span_notice("You begin spraying down \the [src] with \the [spraycan]."),
-			span_notice("You hear the sound of someone frantically spraying something."),
-		)
+		balloon_alert_to_viewers("spraying...")
 
 		if(do_after(user, 6 SECONDS, src))
 			playsound(get_turf(user), 'sound/effects/spray2.ogg', 5, TRUE, 5)
 			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
 			spraycan.used = TRUE
-			user.visible_message(span_notice("[user] finishes applying the decals to [spraycan], transforming it into a [new_car]!"),
-			span_notice("You finish applying the decals to \the [src]."),
-			span_notice("You hear continued spraying, which quickly subsides."),
-		)
+			balloon_alert_to_viewers("conversion complete!")
 			qdel(src)
 	return
 
@@ -215,7 +207,7 @@
 /obj/item/boxcar_spraycan/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
 		return
-	to_chat(user, span_warning("You short \the [src]'s spray nozzle lock."))
+	balloon_alert(user, "zzzt...")
 	obj_flags |= EMAGGED
 
 /**
@@ -227,17 +219,18 @@
  *
  * Arguments:
  * * user - The mob whose worthiness is being tested
+ * * silent - Will the check make noise and a balloon alert?
  */
 
 /obj/item/boxcar_spraycan/proc/worthiness_check(mob/living/user, silent = FALSE)
 	if(user.mind?.miming == TRUE || HAS_TRAIT(user, TRAIT_MUTE) || obj_flags & EMAGGED) //Mimes n' mutes, unless its emagged
 		if(!silent)
-			to_chat(user, span_notice("You test the spray nozzle... and it moves!"))
+			balloon_alert(user, "the nozzle moves!")
 			playsound(get_turf(src), 'sound/machines/ping.ogg', 35, TRUE)
 		return TRUE
 	else
 		if(!silent)
-			to_chat(user, span_notice("You test the spray nozzle... but it doesn't budge!"))
+			balloon_alert(user, "the nozzle doesn't budge!")
 			playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 35, TRUE)
 		if(is_clown_job(user.mind?.assigned_role) && prob(10)) //You had your warning, clown
 			to_chat(user, span_alert("\The nozzle on the [src] sends a jolt of electricity through your hand! Distant, mocking French laughter echoes in the back of your mind..."))
