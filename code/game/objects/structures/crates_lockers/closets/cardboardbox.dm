@@ -62,7 +62,7 @@
 
 		if(do_after(user, 6 SECONDS, src))
 			playsound(get_turf(user), 'sound/effects/spray2.ogg', 5, TRUE, 5)
-			var/obj/new_car = new /obj/structure/closet/cardboard/car(get_turf(src))
+			new /obj/structure/closet/cardboard/car(get_turf(src))
 			spraycan.used = TRUE
 			balloon_alert_to_viewers("conversion complete!")
 			qdel(src)
@@ -148,7 +148,7 @@
 		COOLDOWN_START(src, move_sound_cooldown, 2 SECONDS)
 		playsound(get_turf(src), 'sound/vehicles/carrev.ogg', 100, TRUE)
 
-/obj/structure/closet/cardboard/car/Bump(atom/A) //Now you dont have to pop out every time you want to open a door
+/obj/structure/closet/cardboard/car/Bump(atom/A) //So you dont have to pop out every time you want to open a door
 	. = ..()
 
 	if(istype(A, /obj/machinery/door))
@@ -162,7 +162,7 @@
 	. = ..()
 
 	for(var/mob/living/carbon/human/passenger in contents)
-		if(passenger) //live check
+		if(passenger.stat == CONSCIOUS) //If you can't contribute to pushing around the box, you can't speed it up
 			move_speed_multiplier -= 0.05 //multi-man taxi action
 
 /obj/structure/closet/cardboard/car/open(mob/living/user, force)
@@ -170,7 +170,7 @@
 
 	move_speed_multiplier = initial(move_speed_multiplier)
 
-/obj/item/boxcar_spraycan //absolutely horrid item name
+/obj/item/boxcar_spraycan
 	name = "box-car spraycan"
 	desc = "A Decroux brand box-car decal spraycan. The nozzle is secured by a cutting edge electronic lock. Used to convert a large enough box into a fully functional car. It looks like there's a label on the back..."
 	icon = 'icons/obj/art/crayons.dmi'
@@ -195,9 +195,9 @@
 	. += span_notice("Lastly -- <i>No clowns.</i>'")
 
 	if(used)
-		. += span_notice("It feels considerably lighter than it should be. Maybe it's empty?")
+		. += span_notice("It feels considerably lighter than it should be. This can is probably empty...")
 
-/obj/item/boxcar_spraycan/attack_self(mob/living/user, direction) //Used to test if you're "worthy" without using it on a box.
+/obj/item/boxcar_spraycan/attack_self(mob/living/user, direction) //Used to test if you're "worthy" without using it directly on a box.
 	. = ..()
 
 	if(COOLDOWN_FINISHED(src, confirmation_cooldown))
