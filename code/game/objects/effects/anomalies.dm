@@ -643,3 +643,12 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "shield-flash"
 	duration = 3
+
+/obj/effect/anomaly/ectoplasm
+	name = "ectoplasm anomaly"
+	icon_state = "dimensional" //change
+	aSignal = /obj/item/assembly/signaler/anomaly/anomaly_ectoplasm
+	immortal = TRUE
+
+/obj/effect/ectoplasm/detonate() //Takes current number of orbiting ghosts, compares it to the number of players and number of ghosts and finds 2 values to calculate an effect with
+	return
