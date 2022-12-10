@@ -9,6 +9,8 @@
 
 /datum/round_event/anomaly/anomaly_ectoplasm
 	anomaly_path = /obj/effect/anomaly/ectoplasm
+	start_when = 1
+	announce_when = 20
 
 /datum/round_event/anomaly/anomaly_ectoplasm/announce(fake)
 	priority_announce("Localized ectoplasmic outburst detected on long range scanners. Expected location of impact: [impact_area.name].", "Anomaly Alert")

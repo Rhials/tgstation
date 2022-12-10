@@ -657,15 +657,46 @@
 /obj/effect/anomaly/ectoplasm/Initialize(mapload, new_lifespan, drops_core) //Add a timer to call for ghosts again
 	. = ..()
 
+/obj/effect/anomaly/ectoplasm/examine(mob/user)
+	. = ..()
+
+	switch(ghosts_orbiting)
+		if(0 to 10) //Minor impact
+			priority_announce("0 to 10")
+		if(11 to 35) //Major impact
+			priority_announce("11 to 35")
+		if(50) //Time to get fucking spooky
+			priority_announce("TIME TO GET SPOOKY")
+
 
 /obj/effect/anomaly/ectoplasm/anomalyEffect(delta_time) //Update ghost count
 	. = ..()
+	if(!override_ghosts)
+		ghosts_orbiting = 0 //Reset the counter
+		for(var/i in orbiters?.orbiter_list)
+			if(!isobserver(i))
+				continue
+			ghosts_orbiting++
+
+		var/player_count = length(GLOB.player_list)
+		var/total_dead = length(GLOB.dead_player_list)
 
 
+		//Move this math to the detonate function when you're confident it doesnt need debugging
+
+		//The actual event severity is determined by what % the current ghosts are circling the anomaly
+		var/severity = ghosts_orbiting / total_dead
+		//Max severity is gated by what % of the player count are dead players
+		var/max_severity = total_dead / player_count
+		//This is done to prevent anomalies from being too powerful on lowpop, where 3 orbiters out of 6 would be enough for a catastrophic severity.
 
 /obj/effect/anomaly/ectoplasm/detonate() //Takes current number of orbiting ghosts, compares it to the number of players and number of ghosts and finds 2 values to calculate an effect with
-	//% of ghosts to living crew calculates max severity
+	. = ..()
 
-	//% of ghosts present rolls into actual chosen severity
-
-	return
+	switch(ghosts_orbiting)
+		if(0 to 10)
+			priority_announce("0 to 10")
+		if(11 to 35)
+			priority_announce("11 to 35")
+		if(50)
+			priority_announce("TIME TO GET SPOOKY")

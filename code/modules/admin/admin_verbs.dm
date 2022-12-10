@@ -934,6 +934,7 @@ GLOBAL_PROTECT(admin_verbs_poll)
 
 		// Finally, ensure the minds are tracked and in the manifest.
 		SSticker.minds += character.mind
+		GLOB.player_list += character
 		if(ishuman(character))
 			GLOB.data_core.manifest_inject(character)
 
