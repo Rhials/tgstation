@@ -649,6 +649,22 @@
 	icon_state = "dimensional" //change
 	aSignal = /obj/item/assembly/signaler/anomaly/anomaly_ectoplasm
 	immortal = TRUE
+	///Debug var for overriding the payload
+	var/override_ghosts = FALSE
+	///The number of ghosts orbiting this anomaly.
+	var/ghosts_orbiting = 0
 
-/obj/effect/ectoplasm/detonate() //Takes current number of orbiting ghosts, compares it to the number of players and number of ghosts and finds 2 values to calculate an effect with
+/obj/effect/anomaly/ectoplasm/Initialize(mapload, new_lifespan, drops_core) //Add a timer to call for ghosts again
+	. = ..()
+
+
+/obj/effect/anomaly/ectoplasm/anomalyEffect(delta_time) //Update ghost count
+	. = ..()
+
+
+
+/obj/effect/anomaly/ectoplasm/detonate() //Takes current number of orbiting ghosts, compares it to the number of players and number of ghosts and finds 2 values to calculate an effect with
+	if(!override_ghosts)
+
+
 	return
