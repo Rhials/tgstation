@@ -664,7 +664,8 @@
 
 
 /obj/effect/anomaly/ectoplasm/detonate() //Takes current number of orbiting ghosts, compares it to the number of players and number of ghosts and finds 2 values to calculate an effect with
-	if(!override_ghosts)
+	//Current number of ghosts sets max severity
 
+	//% of ghosts present rolls into actual chosen severity
 
 	return
