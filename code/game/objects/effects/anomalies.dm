@@ -647,7 +647,7 @@
 /obj/effect/anomaly/ectoplasm
 	name = "ectoplasm anomaly"
 	icon_state = "dimensional" //change
-	aSignal = /obj/item/assembly/signaler/anomaly/anomaly_ectoplasm
+	aSignal = /obj/item/assembly/signaler/anomaly/ectoplasm
 	immortal = TRUE
 	///Debug var for overriding the payload
 	var/override_ghosts = FALSE
@@ -681,14 +681,14 @@
 		var/player_count = length(GLOB.player_list)
 		var/total_dead = length(GLOB.dead_player_list)
 
-
 		//Move this math to the detonate function when you're confident it doesnt need debugging
 
 		//The actual event severity is determined by what % the current ghosts are circling the anomaly
-		var/severity = ghosts_orbiting / total_dead
+		var/severity = ghosts_orbiting / total_dead * 100
 		//Max severity is gated by what % of the player count are dead players
-		var/max_severity = total_dead / player_count
+		var/max_severity = total_dead / player_count * 100
 		//This is done to prevent anomalies from being too powerful on lowpop, where 3 orbiters out of 6 would be enough for a catastrophic severity.
+		priority_announce("wow")
 
 /obj/effect/anomaly/ectoplasm/detonate() //Takes current number of orbiting ghosts, compares it to the number of players and number of ghosts and finds 2 values to calculate an effect with
 	. = ..()
