@@ -646,33 +646,30 @@
 
 /obj/effect/anomaly/ectoplasm
 	name = "ectoplasm anomaly"
-	icon_state = "dimensional" //change
+	desc = "It looks like the souls of the damned are trying to break into the realm of the living again. How upsetting."
+	icon_state = "ectoplasm" //there's an alt state. use that too
 	aSignal = /obj/item/assembly/signaler/anomaly/ectoplasm
-	immortal = TRUE
 	///Debug var for overriding the payload
 	var/override_ghosts = FALSE
-	///The number of ghosts orbiting this anomaly.
-	var/ghosts_orbiting = 0
-
-/obj/effect/anomaly/ectoplasm/Initialize(mapload, new_lifespan, drops_core) //Add a timer to call for ghosts again
-	. = ..()
+	///The numerical power of the anomaly. Calculated in anomalyEffect.
+	var/effect_power = 0
 
 /obj/effect/anomaly/ectoplasm/examine(mob/user)
 	. = ..()
 
-	switch(ghosts_orbiting)
-		if(0 to 10) //Minor impact
-			priority_announce("0 to 10")
-		if(11 to 35) //Major impact
-			priority_announce("11 to 35")
-		if(50) //Time to get fucking spooky
-			priority_announce("TIME TO GET SPOOKY")
+	switch(effect_power)
+		if(0 to 15)
+			. += span_notice(" The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment.")
+		if(16 to 49)
+			. += span_notice(" The space around the anomaly vibrates considerably, letting out a noise that sounds like ghastly moaning. .")
+		if(50)
+			. += span_alert(" The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good.")
 
 
 /obj/effect/anomaly/ectoplasm/anomalyEffect(delta_time) //Update ghost count
 	. = ..()
 	if(!override_ghosts)
-		ghosts_orbiting = 0 //Reset the counter
+		var/ghosts_orbiting = 0
 		for(var/i in orbiters?.orbiter_list)
 			if(!isobserver(i))
 				continue
@@ -685,18 +682,33 @@
 
 		//The actual event severity is determined by what % the current ghosts are circling the anomaly
 		var/severity = ghosts_orbiting / total_dead * 100
-		//Max severity is gated by what % of the player count are dead players
-		var/max_severity = total_dead / player_count * 100
+		//Max severity is gated by what % of the player count are dead players, double for leniency's sake
+		var/max_severity = total_dead / player_count * 200
 		//This is done to prevent anomalies from being too powerful on lowpop, where 3 orbiters out of 6 would be enough for a catastrophic severity.
-		priority_announce("wow")
+
+		effect_power = clamp(severity, 0, max_severity)
+
+		if(effect_power > 50)
+			icon_state = "ectoplasm_heavy"
+			update_appearance(UPDATE_ICON_STATE)
+
 
 /obj/effect/anomaly/ectoplasm/detonate() //Takes current number of orbiting ghosts, compares it to the number of players and number of ghosts and finds 2 values to calculate an effect with
 	. = ..()
 
-	switch(ghosts_orbiting)
-		if(0 to 10)
-			priority_announce("0 to 10")
-		if(11 to 35)
-			priority_announce("11 to 35")
-		if(50)
-			priority_announce("TIME TO GET SPOOKY")
+	switch(effect_power)
+		if(0 to 19)
+			minor_impact()
+		if(20 to 54)
+			medium_impact()
+		if(55)
+			major_impact()
+
+/obj/effect/anomaly/ectoplasm/proc/minor_impact()
+	priority_announce("Minor impact ")
+
+/obj/effect/anomaly/ectoplasm/proc/medium_impact()
+	priority_announce("Medium impact ")
+
+/obj/effect/anomaly/ectoplasm/proc/major_impact()
+	priority_announce("Major impact ")
