@@ -708,14 +708,10 @@
 
 /obj/effect/anomaly/ectoplasm/proc/medium_impact()
 	priority_announce("Ectoplasmic Anomaly has reached critical mass. Outburst detected with an intensity of [effect_power]. Expected impact: Moderate", "Anomaly Alert")
-	switch(rand(1,3))
+	switch(rand(1,2))
 		if(1)
 			empulse(get_turf(src), 8, 12)
 		if(2)
-			for(var/obj/machinery/power/apc/apc_to_flicker in GLOB.apcs_list)
-			//.	apc_to_flicker.lights
-			priority_announce("Unfinished effect", "Anomaly Alert")
-		if(3)
 			for(var/mob/living/carbon/human/mob in view(16, get_turf(src))) //Very wide impact
 				mob.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
 				new /obj/effect/temp_visual/revenant(get_turf(src))
@@ -723,13 +719,11 @@
 
 /obj/effect/anomaly/ectoplasm/proc/major_impact()
 	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Outburst detected with an intensity of [effect_power]. Please contact a chaplain if one is available.", "Anomaly Alert")
-	switch(rand(1,3))
+	switch(rand(1,2))
 		if(1)
 			priority_announce("Unfinished effect", "Anomaly Alert")
 		if(2)
 			INVOKE_ASYNC(src, PROC_REF(make_ghost_swarm))
-		if(3)
-			priority_announce("Unfinished effect", "Anomaly Alert")
 
 /**
  * Generates a poll for observers, spawning anyone who signs up in a large group of ghost simplemobs
