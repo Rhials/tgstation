@@ -35,6 +35,9 @@
 			newAnomaly = new anomaly_path(anomaly_turf)
 			newAnomaly.override_ghosts = TRUE
 			newAnomaly.effect_power = anomaly_event.override
+			if(newAnomaly.effect_power > 50) //Otherwise it won't update because anomalyEffect is overridden and blocked
+				icon_state = "ectoplasm_heavy"
+				update_appearance(UPDATE_ICON_STATE)
 		if (newAnomaly)
 			announce_to_ghosts(newAnomaly)
 

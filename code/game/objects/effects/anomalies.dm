@@ -678,8 +678,6 @@
 		var/player_count = length(GLOB.player_list)
 		var/total_dead = length(GLOB.dead_player_list)
 
-		//Move this math to the detonate function when you're confident it doesnt need debugging
-
 		//The actual event severity is determined by what % the current ghosts are circling the anomaly
 		var/severity = ghosts_orbiting / total_dead * 100
 		//Max severity is gated by what % of the player count are dead players, double for leniency's sake
@@ -697,11 +695,11 @@
 	. = ..()
 
 	switch(effect_power)
-		if(0 to 19)
+		if(0 to 15)
 			minor_impact()
-		if(20 to 54)
+		if(16 to 49)
 			medium_impact()
-		if(55)
+		if(50)
 			major_impact()
 
 /obj/effect/anomaly/ectoplasm/proc/minor_impact()
