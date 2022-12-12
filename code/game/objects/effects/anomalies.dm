@@ -699,7 +699,7 @@
 			medium_impact()
 		if(50 to 100)
 			major_impact()
-		else //Under 5% participation, we do nothing more than a small visual *poof*.
+		else //Under 5% participation (or if we somehow surpass 100%?), we do nothing more than a small visual *poof*.
 			new /obj/effect/temp_visual/dir_setting/curse(get_turf(src))
 
 
