@@ -647,11 +647,11 @@
 /obj/effect/anomaly/ectoplasm
 	name = "ectoplasm anomaly"
 	desc = "It looks like the souls of the damned are trying to break into the realm of the living again. How upsetting."
-	icon_state = "ectoplasm" //there's an alt state. use that too
+	icon_state = "ectoplasm"
 	aSignal = /obj/item/assembly/signaler/anomaly/ectoplasm
-	///Debug var for overriding the payload
+	///Blocks the anomaly from updating ghost count. Used in case an admin wants to manually trigger the event.
 	var/override_ghosts = FALSE
-	///The numerical power of the anomaly. Calculated in anomalyEffect.
+	///The numerical power of the anomaly. Calculated in anomalyEffect. Also used in determining the category of detonation effects.
 	var/effect_power = 0
 
 /obj/effect/anomaly/ectoplasm/examine(mob/user)
@@ -659,28 +659,26 @@
 
 	switch(effect_power)
 		if(0 to 15)
-			. += span_notice(" The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment.")
+			. += " The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment."
 		if(16 to 49)
-			. += span_notice(" The space around the anomaly vibrates considerably, letting out a noise that sounds like ghastly moaning. .")
-		if(50)
-			. += span_alert(" The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good.")
+			. += " The space around the anomaly vibrates considerably, letting out a noise that sounds like ghastly moaning. ."
+		if(50 to 100)
+			. += " The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good."
 
 
 /obj/effect/anomaly/ectoplasm/anomalyEffect(delta_time) //Update ghost count
 	. = ..()
 	if(!override_ghosts)
 		var/ghosts_orbiting = 0
-		for(var/i in orbiters?.orbiter_list)
-			if(!isobserver(i))
-				continue
+		for(var/mob/dead/observer/orbiter in orbiters?.orbiter_list)
 			ghosts_orbiting++
 
 		var/player_count = length(GLOB.player_list)
 		var/total_dead = length(GLOB.dead_player_list)
 
-		//The actual event severity is determined by what % the current ghosts are circling the anomaly
+		//The actual event severity is determined by what % the current ghosts are circling the anomaly. Half of the active observers orbiting is enough to reach major impact if the cap isn't present.
 		var/severity = ghosts_orbiting / total_dead * 100
-		//Max severity is gated by what % of the player count are dead players, double for leniency's sake
+		//Max severity is gated by what % of the player count are dead players, double for leniency's sake. A quarter of the server being dead is enough to raise the cap above 50.
 		var/max_severity = total_dead / player_count * 200
 		//This is done to prevent anomalies from being too powerful on lowpop, where 3 orbiters out of 6 would be enough for a catastrophic severity.
 
@@ -695,18 +693,56 @@
 	. = ..()
 
 	switch(effect_power)
-		if(0 to 15)
+		if(5 to 15)
 			minor_impact()
 		if(16 to 49)
 			medium_impact()
-		if(50)
+		if(50 to 100)
 			major_impact()
+		else //Under 5% participation, we do nothing more than a small visual *poof*.
+			new /obj/effect/temp_visual/dir_setting/curse(get_turf(src))
+
 
 /obj/effect/anomaly/ectoplasm/proc/minor_impact()
-	priority_announce("Minor impact ")
+	priority_announce("Ectoplasmic Anomaly has reached critical mass. Outburst detected with an intensity of [effect_power]. Expected impact: Minor", "Anomaly Alert")
 
 /obj/effect/anomaly/ectoplasm/proc/medium_impact()
-	priority_announce("Medium impact ")
+	priority_announce("Ectoplasmic Anomaly has reached critical mass. Outburst detected with an intensity of [effect_power]. Expected impact: Moderate", "Anomaly Alert")
+	switch(rand(1,3))
+		if(1)
+			empulse(get_turf(src), 8, 12)
+		if(2)
+			for(var/obj/machinery/power/apc/apc_to_flicker in GLOB.apcs_list)
+			//.	apc_to_flicker.lights
+			priority_announce("Unfinished effect", "Anomaly Alert")
+		if(3)
+			for(var/mob/living/carbon/human/mob in view(16, get_turf(src))) //Very wide impact
+				mob.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
+				new /obj/effect/temp_visual/revenant(get_turf(src))
+				to_chat(mob, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head."))
 
 /obj/effect/anomaly/ectoplasm/proc/major_impact()
-	priority_announce("Major impact ")
+	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Outburst detected with an intensity of [effect_power]. Please contact a chaplain if one is available.", "Anomaly Alert")
+	switch(rand(1,3))
+		if(1)
+			priority_announce("Unfinished effect", "Anomaly Alert")
+		if(2)
+			INVOKE_ASYNC(src, PROC_REF(make_ghost_swarm))
+		if(3)
+			priority_announce("Unfinished effect", "Anomaly Alert")
+
+/**
+ * Generates a poll for observers, spawning anyone who signs up in a large group of ghost simplemobs
+ *
+ * Generates a poll that asks anyone observing for participation. Spawns a bunch of simplemob ghosts with the goal of ruining whatever area they've been spawned into.
+ * In the future, ghosts will be self-deleting and have two minutes to fuck up the area they've arrived at.
+ */
+
+/obj/effect/anomaly/ectoplasm/proc/make_ghost_swarm()
+	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Would you like to participate in a spooky ghost swarm?", ROLE_SENTIENCE, null, 10 SECONDS)
+	var/turf/spawn_location = get_turf(pick(GLOB.generic_event_spawns))
+	for(var/mob/dead/observer/candidate in candidates)
+		var/mob/living/simple_animal/hostile/retaliate/ghost/new_ghost = new /mob/living/simple_animal/hostile/retaliate/ghost(spawn_location)
+		new_ghost.key = candidate.key
+		new_ghost.log_message("was returned to the living world as a ghost by an ectoplasmic anomaly.", LOG_GAME)
+		to_chat(new_ghost, span_revendanger("You are a vengeful spirit, brought back from beyond the grave. Your time on this plane is limited, so be sure to vent your supernatural anger on anything or anyone nearby!"))
