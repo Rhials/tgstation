@@ -703,7 +703,7 @@
 			major_impact()
 		else //Under 5% participation (or if we somehow surpass 100%?), we do nothing more than a small visual *poof*.
 			new /obj/effect/temp_visual/dir_setting/curse(get_turf(src))
-
+			/obj/item/toy/plush/nukeplushie
 
 /obj/effect/anomaly/ectoplasm/proc/minor_impact()
 	priority_announce("Ectoplasmic Anomaly has reached critical mass. Outburst detected with an intensity of [effect_power]. Expected impact: Minor", "Anomaly Alert")
@@ -724,11 +724,7 @@
 
 /obj/effect/anomaly/ectoplasm/proc/major_impact()
 	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Outburst detected with an intensity of [effect_power]. Please contact a chaplain if one is available.", "Anomaly Alert")
-	switch(rand(1,2))
-		if(1)
-			priority_announce("Unfinished effect", "Anomaly Alert")
-		if(2)
-			INVOKE_ASYNC(src, PROC_REF(make_ghost_swarm))
+	INVOKE_ASYNC(src, PROC_REF(make_ghost_swarm), get_turf(src))
 
 /**
  * Generates a poll for observers, spawning anyone who signs up in a large group of ghost simplemobs
@@ -737,18 +733,20 @@
  * In the future, ghosts will be self-deleting and have two minutes to fuck up the area they've arrived at.
  */
 
-/obj/effect/anomaly/ectoplasm/proc/make_ghost_swarm()
-	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Would you like to participate in a spooky ghost swarm?", ROLE_SENTIENCE, null, 10 SECONDS)
-	var/turf/spawn_location = get_turf(pick(GLOB.generic_event_spawns))
+/obj/effect/anomaly/ectoplasm/proc/make_ghost_swarm(turf/spawn_location)
+	var/list/candidates = poll_candidates("Would you like to participate in a spooky ghost swarm?", ROLE_SENTIENCE, null, 10 SECONDS)
 	var/list/ghost_list = list()
-	for(var/mob/dead/observer/candidate in candidates)
+	for(var/candidate in candidates)
+		if(!isobserver(candidate))
+			continue
+		var/mob/dead/observer/candidate_ghost = candidate //typecast so we can pull their key
 		var/mob/living/simple_animal/hostile/retaliate/ghost/new_ghost = new /mob/living/simple_animal/hostile/retaliate/ghost(spawn_location)
 		new_ghost.ghostize(FALSE)
-		new_ghost.key = candidate.key
+		new_ghost.key = candidate_ghost.key
 		new_ghost.log_message("was returned to the living world as a ghost by an ectoplasmic anomaly.", LOG_GAME)
 		to_chat(new_ghost, span_revendanger("You are a vengeful spirit, brought back from beyond the grave. Your time on this plane is limited, so vent your supernatural anger on anything or anyone nearby while you can!"))
 		ghost_list += new_ghost
-	addtimer(CALLBACK(src, PROC_REF(cleanup_ghost)))
+	addtimer(CALLBACK(src, PROC_REF(cleanup_ghost), ghost_list), 2 MINUTES)
 
 /**
  * Gives a farewell message and deletes the ghost it was run for
