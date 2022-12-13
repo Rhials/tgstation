@@ -653,23 +653,25 @@
 	var/override_ghosts = FALSE
 	///The numerical power of the anomaly. Calculated in anomalyEffect. Also used in determining the category of detonation effects.
 	var/effect_power = 0
+	///The actual number of ghosts orbiting the anomaly.
+	var/ghosts_orbiting = 0
 
 /obj/effect/anomaly/ectoplasm/examine(mob/user)
 	. = ..()
 
 	switch(effect_power)
 		if(0 to 15)
-			. += " The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment."
+			. += "The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment."
 		if(16 to 49)
-			. += " The space around the anomaly vibrates considerably, letting out a noise that sounds like ghastly moaning. ."
+			. += "The space around the anomaly vibrates considerably, letting out a noise that sounds like ghastly moaning. Someone should probably do something about that."
 		if(50 to 100)
-			. += " The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good."
+			. += "The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good."
 
 
 /obj/effect/anomaly/ectoplasm/anomalyEffect(delta_time) //Update ghost count
 	. = ..()
 	if(!override_ghosts)
-		var/ghosts_orbiting = 0
+		ghosts_orbiting = 0
 		for(var/mob/dead/observer/orbiter in orbiters?.orbiter_list)
 			ghosts_orbiting++
 
@@ -689,7 +691,7 @@
 			update_appearance(UPDATE_ICON_STATE)
 
 
-/obj/effect/anomaly/ectoplasm/detonate() //Takes current number of orbiting ghosts, compares it to the number of players and number of ghosts and finds 2 values to calculate an effect with
+/obj/effect/anomaly/ectoplasm/detonate()
 	. = ..()
 
 	switch(effect_power)
@@ -709,13 +711,16 @@
 /obj/effect/anomaly/ectoplasm/proc/medium_impact()
 	priority_announce("Ectoplasmic Anomaly has reached critical mass. Outburst detected with an intensity of [effect_power]. Expected impact: Moderate", "Anomaly Alert")
 	switch(rand(1,2))
-		if(1)
-			empulse(get_turf(src), 8, 12)
+		if(1) //Emp pulse, size scaled to the number of ghosts orbiting
+			var/heavy_range = clamp(ghosts_orbiting, 4, 12)
+			var/light_range = heavy_range * 1.25
+			empulse(get_turf(src), heavy_range, light_range) //In the event that an EMP anomaly event is made, feel free to change this to something different
 		if(2)
-			for(var/mob/living/carbon/human/mob in view(16, get_turf(src))) //Very wide impact
+			var/disease_range = ghosts_orbiting + 10 //Very wide impact
+			for(var/mob/living/carbon/human/mob in view(disease_range, get_turf(src)))
 				mob.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
 				new /obj/effect/temp_visual/revenant(get_turf(src))
-				to_chat(mob, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head."))
+				to_chat(mob, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
 
 /obj/effect/anomaly/ectoplasm/proc/major_impact()
 	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Outburst detected with an intensity of [effect_power]. Please contact a chaplain if one is available.", "Anomaly Alert")
@@ -735,8 +740,23 @@
 /obj/effect/anomaly/ectoplasm/proc/make_ghost_swarm()
 	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Would you like to participate in a spooky ghost swarm?", ROLE_SENTIENCE, null, 10 SECONDS)
 	var/turf/spawn_location = get_turf(pick(GLOB.generic_event_spawns))
+	var/list/ghost_list = list()
 	for(var/mob/dead/observer/candidate in candidates)
 		var/mob/living/simple_animal/hostile/retaliate/ghost/new_ghost = new /mob/living/simple_animal/hostile/retaliate/ghost(spawn_location)
+		new_ghost.ghostize(FALSE)
 		new_ghost.key = candidate.key
 		new_ghost.log_message("was returned to the living world as a ghost by an ectoplasmic anomaly.", LOG_GAME)
-		to_chat(new_ghost, span_revendanger("You are a vengeful spirit, brought back from beyond the grave. Your time on this plane is limited, so be sure to vent your supernatural anger on anything or anyone nearby!"))
+		to_chat(new_ghost, span_revendanger("You are a vengeful spirit, brought back from beyond the grave. Your time on this plane is limited, so vent your supernatural anger on anything or anyone nearby while you can!"))
+		ghost_list += new_ghost
+	addtimer(CALLBACK(src, PROC_REF(cleanup_ghost)))
+
+/**
+ * Gives a farewell message and deletes the ghost it was run for
+ *
+ * Handles cleanup of
+ */
+
+/obj/effect/anomaly/ectoplasm/proc/cleanup_ghost(list/ghost_list)
+	for(var/mob/living/simple_animal/hostile/retaliate/ghost/ghost_to_delete in ghost_list)
+		visible_message(span_alert("The [ghost_to_delete] wails as it is torn back into the void!"), span_alert("You let out one last wail as you are sucked back into the realm of the dead. Then suddenly, you're back in the comforting embrace of the afterlife."), span_hear("You hear ethereal wailing."))
+		qdel(ghost_to_delete)
