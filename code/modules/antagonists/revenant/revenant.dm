@@ -71,6 +71,7 @@
 	AddElement(/datum/element/simple_flying)
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_SIXTHSENSE, INNATE_TRAIT)
+	RegisterSignal(src, COMSIG_GHOST_PHOTOGRAPHED, PROC_REF(on_ghost_photograph))
 
 	// Starting spells
 	var/datum/action/cooldown/spell/night_vision/revenant/vision = new(src)
@@ -399,6 +400,21 @@
 			to_chat(src, span_warning("Holy energies block your path!"))
 			return
 	return TRUE
+
+/**
+ * Manages extra effects for when a camera obscura (or other ghost-enabled camera) captures this entity.
+ *
+ * Reveals and damages a revenant if they are close enough to the user when photographed.
+ *
+ * * photographer - The person who took the spirit photograph of the revenant, for combat logging.
+ */
+/mob/living/simple_animal/revenant/proc/on_ghost_photograph(datum/source, mob/photographer)
+	SIGNAL_HANDLER
+
+	reveal(15 SECONDS)
+	to_chat(src, span_revendanger("A flash of purifying light engulfs you!"))
+	playsound(src, sound('sound/effects/screech.ogg'), 50)
+	log_combat(photographer, src, "took a spirit photograph of")
 
 //reforming
 /obj/item/ectoplasm/revenant

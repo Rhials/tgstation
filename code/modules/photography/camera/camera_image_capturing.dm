@@ -30,6 +30,8 @@
 				atoms += new /obj/effect/appearance_clone(newT, T.loc)
 			for(var/i in T.contents)
 				var/atom/A = i
+				if(see_ghosts && (get_dist(src, A) <= 5))
+					SEND_SIGNAL(A, COMSIG_GHOST_PHOTOGRAPHED, usr) //We send this BEFORE adding to the photo, so that invisible entities may be revealed and will be included in the picture.
 				if(!A.invisibility || (see_ghosts && isobserver(A)))
 					atoms += new /obj/effect/appearance_clone(newT, A)
 		skip_normal = TRUE
