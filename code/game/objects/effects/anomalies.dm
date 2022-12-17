@@ -663,7 +663,7 @@
 		if(0 to 15)
 			. += "The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment."
 		if(16 to 49)
-			. += "The space around the anomaly vibrates considerably, letting out a noise that sounds like ghastly moaning. Someone should probably do something about that."
+			. += "The space around the anomaly seems to vibrate, letting out a noise that sounds like ghastly moaning. Someone should probably do something about that."
 		if(50 to 100)
 			. += "The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good."
 
@@ -674,6 +674,10 @@
 		ghosts_orbiting = 0
 		for(var/mob/dead/observer/orbiter in orbiters?.orbiter_list)
 			ghosts_orbiting++
+
+		if(!ghosts_orbiting)
+			effect_power = 0
+			return
 
 		var/player_count = length(GLOB.player_list)
 		var/total_dead = length(GLOB.dead_player_list)
@@ -703,27 +707,54 @@
 			major_impact()
 		else //Under 5% participation (or if we somehow surpass 100%?), we do nothing more than a small visual *poof*.
 			new /obj/effect/temp_visual/dir_setting/curse(get_turf(src))
-			/obj/item/toy/plush/nukeplushie
+
+/**
+ * Releases an effect akin to a revenant's defile ability with a range based on the number of ghosts orbiting.
+ *
+ * Announces the anomaly effect, calculates an effect range based on the number of ghosts on the anomaly.
+ * Gives nearby humans revenant blight, rusts turfs, and damages windows.
+ */
 
 /obj/effect/anomaly/ectoplasm/proc/minor_impact()
-	priority_announce("Ectoplasmic Anomaly has reached critical mass. Outburst detected with an intensity of [effect_power]. Expected impact: Minor", "Anomaly Alert")
+	priority_announce("Ectoplasmic Anomaly readings below critical mass. Expected impact: Minor", "Anomaly Alert")
+	var/effect_range = ghosts_orbiting + 8 //Very wide impact
+	var/effect_area = spiral_range(effect_range, src)
+	for(var/mob/living/carbon/human/mob in effect_area)
+		mob.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
+		new /obj/effect/temp_visual/revenant(get_turf(src))
+		to_chat(mob, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
+	for(var/turf/turf_to_rust in effect_area)
+		if(prob(45))
+			continue
+		turf_to_rust.AddElement(/datum/element/rust)
+		new /obj/effect/temp_visual/revenant(get_turf(src))
+	for(var/obj/structure/window/window_to_damage in effect_area)
+		window_to_damage.take_damage(rand(50, 80))
+		if(window_to_damage?.fulltile)
+			new /obj/effect/temp_visual/revenant/cracks(get_turf(window_to_damage))
+
+/**
+ * Short description of the proc
+ *
+ * Longer detailed paragraph about the proc
+ * including any relevant detail
+ * Arguments:
+ * * arg1 - Relevance of this argument
+ * * arg2 - Relevance of this argument
+ */
 
 /obj/effect/anomaly/ectoplasm/proc/medium_impact()
-	priority_announce("Ectoplasmic Anomaly has reached critical mass. Outburst detected with an intensity of [effect_power]. Expected impact: Moderate", "Anomaly Alert")
-	switch(rand(1,2))
-		if(1) //Emp pulse, size scaled to the number of ghosts orbiting
-			var/heavy_range = clamp(ghosts_orbiting, 4, 12)
-			var/light_range = heavy_range * 1.25
-			empulse(get_turf(src), heavy_range, light_range) //In the event that an EMP anomaly event is made, feel free to change this to something different
-		if(2)
-			var/disease_range = ghosts_orbiting + 10 //Very wide impact
-			for(var/mob/living/carbon/human/mob in view(disease_range, get_turf(src)))
-				mob.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
-				new /obj/effect/temp_visual/revenant(get_turf(src))
-				to_chat(mob, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
+	priority_announce("Ectoplasmic Anomaly has reached critical mass. Expected impact: Moderate", "Anomaly Alert")
+
+/**
+ * Announces the anomaly impact and begins the process of making a ghost swarm
+ *
+ * Produces a ghost swarm and announces the anomaly effect. Has to be called
+ * asynchronously due to the ghost poll.
+ */
 
 /obj/effect/anomaly/ectoplasm/proc/major_impact()
-	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Outburst detected with an intensity of [effect_power]. Please contact a chaplain if one is available.", "Anomaly Alert")
+	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Please contact a chaplain if one is available.", "Anomaly Alert")
 	INVOKE_ASYNC(src, PROC_REF(make_ghost_swarm), get_turf(src))
 
 /**
@@ -733,7 +764,7 @@
  * In the future, ghosts will be self-deleting and have two minutes to fuck up the area they've arrived at.
  */
 
-/obj/effect/anomaly/ectoplasm/proc/make_ghost_swarm(turf/spawn_location)
+/proc/make_ghost_swarm(turf/spawn_location)
 	var/list/candidates = poll_candidates("Would you like to participate in a spooky ghost swarm?", ROLE_SENTIENCE, null, 10 SECONDS)
 	var/list/ghost_list = list()
 	for(var/candidate in candidates)
@@ -746,15 +777,18 @@
 		new_ghost.log_message("was returned to the living world as a ghost by an ectoplasmic anomaly.", LOG_GAME)
 		to_chat(new_ghost, span_revendanger("You are a vengeful spirit, brought back from beyond the grave. Your time on this plane is limited, so vent your supernatural anger on anything or anyone nearby while you can!"))
 		ghost_list += new_ghost
-	addtimer(CALLBACK(src, PROC_REF(cleanup_ghost), ghost_list), 2 MINUTES)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cleanup_ghosts), ghost_list), 2 MINUTES)
 
 /**
- * Gives a farewell message and deletes the ghost it was run for
+ * Gives a farewell message and deletes the ghosts the anomaly produced.
  *
- * Handles cleanup of
+ * Handles cleanup of all ghost mobs spawned by the anomaly. Iterates through the list
+ * and calls qdel on its contents.
+ *
+ * * ghost_list - a list of the ghosts to be messaged and deleted.
  */
 
-/obj/effect/anomaly/ectoplasm/proc/cleanup_ghost(list/ghost_list)
+/proc/cleanup_ghosts(list/ghost_list)
 	for(var/mob/living/simple_animal/hostile/retaliate/ghost/ghost_to_delete in ghost_list)
-		visible_message(span_alert("The [ghost_to_delete] wails as it is torn back into the void!"), span_alert("You let out one last wail as you are sucked back into the realm of the dead. Then suddenly, you're back in the comforting embrace of the afterlife."), span_hear("You hear ethereal wailing."))
+		ghost_to_delete.visible_message(span_alert("The [ghost_to_delete] wails as it is torn back into the void!"), span_alert("You let out one last wail as you are sucked back into the realm of the dead. Then suddenly, you're back in the comforting embrace of the afterlife."), span_hear("You hear ethereal wailing."))
 		qdel(ghost_to_delete)
