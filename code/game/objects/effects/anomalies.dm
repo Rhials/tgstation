@@ -656,19 +656,19 @@
 	///The actual number of ghosts orbiting the anomaly.
 	var/ghosts_orbiting = 0
 
-/obj/effect/anomaly/ectoplasm/examine(mob/user)
+/obj/effect/anomaly/ectoplasm/examine_more(mob/user)
 	. = ..()
 
 	switch(effect_power)
 		if(0 to 15)
-			. += "The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment."
+			. += span_notice("The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment.")
 		if(16 to 49)
-			. += "The space around the anomaly seems to vibrate, letting out a noise that sounds like ghastly moaning. Someone should probably do something about that."
+			. += span_notice("The space around the anomaly seems to vibrate, letting out a noise that sounds like ghastly moaning. Someone should probably do something about that.")
 		if(50 to 100)
-			. += "The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good."
+			. += span_alert("The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good.")
 
 
-/obj/effect/anomaly/ectoplasm/anomalyEffect(delta_time) //Update ghost count
+/obj/effect/anomaly/ectoplasm/anomalyEffect(delta_time) //Updates ghost count
 	. = ..()
 	if(!override_ghosts)
 		ghosts_orbiting = 0
@@ -680,7 +680,7 @@
 			return
 
 		var/player_count = length(GLOB.player_list)
-		var/total_dead = length(GLOB.dead_player_list)
+		var/total_dead = length(GLOB.dead_player_list + GLOB.current_observers_list)
 
 		//The actual event severity is determined by what % the current ghosts are circling the anomaly. Half of the active observers orbiting is enough to reach major impact if the cap isn't present.
 		var/severity = ghosts_orbiting / total_dead * 100
@@ -724,17 +724,17 @@
 		new /obj/effect/temp_visual/revenant(get_turf(src))
 		to_chat(mob, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
 	for(var/turf/turf_to_rust in effect_area)
-		if(prob(45))
+		if(prob(30))
 			continue
 		turf_to_rust.AddElement(/datum/element/rust)
 		new /obj/effect/temp_visual/revenant(get_turf(src))
 	for(var/obj/structure/window/window_to_damage in effect_area)
-		window_to_damage.take_damage(rand(50, 80))
+		window_to_damage.take_damage(rand(60, 90))
 		if(window_to_damage?.fulltile)
 			new /obj/effect/temp_visual/revenant/cracks(get_turf(window_to_damage))
 
 /**
- * Short description of the proc
+ * Haunts most objects in the anomaly's area.
  *
  * Longer detailed paragraph about the proc
  * including any relevant detail
@@ -760,8 +760,8 @@
 /**
  * Generates a poll for observers, spawning anyone who signs up in a large group of ghost simplemobs
  *
- * Generates a poll that asks anyone observing for participation. Spawns a bunch of simplemob ghosts with the goal of ruining whatever area they've been spawned into.
- * In the future, ghosts will be self-deleting and have two minutes to fuck up the area they've arrived at.
+ * Generates a poll that asks anyone observing for participation. Spawns a bunch of simplemob ghosts with the keys of candidates who have signed up.
+ * Ghosts are deleted two minutes after being made, and exist to wreck anything in their immediate view.
  */
 
 /proc/make_ghost_swarm(turf/spawn_location)
@@ -789,6 +789,6 @@
  */
 
 /proc/cleanup_ghosts(list/ghost_list)
-	for(var/mob/living/simple_animal/hostile/retaliate/ghost/ghost_to_delete in ghost_list)
-		ghost_to_delete.visible_message(span_alert("The [ghost_to_delete] wails as it is torn back into the void!"), span_alert("You let out one last wail as you are sucked back into the realm of the dead. Then suddenly, you're back in the comforting embrace of the afterlife."), span_hear("You hear ethereal wailing."))
-		qdel(ghost_to_delete)
+	for(var/mob/living/mob_to_delete in ghost_list)
+		mob_to_delete.visible_message(span_alert("The [mob_to_delete] wails as it is torn back into the void!"), span_alert("You let out one last wail as you are sucked back into the realm of the dead. Then suddenly, you're back in the comforting embrace of the afterlife."), span_hear("You hear ethereal wailing."))
+		qdel(mob_to_delete)
