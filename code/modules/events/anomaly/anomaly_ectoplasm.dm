@@ -12,7 +12,7 @@
 /datum/round_event_control/anomaly/anomaly_ectoplasm/admin_setup(mob/admin)
 	. = ..()
 
-	if(!check_rights(R_FUN))
+	if(!check_rights(R_FUN))	// Also make ghost count pickable in admin setup
 		return ADMIN_CANCEL_EVENT
 
 	var/list/power_values = list("Minor", "Moderate", "Major")
@@ -30,7 +30,7 @@
 		if("Moderate")
 			override = 35
 		if("Major")
-			override = 55
+			override = 60
 
 /datum/round_event/anomaly/anomaly_ectoplasm
 	anomaly_path = /obj/effect/anomaly/ectoplasm
@@ -49,7 +49,7 @@
 			newAnomaly = new anomaly_path(anomaly_turf)
 			newAnomaly.override_ghosts = TRUE
 			newAnomaly.effect_power = anomaly_event.override
-			if(newAnomaly.effect_power > 65) //Otherwise it won't update because anomalyEffect is overridden and blocked
+			if(newAnomaly.effect_power >= 60) //Otherwise it won't update because anomalyEffect is overridden and blocked
 				newAnomaly.icon_state = "ectoplasm_heavy"
 				newAnomaly.update_appearance(UPDATE_ICON_STATE)
 		if (newAnomaly)

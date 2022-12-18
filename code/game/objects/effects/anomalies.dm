@@ -682,15 +682,15 @@
 		var/player_count = length(GLOB.player_list)
 		var/total_dead = length(GLOB.dead_player_list + GLOB.current_observers_list)
 
-		//The actual event severity is determined by what % the current ghosts are circling the anomaly. Half of the active observers orbiting is enough to reach major impact if the cap isn't present.
+		//The actual event severity is determined by what % the current ghosts are circling the anomaly.
 		var/severity = ghosts_orbiting / total_dead * 100
-		//Max severity is gated by what % of the player count are dead players, double for leniency's sake. A quarter of the server being dead is enough to raise the cap above 50.
+		//Max severity is gated by what % of the player count are dead players, double for leniency's sake.
 		var/max_severity = total_dead / player_count * 200
 		//This is done to prevent anomalies from being too powerful on lowpop, where 3 orbiters out of 6 would be enough for a catastrophic severity.
 
 		effect_power = clamp(severity, 0, max_severity)
 
-		if(effect_power > 65)
+		if(effect_power >= 60)
 			icon_state = "ectoplasm_heavy"
 			update_appearance(UPDATE_ICON_STATE)
 
@@ -698,25 +698,31 @@
 /obj/effect/anomaly/ectoplasm/detonate()
 	. = ..()
 
-	switch(effect_power)
-		if(5 to 25)
-			minor_impact()
-		if(26 to 64)
-			medium_impact()
-		if(65 to 100)
-			major_impact()
-		else //Under 5% participation (or if we somehow surpass 100%?), we do nothing more than a small visual *poof*.
-			new /obj/effect/temp_visual/dir_setting/curse(get_turf(src))
+	if(effect_power < 10)//Under 10% participation, we do nothing more than a small visual *poof*.
+		new /obj/effect/temp_visual/dir_setting/curse(get_turf(src))
+		return
+
+	if(effect_power >= 10)
+		minor_impact()
+
+	if(effect_power >= 35)
+		medium_impact()
+
+	if(effect_power >= 60)
+		major_impact()
+
+	priority_announce("Ectoplasmic Anomaly has reached critical mass. Expected impact: Moderate", "Anomaly Alert")
+	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Please contact a chaplain if one is available.", "Anomaly Alert")
+	priority_announce("Ectoplasmic Anomaly readings below critical mass. Expected impact: Minor", "Anomaly Alert")
 
 /**
  * Releases an effect akin to a revenant's defile ability with a range based on the number of ghosts orbiting.
  *
- * Announces the anomaly effect, calculates an effect range based on the number of ghosts on the anomaly.
+ * Calculates an effect range based on the number of ghosts on the anomaly.
  * Gives nearby humans revenant blight, rusts turfs, and damages windows.
  */
 
 /obj/effect/anomaly/ectoplasm/proc/minor_impact()
-	priority_announce("Ectoplasmic Anomaly readings below critical mass. Expected impact: Minor", "Anomaly Alert")
 	var/effect_range = ghosts_orbiting + 8
 	var/effect_area = spiral_range(effect_range, src)
 	for(var/mob/living/carbon/human/mob in effect_area)
@@ -741,15 +747,13 @@
  */
 
 /obj/effect/anomaly/ectoplasm/proc/medium_impact()
-	priority_announce("Ectoplasmic Anomaly has reached critical mass. Expected impact: Moderate", "Anomaly Alert")
-
 	var/effect_range = ghosts_orbiting + 5 //lower base range because medium impact (should) mean more ghosts
 	var/effect_area = spiral_range(effect_range, src)
 	for(var/obj/item/object_to_possess in effect_area)
 		if(prob(45))
 			continue
 		object_to_possess.AddComponent(/datum/component/haunted_item, \
-			haunt_color = "#43275b", \
+			haunt_color = "#52336e", \
 			haunt_duration = rand(1 MINUTES, 3 MINUTES), \
 			aggro_radius = effect_range, \
 			spawn_message = span_revenwarning("[object_to_possess] slowly rises upward, hanging menacingly in the air..."), \
@@ -757,15 +761,13 @@
 		)
 
 /**
- * Announces the anomaly impact and begins the process of making a ghost swarm
+ * Begins the process of making a ghost swarm
  *
- * Produces a ghost swarm and announces the anomaly effect. Has to be called
- * asynchronously due to the ghost poll. Poll is only presented to ghosts orbiting the anoamly when it detonates.
+ * Produces a ghost swarm. Has to be called asynchronously due to the ghost poll.
+ * Poll is only presented to ghosts orbiting the anomaly when it detonates.
  */
 
 /obj/effect/anomaly/ectoplasm/proc/major_impact()
-	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Please contact a chaplain if one is available.", "Anomaly Alert")
-
 	var/list/candidate_list = list()
 	for(var/mob/dead/observer/orbiter in orbiters?.orbiter_list)
 		candidate_list += orbiter
