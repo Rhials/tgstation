@@ -3,7 +3,7 @@
 	typepath = /datum/round_event/anomaly/anomaly_ectoplasm
 	min_players = 30
 	max_occurrences = 2
-	weight = 15
+	weight = 8
 	category = EVENT_CATEGORY_ANOMALIES
 	description = "Anomaly that produces an effect of varying intensity based on how many ghosts are orbiting it."
 	///The admin-set intensity value
@@ -34,7 +34,7 @@
 
 /datum/round_event/anomaly/anomaly_ectoplasm
 	anomaly_path = /obj/effect/anomaly/ectoplasm
-	start_when = 1
+	start_when = 3
 	announce_when = 20
 
 /datum/round_event/anomaly/anomaly_ectoplasm/start()
@@ -49,7 +49,7 @@
 			newAnomaly = new anomaly_path(anomaly_turf)
 			newAnomaly.override_ghosts = TRUE
 			newAnomaly.effect_power = anomaly_event.override
-			if(newAnomaly.effect_power > 50) //Otherwise it won't update because anomalyEffect is overridden and blocked
+			if(newAnomaly.effect_power > 65) //Otherwise it won't update because anomalyEffect is overridden and blocked
 				newAnomaly.icon_state = "ectoplasm_heavy"
 				newAnomaly.update_appearance(UPDATE_ICON_STATE)
 		if (newAnomaly)

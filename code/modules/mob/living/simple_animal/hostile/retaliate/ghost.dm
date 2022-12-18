@@ -64,3 +64,11 @@
 		ghost_facial_hair.alpha = 200
 		ghost_facial_hair.color = ghost_facial_hair_color
 		add_overlay(ghost_facial_hair)
+
+/mob/living/simple_animal/hostile/retaliate/ghost/swarm
+	maxHealth = 20
+	health = 20
+	melee_damage_lower = 10
+	melee_damage_upper = 10
+	death_message = "shrieks as it is dragged back into the void."
+	random = FALSE

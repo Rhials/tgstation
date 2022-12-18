@@ -660,11 +660,11 @@
 	. = ..()
 
 	switch(effect_power)
-		if(0 to 15)
+		if(0 to 25)
 			. += span_notice("The space around the anomaly faintly resonates. It doesn't seem very powerful at the moment.")
-		if(16 to 49)
+		if(26 to 64)
 			. += span_notice("The space around the anomaly seems to vibrate, letting out a noise that sounds like ghastly moaning. Someone should probably do something about that.")
-		if(50 to 100)
+		if(65 to 100)
 			. += span_alert("The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good.")
 
 
@@ -690,7 +690,7 @@
 
 		effect_power = clamp(severity, 0, max_severity)
 
-		if(effect_power > 50)
+		if(effect_power > 65)
 			icon_state = "ectoplasm_heavy"
 			update_appearance(UPDATE_ICON_STATE)
 
@@ -699,11 +699,11 @@
 	. = ..()
 
 	switch(effect_power)
-		if(5 to 15)
+		if(5 to 25)
 			minor_impact()
-		if(16 to 49)
+		if(26 to 64)
 			medium_impact()
-		if(50 to 100)
+		if(65 to 100)
 			major_impact()
 		else //Under 5% participation (or if we somehow surpass 100%?), we do nothing more than a small visual *poof*.
 			new /obj/effect/temp_visual/dir_setting/curse(get_turf(src))
@@ -717,7 +717,7 @@
 
 /obj/effect/anomaly/ectoplasm/proc/minor_impact()
 	priority_announce("Ectoplasmic Anomaly readings below critical mass. Expected impact: Minor", "Anomaly Alert")
-	var/effect_range = ghosts_orbiting + 8 //Very wide impact
+	var/effect_range = ghosts_orbiting + 8
 	var/effect_area = spiral_range(effect_range, src)
 	for(var/mob/living/carbon/human/mob in effect_area)
 		mob.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
@@ -734,28 +734,43 @@
 			new /obj/effect/temp_visual/revenant/cracks(get_turf(window_to_damage))
 
 /**
- * Haunts most objects in the anomaly's area.
+ * Adds the haunted_item component onto objects in a radius based on the ghost orbit count
  *
- * Longer detailed paragraph about the proc
- * including any relevant detail
- * Arguments:
- * * arg1 - Relevance of this argument
- * * arg2 - Relevance of this argument
+ * Calculates an effect area based on how many ghosts are orbiting the anomaly.
+ * Adds the revenant haunt component to about half of the objects in the impact range.
  */
 
 /obj/effect/anomaly/ectoplasm/proc/medium_impact()
 	priority_announce("Ectoplasmic Anomaly has reached critical mass. Expected impact: Moderate", "Anomaly Alert")
 
+	var/effect_range = ghosts_orbiting + 5 //lower base range because medium impact (should) mean more ghosts
+	var/effect_area = spiral_range(effect_range, src)
+	for(var/obj/item/object_to_possess in effect_area)
+		if(prob(45))
+			continue
+		object_to_possess.AddComponent(/datum/component/haunted_item, \
+			haunt_color = "#43275b", \
+			haunt_duration = rand(1 MINUTES, 3 MINUTES), \
+			aggro_radius = effect_range, \
+			spawn_message = span_revenwarning("[object_to_possess] slowly rises upward, hanging menacingly in the air..."), \
+			despawn_message = span_revenwarning("[object_to_possess] settles to the floor, lifeless and unmoving."), \
+		)
+
 /**
  * Announces the anomaly impact and begins the process of making a ghost swarm
  *
  * Produces a ghost swarm and announces the anomaly effect. Has to be called
- * asynchronously due to the ghost poll.
+ * asynchronously due to the ghost poll. Poll is only presented to ghosts orbiting the anoamly when it detonates.
  */
 
 /obj/effect/anomaly/ectoplasm/proc/major_impact()
 	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Please contact a chaplain if one is available.", "Anomaly Alert")
-	INVOKE_ASYNC(src, PROC_REF(make_ghost_swarm), get_turf(src))
+
+	var/list/candidate_list = list()
+	for(var/mob/dead/observer/orbiter in orbiters?.orbiter_list)
+		candidate_list += orbiter
+
+	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(make_ghost_swarm), get_turf(src), candidate_list)
 
 /**
  * Generates a poll for observers, spawning anyone who signs up in a large group of ghost simplemobs
@@ -764,8 +779,8 @@
  * Ghosts are deleted two minutes after being made, and exist to wreck anything in their immediate view.
  */
 
-/proc/make_ghost_swarm(turf/spawn_location)
-	var/list/candidates = poll_candidates("Would you like to participate in a spooky ghost swarm?", ROLE_SENTIENCE, null, 10 SECONDS)
+/proc/make_ghost_swarm(turf/spawn_location, list/candidate_list)
+	var/list/candidates = poll_candidates("Would you like to participate in a spooky ghost swarm?", ROLE_SENTIENCE, FALSE, 10 SECONDS, group = candidate_list)
 	var/list/ghost_list = list()
 	for(var/candidate in candidates)
 		if(!isobserver(candidate))
@@ -775,7 +790,7 @@
 		new_ghost.ghostize(FALSE)
 		new_ghost.key = candidate_ghost.key
 		new_ghost.log_message("was returned to the living world as a ghost by an ectoplasmic anomaly.", LOG_GAME)
-		to_chat(new_ghost, span_revendanger("You are a vengeful spirit, brought back from beyond the grave. Your time on this plane is limited, so vent your supernatural anger on anything or anyone nearby while you can!"))
+		to_chat(new_ghost, span_revenboldnotice("You are a vengeful spirit, brought back from beyond the grave. Your time on this plane is limited, so vent your supernatural anger on anything or anyone nearby while you can!"))
 		ghost_list += new_ghost
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cleanup_ghosts), ghost_list), 2 MINUTES)
 
@@ -785,7 +800,7 @@
  * Handles cleanup of all ghost mobs spawned by the anomaly. Iterates through the list
  * and calls qdel on its contents.
  *
- * * ghost_list - a list of the ghosts to be messaged and deleted.
+ * * ghost_list - a list of the mobs to be messaged and deleted.
  */
 
 /proc/cleanup_ghosts(list/ghost_list)
