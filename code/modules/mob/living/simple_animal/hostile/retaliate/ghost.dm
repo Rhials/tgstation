@@ -65,10 +65,8 @@
 		ghost_facial_hair.color = ghost_facial_hair_color
 		add_overlay(ghost_facial_hair)
 
-/mob/living/simple_animal/hostile/retaliate/ghost/swarm //Current issue -- this can't be here because of the simplemob freeze.
-	maxHealth = 20									//This sucks.
-	health = 20
-	melee_damage_lower = 10
-	melee_damage_upper = 10
-	death_message = "shrieks as it is dragged back into the void."
-	random = FALSE
+//HI
+//I NEED A GHOST SUBTYPE HERE THAT IS WEAK ENOUGH TO JUSTIFY SPAWNING IN SWARMS
+//SIMPLEMOB FREEZE MEANS I CANT
+//IM GONNA GO MAKE GHOSTS SIMPLEMOBS IF I CAN
+//PROJECT SHELVED UNTIL THEN

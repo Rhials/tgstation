@@ -657,6 +657,14 @@
 	///The actual number of ghosts orbiting the anomaly.
 	var/ghosts_orbiting = 0
 
+/obj/effect/anomaly/ectoplasm/Initialize(mapload, new_lifespan, drops_core)
+	. = ..()
+
+	AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list())
+
+	if(. == COMPONENT_INCOMPATIBLE)
+		return
+
 /obj/effect/anomaly/ectoplasm/examine_more(mob/user)
 	. = ..()
 
@@ -667,7 +675,6 @@
 			. += span_notice("The space around the anomaly seems to vibrate, letting out a noise that sounds like ghastly moaning. Someone should probably do something about that.")
 		if(65 to 100)
 			. += span_alert("The anomaly pulsates heavily, about to burst with unearthly energy. This can't be good.")
-
 
 /obj/effect/anomaly/ectoplasm/anomalyEffect(delta_time) //Updates ghost count
 	. = ..()
