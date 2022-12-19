@@ -65,8 +65,8 @@
 		ghost_facial_hair.color = ghost_facial_hair_color
 		add_overlay(ghost_facial_hair)
 
-/mob/living/simple_animal/hostile/retaliate/ghost/swarm
-	maxHealth = 20
+/mob/living/simple_animal/hostile/retaliate/ghost/swarm //Current issue -- this can't be here because of the simplemob freeze.
+	maxHealth = 20									//This sucks.
 	health = 20
 	melee_damage_lower = 10
 	melee_damage_upper = 10

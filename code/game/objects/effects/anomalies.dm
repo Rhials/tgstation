@@ -649,6 +649,7 @@
 	desc = "It looks like the souls of the damned are trying to break into the realm of the living again. How upsetting."
 	icon_state = "ectoplasm"
 	aSignal = /obj/item/assembly/signaler/anomaly/ectoplasm
+	lifespan = 10 SECONDS //debug value pls change
 	///Blocks the anomaly from updating ghost count. Used in case an admin wants to manually trigger the event.
 	var/override_ghosts = FALSE
 	///The numerical power of the anomaly. Calculated in anomalyEffect. Also used in determining the category of detonation effects.
@@ -699,7 +700,7 @@
 	. = ..()
 
 	if(effect_power < 10)//Under 10% participation, we do nothing more than a small visual *poof*.
-		new /obj/effect/temp_visual/dir_setting/curse(get_turf(src))
+		new /obj/effect/temp_visual/revenant/cracks(get_turf(src))
 		return
 
 	if(effect_power >= 10)
@@ -711,9 +712,7 @@
 	if(effect_power >= 60)
 		major_impact()
 
-	priority_announce("Ectoplasmic Anomaly has reached critical mass. Expected impact: Moderate", "Anomaly Alert")
-	priority_announce("Ectoplasmic Anomaly has surged past critical mass. Please contact a chaplain if one is available.", "Anomaly Alert")
-	priority_announce("Ectoplasmic Anomaly readings below critical mass. Expected impact: Minor", "Anomaly Alert")
+	priority_announce("Ectoplasmic outburst detected.", "Anomaly Alert")
 
 /**
  * Releases an effect akin to a revenant's defile ability with a range based on the number of ghosts orbiting.
@@ -725,19 +724,22 @@
 /obj/effect/anomaly/ectoplasm/proc/minor_impact()
 	var/effect_range = ghosts_orbiting + 8
 	var/effect_area = spiral_range(effect_range, src)
-	for(var/mob/living/carbon/human/mob in effect_area)
-		mob.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
-		new /obj/effect/temp_visual/revenant(get_turf(src))
-		to_chat(mob, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
+	for(var/mob/living/carbon/human/mob_to_infect in effect_area)
+		mob_to_infect.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
+		new /obj/effect/temp_visual/revenant(get_turf(mob_to_infect))
+		to_chat(mob_to_infect, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
 	for(var/turf/turf_to_rust in effect_area)
-		if(prob(30))
+		if(prob(55))
 			continue
 		turf_to_rust.AddElement(/datum/element/rust)
-		new /obj/effect/temp_visual/revenant(get_turf(src))
+		new /obj/effect/temp_visual/revenant(get_turf(turf_to_rust))
 	for(var/obj/structure/window/window_to_damage in effect_area)
 		window_to_damage.take_damage(rand(60, 90))
 		if(window_to_damage?.fulltile)
 			new /obj/effect/temp_visual/revenant/cracks(get_turf(window_to_damage))
+	for(var/obj/effect/decal/cleanable/food/salt/salt_to_clear in effect_area)
+		new /obj/effect/temp_visual/revenant(get_turf(salt_to_clear))
+		qdel(salt_to_clear)
 
 /**
  * Adds the haunted_item component onto objects in a radius based on the ghost orbit count
