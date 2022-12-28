@@ -3,7 +3,7 @@
 	typepath = /datum/round_event/anomaly/anomaly_ectoplasm
 	min_players = 30
 	max_occurrences = 2
-	weight = 8
+	weight = 4 //Rare because of it's wacky and silly nature
 	category = EVENT_CATEGORY_ANOMALIES
 	description = "Anomaly that produces an effect of varying intensity based on how many ghosts are orbiting it."
 	///The admin-set impact effect override
@@ -14,7 +14,7 @@
 /datum/round_event_control/anomaly/anomaly_ectoplasm/admin_setup(mob/admin)
 	. = ..()
 
-	if(!check_rights(R_FUN))	// Also make ghost count pickable in admin setup
+	if(!check_rights(R_FUN))
 		return ADMIN_CANCEL_EVENT
 
 	var/list/power_values = list("Minor", "Moderate", "Major")
@@ -22,18 +22,18 @@
 
 	if(tgui_alert(usr, "Override the anomaly effect and power?", "You'll be ruining the authenticity.", list("Yes", "No")) == "Yes")
 		effect = tgui_input_list(usr, "Provide effect override", "Criiiiinge.", power_values)
-		ghost_override = tgui_input_number(usr, "How many ghosts do you want orbiting your anomaly? (determines the effect radius).", "Seriously, CRINGE.")
+		ghost_override = tgui_input_number(usr, "How many ghosts do you want simulate orbiting your anomaly? (determines the effect radius).", "Seriously, CRINGE.", 0, 20, 1)
 
-	if(!effect || !ghost_override)
-		return ADMIN_CANCEL_EVENT
+		if(!effect || !ghost_override)
+			return ADMIN_CANCEL_EVENT
 
-	switch(effect)
-		if("Minor")
-			effect_override = 10
-		if("Moderate")
-			effect_override = 35
-		if("Major")
-			effect_override = 60
+		switch(effect)
+			if("Minor")
+				effect_override = 10
+			if("Moderate")
+				effect_override = 35
+			if("Major")
+				effect_override = 60
 
 /datum/round_event/anomaly/anomaly_ectoplasm
 	anomaly_path = /obj/effect/anomaly/ectoplasm

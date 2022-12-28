@@ -660,7 +660,7 @@
 /obj/effect/anomaly/ectoplasm/Initialize(mapload, new_lifespan, drops_core)
 	. = ..()
 
-	AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list())
+	AddComponent(/datum/component/deadchat_control/cardinal_movement, ANARCHY_MODE, list(), 2 SECONDS)
 
 	if(. == COMPONENT_INCOMPATIBLE)
 		return
@@ -729,45 +729,40 @@
  */
 
 /obj/effect/anomaly/ectoplasm/proc/minor_impact()
-	var/effect_range = ghosts_orbiting + 8
+	var/effect_range = ghosts_orbiting + 5
 	var/effect_area = spiral_range(effect_range, src)
-	for(var/mob/living/carbon/human/mob_to_infect in effect_area)
-		mob_to_infect.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
-		new /obj/effect/temp_visual/revenant(get_turf(mob_to_infect))
-		to_chat(mob_to_infect, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
-	for(var/turf/turf_to_rust in effect_area)
-		if(prob(55))
-			continue
-		turf_to_rust.AddElement(/datum/element/rust)
-		new /obj/effect/temp_visual/revenant(get_turf(turf_to_rust))
-	for(var/obj/structure/window/window_to_damage in effect_area)
-		window_to_damage.take_damage(rand(60, 90))
-		if(window_to_damage?.fulltile)
-			new /obj/effect/temp_visual/revenant/cracks(get_turf(window_to_damage))
-	for(var/obj/effect/decal/cleanable/food/salt/salt_to_clear in effect_area)
-		new /obj/effect/temp_visual/revenant(get_turf(salt_to_clear))
-		qdel(salt_to_clear)
+
+	for(var/impacted_thing in effect_area)
+		if(!isplatingturf(impacted_thing) && !istype(impacted_thing, /turf/open/floor/engine/cult) && isfloorturf(impacted_thing) && prob(15))
+			var/turf/open/floor/floor_to_break = impacted_thing
+			if(floor_to_break.overfloor_placed && floor_to_break.floor_tile)
+				new floor_to_break.floor_tile(floor_to_break)
+			floor_to_break.broken = FALSE
+			floor_to_break.burnt = FALSE
+			floor_to_break.make_plating(TRUE)
+
+		if(ishuman(impacted_thing))
+			var/mob/living/carbon/human/mob_to_infect
+			mob_to_infect.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
+			new /obj/effect/temp_visual/revenant(get_turf(mob_to_infect))
+			to_chat(mob_to_infect, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
+
+		if(istype(impacted_thing, /obj/structure/window))
+			var/obj/structure/window/window_to_damage = impacted_thing
+			window_to_damage.take_damage(rand(60, 90))
+			if(window_to_damage?.fulltile)
+				new /obj/effect/temp_visual/revenant/cracks(get_turf(window_to_damage))
 
 /**
  * Adds the haunted_item component onto objects in a radius based on the ghost orbit count
  *
  * Calculates an effect area based on how many ghosts are orbiting the anomaly.
- * Adds the revenant haunt component to about half of the objects in the impact range.
+ * Most of the actual haunting is done in the global proc, so it can be consistent with the armor behavior.
  */
 
 /obj/effect/anomaly/ectoplasm/proc/medium_impact()
-	var/effect_range = ghosts_orbiting + 5 //lower base range because medium impact (should) mean more ghosts
-	var/effect_area = spiral_range(effect_range, src)
-	for(var/obj/item/object_to_possess in effect_area)
-		if(prob(45))
-			continue
-		object_to_possess.AddComponent(/datum/component/haunted_item, \
-			haunt_color = "#52336e", \
-			haunt_duration = rand(1 MINUTES, 3 MINUTES), \
-			aggro_radius = effect_range, \
-			spawn_message = span_revenwarning("[object_to_possess] slowly rises upward, hanging menacingly in the air..."), \
-			despawn_message = span_revenwarning("[object_to_possess] settles to the floor, lifeless and unmoving."), \
-		)
+	var/effect_range = ghosts_orbiting + 3
+	haunt_outburst(get_turf(src), effect_range, 45)
 
 /**
  * Begins the process of making a ghost swarm
@@ -782,6 +777,25 @@
 		candidate_list += orbiter
 
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(make_ghost_swarm), get_turf(src), candidate_list)
+
+/**
+ * Applies the haunted_item component to objects in a given radius
+ *
+ * Adds the haunted_item component to objects at the chance given
+ */
+
+/proc/haunt_outburst(epicenter, range, haunt_chance)
+	var/effect_area = range(range, epicenter)
+	for(var/obj/item/object_to_possess in effect_area)
+		if(!prob(haunt_chance))
+			continue
+		object_to_possess.AddComponent(/datum/component/haunted_item, \
+			haunt_color = "#52336e", \
+			haunt_duration = rand(1 MINUTES, 3 MINUTES), \
+			aggro_radius = range, \
+			spawn_message = span_revenwarning("[object_to_possess] slowly rises upward, hanging menacingly in the air..."), \
+			despawn_message = span_revenwarning("[object_to_possess] settles to the floor, lifeless and unmoving."), \
+		)
 
 /**
  * Generates a poll for observers, spawning anyone who signs up in a large group of ghost simplemobs
