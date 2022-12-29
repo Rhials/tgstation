@@ -460,7 +460,7 @@
 /obj/machinery/fuel_extractor/examine_more(mob/user)
 	. = ..()
 
-	. += span_info("A meter on the side reads: 'Fuel Receptacle at [get_fullness]% capacity.'")
+	. += span_info("A meter on the side reads: 'Fuel Receptacle at [get_fullness()]% capacity.'")
 
 /obj/machinery/fuel_extractor/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
