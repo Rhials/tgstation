@@ -446,32 +446,43 @@
 	icon = 'icons/turf/shuttle.dmi'
 	icon_state = "extractor"
 	circuit = /obj/item/circuitboard/machine/fuel_extractor
-	/// The amount of fuel consumed
-	var/guzzled_fuel = 0
 
 /obj/machinery/fuel_extractor/Initialize(mapload)
 	. = ..()
 
-	create_reagents(50000, AMOUNT_VISIBLE) //big boye
+	create_reagents(20000, AMOUNT_VISIBLE) //big boy, takes about 20 fuel tanks to fill
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered)
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+
+/obj/machinery/fuel_extractor/examine_more(mob/user)
+	. = ..()
+
+	. += span_info("A meter on the side reads: 'Fuel Receptacle at [get_fullness]% capacity.'")
 
 /obj/machinery/fuel_extractor/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
 
 	if(istype(AM, /obj/structure/reagent_dispensers/fueltank))
 		if(AM.reagents)
-			src.visible_message(span_notice("[src] begins to drain fuel from the [AM]"))
+			AM.balloon_alert_to_viewers("draining!")
 			AM.reagents.trans_to(reagents, 20) // You can spam this in case of an emergency refueling I guess
-			addtimer(CALLBACK(src, .proc/drain, AM), 30)
+			addtimer(CALLBACK(src, PROC_REF(drain), AM), 30)
+		else
+			AM.balloon_alert_to_viewers("cannot be drained!")
 
 /obj/machinery/fuel_extractor/proc/drain(atom/movable/AM)
 	if(get_turf(AM) == get_turf(src))
 		AM.reagents.trans_to(reagents, 50)
-		addtimer(CALLBACK(src, .proc/drain, AM), 30)
+		AM.balloon_alert_to_viewers("draining!")
+		addtimer(CALLBACK(src, PROC_REF(drain), AM), 3 SECONDS)
+
+///Returns how full the tank is, as a number from 0-100
+/obj/machinery/fuel_extractor/proc/get_fullness()
+	var/thrust = reagents.get_reagent_amount(/datum/reagent/fuel) / reagents.maximum_volume * 100
+	return thrust
 
 /obj/item/circuitboard/machine/fuel_extractor
 	name = "Fuel Extractor"

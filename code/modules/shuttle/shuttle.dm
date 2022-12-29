@@ -1120,9 +1120,6 @@
 	. = ..()
 
 	var/thrust_boost = 0
-
-	for(var/area/shuttle/shuttle_area as anything in shuttle_areas)
-		var/obj/machinery/fuel_extractor/extractor = locate(/obj/machinery/fuel_extractor) in shuttle_area
-			thrust_boost += extractor.reagents.get_reagent_amount(/datum/reagent/fuel)
-
-		return . + thrust_boost
+	var/obj/machinery/fuel_extractor/extractor = locate(/obj/machinery/fuel_extractor) in shuttle_areas
+	thrust_boost = extractor.get_fullness() / 100
+	. += thrust_boost

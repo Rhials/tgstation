@@ -463,9 +463,9 @@
 	name = "Experimental Hyper-Propulsion Shuttle"
 	description = "A shuttle fitted with experimental hyper-velocity thrusters. Powered by welding fuel.  \
 	When purchased, the emergency shuttle will be available to fuel at its usual docking area. \
-	The shuttle's speed is slowed or sped up depending on how much fuel has been provided."
+	The shuttle's flight time is slowed or sped up depending on how much fuel has been provided."
 	admin_notes = "Fairly long. Also comes with the risk of an engineering disaster in the shuttle."
-	credit_cost = CARGO_CRATE_VALUE * 65 //This gives a LOT of resources to the crew on purchase, so it should be worth a lot
+	credit_cost = CARGO_CRATE_VALUE * 0//65 //This gives a LOT of resources to the crew on purchase, so it should be worth a lot
 	who_can_purchase = list(ACCESS_CAPTAIN, ACCESS_CE)
 
 /datum/map_template/shuttle/ferry/base
