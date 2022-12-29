@@ -12,8 +12,12 @@
 	attack_verb_continuous = list("bans")
 	attack_verb_simple = list("ban")
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+	armor_type = /datum/armor/item_banhammer
 	resistance_flags = FIRE_PROOF
+
+/datum/armor/item_banhammer
+	fire = 100
+	acid = 70
 
 /obj/item/banhammer/Initialize(mapload)
 	. = ..()
@@ -51,6 +55,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
+/datum/armor/item_banhammer
+	fire = 100
+	acid = 70
+
 /obj/item/sord/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is trying to impale [user.p_them()]self with [src]! It might be a suicide attempt if it weren't so shitty."), \
 	span_suicide("You try to impale yourself with [src], but it's USELESS..."))
@@ -74,8 +82,12 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor_type = /datum/armor/item_claymore
 	resistance_flags = FIRE_PROOF
+
+/datum/armor/item_claymore
+	fire = 100
+	acid = 50
 
 /obj/item/claymore/Initialize(mapload)
 	. = ..()
@@ -101,6 +113,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throw_speed = 3
 	throw_range = 5
 	armour_penetration = 35
+
+/datum/armor/item_claymore
+	fire = 100
+	acid = 50
 
 /obj/item/claymore/highlander //ALL COMMENTS MADE REGARDING THIS SWORD MUST BE MADE IN ALL CAPS
 	desc = "<b><i>THERE CAN BE ONLY ONE, AND IT WILL BE YOU!!!</i></b>\nActivate it in your hand to point to the nearest victim."
@@ -156,7 +172,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/claymore/highlander/attack(mob/living/target, mob/living/user)
 	. = ..()
 	if(!QDELETED(target) && target.stat == DEAD && target.mind && target.mind.special_role == "highlander")
-		user.fully_heal(admin_revive = FALSE) //STEAL THE LIFE OF OUR FALLEN FOES
+		user.fully_heal() //STEAL THE LIFE OF OUR FALLEN FOES
 		add_notch(user)
 		target.visible_message(span_warning("[target] crumbles to dust beneath [user]'s blows!"), span_userdanger("As you fall, your body crumbles to dust!"))
 		target.investigate_log("has been dusted by a highlander claymore.", INVESTIGATE_DEATHS)
@@ -269,8 +285,12 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor_type = /datum/armor/item_katana
 	resistance_flags = FIRE_PROOF
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/katana/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] stomach open with [src]! It looks like [user.p_theyre()] trying to commit seppuku!"))
@@ -291,6 +311,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	custom_materials = list(/datum/material/iron=1150, /datum/material/glass=75)
 	attack_verb_continuous = list("hits", "bludgeons", "whacks", "bonks")
 	attack_verb_simple = list("hit", "bludgeon", "whack", "bonk")
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/wirerod/Initialize(mapload)
 	. = ..()
@@ -394,6 +418,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	/// Whether the switchblade starts extended or not.
 	var/start_extended = FALSE
 
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
+
 /obj/item/switchblade/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
@@ -401,6 +429,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	speed = 7 SECONDS, \
 	effectiveness = 100, \
 	)
+
 	AddComponent(/datum/component/transforming, \
 		start_transformed = start_extended, \
 		force_on = 20, \
@@ -410,7 +439,16 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		hitsound_on = 'sound/weapons/bladeslice.ogg', \
 		w_class_on = WEIGHT_CLASS_NORMAL, \
 		attack_verb_continuous_on = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts"), \
-		attack_verb_simple_on = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut"))
+		attack_verb_simple_on = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut"), \
+	)
+
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
+
+/obj/item/switchblade/proc/on_transform(obj/item/source, mob/user, active)
+	SIGNAL_HANDLER
+
+	tool_behaviour = (active ? TOOL_KNIFE : NONE)
+	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/switchblade/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is slitting [user.p_their()] own throat with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -432,6 +470,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	attack_verb_continuous = list("calls", "rings")
 	attack_verb_simple = list("call", "ring")
 	hitsound = 'sound/weapons/ring.ogg'
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/phone/suicide_act(mob/living/user)
 	if(locate(/obj/structure/chair/stool) in user.loc)
@@ -466,6 +508,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron = 600)
 
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
+
 /obj/item/cane/white/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/transforming, \
@@ -475,7 +521,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		clumsy_check = FALSE, \
 		attack_verb_continuous_on = list("smacks", "strikes", "cracks", "beats"), \
 		attack_verb_simple_on = list("smack", "strike", "crack", "beat"))
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 	ADD_TRAIT(src, TRAIT_BLIND_TOOL, ITEM_BLIND_TRAIT)
 
 /*
@@ -493,7 +539,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/staff
 	name = "wizard staff"
 	desc = "Apparently a staff used by the wizard."
-	icon = 'icons/obj/wizard.dmi'
+	icon = 'icons/obj/weapons/guns/magic.dmi'
 	icon_state = "staff"
 	inhand_icon_state = "staff"
 	lefthand_file = 'icons/mob/inhands/weapons/staves_lefthand.dmi'
@@ -511,7 +557,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/staff/broom
 	name = "broom"
 	desc = "Used for sweeping, and flying into the night while cackling. Black cat not included."
-	icon = 'icons/obj/wizard.dmi'
 	icon_state = "broom"
 	inhand_icon_state = "broom"
 	resistance_flags = FLAMMABLE
@@ -536,6 +581,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	gender = PLURAL
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "ectoplasm"
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/ectoplasm/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is inhaling [src]! It looks like [user.p_theyre()] trying to visit the astral plane!"))
@@ -569,6 +618,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	tool_behaviour = TOOL_SAW
 	toolspeed = 1
 
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
+
 /obj/item/mounted_chainsaw/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
@@ -597,6 +650,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	attack_verb_continuous = list("busts")
 	attack_verb_simple = list("bust")
 	var/impressiveness = 45
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/statuebust/Initialize(mapload)
 	. = ..()
@@ -645,6 +702,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	attack_verb_simple = list("smack", "whack", "slam", "smash")
 	///The vehicle counterpart for the board
 	var/board_item_type = /obj/vehicle/ridden/scooter/skateboard
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/melee/skateboard/attack_self(mob/user)
 	var/obj/vehicle/ridden/scooter/skateboard/S = new board_item_type(get_turf(user))//this probably has fucky interactions with telekinesis but for the record it wasn't my fault
@@ -703,6 +764,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	var/mob_thrower = FALSE
 	/// List of all thrown datums we sent.
 	var/list/thrown_datums = list()
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/melee/baseball_bat/Initialize(mapload)
 	. = ..()
@@ -788,7 +853,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	playsound(src, 'sound/items/baseballhit.ogg', 100, TRUE)
 	user.do_attack_animation(target, used_item = src)
 	ADD_TRAIT(user, TRAIT_IMMOBILIZED, type)
-	addtimer(CALLBACK(src, .proc/launch_back, target, user, return_to_sender, datum_throw_speed), 0.5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(launch_back), target, user, return_to_sender, datum_throw_speed), 0.5 SECONDS)
 	return TRUE
 
 /obj/item/melee/baseball_bat/proc/launch_back(atom/movable/target, mob/living/user, turf/target_turf, datum_throw_speed)
@@ -797,7 +862,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	target.mouse_opacity = initial(target.mouse_opacity)
 	target.add_filter("baseball_launch", 3, motion_blur_filter(1, 3))
 	target.throwforce *= 2
-	target.throw_at(target_turf, get_dist(target, target_turf), datum_throw_speed + 1, user, callback = CALLBACK(src, .proc/on_hit, target))
+	target.throw_at(target_turf, get_dist(target, target_turf), datum_throw_speed + 1, user, callback = CALLBACK(src, PROC_REF(on_hit), target))
 	thrown_datums[target] = target.throwing
 
 /obj/item/melee/baseball_bat/proc/on_hit(atom/movable/target)
@@ -821,6 +886,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	force = 12
 	throwforce = 15
 	mob_thrower = TRUE
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/melee/baseball_bat/ablative/IsReflect()//some day this will reflect thrown items instead of lasers
 	playsound(src, pick('sound/weapons/effects/batreflect1.ogg', 'sound/weapons/effects/batreflect2.ogg'), 50, TRUE)
@@ -846,6 +915,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	var/list/strong_against
 	/// How much extra damage the fly swatter does against mobs it is strong against
 	var/extra_strength_damage = 24
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/melee/flyswatter/Initialize(mapload)
 	. = ..()
@@ -903,6 +976,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/extendohand/acme
 	name = "\improper ACME Extendo-Hand"
 	desc = "A novelty extendo-hand produced by the ACME corporation. Originally designed to knock out roadrunners."
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/extendohand/attack(atom/M, mob/living/carbon/human/user, params)
 	var/dist = get_dist(M, user)
@@ -973,11 +1050,15 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	/// The previous target we attacked
 	var/datum/weakref/previous_target
 
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
+
 /obj/item/highfrequencyblade/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, \
-		wield_callback = CALLBACK(src, .proc/on_wield), \
-		unwield_callback = CALLBACK(src, .proc/on_unwield), \
+		wield_callback = CALLBACK(src, PROC_REF(on_wield)), \
+		unwield_callback = CALLBACK(src, PROC_REF(on_unwield)), \
 	)
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
 
@@ -1063,6 +1144,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	layer = ABOVE_ALL_MOB_LAYER
 	plane = ABOVE_GAME_PLANE
 
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
+
 /obj/effect/temp_visual/slash/Initialize(mapload, atom/target, x_slashed, y_slashed, slash_color)
 	. = ..()
 	if(!target)
@@ -1086,6 +1171,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 20
 	wound_bonus = 20
 	bare_wound_bonus = 25
+
+/datum/armor/item_katana
+	fire = 100
+	acid = 50
 
 /obj/item/highfrequencyblade/wizard/attack_self(mob/user, modifiers)
 	if(!IS_WIZARD(user))

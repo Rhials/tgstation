@@ -150,6 +150,7 @@ SUBSYSTEM_DEF(shuttle)
 			pack_processing += generated_packs
 			continue
 
+		//we have to create the pack before checking if it has 'contains' because generate_supply_packs manually sets it, therefore we cant check initial.
 		if(!pack.contains)
 			continue
 
@@ -240,10 +241,10 @@ SUBSYSTEM_DEF(shuttle)
 /datum/controller/subsystem/shuttle/proc/block_recall(lockout_timer)
 	if(admin_emergency_no_recall)
 		priority_announce("Error!", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
-		addtimer(CALLBACK(src, .proc/unblock_recall), lockout_timer)
+		addtimer(CALLBACK(src, PROC_REF(unblock_recall)), lockout_timer)
 		return
 	emergency_no_recall = TRUE
-	addtimer(CALLBACK(src, .proc/unblock_recall), lockout_timer)
+	addtimer(CALLBACK(src, PROC_REF(unblock_recall)), lockout_timer)
 
 /datum/controller/subsystem/shuttle/proc/unblock_recall()
 	if(admin_emergency_no_recall)
@@ -466,9 +467,9 @@ SUBSYSTEM_DEF(shuttle)
 		//Make all cargo consoles speak up
 
 /datum/controller/subsystem/shuttle/proc/checkHostileEnvironment()
-	for(var/datum/d in hostile_environments)
-		if(!istype(d) || QDELETED(d))
-			hostile_environments -= d
+	for(var/datum/hostile_environment_source in hostile_environments)
+		if(QDELETED(hostile_environment_source))
+			hostile_environments -= hostile_environment_source
 	emergency_no_escape = hostile_environments.len
 
 	if(emergency_no_escape && (emergency.mode == SHUTTLE_IGNITING))
