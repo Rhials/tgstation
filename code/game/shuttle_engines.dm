@@ -114,6 +114,16 @@
 				alter_engine_power(-engine_power)
 	return TRUE
 
+/obj/machinery/power/shuttle_engine/welding
+	name = "Experimental Thruster"
+	desc = "An allegedly cutting-edge shuttle thruster, powered entirely by welding fuel."
+	circuit = /obj/item/circuitboard/machine/engine/experimental
+
+/obj/machinery/power/shuttle_engine/welding/Initialize(mapload)
+	. = ..()
+
+	//do the signal stuff here
+
 //Propagates the change to the shuttle.
 /obj/machinery/power/shuttle_engine/proc/alter_engine_power(mod)
 	if(!mod)

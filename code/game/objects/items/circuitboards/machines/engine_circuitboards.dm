@@ -8,6 +8,9 @@
 		/obj/item/stock_parts/micro_laser = 2,
 	)
 
+/obj/item/circuitboard/machine/engine/experimental
+	name = "Experimental Shuttle Engine"
+
 /obj/item/circuitboard/machine/engine/heater
 	name = "Shuttle Engine Heater"
 	build_path = /obj/machinery/power/shuttle_engine/heater

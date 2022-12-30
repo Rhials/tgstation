@@ -466,18 +466,21 @@
 	SIGNAL_HANDLER
 
 	if(istype(AM, /obj/structure/reagent_dispensers/fueltank))
-		if(AM.reagents)
+		if(AM.reagents.has_reagent(/datum/reagent/fuel))
 			AM.balloon_alert_to_viewers("draining!")
-			AM.reagents.trans_to(reagents, 20) // You can spam this in case of an emergency refueling I guess
+			AM.reagents.trans_to(reagents, 20)
 			addtimer(CALLBACK(src, PROC_REF(drain), AM), 30)
 		else
-			AM.balloon_alert_to_viewers("cannot be drained!")
+			AM.balloon_alert_to_viewers("no more fuel!")
 
 /obj/machinery/fuel_extractor/proc/drain(atom/movable/AM)
 	if(get_turf(AM) == get_turf(src))
-		AM.reagents.trans_to(reagents, 50)
-		AM.balloon_alert_to_viewers("draining!")
-		addtimer(CALLBACK(src, PROC_REF(drain), AM), 3 SECONDS)
+		if(AM.reagents.has_reagent(/datum/reagent/fuel))
+			AM.reagents.trans_to(reagents, 50)
+			AM.balloon_alert_to_viewers("draining!")
+			addtimer(CALLBACK(src, PROC_REF(drain), AM), 3 SECONDS)
+		else
+			AM.balloon_alert_to_viewers("it's empty!")
 
 ///Returns how full the tank is, as a number from 0-100
 /obj/machinery/fuel_extractor/proc/get_fullness()
@@ -491,9 +494,3 @@
 	req_components = list(
 		/obj/item/assembly/igniter
 	) //Maybe make it have components and upgrade effects for More Content:tm:
-
-
-
-
-//on shuttle launch, check all engines in the emergency shuttle area and modify values.
-//look into /obj/docking_port/mobile/proc/get_engine_coeff(engine_mod)

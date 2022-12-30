@@ -1137,9 +1137,11 @@
 /obj/docking_port/mobile/emergency/on_emergency_dock()
 	return
 
-/obj/docking_port/mobile/emergency/shuttle_build/experimental/get_engine_coeff(engine_mod) //Gives a FLAT bonus to the engine coefficient based on the fuel fullness.
+/obj/docking_port/mobile/emergency/shuttle_build/experimental/get_engine_coeff(engine_mod)
 	. = ..()
-
+	//CURRENTLY THIS DOESNT WORK
+	//make a special fuel powered thruster subtype that has a global signal attached
+	//signal calls alter_engine_power on the thrusters sent on fuel update
 	var/thrust_boost = 0
 	var/obj/machinery/fuel_extractor/extractor = locate(/obj/machinery/fuel_extractor) in shuttle_areas
 	thrust_boost = extractor.get_fullness() / 100
