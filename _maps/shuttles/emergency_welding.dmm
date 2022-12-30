@@ -5,13 +5,14 @@
 "dv" = (/obj/structure/closet/crate/trashcart,/turf/open/floor/pod,/area/shuttle/escape)
 "er" = (/obj/effect/turf_decal/trimline/yellow/filled/warning,/turf/open/floor/pod,/area/shuttle/escape)
 "fr" = (/obj/structure/table,/obj/item/storage/fancy/donut_box,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"iZ" = (/obj/machinery/door/airlock/shuttle,/turf/open/floor/plating,/area/shuttle/escape)
+"iZ" = (/obj/machinery/door/airlock/external/glass,/turf/open/floor/plating,/area/shuttle/escape)
 "jt" = (/obj/machinery/vending/wallmed/directional/west,/obj/structure/table,/obj/item/flashlight/lamp,/obj/machinery/newscaster/directional/south,/obj/machinery/light/dim/directional/west,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 "kc" = (/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "kj" = (/obj/item/chair/stool,/turf/open/floor/pod,/area/shuttle/escape)
 "kq" = (/obj/machinery/light/very_dim/directional/east,/obj/effect/decal/cleanable/fuel_pool,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "kv" = (/obj/structure/table,/obj/item/storage/medkit/surgery,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "kG" = (/obj/effect/mapping_helpers/airlock/access/all/security/general,/obj/machinery/door/airlock/security/glass{name = "Escape Shuttle Brig"},/turf/open/floor/plating,/area/shuttle/escape/brig)
+"kN" = (/turf/closed/wall/mineral/plastitanium/nodiagonal,/area/shuttle/escape/engine)
 "li" = (/obj/structure/chair/comfy/shuttle,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 "ll" = (/obj/structure/chair/comfy/shuttle{dir = 1},/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 "lp" = (/obj/machinery/vending/wallmed/directional/south{use_power = 0},/obj/structure/table,/obj/structure/table,/obj/item/reagent_containers/cup/bottle/welding_fuel{pixel_x = -4; pixel_y = 4},/obj/item/reagent_containers/cup/bottle/welding_fuel{pixel_x = -6; pixel_y = 3},/obj/item/reagent_containers/cup/bottle/welding_fuel{pixel_x = 4; pixel_y = 2},/obj/machinery/light/red/dim/directional/east,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
@@ -66,7 +67,7 @@
 "HX" = (/obj/structure/table/optable,/obj/item/surgical_drapes,/obj/machinery/defibrillator_mount/directional/east,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Ia" = (/obj/structure/tank_holder/extinguisher,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "Iu" = (/obj/structure/chair/stool/directional/east,/obj/machinery/light/very_dim/directional/west,/turf/open/floor/pod,/area/shuttle/escape)
-"IJ" = (/obj/machinery/door/airlock/shuttle,/obj/docking_port/mobile/emergency/shuttle_build{height = 15; name = "Welding Fuel Shuttle"; width = 30},/turf/open/floor/plating,/area/shuttle/escape)
+"IJ" = (/obj/docking_port/mobile/emergency/shuttle_build/experimental{name = "experimental welding fuel"},/obj/machinery/door/airlock/external/glass,/turf/open/floor/plating,/area/shuttle/escape)
 "IW" = (/obj/structure/table,/obj/machinery/recharger,/obj/structure/table,/obj/item/radio/intercom/directional/north,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "JI" = (/obj/structure/sign/warning/fire/directional/north,/obj/structure/closet/firecloset/full,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "Kd" = (/obj/structure/sign/warning/doors/directional/west,/turf/open/floor/pod,/area/shuttle/escape)
@@ -83,7 +84,7 @@
 "OY" = (/turf/open/floor/pod,/area/shuttle/escape)
 "Pb" = (/obj/machinery/power/floodlight{anchored = 1},/obj/structure/cable,/turf/open/floor/pod,/area/shuttle/escape)
 "Pq" = (/obj/structure/chair/stool/directional/west,/obj/structure/sign/departments/medbay/alt/directional/east,/obj/machinery/light/very_dim/directional/east,/turf/open/floor/pod,/area/shuttle/escape)
-"Pt" = (/obj/structure/table,/obj/item/storage/box/matches,/obj/item/storage/fancy/candle_box,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"Pt" = (/obj/structure/table,/obj/item/storage/fancy/candle_box,/obj/item/storage/box/matches,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "Qk" = (/obj/item/radio/intercom/directional/north,/turf/open/floor/pod,/area/shuttle/escape)
 "Qm" = (/obj/structure/sign/warning/no_smoking/directional/south,/obj/item/chair/stool,/obj/machinery/light/built/directional,/turf/open/floor/pod,/area/shuttle/escape)
 "QU" = (/obj/machinery/door/airlock/external/glass,/obj/structure/fans/tiny,/turf/open/floor/plating,/area/shuttle/escape/engine)
@@ -134,7 +135,7 @@ RxSdFfCeCeCetckqRxRxRxqtqtqtqt
 RxFfFfCeyKCeFfFfQUnEQUqtqtqtqt
 RxYkFfCeKECeFfGDRxRxRxqtqtqtqt
 TYwzFfFfFfFfFfIaTYqtqtqtqtqtqt
-RxRxCtFfFfbrlARxRxqtqtqtqtqtqt
+RxkNCtFfFfbrlAkNRxqtqtqtqtqtqt
 qtRxOaOaOaOaOaRxqtqtqtqtqtqtqt
 qtSEKnKnKnKnKnSEqtqtqtqtqtqtqt
 "}
