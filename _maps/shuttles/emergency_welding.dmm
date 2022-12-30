@@ -4,7 +4,7 @@
 "dm" = (/obj/effect/spawner/random/trash/grime,/turf/open/floor/pod/light,/area/shuttle/escape)
 "dv" = (/obj/structure/closet/crate/trashcart,/turf/open/floor/pod,/area/shuttle/escape)
 "er" = (/obj/effect/turf_decal/trimline/yellow/filled/warning,/turf/open/floor/pod,/area/shuttle/escape)
-"eQ" = (/obj/structure/table,/obj/item/candle{pixel_x = -4; pixel_y = 5},/obj/item/candle,/obj/item/candle{pixel_x = 2; pixel_y = 3},/obj/item/lighter{pixel_x = -4; pixel_y = -3},/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"fr" = (/obj/structure/table,/obj/item/storage/fancy/donut_box,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "iZ" = (/obj/machinery/door/airlock/shuttle,/turf/open/floor/plating,/area/shuttle/escape)
 "jt" = (/obj/machinery/vending/wallmed/directional/west,/obj/structure/table,/obj/item/flashlight/lamp,/obj/machinery/newscaster/directional/south,/obj/machinery/light/dim/directional/west,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 "kc" = (/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
@@ -24,7 +24,7 @@
 "nO" = (/obj/item/radio/intercom/directional/north,/obj/structure/reagent_dispensers/wall/peppertank/directional/east,/obj/structure/chair/comfy/shuttle,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 "oO" = (/turf/closed/wall/mineral/plastitanium,/area/shuttle/escape/brig)
 "oV" = (/obj/structure/chair/comfy/shuttle{dir = 1},/obj/structure/chair/comfy/shuttle{dir = 1},/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
-"pb" = (/turf/closed/wall/mineral/plastitanium/nodiagonal,/area/shuttle/escape/brig)
+"pb" = (/obj/structure/chair/stool/directional/west,/obj/machinery/light/very_dim/directional/east,/turf/open/floor/pod,/area/shuttle/escape)
 "pB" = (/obj/machinery/door/airlock/medical/glass{name = "Escape Shuttle Infirmary"},/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "pD" = (/obj/effect/mapping_helpers/airlock/access/all/security/general,/obj/machinery/door/airlock/security/glass{name = "Escape Shuttle Brig"},/turf/open/floor/plating,/area/shuttle/escape)
 "pO" = (/obj/effect/mapping_helpers/airlock/access/all/command,/obj/machinery/door/airlock/command/glass,/turf/open/floor/pod,/area/shuttle/escape)
@@ -37,8 +37,7 @@
 "rp" = (/turf/open/floor/plating,/area/shuttle/escape)
 "sn" = (/obj/item/chair/stool,/obj/machinery/light/dim/directional/north,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "tc" = (/obj/effect/decal/cleanable/fuel_pool,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
-"tW" = (/obj/structure/chair/stool/directional/west,/obj/machinery/light/very_dim/directional/east,/turf/open/floor/pod,/area/shuttle/escape)
-"ud" = (/obj/structure/chair/comfy/shuttle{dir = 1},/obj/machinery/light/red/dim/directional/east,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
+"tD" = (/obj/structure/table,/obj/item/candle{pixel_x = -4; pixel_y = 5},/obj/item/candle,/obj/item/candle{pixel_x = 2; pixel_y = 3},/obj/item/lighter{pixel_x = -4; pixel_y = -3},/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "uq" = (/obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,/turf/open/floor/plating,/area/shuttle/escape/brig)
 "uD" = (/obj/structure/chair/stool/directional/east,/obj/structure/sign/warning/doors/directional/west,/turf/open/floor/pod,/area/shuttle/escape)
 "uQ" = (/turf/closed/wall/mineral/plastitanium,/area/shuttle/escape)
@@ -46,12 +45,13 @@
 "wz" = (/obj/structure/reagent_dispensers/fueltank,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "yq" = (/obj/effect/decal/cleanable/blood/old,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "yK" = (/obj/machinery/fuel_extractor,/obj/effect/turf_decal/delivery/white,/turf/open/floor/engine,/area/shuttle/escape/engine)
-"Be" = (/obj/structure/table,/obj/item/storage/box/matches,/obj/item/storage/fancy/candle_box,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
+"Be" = (/turf/closed/wall/mineral/plastitanium/nodiagonal,/area/shuttle/escape/brig)
 "BA" = (/obj/effect/spawner/random/trash/grime,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "Ce" = (/turf/open/floor/engine,/area/shuttle/escape/engine)
-"Cp" = (/obj/structure/chair/comfy/shuttle,/obj/machinery/light/red/dim/directional/east,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
+"Cp" = (/obj/machinery/light/very_dim/directional/north,/turf/open/floor/pod/light,/area/shuttle/escape)
 "Ct" = (/obj/machinery/vending/wallmed/directional/west,/obj/structure/rack,/obj/effect/spawner/random/engineering/toolbox{pixel_x = 2},/obj/item/storage/box/lights/bulbs,/obj/item/weldingtool/largetank/empty,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "CP" = (/obj/machinery/door/airlock/engineering/glass,/obj/effect/mapping_helpers/airlock/access/all/engineering,/turf/open/floor/plating,/area/shuttle/escape/engine)
+"Dt" = (/obj/machinery/light/dim/directional/west,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "DD" = (/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 "DM" = (/obj/effect/spawner/random/trash/grime,/turf/open/floor/pod,/area/shuttle/escape)
 "Eu" = (/obj/machinery/shower/directional/south,/obj/machinery/light/red/dim/directional/east,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
@@ -62,7 +62,6 @@
 "FH" = (/obj/effect/mapping_helpers/airlock/access/all/engineering,/obj/machinery/door/airlock/engineering/glass,/obj/effect/decal/cleanable/oil/slippery,/turf/open/floor/plating,/area/shuttle/escape/engine)
 "GD" = (/obj/machinery/light/very_dim/directional/east,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "GJ" = (/obj/effect/spawner/random/trash/caution_sign,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
-"HN" = (/obj/structure/table,/obj/item/storage/fancy/donut_box,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "HV" = (/obj/machinery/vending/wallmed/directional/south{use_power = 0},/obj/item/radio/intercom/chapel/directional/north,/turf/open/floor/pod,/area/shuttle/escape)
 "HX" = (/obj/structure/table/optable,/obj/item/surgical_drapes,/obj/machinery/defibrillator_mount/directional/east,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Ia" = (/obj/structure/tank_holder/extinguisher,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
@@ -79,11 +78,12 @@
 "Lr" = (/obj/effect/spawner/random/trash/grime,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 "LE" = (/obj/item/chair/stool,/turf/open/floor/pod/light,/area/shuttle/escape)
 "Mt" = (/obj/structure/chair/comfy/shuttle{dir = 1},/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
-"Nv" = (/obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,/turf/open/floor/plating,/area/shuttle/escape/engine)
+"Nv" = (/obj/structure/chair/comfy/shuttle,/obj/machinery/light/red/dim/directional/east,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 "Oa" = (/obj/machinery/power/shuttle_engine/heater,/obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "OY" = (/turf/open/floor/pod,/area/shuttle/escape)
 "Pb" = (/obj/machinery/power/floodlight{anchored = 1},/obj/structure/cable,/turf/open/floor/pod,/area/shuttle/escape)
 "Pq" = (/obj/structure/chair/stool/directional/west,/obj/structure/sign/departments/medbay/alt/directional/east,/obj/machinery/light/very_dim/directional/east,/turf/open/floor/pod,/area/shuttle/escape)
+"Pt" = (/obj/structure/table,/obj/item/storage/box/matches,/obj/item/storage/fancy/candle_box,/turf/open/floor/mineral/titanium/blue,/area/shuttle/escape)
 "Qk" = (/obj/item/radio/intercom/directional/north,/turf/open/floor/pod,/area/shuttle/escape)
 "Qm" = (/obj/structure/sign/warning/no_smoking/directional/south,/obj/item/chair/stool,/obj/machinery/light/built/directional,/turf/open/floor/pod,/area/shuttle/escape)
 "QU" = (/obj/machinery/door/airlock/external/glass,/obj/structure/fans/tiny,/turf/open/floor/plating,/area/shuttle/escape/engine)
@@ -91,8 +91,8 @@
 "Sd" = (/obj/machinery/light/very_dim/directional/west,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "So" = (/obj/item/radio/intercom/directional/north,/obj/effect/spawner/random/trash/grime,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "SE" = (/obj/structure/tramwall/plastitanium,/turf/open/floor/plating,/area/shuttle/escape/engine)
-"TY" = (/obj/machinery/light/very_dim/directional/north,/turf/open/floor/pod/light,/area/shuttle/escape)
-"Vk" = (/obj/machinery/light/dim/directional/west,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
+"TY" = (/obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,/turf/open/floor/plating,/area/shuttle/escape/engine)
+"Vk" = (/turf/closed/wall/mineral/plastitanium/nodiagonal,/area/shuttle/escape)
 "Vx" = (/obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,/turf/open/floor/plating,/area/shuttle/escape)
 "WV" = (/obj/structure/reagent_dispensers/fueltank,/obj/structure/sign/warning/explosives/directional/east,/obj/effect/decal/cleanable/fuel_pool,/obj/effect/decal/cleanable/fuel_pool,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "Xm" = (/obj/structure/sign/warning/yes_smoking/circle/directional/west,/obj/effect/decal/cleanable/blood/old,/obj/effect/spawner/random/trash/mopbucket,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
@@ -102,38 +102,38 @@
 "Yk" = (/obj/structure/closet/secure_closet/engineering_welding,/obj/item/stack/conveyor{amount = 20},/obj/effect/spawner/random/engineering,/obj/machinery/light/very_dim/directional/west,/obj/item/conveyor_switch_construct,/turf/open/floor/mineral/titanium/yellow,/area/shuttle/escape/engine)
 "YO" = (/obj/structure/table,/obj/item/storage/medkit/brute,/obj/item/storage/medkit/fire{pixel_x = 2; pixel_y = 1},/obj/effect/decal/cleanable/cobweb/cobweb2,/obj/machinery/light/very_dim/directional/east,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "YT" = (/turf/open/floor/pod/light,/area/shuttle/escape)
-"Zx" = (/turf/closed/wall/mineral/plastitanium/nodiagonal,/area/shuttle/escape)
+"Zx" = (/obj/structure/chair/comfy/shuttle{dir = 1},/obj/machinery/light/red/dim/directional/east,/turf/open/floor/mineral/plastitanium/red/brig,/area/shuttle/escape/brig)
 
 (1,1,1) = {"
-qtZxVxVxVxVxVxZxqtqtqtqtqtqtqt
-qtVxHNwteQKMFnVxqtqtqtqtqtqtqt
+qtVkVxVxVxVxVxVkqtqtqtqtqtqtqt
+qtVxfrwttDKMFnVxqtqtqtqtqtqtqt
 qtVxqlMtqlMtqlVxqtqtqtqtqtqtqt
-uQZxqlqlqlqlqlZxuQqtqtqtqtqtqt
+uQVkqlqlqlqlqlVkuQqtqtqtqtqtqt
 uQIWqlqlqlqlqlbGuQqtqtqtqtqtqt
-uQBeBAqlXHqlqlaeuQoOoOoOqtqtqt
+uQPtBAqlXHqlqlaeuQoOoOoOqtqtqt
 uQuQuQpOuQpOuQuQuQYgDDoOqtqtqt
-VxDMYTYTTYYTYTqduQoOkGoOoOoOqt
-uQIuYTOYOYOYYTFtuQmYDDliCppboO
+VxDMYTYTCpYTYTqduQoOkGoOoOoOqt
+uQIuYTOYOYOYYTFtuQmYDDliNvBeoO
 iZOYYTpPuQOYLEOYVxDDDDDDDDnOoO
 uQuDYTpPuQnFYTOYpDDDLrDDDDDDuq
 IJOYYTpPuQOYYTpPpDDDDDDDDDDDuq
-uQkjYTtWuQIuYTrpVxDDDDDDDDrnoO
-VxOYYTOYuQnFrpOYuQjtlloVudpboO
+uQkjYTpbuQIuYTrpVxDDDDDDDDrnoO
+VxOYYTOYuQnFrpOYuQjtlloVZxBeoO
 VxOYYTDMHVOYYTEYuQuQuQVxuQuQqt
-VxOYYTpPuQnFYTOYuQqUSokcEuZxuQ
-uQnFrptWuQIuYTpPVxnhkckckcKvuQ
+VxOYYTpPuQnFYTOYuQqUSokcEuVkuQ
+uQnFrppbuQIuYTpPVxnhkckckcKvuQ
 iZOYYTpPuQOYdmOYpBkckckckckcVx
 uQKdLEpPuQPbYTOYpByqkckckckcVx
 iZOYYTpPuQnFYTOYVxkckckcyqHXuQ
-uQIuYTrpQkOYrpPquQVkkckvlpZxuQ
+uQIuYTrpQkOYrpPquQDtkckvlpVkuQ
 VxnFDMerQmerdvpPuQKVuQuQuQuQqt
 RxRxRxCPXqFHRxRxRxXmYOuQqtqtqt
 RxJIlJFfsnFflJWVRxuQuQuQqtqtqt
-NvFfFfFfFfFfGJtcNvqtqtqtqtqtqt
+TYFfFfFfFfFfGJtcTYqtqtqtqtqtqt
 RxSdFfCeCeCetckqRxRxRxqtqtqtqt
 RxFfFfCeyKCeFfFfQUnEQUqtqtqtqt
 RxYkFfCeKECeFfGDRxRxRxqtqtqtqt
-NvwzFfFfFfFfFfIaNvqtqtqtqtqtqt
+TYwzFfFfFfFfFfIaTYqtqtqtqtqtqt
 RxRxCtFfFfbrlARxRxqtqtqtqtqtqt
 qtRxOaOaOaOaOaRxqtqtqtqtqtqtqt
 qtSEKnKnKnKnKnSEqtqtqtqtqtqtqt
