@@ -710,79 +710,43 @@
 		new /obj/effect/temp_visual/revenant/cracks(get_turf(src))
 		return
 
-	if(effect_power >= 10)
-		minor_impact()
+	if(effect_power >= 10) //Do a sorta-revenant defile
+		var/effect_range = ghosts_orbiting + 5
+		var/effect_area = spiral_range(effect_range, src)
+
+		for(var/impacted_thing in effect_area)
+			if(!isplatingturf(impacted_thing) && !istype(impacted_thing, /turf/open/floor/engine/cult) && isfloorturf(impacted_thing) && prob(15))
+				var/turf/open/floor/floor_to_break = impacted_thing
+				if(floor_to_break.overfloor_placed && floor_to_break.floor_tile)
+					new floor_to_break.floor_tile(floor_to_break)
+				floor_to_break.broken = FALSE
+				floor_to_break.burnt = FALSE
+				floor_to_break.make_plating(TRUE)
+
+			if(ishuman(impacted_thing))
+				var/mob/living/carbon/human/mob_to_infect
+				mob_to_infect.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
+				new /obj/effect/temp_visual/revenant(get_turf(mob_to_infect))
+				to_chat(mob_to_infect, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
+
+			if(istype(impacted_thing, /obj/structure/window))
+				var/obj/structure/window/window_to_damage = impacted_thing
+				window_to_damage.take_damage(rand(60, 90))
+				if(window_to_damage?.fulltile)
+					new /obj/effect/temp_visual/revenant/cracks(get_turf(window_to_damage))
 
 	if(effect_power >= 35)
-		medium_impact()
+		var/effect_range = ghosts_orbiting + 3
+		haunt_outburst(get_turf(src), effect_range, 45)
 
-	if(effect_power >= 60)
-		major_impact()
+	if(effect_power >= 60) //Summon a ghost swarm!
+		var/list/candidate_list = list()
+		for(var/mob/dead/observer/orbiter in orbiters?.orbiter_list)
+			candidate_list += orbiter
+
+		INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(make_ghost_swarm), get_turf(src), candidate_list)
 
 	priority_announce("Ectoplasmic outburst detected.", "Anomaly Alert")
-
-/**
- * Releases an effect akin to a revenant's defile ability with a range based on the number of ghosts orbiting.
- *
- * Calculates an effect range based on the number of ghosts on the anomaly.
- * Gives nearby humans revenant blight, rusts turfs, and damages windows.
- */
-
-/obj/effect/anomaly/ectoplasm/proc/minor_impact()
-	var/effect_range = ghosts_orbiting + 5
-	var/effect_area = spiral_range(effect_range, src)
-
-	for(var/impacted_thing in effect_area)
-		if(!isplatingturf(impacted_thing) && !istype(impacted_thing, /turf/open/floor/engine/cult) && isfloorturf(impacted_thing) && prob(15))
-			var/turf/open/floor/floor_to_break = impacted_thing
-			if(floor_to_break.overfloor_placed && floor_to_break.floor_tile)
-				new floor_to_break.floor_tile(floor_to_break)
-			floor_to_break.broken = FALSE
-			floor_to_break.burnt = FALSE
-			floor_to_break.make_plating(TRUE)
-
-		if(ishuman(impacted_thing))
-			var/mob/living/carbon/human/mob_to_infect
-			mob_to_infect.ForceContractDisease(new /datum/disease/revblight(), FALSE, TRUE)
-			new /obj/effect/temp_visual/revenant(get_turf(mob_to_infect))
-			to_chat(mob_to_infect, span_revenminor("A cacophony of ghostly wailing floods your ears for a moment. The noise subsides, but a distant whispering continues to echo inside of your head..."))
-
-		if(istype(impacted_thing, /obj/structure/window))
-			var/obj/structure/window/window_to_damage = impacted_thing
-			window_to_damage.take_damage(rand(60, 90))
-			if(window_to_damage?.fulltile)
-				new /obj/effect/temp_visual/revenant/cracks(get_turf(window_to_damage))
-
-/**
- * Adds the haunted_item component onto objects in a radius based on the ghost orbit count
- *
- * Calculates an effect area based on how many ghosts are orbiting the anomaly.
- * Most of the actual haunting is done in the global proc, so it can be consistent with the armor behavior.
- */
-
-/obj/effect/anomaly/ectoplasm/proc/medium_impact()
-	var/effect_range = ghosts_orbiting + 3
-	haunt_outburst(get_turf(src), effect_range, 45)
-
-/**
- * Begins the process of making a ghost swarm
- *
- * Produces a ghost swarm. Has to be called asynchronously due to the ghost poll.
- * Poll is only presented to ghosts orbiting the anomaly when it detonates.
- */
-
-/obj/effect/anomaly/ectoplasm/proc/major_impact()
-	var/list/candidate_list = list()
-	for(var/mob/dead/observer/orbiter in orbiters?.orbiter_list)
-		candidate_list += orbiter
-
-	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(make_ghost_swarm), get_turf(src), candidate_list)
-
-/**
- * Applies the haunted_item component to objects in a given radius
- *
- * Adds the haunted_item component to objects at the chance given
- */
 
 /proc/haunt_outburst(epicenter, range, haunt_chance)
 	var/effect_area = range(range, epicenter)
