@@ -460,13 +460,12 @@
 
 /datum/map_template/shuttle/emergency/welding
 	suffix = "welding"
-	name = "Experimental Hyper-Propulsion Shuttle"
-	description = "A shuttle fitted with experimental hyper-velocity thrusters. Powered by welding fuel.  \
-	When purchased, the emergency shuttle will be available to fuel at its usual docking area. \
-	The shuttle's flight time is slowed or sped up depending on how much fuel has been provided."
-	admin_notes = "Fairly long. Also comes with the risk of an engineering disaster in the shuttle."
-	credit_cost = CARGO_CRATE_VALUE * 0//65 //This gives a LOT of resources to the crew on purchase, so it should be worth a lot
-	who_can_purchase = list(ACCESS_CAPTAIN, ACCESS_CE)
+	name = "Experimental Rapid-Response Shuttle"
+	description = "An experimental Rapid-Response shuttle, currently in the proof-of-concept phase for its \
+	highly experimental propulsion engine. We can lend it to you for field testing, but it's
+	admin_notes = "Comes with the inherent risk of a welding fuel explosion. Docks with the station immediately after purchase."
+	credit_cost = CARGO_CRATE_VALUE * 0 //25 //It's a real fixer-upper, but arrives instantly
+	who_can_purchase = list(ACCESS_CAPTAIN)
 
 /datum/map_template/shuttle/ferry/base
 	suffix = "base"
