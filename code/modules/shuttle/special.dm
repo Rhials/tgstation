@@ -467,11 +467,11 @@
 
 	if(istype(AM, /obj/structure/reagent_dispensers/fueltank))
 		if(AM.reagents.has_reagent(/datum/reagent/fuel))
-			AM.balloon_alert_to_viewers("draining!")
-			AM.reagents.trans_to(reagents, 20)
-			addtimer(CALLBACK(src, PROC_REF(drain), AM), 30)
+			drain(AM)
 		else
-			AM.balloon_alert_to_viewers("no more fuel!")
+			AM.balloon_alert_to_viewers("no fuel!")
+	else
+		AM.balloon_alert_to_viewers("cannot be drained!")
 
 /obj/machinery/fuel_extractor/proc/drain(atom/movable/AM)
 	if(get_turf(AM) == get_turf(src))
@@ -480,12 +480,12 @@
 			AM.balloon_alert_to_viewers("draining!")
 			addtimer(CALLBACK(src, PROC_REF(drain), AM), 3 SECONDS)
 		else
-			AM.balloon_alert_to_viewers("it's empty!")
+			AM.balloon_alert_to_viewers("no more fuel!")
 
 ///Returns how full the tank is, as a number from 0-100
 /obj/machinery/fuel_extractor/proc/get_fullness()
-	var/thrust = reagents.get_reagent_amount(/datum/reagent/fuel) / reagents.maximum_volume * 100
-	return thrust
+	var/fullness = reagents.get_reagent_amount(/datum/reagent/fuel) / reagents.maximum_volume * 100
+	return fullness
 
 /obj/item/circuitboard/machine/fuel_extractor
 	name = "Fuel Extractor"

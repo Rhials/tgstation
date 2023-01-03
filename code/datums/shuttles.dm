@@ -462,10 +462,10 @@
 	suffix = "welding"
 	name = "Experimental Rapid-Response Shuttle"
 	description = "An experimental Rapid-Response shuttle, currently in the proof-of-concept phase for its \
-	highly experimental propulsion engine. We can lend it to you for field testing, but it's
+	highly experimental propulsion engine. We can take it out of storage and send it your way, but it's a \
+	complete mess, and the crew will need to make sure it is cleaned, organized, and fueled."
 	admin_notes = "Comes with the inherent risk of a welding fuel explosion. Docks with the station immediately after purchase."
 	credit_cost = CARGO_CRATE_VALUE * 0 //25 //It's a real fixer-upper, but arrives instantly
-	who_can_purchase = list(ACCESS_CAPTAIN)
 
 /datum/map_template/shuttle/ferry/base
 	suffix = "base"
