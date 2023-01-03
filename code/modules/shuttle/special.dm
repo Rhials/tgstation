@@ -446,11 +446,12 @@
 	icon = 'icons/turf/shuttle.dmi'
 	icon_state = "extractor"
 	circuit = /obj/item/circuitboard/machine/fuel_extractor
+	resistance_flags = INDESTRUCTIBLE
 
 /obj/machinery/fuel_extractor/Initialize(mapload)
 	. = ..()
 
-	create_reagents(20000, AMOUNT_VISIBLE) //big boy, takes about 20 fuel tanks to fill
+	create_reagents(25000) //big boy, takes about 25 fuel tanks to fill or 5(?) highcaps
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered)
