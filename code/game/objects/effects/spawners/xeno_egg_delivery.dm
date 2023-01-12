@@ -8,7 +8,7 @@
 	. = ..()
 	var/turf/T = get_turf(src)
 
-	new /obj/structure/alien/egg(T)
+	new /obj/structure/alien/egg/delivery(T)
 	new /obj/effect/temp_visual/gravpush(T)
 	playsound(T, 'sound/items/party_horn.ogg', 50, TRUE, -1)
 
@@ -27,18 +27,8 @@
 /obj/structure/alien/egg/delivery/Initialize(mapload)
 	. = ..()
 
-	SScommunications.xenomorph_delivery_poi = src // Begin the tracking chain
+	if(SScommunications.xenomorph_delivery_poi)
+		warning("Multiple xenomorph delivery eggs present in the round. Roundend tracking may be inaccurate.")
+		return
 
-	child = null //destroy the child
-	child = new/obj/item/clothing/mask/facehugger/delivery(src) //make a new SPECIAL one
-
-/obj/item/clothing/mask/facehugger/delivery
-	name = "xenobiological specimen"
-	desc = "Produces a specimen after a brief incubation period. Monkey not included. Some assembly required."
-	icon_state = "egg_growing" //NEW SPRITES pls
-
-/obj/item/clothing/mask/facehugger/delivery/Impregnate(mob/living/target)
-	. = ..()
-
-	var/obj/item/organ/internal/body_egg/alien_embryo/special_egg = locate(/obj/item/organ/internal/body_egg/alien_embryo) in target
-	SScommunications.xenomorph_delivery_poi = special_egg
+	SScommunications.xenomorph_delivery_poi = src // Begin the tracking chain.

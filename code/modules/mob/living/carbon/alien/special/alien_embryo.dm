@@ -115,6 +115,8 @@
 	ADD_TRAIT(new_xeno, TRAIT_HANDS_BLOCKED, type)
 	new_xeno.notransform = 1
 	new_xeno.invisibility = INVISIBILITY_MAXIMUM
+	if(SScommunications.xenomorph_delivery_poi && SScommunications.xenomorph_delivery_poi == src)
+		SScommunications.xenomorph_delivery_poi = new_xeno // Transfer our tracking to our child
 
 	sleep(0.6 SECONDS)
 

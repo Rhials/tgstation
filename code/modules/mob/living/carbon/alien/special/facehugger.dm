@@ -211,11 +211,13 @@
 
 		var/obj/item/bodypart/chest/LC = target.get_bodypart(BODY_ZONE_CHEST)
 		if((!LC || IS_ORGANIC_LIMB(LC)) && !target.getorgan(/obj/item/organ/internal/body_egg/alien_embryo))
-			new /obj/item/organ/internal/body_egg/alien_embryo(target)
+			var/obj/item/organ/internal/body_egg/alien_embryo/special_egg = new (target)
 			target.log_message("was impregnated by a facehugger", LOG_GAME)
 			target.log_message("was impregnated by a facehugger", LOG_VICTIM, log_globally = FALSE)
 			if(target.stat != DEAD && istype(target.buckled, /obj/structure/bed/nest)) //Handles toggling the nest sustenance status effect if the user was already buckled to a nest.
 				target.apply_status_effect(/datum/status_effect/nest_sustenance)
+			if(SScommunications.xenomorph_delivery_poi && SScommunications.xenomorph_delivery_poi == src)
+				SScommunications.xenomorph_delivery_poi = special_egg
 
 	else
 		target.visible_message(span_danger("[src] violates [target]'s face!"), \

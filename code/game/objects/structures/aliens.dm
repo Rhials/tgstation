@@ -415,6 +415,8 @@
 	update_appearance()
 	if(child)
 		child.forceMove(get_turf(src))
+		if(SScommunications.xenomorph_delivery_poi && SScommunications.xenomorph_delivery_poi == src)
+			SScommunications.xenomorph_delivery_poi = child
 		// TECHNICALLY you could put non-facehuggers in the child var
 		if(istype(child))
 			if(kill)
