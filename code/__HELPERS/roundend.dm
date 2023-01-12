@@ -670,9 +670,9 @@
 
 	if(istype(SScommunications.xenomorph_delivery_poi, /obj/item/organ/internal/body_egg)) //Identify the host and their ckey
 		var/obj/item/organ/internal/body_egg/special_egg = SScommunications.xenomorph_delivery_poi
-
 		recognized_iteration = TRUE
-		parts += span_red("The specimen was implanted into a host, but did not progress any further!")
+		parts += span_red("The specimen was implanted into [special_egg.owner], but did not progress any further! ")
+		parts += span_red("[special_egg.owner], when asked for comment, seemed relatively unphased by the news that a xenomorph egg was gestating within them.")
 
 	if(isalienqueen(SScommunications.xenomorph_delivery_poi))
 		parts += span_nicegreen("The subject progressed into a fully grown specimen!")

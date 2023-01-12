@@ -19,6 +19,8 @@ SUBSYSTEM_DEF(communications)
 	var/block_command_report = 0
 	/// The iteration of the roundstart xenomorph egg being tracked.
 	var/xenomorph_delivery_poi
+	/// Was there, at one point, a POI active?
+	var/xenomorph_poi_active = FALSE
 
 /datum/controller/subsystem/communications/proc/can_announce(mob/living/user, is_silicon)
 	if(is_silicon && COOLDOWN_FINISHED(src, silicon_message_cooldown))

@@ -32,3 +32,4 @@
 		return
 
 	SScommunications.xenomorph_delivery_poi = src // Begin the tracking chain.
+	SScommunications.xenomorph_poi_active = TRUE
