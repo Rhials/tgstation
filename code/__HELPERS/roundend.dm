@@ -314,6 +314,9 @@
 	//Economy & Money
 	parts += market_report()
 
+	if(SScommunications.xenomorph_delivery_poi)
+		parts += xenomorph_report()
+
 	list_clear_nulls(parts)
 
 	return parts.Join()
@@ -637,6 +640,51 @@
 		result += "</div>"
 
 	return result.Join()
+
+/datum/controller/subsystem/ticker/proc/xenomorph_report()
+	var/list/parts = list()
+	var/recognized_iteration = FALSE //Is our POI an object we identify as part of the Xenomorph progression chain? If not, something is very very wrong.
+
+	//Make it so that this runs regardless of if the specimen is dusted/nulled
+
+	//Make everything weakrefs so we dont have hard deletes
+
+	if(istype(SScommunications.xenomorph_delivery_poi, /obj/structure/alien/egg))
+		recognized_iteration = TRUE
+		var/insult = pick("Weak", "Cowards", "Weenies", "Laaaaaaame", "Cringe", "Seriously?!?", "Come on")
+		parts += span_bolddanger("The specimen was never even removed from its egg! [insult]!")
+
+	if(istype(SScommunications.xenomorph_delivery_poi, /obj/item/clothing/mask/facehugger))
+		recognized_iteration = TRUE
+		var/obj/item/clothing/mask/facehugger/special_facehugger = SScommunications.xenomorph_delivery_poi
+		parts += span_noticealien("The specimen was released from its egg... ")
+		if(special_facehugger.stat == DEAD)
+			parts += span_alert("but died ")
+		else
+			parts += span_alert("and survived ")
+
+		if(captivity_check())
+			parts += span_alert("in containment!")
+		else
+			parts += span_alert("after escaping containment!")
+
+	if(istype(SScommunications.xenomorph_delivery_poi, /obj/item/organ/internal/body_egg)) //Identify the host and their ckey
+		var/obj/item/organ/internal/body_egg/special_egg = SScommunications.xenomorph_delivery_poi
+
+		recognized_iteration = TRUE
+		parts += span_red("The specimen was implanted into a host, but did not progress any further!")
+
+	if(isalienqueen(SScommunications.xenomorph_delivery_poi))
+		parts += span_nicegreen("The subject progressed into a fully grown specimen!")
+
+	if(recognized_iteration)
+		return parts.Join()
+
+	return span_alien("The specimen somehow ended up as a [SScommunications.xenomorph_delivery_poi]. What the hell happened?!")
+
+//Use this to check if the POI is inside or outside of the Xenobio pen
+/datum/controller/subsystem/ticker/proc/captivity_check()
+	return FALSE
 
 /proc/cmp_antag_category(datum/antagonist/A,datum/antagonist/B)
 	return sorttext(B.roundend_category,A.roundend_category)
