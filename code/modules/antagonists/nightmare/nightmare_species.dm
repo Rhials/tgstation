@@ -24,6 +24,8 @@
 		TRAIT_NOBLOOD,
 	)
 
+	exotic_blood = /datum/reagent/coalesced_shadow
+
 	mutantheart = /obj/item/organ/internal/heart/nightmare
 	mutantbrain = /obj/item/organ/internal/brain/shadow/nightmare
 	bodypart_overrides = list(

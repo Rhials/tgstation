@@ -25,30 +25,10 @@
 		return
 
 	var/mob/living/carbon/victim = exposed_mob
-	if(methods & (VAPOR))
-		//check for protection
-		//actually handle the pepperspray effects
-		if (!victim.is_pepper_proof()) // you need both eye and mouth protection
-			if(prob(5))
-				victim.emote("scream")
-			victim.emote("cry")
-			victim.set_eye_blur_if_lower(10 SECONDS)
-			victim.adjust_temp_blindness(2 SECONDS)
-			victim.set_confusion_if_lower(5 SECONDS)
-			victim.Knockdown(3 SECONDS)
-			victim.add_movespeed_modifier(/datum/movespeed_modifier/reagent/pepperspray)
-			addtimer(CALLBACK(victim, TYPE_PROC_REF(/mob, remove_movespeed_modifier), /datum/movespeed_modifier/reagent/pepperspray), 10 SECONDS)
-		victim.update_damage_hud()
+	if(methods & (VAPOR) && prob(40))
+		to_chat(victim, span_alert("The darkness sinks into your eyes!"))
+		victim.adjust_temp_blindness(1 SECONDS)
 	if(methods & INGEST)
-		if(isethereal(victim))
-			priority_announce("e")
-
-
-/datum/reagent/consumable/coalesced_shadow/process(delta_time)
-	. = ..()
-
-	var/obj/item/organ/internal/eyes/eyes = owner.getorganslot(ORGAN_SLOT_EYES)
-	if(!eyes)
-		return
-
-	eyes.applyOrganDamage(rand(2, 4))
+		if(isethereal(victim)) //This is in addition to losing their lights
+			to_chat(victim, span_warning("You accidentally ingest some of the shadows. It feels like something deep inside of you has just died."))
+			victim.vomit(0, FALSE, FALSE, 2, FALSE, FALSE)
