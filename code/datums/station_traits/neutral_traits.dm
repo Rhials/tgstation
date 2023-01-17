@@ -189,3 +189,10 @@
 		return
 
 	gorilla.poll_for_gorilla()
+
+/datum/station_trait/double_trouble
+	name = "Double Trouble"
+	weight = 2
+	force = TRUE
+	show_in_report = TRUE
+	report_message = "In an attempt to increase workplace cooperation, departmental leadership has been split between two staff."
