@@ -13,6 +13,8 @@
 	var/datum/action/cooldown/spell/jaunt/shadow_walk/our_jaunt
 	///Our associated terrorize spell, for antagonist nightmares
 	var/datum/action/cooldown/spell/pointed/terrorize/terrorize_spell
+	///Our associated coalesce spell, for antagonist nightmares
+	var/datum/action/cooldown/spell/pointed/coalesce/coalesce_spell
 
 /obj/item/organ/internal/brain/shadow/nightmare/Insert(mob/living/carbon/M, special = FALSE, drop_if_replaced = TRUE, no_id_transfer = FALSE)
 	. = ..()
@@ -27,9 +29,13 @@
 		terrorize_spell = new(src)
 		terrorize_spell.Grant(M)
 
+		coalesce_spell = new(src)
+		coalesce_spell.Grant(M)
+
 /obj/item/organ/internal/brain/shadow/nightmare/Remove(mob/living/carbon/M, special = FALSE, no_id_transfer = FALSE)
 	QDEL_NULL(our_jaunt)
 	QDEL_NULL(terrorize_spell)
+	QDEL_NULL(coalesce_spell)
 	return ..()
 
 /obj/item/organ/internal/heart/nightmare
