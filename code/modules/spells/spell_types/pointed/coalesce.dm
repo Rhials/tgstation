@@ -1,11 +1,11 @@
 /datum/action/cooldown/spell/pointed/coalesce
 	name = "Coalesce Shadows"
-	desc = "Coalesce the darkness into a thick black mist, consuming any light caught in the cloud."
+	desc = "Coalesce the darkness into a thick black mist, destroying any light caught in the cloud."
 	button_icon_state = "blind"
 	ranged_mousepointer = 'icons/effects/mouse_pointers/blind_target.dmi'
 	sound = 'sound/magic/blind.ogg'
-	school = SCHOOL_TRANSMUTATION
-	cooldown_time = 30 SECONDS
+	school = SCHOOL_CONJURATION
+	cooldown_time = 15 SECONDS
 	button_icon_state = "terrify"
 	background_icon_state = "bg_alien"
 	overlay_icon_state = "bg_alien_border"
@@ -15,6 +15,7 @@
 	cast_range = 7
 	active_msg = "You prepare to conjure the shadows..."
 	deactive_msg = "You decide not to conjure any shadows..."
+	aim_assist = FALSE
 
 /datum/action/cooldown/spell/pointed/coalesce/is_valid_target(atom/cast_on)
 	if(istype(/obj/machinery/atmospherics/components/unary, cast_on))
@@ -39,7 +40,7 @@
 	var/datum/effect_system/fluid_spread/smoke/chem/shadow_cloud = new
 	shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 25)
 	if(istype(/obj/machinery/atmospherics/components/unary, cast_on)) //We have a bigger smoke plume when used on pipes
-		cast_on.visible_message(span_warning("Shadows "))
+		cast_on.visible_message(span_warning("Shadows spill out from within [cast_on]!"))
 		shadow_cloud.set_up(4, location = get_turf(cast_on))
 	else
 		shadow_cloud.set_up(2, location = get_turf(cast_on))
