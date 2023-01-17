@@ -20,14 +20,16 @@
 	if(istype(/obj/machinery/atmospherics/components/unary, cast_on))
 		var/obj/machinery/atmospherics/components/unary/machinery = cast_on
 		if(machinery.welded) //This SHOULD mean it will only work open vents/pumps.
-			cast_on.balloon_alert(owner, "nowhere to manifest!") //AWFUL message pls change
+			cast_on.balloon_alert(owner, "nowhere to manifest from!")
 			return FALSE
+		else
+			return TRUE //We don't run the light checks when cast on unary machinery
 
-	if(isopenturf(cast_on))
-		var/turf/open/turf_to_check = cast_on
-		if(turf_to_check.get_lumcount() > 0.2)
-			cast_on.balloon_alert(owner, "too bright!")
-			return FALSE
+	var/turf/open/turf_to_check = get_turf(cast_on)
+
+	if(turf_to_check.get_lumcount() > 0.2)
+		cast_on.balloon_alert(owner, "too bright!")
+		return FALSE
 
 	return TRUE
 
@@ -35,6 +37,11 @@
 	. = ..()
 
 	var/datum/effect_system/fluid_spread/smoke/chem/shadow_cloud = new
-	shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 10)
-	shadow_cloud.set_up(2, 1, get_turf(cast_on))
+	shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 25)
+	if(istype(/obj/machinery/atmospherics/components/unary, cast_on)) //We have a bigger smoke plume when used on pipes
+		cast_on.visible_message(span_warning("Shadows "))
+		shadow_cloud.set_up(4, location = get_turf(cast_on))
+	else
+		shadow_cloud.set_up(2, location = get_turf(cast_on))
+
 	shadow_cloud.start()
