@@ -11,14 +11,13 @@
 	overlay_icon_state = "bg_alien_border"
 	panel = null
 	spell_requirements = NONE
-	cooldown_time = 30 SECONDS
 	cast_range = 7
 	active_msg = "You prepare to conjure the shadows..."
 	deactive_msg = "You decide not to conjure any shadows..."
 	aim_assist = FALSE
 
 /datum/action/cooldown/spell/pointed/coalesce/is_valid_target(atom/cast_on)
-	if(istype(/obj/machinery/atmospherics/components/unary, cast_on))
+	if(istype(cast_on, /obj/machinery/atmospherics/components/unary))
 		var/obj/machinery/atmospherics/components/unary/machinery = cast_on
 		if(machinery.welded) //This SHOULD mean it will only work open vents/pumps.
 			cast_on.balloon_alert(owner, "nowhere to manifest from!")
@@ -43,6 +42,6 @@
 		cast_on.visible_message(span_warning("Shadows spill out from within [cast_on]!"))
 		shadow_cloud.set_up(4, location = get_turf(cast_on))
 	else
-		shadow_cloud.set_up(2, location = get_turf(cast_on))
+		shadow_cloud.set_up(1, location = get_turf(cast_on))
 
 	shadow_cloud.start()
