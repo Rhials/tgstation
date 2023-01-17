@@ -8,7 +8,7 @@
 
 /datum/reagent/coalesced_shadow
 	name = "Coalesced Shadow"
-	description = "The "
+	description = "Pure, condenced darkness. Will instantly absorb and put out any light it is exposed to."
 	taste_description = "ink"
 	taste_mult = 3
 	reagent_state = GAS
@@ -18,3 +18,37 @@
 	. = ..()
 
 	AddElement(/datum/element/light_eater)
+
+/datum/reagent/consumable/coalesced_shadow/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	. = ..()
+	if(!ishuman(exposed_mob))
+		return
+
+	var/mob/living/carbon/victim = exposed_mob
+	if(methods & (VAPOR))
+		//check for protection
+		//actually handle the pepperspray effects
+		if (!victim.is_pepper_proof()) // you need both eye and mouth protection
+			if(prob(5))
+				victim.emote("scream")
+			victim.emote("cry")
+			victim.set_eye_blur_if_lower(10 SECONDS)
+			victim.adjust_temp_blindness(2 SECONDS)
+			victim.set_confusion_if_lower(5 SECONDS)
+			victim.Knockdown(3 SECONDS)
+			victim.add_movespeed_modifier(/datum/movespeed_modifier/reagent/pepperspray)
+			addtimer(CALLBACK(victim, TYPE_PROC_REF(/mob, remove_movespeed_modifier), /datum/movespeed_modifier/reagent/pepperspray), 10 SECONDS)
+		victim.update_damage_hud()
+	if(methods & INGEST)
+		if(isethereal(victim))
+			priority_announce("e")
+
+
+/datum/reagent/consumable/coalesced_shadow/process(delta_time)
+	. = ..()
+
+	var/obj/item/organ/internal/eyes/eyes = owner.getorganslot(ORGAN_SLOT_EYES)
+	if(!eyes)
+		return
+
+	eyes.applyOrganDamage(rand(2, 4))

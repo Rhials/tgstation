@@ -38,7 +38,7 @@
 	. = ..()
 
 	var/datum/effect_system/fluid_spread/smoke/chem/shadow_cloud = new
-	shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 25)
+	shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 20)
 	if(istype(/obj/machinery/atmospherics/components/unary, cast_on)) //We have a bigger smoke plume when used on pipes
 		cast_on.visible_message(span_warning("Shadows spill out from within [cast_on]!"))
 		shadow_cloud.set_up(4, location = get_turf(cast_on))
