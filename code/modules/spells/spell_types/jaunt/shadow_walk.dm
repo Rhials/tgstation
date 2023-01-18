@@ -71,7 +71,7 @@
 	if(!QDELETED(jaunter) && isliving(jaunter)) //heal in the dark
 		var/mob/living/living_jaunter = jaunter
 		living_jaunter.heal_overall_damage((healing_rate * delta_time), (healing_rate * delta_time), BODYTYPE_ORGANIC)
-		if(living_jaunter.blood_volume < BLOOD_VOLUME_NORMAL) //We regenerate our shadow blood while jaunting. This is the only way to make more.
+		if(living_jaunter.blood_volume < BLOOD_VOLUME_NORMAL) //We regenerate our shadow blood while jaunting. This is the only way to make more of it.
 			living_jaunter.blood_volume = min(living_jaunter.blood_volume + (3 * REM * delta_time), BLOOD_VOLUME_NORMAL)
 
 /obj/effect/dummy/phased_mob/shadow/relaymove(mob/living/user, direction)
@@ -129,7 +129,7 @@
 		balloon_alert(jaunter, "leaving the shadows...")
 		light_alert_given = TRUE
 		COOLDOWN_START(src, light_step_cooldown, 0.75 SECONDS)
-		addtimer(CALLBACK(src, PROC_REF(reactivate_light_alert)), 1 SECONDS) //You get a .5 second window to bypass the warning before it comes back
+		addtimer(CALLBACK(src, PROC_REF(reactivate_light_alert)), 1 SECONDS) //You get a .25 second window to bypass the warning before it comes back
 		return FALSE
 
 	if(!COOLDOWN_FINISHED(src, light_step_cooldown))
