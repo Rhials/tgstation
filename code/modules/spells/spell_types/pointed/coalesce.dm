@@ -70,15 +70,15 @@
 	//telegraph the attack
 
 	if(is_type_in_typecache(cast_on, shadow_sources)) //Summon a shorter-lasting, larger, thinner smoke cloud.
-		var/datum/effect_system/fluid_spread/smoke/chem/quick/shadow_cloud = new
-		shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 50)
+		var/datum/effect_system/fluid_spread/smoke/chem/thin/shadow_cloud = new
+		shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 250)
 		cast_on.visible_message(span_warning("[owner] summons a plume of darkness from within [cast_on]!"))
 		shadow_cloud.set_up(4, location = get_turf(cast_on))
 		shadow_cloud.start()
 		extended_cooldown = TRUE
 	else //Summon a longer-lasting, smaller, thicker cloud after a brief telegraph.
 		var/datum/effect_system/fluid_spread/smoke/chem/thick/shadow_cloud = new
-		shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 50)
+		shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 250)
 		shadow_cloud.set_up(1, 3, location = get_turf(cast_on))
 		shadow_cloud.start()
 
