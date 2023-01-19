@@ -9,6 +9,8 @@ SUBSYSTEM_DEF(nightshift)
 
 	var/high_security_mode = FALSE
 	var/list/currentrun
+	/// If an aurora is going on, we silently dim the lights for its duration
+	var/aurora_override
 
 /datum/controller/subsystem/nightshift/Initialize()
 	if(!CONFIG_GET(flag/enable_night_shifts))
@@ -31,6 +33,14 @@ SUBSYSTEM_DEF(nightshift)
 	var/announcing = TRUE
 	var/time = station_time()
 	var/night_time = (time < nightshift_end_time) || (time > nightshift_start_time)
+
+	if(locate(/datum/round_event/aurora_caelus) in SSevents.running)
+		aurora_override = TRUE
+		night_time = FALSE
+		announcing = FALSE
+		update_nightshift(night_time, announcing)
+		return
+
 	if(high_security_mode != emergency)
 		high_security_mode = emergency
 		if(night_time)
