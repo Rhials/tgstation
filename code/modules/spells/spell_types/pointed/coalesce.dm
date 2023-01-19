@@ -16,13 +16,11 @@
 /datum/action/cooldown/spell/pointed/coalesce
 	name = "Coalesce Shadows"
 	desc = "Coalesce the darkness into a thick black mist, destroying any light caught in the cloud. \
-	Can be cast on ventilation openings to summon a larger-than-usual cloud of darkness, on a longer cooldown" //todo: figure out how to add longer cooldown
+	Can be cast on ventilation openings or lights to summon a larger-than-usual cloud of darkness, on a longer cooldown."
 	button_icon_state = "shadow_portal"
 	ranged_mousepointer = 'icons/effects/mouse_pointers/blind_target.dmi'
-	sound = 'sound/magic/blind.ogg'
 	school = SCHOOL_CONJURATION
-	cooldown_time = 20 SECONDS
-	button_icon_state = "terrify"
+	cooldown_time = 1 SECONDS //DEBUG VALUE PLS FIX
 	background_icon_state = "bg_alien"
 	overlay_icon_state = "bg_alien_border"
 	panel = null
@@ -31,27 +29,32 @@
 	active_msg = "You prepare to conjure the shadows..."
 	deactive_msg = "You decide not to conjure any shadows..."
 	aim_assist = FALSE
-	///A list of ventilation sources, used for istype comparisons, that allow larger smoke conjurations.
-	var/list/ventilation_sources = list(
+	///A list of sources to spawn larger plumes of shadows from.
+	var/list/shadow_sources = list(
 			/obj/machinery/atmospherics/components/unary,
 			/obj/structure/steam_vent,
 			/obj/machinery/light,
 	)
+	///Do we do an extended cooldown (for casting on machinery).
+	var/extended_cooldown = FALSE
 
 /datum/action/cooldown/spell/pointed/coalesce/New(Target)
 	. = ..()
 
-	ventilation_sources = typecacheof(ventilation_sources)
+	shadow_sources = typecacheof(shadow_sources)
 
 /datum/action/cooldown/spell/pointed/coalesce/is_valid_target(atom/cast_on)
-	if(istype(cast_on, /obj/machinery/atmospherics/components/unary)) //Move this to a static list of comparisons to a few different objects. Include maint steam vents and stuff.
+	if(is_type_in_typecache(cast_on, shadow_sources))
 		if(istype(cast_on, /obj/machinery/atmospherics/components/unary))
 			var/obj/machinery/atmospherics/components/unary/machinery = cast_on
 			if(machinery.welded) //This SHOULD mean it will only work open vents/pumps.
 				cast_on.balloon_alert(owner, "nowhere to manifest from!")
 				return FALSE
-		return TRUE //We don't run the light checks when cast on machinery, as it is meant to be an emergency option
+		return TRUE //We don't run the light checks when cast on machinery, meaning it can be used to completely put out smaller rooms.
 
+	if(ismachinery(cast_on)) //If it is any other piece of machinery, we give an alert that the machinery is invalid
+		cast_on.balloon_alert(owner, "this machine won't work!") //...But we don't return false, because we still want to attempt to make a plume if we're targetting in the dark
+	//The message shows up alongside the too bright message (fix pls)
 	var/turf/open/turf_to_check = get_turf(cast_on)
 
 	if(turf_to_check.get_lumcount() > 0.2)
@@ -63,15 +66,25 @@
 /datum/action/cooldown/spell/pointed/coalesce/cast(atom/cast_on)
 	. = ..()
 
-	//The plan here -- Move the cloud stuff to a different proc. Do a visual effect when used on the shadows to
+	//The plan here -- Move the cloud stuff to a different proc on an addtimer. Do a visual effect when used on the shadows to
 	//telegraph the attack
 
-	var/datum/effect_system/fluid_spread/smoke/chem/shadow_cloud = new
-	shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 20)
-	if(is_type_in_typecache(cast_on, ventilation_sources)) //We have a bigger smoke plume when used on pipes
-		cast_on.visible_message(span_warning("Shadows billow out from within [cast_on]!")) //Make the message for on_expose light eater component to be silent
-		shadow_cloud.set_up(3, location = get_turf(cast_on))
-	else
-		shadow_cloud.set_up(1, 1, location = get_turf(cast_on))
+	if(is_type_in_typecache(cast_on, shadow_sources)) //Summon a shorter-lasting, larger, thinner smoke cloud.
+		var/datum/effect_system/fluid_spread/smoke/chem/quick/shadow_cloud = new
+		shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 50)
+		cast_on.visible_message(span_warning("[owner] summons a plume of darkness from within [cast_on]!"))
+		shadow_cloud.set_up(4, location = get_turf(cast_on))
+		shadow_cloud.start()
+		extended_cooldown = TRUE
+	else //Summon a longer-lasting, smaller, thicker cloud after a brief telegraph.
+		var/datum/effect_system/fluid_spread/smoke/chem/thick/shadow_cloud = new
+		shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 50)
+		shadow_cloud.set_up(1, 3, location = get_turf(cast_on))
+		shadow_cloud.start()
 
-	shadow_cloud.start()
+/datum/action/cooldown/spell/pointed/coalesce/StartCooldownSelf(override_cooldown_time)
+	if(extended_cooldown)
+		override_cooldown_time = 45 //DOES NOT WORK RIGHT NOW
+		extended_cooldown = FALSE
+
+	..()

@@ -458,3 +458,12 @@
 
 /datum/effect_system/fluid_spread/smoke/chem/quick
 	effect_type = /obj/effect/particle_effect/fluid/smoke/chem/quick
+
+///Thick
+
+/obj/effect/particle_effect/fluid/smoke/chem/thick
+	lifetime = 6 SECONDS
+	alpha = 200
+
+/datum/effect_system/fluid_spread/smoke/chem/thick
+	effect_type = /obj/effect/particle_effect/fluid/smoke/chem/thick

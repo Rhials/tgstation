@@ -26,7 +26,7 @@
 
 	var/mob/living/carbon/victim = exposed_mob
 	if(methods & (VAPOR) && prob(40))
-		to_chat(victim, span_alert("The darkness sinks into your eyes!"))
+		to_chat(victim, span_alert("You blink. Your eyelids open, but the darkness remains for a moment."))
 		victim.adjust_temp_blindness(1 SECONDS)
 	if(methods & INGEST)
 		if(isethereal(victim)) //This is in addition to losing their lights
