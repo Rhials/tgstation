@@ -452,7 +452,7 @@
  * A version of chemical smoke with a very short lifespan.
  */
 /obj/effect/particle_effect/fluid/smoke/chem/quick
-	lifetime = 4 SECONDS
+	lifetime = 6 SECONDS
 	opacity = FALSE
 	alpha = 100
 
@@ -462,7 +462,7 @@
 ///Thick
 
 /obj/effect/particle_effect/fluid/smoke/chem/thick
-	lifetime = 6 SECONDS
+	lifetime = 8 SECONDS
 	alpha = 200
 
 /datum/effect_system/fluid_spread/smoke/chem/thick
