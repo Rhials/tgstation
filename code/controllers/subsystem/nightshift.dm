@@ -34,12 +34,11 @@ SUBSYSTEM_DEF(nightshift)
 	var/time = station_time()
 	var/night_time = (time < nightshift_end_time) || (time > nightshift_start_time)
 
-	if(locate(/datum/round_event/aurora_caelus) in SSevents.running)
-		aurora_override = TRUE
-		night_time = FALSE
-		announcing = FALSE
-		update_nightshift(night_time, announcing)
-		return
+	if(aurora_override) //If this is active, we don't do any light updates, as we want them to remain dimmed.
+		if(!locate(/datum/round_event/aurora_caelus) in SSevents.running) //Once all active aurora events end, we continue back to normal.
+			aurora_override = FALSE
+			update_nightshift(night_time, FALSE, TRUE)
+			return
 
 	if(high_security_mode != emergency)
 		high_security_mode = emergency
@@ -69,3 +68,13 @@ SUBSYSTEM_DEF(nightshift)
 			APC.set_nightshift(nightshift_active)
 		if(MC_TICK_CHECK)
 			return
+
+/**
+ * Silently dims the lights and enables an override to prevent them from being undimmed.
+ *
+ * Enables the aurora override, and silently sets the lights to night mode.
+ */
+
+/datum/controller/subsystem/nightshift/proc/aurora_dim()
+	aurora_override = TRUE
+	update_nightshift(FALSE, FALSE)

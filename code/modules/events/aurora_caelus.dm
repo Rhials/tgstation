@@ -29,7 +29,7 @@
 			M.playsound_local(M, 'sound/ambience/aurora_caelus.ogg', 20, FALSE, pressure_affected = FALSE)
 
 /datum/round_event/aurora_caelus/start()
-	SSnightshift.check_nightshift() //Dim the lights
+	SSnightshift.aurora_dim()
 	for(var/area/affected_area as anything in GLOB.areas)
 		if(affected_area.area_flags & AREA_USES_STARLIGHT)
 			for(var/turf/open/space/spess in affected_area.get_contained_turfs())
@@ -50,7 +50,6 @@
 				if(seymour.mind && istype(seymour.mind.assigned_role, /datum/job/cook))
 					seymour.say("My roast is ruined!!!", forced = "ruined roast")
 					seymour.emote("scream")
-
 
 /datum/round_event/aurora_caelus/tick()
 	if(activeFor % 5 == 0)
