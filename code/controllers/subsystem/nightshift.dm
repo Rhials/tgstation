@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(nightshift)
 	name = "Night Shift"
-	wait = 10 MINUTES
+	wait = 1 SECONDS //PLS CHANGE TO TEN MINUTES THX
 
 	var/nightshift_active = FALSE
 	var/nightshift_start_time = 702000 //7:30 PM, station time
