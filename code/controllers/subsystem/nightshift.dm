@@ -10,7 +10,7 @@ SUBSYSTEM_DEF(nightshift)
 	var/high_security_mode = FALSE
 	var/list/currentrun
 	/// If an aurora is going on, we silently dim the lights for its duration
-	var/aurora_override
+	var/aurora_override = FALSE
 
 /datum/controller/subsystem/nightshift/Initialize()
 	if(!CONFIG_GET(flag/enable_night_shifts))
