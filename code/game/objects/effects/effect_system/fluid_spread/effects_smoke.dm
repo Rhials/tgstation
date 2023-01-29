@@ -462,7 +462,7 @@
 ///Thick/Thin
 
 /obj/effect/particle_effect/fluid/smoke/chem/thick
-	lifetime = 8 SECONDS
+	lifetime = 12 SECONDS
 	alpha = 200
 
 /datum/effect_system/fluid_spread/smoke/chem/thick
@@ -471,7 +471,7 @@
 /obj/effect/particle_effect/fluid/smoke/chem/thin
 	lifetime = 6 SECONDS
 	opacity = FALSE
-	alpha = 100
+	alpha = 150
 
 /datum/effect_system/fluid_spread/smoke/chem/thin
 	effect_type = /obj/effect/particle_effect/fluid/smoke/chem/thin

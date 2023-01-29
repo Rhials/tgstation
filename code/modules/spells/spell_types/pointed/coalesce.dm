@@ -19,7 +19,7 @@
 	Can be cast on ventilation openings or lights to summon a larger-than-usual cloud of darkness, on a longer cooldown."
 	button_icon_state = "shadow_portal"
 	school = SCHOOL_CONJURATION
-	cooldown_time = 15 SECONDS
+	cooldown_time = 20 SECONDS
 	background_icon_state = "bg_alien"
 	overlay_icon_state = "bg_alien_border"
 	panel = null
@@ -70,14 +70,14 @@
 		var/datum/effect_system/fluid_spread/smoke/chem/thin/shadow_cloud = new
 		shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 100)
 		cast_on.visible_message(span_warning("[owner] summons a plume of darkness from within [cast_on]!"))
-		shadow_cloud.set_up(4, location = get_turf(cast_on))
+		shadow_cloud.set_up(5, location = get_turf(cast_on))
 		shadow_cloud.start()
 		extended_cooldown = TRUE
 		to_chat(owner, span_warning("You momentarily exhaust your power to summon a cloud of darkness. Your form feels weak..."))
 	else //Summon a longer-lasting, smaller, thicker cloud.
 		var/datum/effect_system/fluid_spread/smoke/chem/thick/shadow_cloud = new
 		shadow_cloud.chemholder.add_reagent(/datum/reagent/coalesced_shadow, 50)
-		shadow_cloud.set_up(1, DIAMOND_AREA(3), location = get_turf(cast_on))
+		shadow_cloud.set_up(1, 5, location = get_turf(cast_on))
 		shadow_cloud.start()
 
 /datum/action/cooldown/spell/pointed/coalesce/StartCooldownSelf(override_cooldown_time)
