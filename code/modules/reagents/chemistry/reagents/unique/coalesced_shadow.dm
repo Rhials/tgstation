@@ -21,7 +21,7 @@
 
 /datum/reagent/consumable/coalesced_shadow/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()
-	if(!ishuman(exposed_mob))
+	if(!ishuman(exposed_mob) || isnightmare(exposed_mob))
 		return
 
 	var/mob/living/carbon/victim = exposed_mob
