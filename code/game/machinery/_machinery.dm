@@ -521,7 +521,7 @@
 
 ///Get a valid powered area to reference for power use, mainly for wall-mounted machinery that isn't always mapped directly in a powered location.
 /obj/machinery/proc/get_room_area(area/machine_room)
-	var/area/machine_area = get_area(src)
+	var/area/machine_area = get_area(src) //Currently lights stored in a hilberts storage object will runtime because this is null
 	if(!machine_area.always_unpowered) ///check our loc first to see if its a powered area
 		machine_room = machine_area
 		return machine_room
