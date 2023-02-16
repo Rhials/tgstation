@@ -46,6 +46,8 @@
 		return
 	if(viewer.is_blind())
 		return
+	if(isnull(viewer.mind.antag_datums) && !locate(/datum/antagonist/traitor) in viewer.mind.antag_datums)
+		return //If we have an antag datum, but aren't a traitor, we have no reaction.
 	if (!should_demoralise(viewer))
 		return
 	if(!viewer.can_read(host, moods.reading_requirements, TRUE)) //if it's a text based demoralization datum, make sure the mob has the capability to read. if it's only an image, make sure it's just bright enough for them to see it.
