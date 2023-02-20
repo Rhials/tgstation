@@ -946,6 +946,7 @@ GLOBAL_PROTECT(admin_verbs_poll)
 		SSticker.minds += character.mind
 		if(ishuman(character))
 			GLOB.manifest.inject(character)
+			GLOB.player_list += character
 
 		number_made++
 		CHECK_TICK
