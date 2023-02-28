@@ -72,6 +72,9 @@
 		var/mob/living/living_jaunter = jaunter
 		living_jaunter.heal_overall_damage(brute = (healing_rate * delta_time), burn = (healing_rate * delta_time), required_bodytype = BODYTYPE_ORGANIC)
 
+		if(living_jaunter.blood_volume < BLOOD_VOLUME_NORMAL) //We regenerate our shadow blood while jaunting. This is the only way to produce more coalesced shadows.
+			living_jaunter.blood_volume = min(living_jaunter.blood_volume + (3 * REM * delta_time), BLOOD_VOLUME_NORMAL)
+
 /obj/effect/dummy/phased_mob/shadow/relaymove(mob/living/user, direction)
 	var/turf/oldloc = loc
 	. = ..()

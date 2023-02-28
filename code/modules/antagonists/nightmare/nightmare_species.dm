@@ -21,8 +21,10 @@
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_NODISMEMBER,
 		TRAIT_NOHUNGER,
-		TRAIT_NOBLOOD,
+		TRAIT_NOBLOOD, //Figure out an alternative to this that wont make ppl poop themselves over bleed wounds
 	)
+
+	exotic_blood = /datum/reagent/coalesced_shadow
 
 	mutantheart = /obj/item/organ/internal/heart/nightmare
 	mutantbrain = /obj/item/organ/internal/brain/shadow/nightmare
