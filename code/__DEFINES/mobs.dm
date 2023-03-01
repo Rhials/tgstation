@@ -52,10 +52,16 @@
 #define MOB_SPIRIT (1 << 9)
 #define MOB_PLANT (1 << 10)
 
+//Lung respiration type flags
+#define RESPIRATION_OXYGEN (1 << 0)
+#define RESPIRATION_CO2 (1 << 1)
+#define RESPIRATION_N2 (1 << 2)
+#define RESPIRATION_PLASMA (1 << 3)
 
 //Organ defines for carbon mobs
 #define ORGAN_ORGANIC 1
 #define ORGAN_ROBOTIC 2
+#define ORGAN_MINERAL 3 // Used for the plasmaman liver
 
 #define DEFAULT_BODYPART_ICON_ORGANIC 'icons/mob/species/human/bodyparts_greyscale.dmi'
 #define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augmentation/augments.dmi'
@@ -103,6 +109,8 @@
 #define SPECIES_LIZARD_SILVER "silverscale"
 #define SPECIES_NIGHTMARE "nightmare"
 #define SPECIES_MONKEY "monkey"
+#define SPECIES_MONKEY_FREAK "monkey_freak"
+#define SPECIES_MONKEY_HUMAN_LEGGED "monkey_human_legged"
 #define SPECIES_MOTH "moth"
 #define SPECIES_MUSHROOM "mush"
 #define SPECIES_PLASMAMAN "plasmaman"
@@ -110,6 +118,7 @@
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
 #define SPECIES_SNAIL "snail"
+#define SPECIES_TALLBOY "tallboy"
 #define SPECIES_VAMPIRE "vampire"
 #define SPECIES_ZOMBIE "zombie"
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
@@ -598,9 +607,35 @@
 #define GRADIENT_APPLIES_TO_HAIR (1<<0)
 #define GRADIENT_APPLIES_TO_FACIAL_HAIR (1<<1)
 
+// Height defines
+// - They are numbers so you can compare height values (x height < y height)
+// - They do not start at 0 for futureproofing
+// - They skip numbers for futureproofing as well
+// Otherwise they are completely arbitrary
+#define HUMAN_HEIGHT_DWARF 2
+#define HUMAN_HEIGHT_SHORTEST 4
+#define HUMAN_HEIGHT_SHORT 6
+#define HUMAN_HEIGHT_MEDIUM 8
+#define HUMAN_HEIGHT_TALL 10
+#define HUMAN_HEIGHT_TALLEST 12
+
+/// Assoc list of all heights, cast to strings, to """"tuples"""""
+/// The first """tuple""" index is the upper body offset
+/// The second """tuple""" index is the lower body offset
+GLOBAL_LIST_INIT(human_heights_to_offsets, list(
+	"[HUMAN_HEIGHT_DWARF]" = list(-5, -4),
+	"[HUMAN_HEIGHT_SHORTEST]" = list(-2, -1),
+	"[HUMAN_HEIGHT_SHORT]" = list(-1, -1),
+	"[HUMAN_HEIGHT_MEDIUM]" = list(0, 0),
+	"[HUMAN_HEIGHT_TALL]" = list(1, 1),
+	"[HUMAN_HEIGHT_TALLEST]" = list(2, 2),
+))
+
 // Mob Overlays Indexes
 /// Total number of layers for mob overlays
-#define TOTAL_LAYERS 33 //KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
+/// KEEP THIS UP-TO-DATE OR SHIT WILL BREAK
+/// Also consider updating layers_to_offset
+#define TOTAL_LAYERS 33
 /// Mutations layer - Tk headglows, cold resistance glow, etc
 #define MUTATIONS_LAYER 33
 /// Mutantrace features (tail when looking south) that must appear behind the body parts
@@ -619,9 +654,9 @@
 #define DAMAGE_LAYER 26
 /// Jumpsuit clothing layer
 #define UNIFORM_LAYER 25
-/// ID card layer (might be deprecated)
-#define ID_LAYER 24
 /// ID card layer
+#define ID_LAYER 24
+/// ID card layer (might be deprecated)
 #define ID_CARD_LAYER 23
 /// Layer for bodyparts that should appear above every other bodypart - Currently only used for hands
 #define BODYPARTS_HIGH_LAYER 22
@@ -668,13 +703,56 @@
 /// Fire layer when you're on fire
 #define FIRE_LAYER 1
 
-//Bitflags for the layers an external organ can draw on (organs can be drawn on multiple layers)
-/// Draws organ on the BODY_FRONT_LAYER
-#define EXTERNAL_FRONT (1 << 1)
-/// Draws organ on the BODY_ADJ_LAYER
-#define EXTERNAL_ADJACENT (1 << 2)
-/// Draws organ on the BODY_BEHIND_LAYER
-#define EXTERNAL_BEHIND (1 << 3)
+#define UPPER_BODY "upper body"
+#define LOWER_BODY "lower body"
+#define NO_MODIFY "do not modify"
+
+/// Used for human height overlay adjustments
+/// Certain standing overlay layers shouldn't have a filter applied and should instead just offset by a pixel y
+/// This list contains all the layers that must offset, with its value being whether it's a part of the upper half of the body (TRUE) or not (FALSE)
+GLOBAL_LIST_INIT(layers_to_offset, list(
+	// Weapons commonly cross the middle of the sprite so they get cut in half by the filter
+	"[HANDS_LAYER]" = LOWER_BODY,
+	// Very tall hats will get cut off by filter
+	"[HEAD_LAYER]" = UPPER_BODY,
+	// Hair will get cut off by filter
+	"[HAIR_LAYER]" = UPPER_BODY,
+	// Long belts (sabre sheathe) will get cut off by filter
+	"[BELT_LAYER]" = LOWER_BODY,
+	// Everything below looks fine with or without a filter, so we can skip it and just offset
+	// (In practice they'd be fine if they got a filter but we can optimize a bit by not.)
+	"[GLASSES_LAYER]" = UPPER_BODY,
+	"[ABOVE_BODY_FRONT_GLASSES_LAYER]" = UPPER_BODY, // currently unused
+	"[ABOVE_BODY_FRONT_HEAD_LAYER]" = UPPER_BODY, // only used for head stuff
+	"[GLOVES_LAYER]" = LOWER_BODY,
+	"[HALO_LAYER]" = UPPER_BODY, // above the head
+	"[HANDCUFF_LAYER]" = LOWER_BODY,
+	"[ID_CARD_LAYER]" = UPPER_BODY, // unused
+	"[ID_LAYER]" = UPPER_BODY,
+	"[FACEMASK_LAYER]" = UPPER_BODY,
+	// These two are cached, and have their appearance shared(?), so it's safer to just not touch it
+	"[MUTATIONS_LAYER]" = NO_MODIFY,
+	"[FRONT_MUTATIONS_LAYER]" = NO_MODIFY,
+	// These DO get a filter, I'm leaving them here as reference,
+	// to show how many filters are added at a glance
+	// BACK_LAYER (backpacks are big)
+	// BODYPARTS_HIGH_LAYER (arms)
+	// BODY_ADJ_LAYER (external organs like wings)
+	// BODY_BEHIND_LAYER (external organs like wings)
+	// BODY_FRONT_LAYER (external organs like wings)
+	// DAMAGE_LAYER (full body)
+	// FIRE_LAYER (full body)
+	// UNIFORM_LAYER (full body)
+	// WOUND_LAYER (full body)
+))
+
+//Bitflags for the layers a bodypart overlay can draw on (can be drawn on multiple layers)
+/// Draws overlay on the BODY_FRONT_LAYER
+#define EXTERNAL_FRONT (1 << 0)
+/// Draws overlay on the BODY_ADJ_LAYER
+#define EXTERNAL_ADJACENT (1 << 1)
+/// Draws overlay on the BODY_BEHIND_LAYER
+#define EXTERNAL_BEHIND (1 << 2)
 /// Draws organ on all EXTERNAL layers
 #define ALL_EXTERNAL_OVERLAYS EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
 
@@ -699,6 +777,23 @@
 #define ABOVE_SHOES_LAYER (SHOES_LAYER-1)
 /// The layer above mutant body parts
 #define ABOVE_BODY_FRONT_LAYER (BODY_FRONT_LAYER-1)
+
+/// If gravity must be present to perform action (can't use pens without gravity)
+#define NEED_GRAVITY (1<<0)
+/// If reading is required to perform action (can't read a book if you are illiterate)
+#define NEED_LITERACY (1<<1)
+/// If lighting must be present to perform action (can't heal someone in the dark)
+#define NEED_LIGHT (1<<2)
+/// If other mobs (monkeys, aliens, etc) can perform action (can't use computers if you are a monkey)
+#define NEED_DEXTERITY (1<<3)
+/// If hands are required to perform action (can't use objects that require hands if you are a cyborg)
+#define NEED_HANDS (1<<4)
+/// If telekinesis is forbidden to perform action from a distance (ex. canisters are blacklisted from telekinesis manipulation)
+#define FORBID_TELEKINESIS_REACH (1<<5)
+/// If silicons are allowed to perform action from a distance (silicons can operate airlocks from far away)
+#define ALLOW_SILICON_REACH (1<<6)
+/// If resting on the floor is allowed to perform action (pAIs can play music while resting)
+#define ALLOW_RESTING (1<<7)
 
 /// The default mob sprite size (used for shrinking or enlarging the mob sprite to regular size)
 #define RESIZE_DEFAULT_SIZE 1
@@ -771,3 +866,24 @@
 /// Checking flags for [/mob/proc/can_read()]
 #define READING_CHECK_LITERACY (1<<0)
 #define READING_CHECK_LIGHT (1<<1)
+
+/// In dynamic human icon gen we don't replace the held item.
+#define NO_REPLACE 0
+
+/// Flags for whether you can heal yourself or not or only
+#define HEALING_TOUCH_ANYONE "healing_touch_anyone"
+#define HEALING_TOUCH_NOT_SELF "healing_touch_not_self"
+#define HEALING_TOUCH_SELF_ONLY "healing_touch_self_only"
+
+/// Default minimum body temperature mobs can exist in before taking damage
+#define NPC_DEFAULT_MIN_TEMP 250
+/// Default maximum body temperature mobs can exist in before taking damage
+#define NPC_DEFAULT_MAX_TEMP 350
+
+// Flags for mobs which can't do certain things while someone is looking at them
+/// Flag which stops you from moving while observed
+#define NO_OBSERVED_MOVEMENT (1<<0)
+/// Flag which stops you from using actions while observed
+#define NO_OBSERVED_ACTIONS (1<<1)
+/// Flag which stops you from attacking while observed
+#define NO_OBSERVED_ATTACKS (1<<2)
