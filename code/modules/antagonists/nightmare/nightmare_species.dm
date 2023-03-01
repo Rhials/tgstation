@@ -21,7 +21,7 @@
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_NODISMEMBER,
 		TRAIT_NOHUNGER,
-		TRAIT_NOBLOOD, //Figure out an alternative to this that wont make ppl poop themselves over bleed wounds
+		TRAIT_NOBLOOD, //does this work with the exotic blood???????????
 	)
 
 	exotic_blood = /datum/reagent/coalesced_shadow

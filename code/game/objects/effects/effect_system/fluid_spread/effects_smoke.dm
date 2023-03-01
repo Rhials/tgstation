@@ -458,3 +458,11 @@
 
 /datum/effect_system/fluid_spread/smoke/chem/quick
 	effect_type = /obj/effect/particle_effect/fluid/smoke/chem/quick
+
+/obj/effect/particle_effect/fluid/smoke/chem/thin
+	lifetime = 6 SECONDS
+	opacity = FALSE
+	alpha = 210
+
+/datum/effect_system/fluid_spread/smoke/chem/thin
+	effect_type = /obj/effect/particle_effect/fluid/smoke/chem/thin
