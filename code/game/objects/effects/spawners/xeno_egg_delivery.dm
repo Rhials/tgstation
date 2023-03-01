@@ -20,7 +20,7 @@
 /obj/structure/alien/egg/delivery
 	name = "egg"
 	desc = "A large mottled egg, sent as a part of a Xenobiological Research Initiative by the higher-ups. Handle with care!"
-	icon_state = "egg_growing" //Make a cooler sprite
+	icon_state = "egg_growing" //NEW SPRITES pls
 	base_icon_state = "egg"
 	max_integrity = 300
 
