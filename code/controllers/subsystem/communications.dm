@@ -17,6 +17,8 @@ SUBSYSTEM_DEF(communications)
 	var/list/command_report_footnotes = list()
 	/// A counter of conditions that are blocking the command report from printing. Counter incremements up for every blocking condition, and de-incrememnts when it is complete.
 	var/block_command_report = 0
+	/// The iteration of the roundstart xenomorph egg being tracked.
+	var/xenomorph_delivery_poi
 	/// Was there, at one point, a POI active?
 	var/xenomorph_poi_active = FALSE
 

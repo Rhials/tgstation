@@ -417,6 +417,8 @@
 		child.forceMove(get_turf(src))
 		// TECHNICALLY you could put non-facehuggers in the child var
 		if(istype(child))
+			if(SScommunications.xenomorph_poi_active && SScommunications.xenomorph_delivery_poi == src)
+				SScommunications.xenomorph_delivery_poi = child
 			if(kill)
 				child.Die()
 			else
