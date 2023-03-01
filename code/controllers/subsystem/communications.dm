@@ -17,8 +17,6 @@ SUBSYSTEM_DEF(communications)
 	var/list/command_report_footnotes = list()
 	/// A counter of conditions that are blocking the command report from printing. Counter incremements up for every blocking condition, and de-incrememnts when it is complete.
 	var/block_command_report = 0
-	/// Was there, at one point, a POI active?
-	var/xenomorph_poi_active = FALSE
 
 /datum/controller/subsystem/communications/proc/can_announce(mob/living/user, is_silicon)
 	if(is_silicon && COOLDOWN_FINISHED(src, silicon_message_cooldown))
