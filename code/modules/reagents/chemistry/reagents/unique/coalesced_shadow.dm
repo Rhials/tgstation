@@ -1,8 +1,8 @@
 /**
  * A reagent with the Light Eater component, found in the bloodstream of Nightmares.
  *
- * A reagent that generates with the Light Eater element attached.
- *
+ * A reagent that generates with the Light Eater element attached. Puts out lights when
+ * on_expose_atom is performed on something with a light source
  *
  */
 

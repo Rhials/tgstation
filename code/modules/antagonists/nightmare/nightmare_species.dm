@@ -21,7 +21,6 @@
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_NODISMEMBER,
 		TRAIT_NOHUNGER,
-		TRAIT_NOBLOOD, //does this work with the exotic blood???????????
 	)
 
 	exotic_blood = /datum/reagent/coalesced_shadow

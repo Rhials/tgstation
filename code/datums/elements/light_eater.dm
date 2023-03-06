@@ -56,12 +56,11 @@
 	if(!.)
 		return
 
-	if(!istype(eater, /datum/reagent)) //FIND A BETTER WAY OF PREVENTING THE MESSAGES FOR THE LOVE OF GOD
-		food.visible_message(
-			span_danger("Something dark in [eater] lashes out at [food] and [food.p_their()] light goes out in an instant!"),
-			span_userdanger("You feel something dark in [eater] lash out and gnaw through your light in an instant! It recedes just as fast, but you can feel that [eater.p_theyve()] left something hungry behind."),
-			span_hear("You feel the darkness clouding your vision grow even darker for a moment.")
-		)
+	food.visible_message(
+		span_danger("Something dark in [eater] lashes out at [food] and [food.p_their()] light goes out in an instant!"),
+		span_userdanger("You feel something dark in [eater] lash out and gnaw through your light in an instant! It recedes just as fast, but you can feel that [eater.p_theyve()] left something hungry behind."),
+		span_hear("You feel the darkness clouding your vision grow even darker for a moment.")
+	)
 
 /**
  * Aggregates a list of the light sources attached to the target atom.
