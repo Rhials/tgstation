@@ -466,6 +466,15 @@
 	admin_notes = "There's a chasm in it, it has railings but that won't stop determined players."
 	credit_cost = CARGO_CRATE_VALUE * 10
 
+/datum/map_template/shuttle/emergency/pirate //this NEEDS a purchase condition
+	suffix = "pirate"
+	name = "Pirate Shuttle"
+	description = "Do you ever think about how much better life would be if you ditched your stupid job and became a space pirate? \
+		Anyways, we cleared out a privateering vessel found adrift in space. No living crew were on board, just some skeletons. \
+		The cannons might be useful if you're expecting boarders."
+	admin_notes = "This one comes with some cannons on it and is made entirely of wood."
+	credit_cost = CARGO_CRATE_VALUE * 20
+
 /datum/map_template/shuttle/ferry/base
 	suffix = "base"
 	name = "transport ferry"
