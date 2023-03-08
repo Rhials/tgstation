@@ -94,3 +94,4 @@
 #define SHUTTLE_UNLOCK_BUBBLEGUM "bubblegum"
 #define SHUTTLE_UNLOCK_MEDISIM "holodeck"
 #define SHUTTLE_UNLOCK_NARNAR "narnar"
+#define SHUTTLE_UNLOCK_PIRATE "pirate"
