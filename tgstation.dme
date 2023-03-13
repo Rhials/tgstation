@@ -945,6 +945,7 @@
 #include "code\datums\components\rename.dm"
 #include "code\datums\components\rot.dm"
 #include "code\datums\components\rotation.dm"
+#include "code\datums\components\rtd.dm"
 #include "code\datums\components\scope.dm"
 #include "code\datums\components\seclight_attachable.dm"
 #include "code\datums\components\seethrough.dm"
