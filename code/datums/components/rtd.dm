@@ -3,9 +3,14 @@
  * Performs a wide variety of wacky silly effects when the user says "rtd"
  */
 /datum/component/rtd
+	/// How long of a timer will be applied after rolling the dice
+	var/cooldown_length
+	COOLDOWN_DECLARE(rtd_cooldown)
 
-/datum/component/rtd/Initialize(open_chance = 100, force_wait = 10 SECONDS)
+/datum/component/rtd/Initialize(cooldown_length = 100 SECONDS)
 	. = ..()
+
+	src.cooldown_length = cooldown_length
 
 /datum/component/rtd/RegisterWithParent()
 	if(!istype(parent, /mob/living/carbon/human))
@@ -21,18 +26,21 @@
 	var/spoken_text = speech_args[SPEECH_MESSAGE]
 
 	if((speaker == parent && spoken_text == "Rtd") || (speaker == parent && spoken_text == "rtd"))
+		if(!COOLDOWN_FINISHED(src, rtd_cooldown))
+			to_chat(span_notice("RTD is still on cooldown. Please try again in [COOLDOWN_TIMELEFT(src, rtd_cooldown)]."))
+			return
+
 		INVOKE_ASYNC(src, PROC_REF(roll_the_dice))
 
 /datum/component/rtd/proc/roll_the_dice()
-	var/rare_roll = rand(1, 25) //Chance to hit the RARE EFFECT TABLE (these ones are REALLY WACKY)
-	if(rare_roll == 1)
+	if(prob(2))
 		rare_roll()
 		return
 
 	var/mob/living/carbon/human/victim = parent
 	var/roll = rand(1, 50)
 
-	switch(roll) //THIS IS WHERE THE FUN BEGINS
+	switch(roll) //If the abandoned crate can have 100 switch outcomes, I can have 50 without being called a shitcoder
 		if(1)
 			minor_announce("[victim] has just rolled 'blind'!", "RTD announcement:")
 			var/obj/item/organ/internal/eyes/eyes_to_blind = victim.getorganslot(ORGAN_SLOT_EYES)
@@ -43,7 +51,7 @@
 		if(2)
 			minor_announce("[victim] has just rolled 'timebomb'!", "RTD announcement:") //this might be in slot #2 but it's the worst one of the normal table, I promise
 			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(explosion), victim, 2, 5, 8, 11, 15, TRUE), 35 SECONDS)
-			to_chat(victim, span_boldwarning("You will explode in FIFTEEN SECONDS. The explosion will be large enough to take out a small medbay. If you are a kind and reputative individual, you will distance yourself from anything that wouldn't respond well to an explosion.")) //Waste the reader's time with long words.
+			to_chat(victim, span_boldwarning("You will explode in THIRTY-FIVE (35) SECONDS. The explosion will be large enough to take out a small medbay. If you are a kind and reputative individual, you will distance yourself from anything that wouldn't respond well to an explosion.")) //Waste the reader's time with long words.
 		if(3)
 			minor_announce("[victim] has just rolled 'toxic'! Stay away!", "RTD announcement:") //YKNOW THE ORIGINAL VERSION OF THIS JUST INSTAKILLED YOU IF YOU WERE NEARBY YOU SHOULD BE THANKING ME THIS ISNT ON THE RARE DROP TABLE
 			for(var/mob/living/person_to_intoxicate in range(5, victim))
@@ -105,6 +113,8 @@
 			minor_announce("[victim] has just rolled 'electromagentic pulse'!", "RTD announcement:")
 			empulse(victim, 10, 5)
 
+	COOLDOWN_START(src, rtd_cooldown, cooldown_length)
+
 /datum/component/rtd/proc/rare_roll()
 	var/roll = rand(1, 50)
 	var/mob/living/carbon/human/victim = parent
@@ -148,3 +158,5 @@
 			minor_announce("[victim] has just rolled 'torture'!", "RTD announcement:")
 		if(15)
 			minor_announce("[victim] has just rolled 'suffering'!", "RTD announcement:")
+
+	COOLDOWN_START(src, rtd_cooldown, cooldown_length)
