@@ -137,7 +137,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		DYE_SYNDICATE = /obj/item/bedsheet/syndie,
 		DYE_CENTCOM = /obj/item/bedsheet/centcom
 	),
-		DYE_REGISTRY_DOUBLE_BEDSHEET = list(
+	DYE_REGISTRY_DOUBLE_BEDSHEET = list(
 		DYE_RED = /obj/item/bedsheet/red/double,
 		DYE_ORANGE = /obj/item/bedsheet/orange/double,
 		DYE_YELLOW = /obj/item/bedsheet/yellow/double,
@@ -165,8 +165,11 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	DYE_LAWYER_SPECIAL = list(
 		DYE_COSMIC = /obj/item/clothing/under/rank/civilian/lawyer/galaxy,
 		DYE_SYNDICATE = /obj/item/clothing/under/rank/civilian/lawyer/galaxy/red
-	)
-))
+	),
+	DYE_LAWYER_SPECIAL_SKIRT = list(
+		DYE_COSMIC = /obj/item/clothing/under/rank/civilian/lawyer/galaxy/skirt,
+		DYE_SYNDICATE = /obj/item/clothing/under/rank/civilian/lawyer/galaxy/red/skirt
+)))
 
 /obj/machinery/washing_machine
 	name = "washing machine"
