@@ -300,6 +300,19 @@
 	icon_state = "fuel_high"
 	tank_volume = 5000
 
+/obj/structure/reagent_dispensers/fueltank/nuclear
+	name = "thermonuclear fuel tank"
+	icon_state = "fuel_thermonuclear"
+	desc = "Constitutes a workplace safety violation, just by existing. Keep away from flame. If unable to keep away from flame, send out nearest airlock."
+	reagent_id = /datum/reagent/fuel
+	tank_volume = 20000
+
+/obj/structure/reagent_dispensers/fueltank/nuclear/boom()
+	modify_filter(name = "ray", new_params = list(
+		color = COLOR_VIBRANT_LIME
+	))
+
+
 /// Wall mounted dispeners, like pepper spray or virus food. Not a normal tank, and shouldn't be able to be turned into a plumbed stationary one.
 /obj/structure/reagent_dispensers/wall
 	anchored = TRUE
