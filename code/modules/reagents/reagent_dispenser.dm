@@ -308,6 +308,8 @@
 	tank_volume = 20000
 	///Have we begun the meltdown process
 	var/melting_down = FALSE
+	///Our meltdown soundloop
+	var/datum/looping_sound/destabilized_crystal/meltdown_loop
 
 /obj/structure/reagent_dispensers/fueltank/nuclear/Initialize(mapload)
 	. = ..()
@@ -339,6 +341,11 @@
 /obj/structure/reagent_dispensers/fueltank/nuclear/process(delta_time)
 	. = ..()
 
+	if(prob(1 * delta_time)) //Sometimes, the welding tanks whisper to me.
+		var/taunt = pick(
+		""
+	)
+
 /obj/structure/reagent_dispensers/fueltank/nuclear/examine(mob/user)
 	. = ..()
 
@@ -349,10 +356,52 @@
 	modify_filter(name = "ray", new_params = list(
 		color = COLOR_VIBRANT_LIME
 	))
+
 	melting_down = TRUE
-	addtimer(CALLBACK(src, PROC_REF(nuclear_boom), 20 SECONDS))
+	meltdown_loop = new(src, FALSE)
+	meltdown_loop.start()
+
+	notify_ghosts(
+		"A thermonuclear welding tank has begun melting down!",
+		source = src,
+		action = NOTIFY_ORBIT,
+		flashwindow = FALSE,
+		ghost_sound = 'sound/machines/warning-buzzer.ogg',
+		header = "Meltdown Incoming",
+		notify_volume = 75
+	)
+
+	addtimer(CALLBACK(src, PROC_REF(nuclear_boom), 25 SECONDS))
+
+/obj/structure/reagent_dispensers/fueltank/nuclear/attackby(obj/item/attacking_item, mob/living/user, params)
+	if(!attacking_item.tool_behaviour == TOOL_WELDER)
+		return ..()
+
+	var/obj/item/weldingtool/welder = attacking_item
+	if(!welder.welding)
+		if(welder.reagents.has_reagent(/datum/reagent/fuel, welder.max_fuel))
+			to_chat(user, span_warning("Your [welder.name] is already full!"))
+			return
+		reagents.trans_to(welder, welder.max_fuel, transfered_by = user)
+		user.visible_message(span_notice("[user] refills [user.p_their()] [welder.name]."), span_notice("You refill [welder]."))
+		playsound(src, 'sound/effects/refill.ogg', 50, TRUE)
+		welder.update_appearance()
+	else
+		if(!istype(welder) || welder.max_fuel <= 20) //Only big boy welders can actually melt this thing down.
+			user.visible_message(span_danger("[user] nearly fails at refilling [user.p_their()] [attacking_item.name], but the safeties prevent catastrophe!"), span_userdanger("You nearly trigger a meltdown, however your [attacking_item.name] was not powerful enough!"))
+		else
+			user.visible_message(span_danger("[user] catastrophically fails at refilling [user.p_their()] [attacking_item.name], triggering a meltdown!"), span_userdanger("OH NO."))
+			log_bomber(user, "initiated a meltdown of a", src, "via an advanced welding tool")
+			boom()
+
+	return ..()
 
 /obj/structure/reagent_dispensers/fueltank/nuclear/proc/nuclear_boom()
+	radiation_pulse(src, 10)
+	for(var/impacted_thing in range(12, src))
+		if(isfloorturf(impacted_thing) && prob(45))
+			new /obj/effect/decal/cleanable/greenglow(get_turf(impacted_thing))
+
 	explosion(src, devastation_range = 4, heavy_impact_range = 7, light_impact_range = 16, flame_range = 22, flash_range = 26, ignorecap = TRUE, explosion_cause = "thermonuclear detonation")
 
 /// Wall mounted dispeners, like pepper spray or virus food. Not a normal tank, and shouldn't be able to be turned into a plumbed stationary one.
