@@ -303,13 +303,34 @@
 /obj/structure/reagent_dispensers/fueltank/nuclear
 	name = "thermonuclear fuel tank"
 	icon_state = "fuel_thermonuclear"
-	desc = "Constitutes a workplace safety violation, just by existing. Keep away from flame. If unable to keep away from flame, send out nearest airlock."
+	desc = "Constitutes a workplace safety violation, just by existing."
 	reagent_id = /datum/reagent/fuel
 	tank_volume = 20000
+	///Have we begun the meltdown process
+	var/melting_down = FALSE
 
 /obj/structure/reagent_dispensers/fueltank/nuclear/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSobj, src)
+	desc += pick( //The temptation...
+		" It can be repaired with a lit welding tool.",
+		" It looks cold, you should find something to heat it up with.",
+		" I bet it will look really cool when it explodes.",
+		" The admins aren't looking. Touch it...",
+		" Rumor has it these are made with the trapped souls of Greytiders. You can release them with a lit welder.",
+		" Remember to turn on your welder before refuelling it here!",
+		" You KNOW you want to.",
+		" You won't be able to resist the temptation. Just do it now and save yourself the suffering.",
+		" Will it actually cause a nuclear explosion? Why not find out!",
+		" A tactical nuke, wherever you need it.",
+		" If you're not going to blow it up, someone else will!",
+		" Instant hellfire, just add welder.",
+		" Do it. Light it on fire. Do it.",
+		" If you're worried about it exploding, you can defuse it with a lit welder.",
+		" QUICK, IT'S LEAKING, USE A WELDER TO REPAIR IT!",
+		" It's totally safe to smoke a cigarette next to this haha :).",
+		" You're reading this instead of blowing the damn thing up. Pathetic.",
+	)
 
 /obj/structure/reagent_dispensers/fueltank/nuclear/Destroy(mapload)
 	STOP_PROCESSING(SSobj, src)
@@ -321,16 +342,18 @@
 /obj/structure/reagent_dispensers/fueltank/nuclear/examine(mob/user)
 	. = ..()
 
-	if(prob(25)) //The temptation...
-		. += pick(
-			" Can be repaired with a lit welding tool.",
-			"",
-		)
+	if(melting_down)
+		. = span_boldwarning("GOOD FUCKING LORD GET THAT THING OUT OF HERE, IT'S GOING TO EXPLODE!")
 
 /obj/structure/reagent_dispensers/fueltank/nuclear/boom()
 	modify_filter(name = "ray", new_params = list(
 		color = COLOR_VIBRANT_LIME
 	))
+	melting_down = TRUE
+	addtimer(CALLBACK(src, PROC_REF(nuclear_boom), 20 SECONDS))
+
+/obj/structure/reagent_dispensers/fueltank/nuclear/proc/nuclear_boom()
+	explosion(src, devastation_range = 4, heavy_impact_range = 7, light_impact_range = 16, flame_range = 22, flash_range = 26, ignorecap = TRUE, explosion_cause = "thermonuclear detonation")
 
 /// Wall mounted dispeners, like pepper spray or virus food. Not a normal tank, and shouldn't be able to be turned into a plumbed stationary one.
 /obj/structure/reagent_dispensers/wall
