@@ -307,11 +307,30 @@
 	reagent_id = /datum/reagent/fuel
 	tank_volume = 20000
 
+/obj/structure/reagent_dispensers/fueltank/nuclear/Initialize(mapload)
+	. = ..()
+	START_PROCESSING(SSobj, src)
+
+/obj/structure/reagent_dispensers/fueltank/nuclear/Destroy(mapload)
+	STOP_PROCESSING(SSobj, src)
+	. = ..()
+
+/obj/structure/reagent_dispensers/fueltank/nuclear/process(delta_time)
+	. = ..()
+
+/obj/structure/reagent_dispensers/fueltank/nuclear/examine(mob/user)
+	. = ..()
+
+	if(prob(25)) //The temptation...
+		. += pick(
+			" Can be repaired with a lit welding tool.",
+			"",
+		)
+
 /obj/structure/reagent_dispensers/fueltank/nuclear/boom()
 	modify_filter(name = "ray", new_params = list(
 		color = COLOR_VIBRANT_LIME
 	))
-
 
 /// Wall mounted dispeners, like pepper spray or virus food. Not a normal tank, and shouldn't be able to be turned into a plumbed stationary one.
 /obj/structure/reagent_dispensers/wall
