@@ -266,6 +266,7 @@ GLOBAL_LIST_INIT(meteors_sandstorm, list(/obj/effect/meteor/sand=45, /obj/effect
  */
 
 /obj/effect/meteor/proc/shield_defense(obj/machinery/satellite/meteor_shield/defender)
+	make_debris() //Drop whatever we usually leave behind
 	return TRUE
 
 ///////////////////////
@@ -390,6 +391,10 @@ GLOBAL_LIST_INIT(meteors_sandstorm, list(/obj/effect/meteor/sand=45, /obj/effect
 		cluster_count--
 
 	explosion(src, heavy_impact_range = 2, light_impact_range = 3, flash_range = 4, adminlog = FALSE)
+
+/obj/effect/meteor/cluster/shield_defense(obj/machinery/satellite/meteor_shield/defender)
+	meteor_effect() //We shatter into pieces instead of just deleting
+	return TRUE
 
 /obj/effect/meteor/cluster_fragment
 	name = "cluster meteor fragment"
@@ -551,6 +556,9 @@ GLOBAL_LIST_INIT(meteors_sandstorm, list(/obj/effect/meteor/sand=45, /obj/effect
 	..()
 	if(prob(20))
 		explosion(src, devastation_range = 2, heavy_impact_range = 4, light_impact_range = 6, flash_range = 8, adminlog = FALSE)
+
+/obj/effect/meteor/tunguska/shield_defense(obj/machinery/satellite/meteor_shield/defender)
+	explosion(src, devastation_range = 2, heavy_impact_range = 4, light_impact_range = 10, flame_range = 24, flash_range = 22, adminlog = FALSE) //If one of these monstrosities does manage to get shot down, it creates a very flashy explosion.
 
 //////////////////////////
 //Spookoween meteors
