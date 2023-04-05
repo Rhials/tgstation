@@ -14,6 +14,11 @@
 	if(SSmapping.is_planetary())
 		return FALSE
 
+	var/obj/machinery/nuclearbomb/selfdestruct/nuke = locate() in GLOB.nuke_list
+
+	if(!nuke.core) //Make sure the self-destruct is still operable
+		return FALSE
+
 	return TRUE
 
 /datum/traitor_objective/ultimate/battlecruiser/on_objective_taken(mob/user)
