@@ -24,6 +24,8 @@
 	var/discount_team_amount = 5
 	/// The amount of limited discounts that the team get
 	var/discount_limited_amount = 10
+	/// The amount of limited "batch" discounts for the team
+	var/batch_limited_amount = 6
 
 /datum/antagonist/nukeop/proc/equip_op()
 	if(!ishuman(owner.current))
@@ -68,6 +70,12 @@
 			nuke_team.team_discounts = list()
 			nuke_team.team_discounts += create_uplink_sales(discount_team_amount, /datum/uplink_category/discount_team_gear, -1, uplink_items)
 			nuke_team.team_discounts += create_uplink_sales(discount_limited_amount, /datum/uplink_category/limited_discount_team_gear, 1, uplink_items)
+
+			var/list/batch_uplink_offers = list()
+			for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
+				if(item.item && !item.cant_discount && (item.purchasable_from & UPLINK_NUKE_OPS) && item.cost > 1) //Batch offers can only be made on nukie items
+					batch_uplink_offers += item
+			nuke_team.team_discounts += create_batch_sales(batch_limited_amount, /datum/uplink_category/batch_discount_team_gear, 1, batch_uplink_offers)
 		uplink.uplink_handler.extra_purchasable += nuke_team.team_discounts
 
 	memorize_code()

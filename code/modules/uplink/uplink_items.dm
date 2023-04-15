@@ -21,6 +21,26 @@
 		sales += uplink_item
 	return sales
 
+/// Creates "batch sales" of nukie items, wherein a large discount is offered, however a high minimum of the item MUST be purchased, all at once.
+/proc/create_batch_sales(num, datum/uplink_category/category, limited_stock, list/sale_items)
+	var/list/sales = list()
+	var/list/sale_items_copy = sale_items.Copy()
+	for (var/i in 1 to num)
+		var/batch_size = rand(4, 15)
+		var/datum/uplink_item/taken_item = pick_n_take(sale_items_copy)
+		var/datum/uplink_item/uplink_item = new taken_item.type()
+		var/discount = uplink_item.get_discount_value(TRAITOR_DISCOUNT_BIG)
+		uplink_item.limited_stock = limited_stock
+		uplink_item.category = category
+		uplink_item.cost = max(round(uplink_item.cost * (1 - discount)),1)
+		uplink_item.name += " -- Buy [batch_size], get [discount * 100]% off!"
+		uplink_item.desc += " Must be purchased in a batch of [batch_size] units. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost * batch_size)] TC!"
+		uplink_item.item = taken_item.item
+		uplink_item.item_count = batch_size
+
+		sales += uplink_item
+	return sales
+
 /**
  * Uplink Items
  *
@@ -73,18 +93,14 @@
 	/// Uses the purchase log, so items purchased that are not visible in the purchase log will not count towards this.
 	/// However, they won't be purchasable afterwards.
 	var/lock_other_purchases = FALSE
+	///The number of items to be spawned on purchase. Meant to be overridden for batch orders.
+	var/item_count = 1
 
 /datum/uplink_item/New()
 	. = ..()
 	if(stock_key != UPLINK_SHARED_STOCK_UNIQUE)
 		return
 	stock_key = type
-
-/datum/uplink_category
-	/// Name of the category
-	var/name
-	/// Weight of the category. Used to determine the positioning in the uplink. High weight = appears first
-	var/weight = 0
 
 /// Returns by how much percentage do we reduce the price of the selected item
 /datum/uplink_item/proc/get_discount()
@@ -109,10 +125,13 @@
 
 /// Spawns an item and logs its purchase
 /datum/uplink_item/proc/purchase(mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
-	var/atom/A = spawn_item(item, user, uplink_handler, source)
+	for(var/spawn_count in 1 to item_count)
+		var/atom/spawned_object = spawn_item(item, user, uplink_handler, source)
+		if(purchase_log_vis && uplink_handler.purchase_log)
+			uplink_handler.purchase_log.LogPurchase(spawned_object, src, cost)
+		spawned_object.pixel_x = rand(-3, 3)
+		spawned_object.pixel_y = rand(-3, 3)
 	log_uplink("[key_name(user)] purchased [src] for [cost] telecrystals from [source]'s uplink")
-	if(purchase_log_vis && uplink_handler.purchase_log)
-		uplink_handler.purchase_log.LogPurchase(A, src, cost)
 	if(lock_other_purchases)
 		uplink_handler.shop_locked = TRUE
 
@@ -133,6 +152,12 @@
 	to_chat(user, span_boldnotice("[A] materializes onto the floor!"))
 	return A
 
+/datum/uplink_category
+	/// Name of the category
+	var/name
+	/// Weight of the category. Used to determine the positioning in the uplink. High weight = appears first
+	var/weight = 0
+
 /datum/uplink_category/discounts
 	name = "Discounted Gear"
 	weight = -1
@@ -145,9 +170,16 @@
 	name = "Limited Stock Team Gear"
 	weight = -2
 
+/datum/uplink_category/batch_discount_team_gear
+	name = "Batch Stock Team Gear"
+	weight = -3
+
 //Discounts (dynamically filled above)
 /datum/uplink_item/discounts
 	category = /datum/uplink_category/discounts
+
+/datum/uplink_item/batch_discounts
+	category = /datum/uplink_category/batch_discount_team_gear
 
 // Special equipment (Dynamically fills in uplink component)
 /datum/uplink_item/special_equipment
