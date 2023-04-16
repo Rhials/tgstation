@@ -26,15 +26,25 @@
 	var/list/sales = list()
 	var/list/sale_items_copy = sale_items.Copy()
 	for (var/i in 1 to num)
-		var/batch_size = rand(4, 15)
+
+		var/batch_size = rand(4, 9)
+		var/discount_size = TRAITOR_DISCOUNT_AVERAGE
+
+		if(prob(5)) //Chance to override the discount amount/batch size with an X-TREME value that might also be a bit ridiculous.
+			discount_size = TRAITOR_DISCOUNT_BIG
+
+		if(prob(5))
+			batch_size = rand(10, 15)
+
 		var/datum/uplink_item/taken_item = pick_n_take(sale_items_copy)
 		var/datum/uplink_item/uplink_item = new taken_item.type()
-		var/discount = uplink_item.get_discount_value(TRAITOR_DISCOUNT_BIG)
+		var/discount = uplink_item.get_discount_value(discount_size)
+		discount *= rand(100, 120) / 100 //Extra discount bonus to make them more worthwhile/tempting/varied.
 		uplink_item.limited_stock = limited_stock
 		uplink_item.category = category
-		uplink_item.cost = max(round(uplink_item.cost * (1 - discount)),1)
-		uplink_item.name += " -- Buy [batch_size], get [discount * 100]% off!"
-		uplink_item.desc += " Must be purchased in a batch of [batch_size] units. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost * batch_size)] TC!"
+		uplink_item.cost = max(round((uplink_item.cost * batch_size) * (1 - discount)),1)
+		uplink_item.name += " -- Buy [batch_size], get [round(discount * 100)]% off!"
+		uplink_item.desc += " Must be purchased in a batch of [batch_size] units. Original price: [taken_item.cost]. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost * batch_size)] TC!"
 		uplink_item.item = taken_item.item
 		uplink_item.item_count = batch_size
 
