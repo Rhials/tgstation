@@ -42,9 +42,9 @@
 		discount *= rand(100, 120) / 100 //Extra discount bonus to make them more worthwhile/tempting/varied.
 		uplink_item.limited_stock = limited_stock
 		uplink_item.category = category
-		uplink_item.cost = max(round((uplink_item.cost * batch_size) * (1 - discount)),1)
+		uplink_item.cost = max(round((taken_item.cost * batch_size) * (1 - discount)),1)
 		uplink_item.name += " -- Buy [batch_size], get [round(discount * 100)]% off!"
-		uplink_item.desc += " Must be purchased in a batch of [batch_size] units. Original price: [taken_item.cost]. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost * batch_size)] TC!"
+		uplink_item.desc += " Must be purchased in a batch of [batch_size] units. Original price: [taken_item.cost] TC. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC!"
 		uplink_item.item = taken_item.item
 		uplink_item.item_count = batch_size
 
@@ -181,8 +181,8 @@
 	weight = -2
 
 /datum/uplink_category/batch_discount_team_gear
-	name = "Batch Stock Team Gear"
-	weight = -3
+	name = "Team Batch Discount Gear"
+	weight = -2
 
 //Discounts (dynamically filled above)
 /datum/uplink_item/discounts
