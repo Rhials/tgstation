@@ -550,6 +550,19 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 
+/obj/item/clothing/mask/changeling_suit
+	name = "flesh mask"
+	desc = "A rubbery, hairless mass of flesh that covers and respirates for the wearer."
+	icon_state = "gas_alt"
+	clothing_flags = BLOCK_GAS_SMOKE_EFFECT | MASKINTERNALS | GAS_FILTERING
+	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
+	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH | PEPPERPROOF
+	resistance_flags = NONE
+
+/obj/item/clothing/mask/changeling_suit/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
+
 /***************************************\
 |*****************ARMOR*****************|
 \***************************************/
