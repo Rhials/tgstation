@@ -22,24 +22,28 @@
 	return sales
 
 /// Creates "batch sales" of nukie items, wherein a large discount is offered, however a high minimum of the item MUST be purchased, all at once.
-/proc/create_batch_sales(num, datum/uplink_category/category, limited_stock, list/sale_items)
+/proc/create_batch_sales(sale_count, datum/uplink_category/category, limited_stock, list/sale_items)
 	var/list/sales = list()
 	var/list/sale_items_copy = sale_items.Copy()
-	for (var/i in 1 to num)
-
-		var/batch_size = rand(4, 9)
-		var/discount_size = TRAITOR_DISCOUNT_AVERAGE
-
-		if(prob(5)) //Chance to override the discount amount/batch size with an X-TREME value that might also be a bit ridiculous.
-			discount_size = TRAITOR_DISCOUNT_BIG
-
-		if(prob(5))
-			batch_size = rand(10, 15)
-
+	for (var/i in 1 to sale_count)
 		var/datum/uplink_item/taken_item = pick_n_take(sale_items_copy)
 		var/datum/uplink_item/uplink_item = new taken_item.type()
+
+		var/batch_size = rand(4, 7)
+
+		if(prob(20))
+			batch_size = rand(11, 15)
+
+		var/discount_size = TRAITOR_DISCOUNT_AVERAGE
+
+		if(prob(20))
+			discount_size = TRAITOR_DISCOUNT_BIG
+
 		var/discount = uplink_item.get_discount_value(discount_size)
-		discount *= rand(100, 120) / 100 //Extra discount bonus to make them more worthwhile/tempting/varied.
+		discount *= rand(100, 150) / 100 //Extra discount bonus to make them more worthwhile/tempting/varied.
+
+		discount = min(discount, 0.9) //But let's not get TOO crazy (like if we get a really high multiplier + big discount). Caps the discount to 90% off.
+
 		uplink_item.limited_stock = limited_stock
 		uplink_item.category = category
 		uplink_item.cost = max(round((taken_item.cost * batch_size) * (1 - discount)),1)
@@ -139,9 +143,9 @@
 		var/atom/spawned_object = spawn_item(item, user, uplink_handler, source)
 		if(purchase_log_vis && uplink_handler.purchase_log)
 			uplink_handler.purchase_log.LogPurchase(spawned_object, src, cost)
-		spawned_object.pixel_x = rand(-3, 3)
-		spawned_object.pixel_y = rand(-3, 3)
-	log_uplink("[key_name(user)] purchased [src] for [cost] telecrystals from [source]'s uplink")
+		spawned_object.pixel_x = rand(-6, 6)
+		spawned_object.pixel_y = rand(-6, 6)
+	log_uplink("[key_name(user)] purchased [item_count] [src] for [cost] telecrystals from [source]'s uplink")
 	if(lock_other_purchases)
 		uplink_handler.shop_locked = TRUE
 
@@ -180,16 +184,16 @@
 	name = "Limited Stock Team Gear"
 	weight = -2
 
-/datum/uplink_category/batch_discount_team_gear
-	name = "Team Batch Discount Gear"
-	weight = -2
+/datum/uplink_category/batch_discounts
+	name = "Bulk Discount Offers"
+	weight = -3
 
 //Discounts (dynamically filled above)
 /datum/uplink_item/discounts
 	category = /datum/uplink_category/discounts
 
 /datum/uplink_item/batch_discounts
-	category = /datum/uplink_category/batch_discount_team_gear
+	category = /datum/uplink_category/batch_discounts
 
 // Special equipment (Dynamically fills in uplink component)
 /datum/uplink_item/special_equipment
