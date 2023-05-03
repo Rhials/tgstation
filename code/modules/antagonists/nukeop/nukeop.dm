@@ -25,7 +25,7 @@
 	/// The amount of limited discounts that the team get
 	var/discount_limited_amount = 10
 	/// The amount of limited "batch" discounts to generate.
-	var/batch_limited_amount = 5
+	var/batch_limited_amount = 6
 
 /datum/antagonist/nukeop/proc/equip_op()
 	if(!ishuman(owner.current))
