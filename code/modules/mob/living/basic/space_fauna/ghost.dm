@@ -5,7 +5,7 @@
 	icon_state = "ghost"
 	icon_living = "ghost"
 	mob_biotypes = MOB_SPIRIT
-	movement_type = FLOATING
+	movement_type = FLYING
 	speak_emote = list("wails", "weeps")
 	response_help_continuous = "passes through"
 	response_help_simple = "pass through"
