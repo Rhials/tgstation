@@ -22,6 +22,7 @@
 	return sales
 
 /// Creates "batch sales" of nukie items, wherein a large discount is offered, however a high minimum of the item MUST be purchased, all at once.
+/// Takes an average discount (sometimes a big discount) and adds a 1.1-1.5x multiplier to it, capped at 90% off.
 /proc/create_batch_sales(sale_count, datum/uplink_category/category, limited_stock, list/sale_items)
 	var/list/sales = list()
 	var/list/sale_items_copy = sale_items.Copy()
@@ -39,10 +40,12 @@
 		if(prob(20))
 			discount_size = TRAITOR_DISCOUNT_BIG
 
+		///We grab the item's discount value and add a multiplier, rather than just generating a random discount amount.
+		///If something has a reduced discount value (such as the desword), the batch discount will respect this.
 		var/discount = uplink_item.get_discount_value(discount_size)
-		discount *= rand(100, 150) / 100 //Extra discount bonus to make them more worthwhile/tempting/varied.
+		discount *= rand(110, 150) / 100
 
-		discount = min(discount, 0.9) //But let's not get TOO crazy (like if we get a really high multiplier + big discount). Caps the discount to 90% off.
+		discount = min(discount, 0.85) //But let's not get TOO crazy (like if we get a really high multiplier + big discount).
 
 		uplink_item.limited_stock = limited_stock
 		uplink_item.category = category
