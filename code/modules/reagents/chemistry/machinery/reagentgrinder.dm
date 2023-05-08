@@ -67,8 +67,8 @@
 /obj/machinery/reagentgrinder/RefreshParts()
 	. = ..()
 	speed = 1
-	for(var/datum/stock_part/manipulator/manipulator in component_parts)
-		speed = manipulator.tier
+	for(var/datum/stock_part/servo/servo in component_parts)
+		speed = servo.tier
 
 /obj/machinery/reagentgrinder/examine(mob/user)
 	. = ..()
@@ -361,3 +361,5 @@
 			var/amount = beaker.reagents.get_reagent_amount(/datum/reagent/consumable/cream)
 			beaker.reagents.remove_reagent(/datum/reagent/consumable/cream, amount)
 			beaker.reagents.add_reagent(/datum/reagent/consumable/whipped_cream, amount)
+
+#undef MILK_TO_BUTTER_COEFF
