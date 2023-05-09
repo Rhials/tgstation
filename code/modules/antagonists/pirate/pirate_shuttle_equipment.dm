@@ -134,8 +134,9 @@
 	if(!GLOB.exports_list.len)
 		setupExports()
 	var/list/possible_loot = list()
-	for(var/datum/export/pirate/E in GLOB.exports_list)
-		possible_loot += E
+	for(var/datum/export/E in GLOB.exports_list)
+		if(export.pirate_export)
+			possible_loot += E
 	var/datum/export/pirate/P
 	var/atom/movable/AM
 	while(!AM && possible_loot.len)

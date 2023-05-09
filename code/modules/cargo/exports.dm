@@ -26,7 +26,7 @@ Then the player gets the profit from selling his own wasted time.
 	var/list/total_value = list() //export instance => total value of sold objects
 
 // external_report works as "transaction" object, pass same one in if you're doing more than one export in single go
-/proc/export_item_and_contents(atom/movable/AM, apply_elastic = TRUE, delete_unsold = TRUE, dry_run = FALSE, datum/export_report/external_report)
+/proc/export_item_and_contents(atom/movable/AM, apply_elastic = TRUE, delete_unsold = TRUE, dry_run = FALSE, datum/export_report/external_report, pirate_exports = FALSE)
 	if(!GLOB.exports_list.len)
 		setupExports()
 
@@ -43,6 +43,8 @@ Then the player gets the profit from selling his own wasted time.
 		var/sold = FALSE
 		for(var/datum/export/export as anything in GLOB.exports_list)
 			if(export.applies_to(thing, apply_elastic))
+				if(export.pirate_export && !pirate_exports)
+					continue
 				if(!dry_run && (SEND_SIGNAL(thing, COMSIG_ITEM_PRE_EXPORT) & COMPONENT_STOP_EXPORT))
 					break
 				sold = export.sell_object(thing, report, dry_run, apply_elastic)
@@ -80,6 +82,9 @@ Then the player gets the profit from selling his own wasted time.
 
 	/// cost includes elasticity, this does not.
 	var/init_cost
+
+	///Are we an export meant primarily for pirates?
+	var/pirate_export = FALSE
 
 
 
