@@ -261,7 +261,7 @@
 	for(var/atom/movable/AM in get_turf(pad))
 		if(AM == pad)
 			continue
-		export_item_and_contents(AM, apply_elastic = FALSE, dry_run = TRUE, external_report = ex, pirate_exports = TRUE)
+		export_item_and_contents(AM, apply_elastic = FALSE, dry_run = TRUE, external_report = ex)
 
 	for(var/datum/export/E in ex.total_amount)
 		status_report += E.total_printout(ex,notes = FALSE)

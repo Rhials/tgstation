@@ -26,7 +26,7 @@ Then the player gets the profit from selling his own wasted time.
 	var/list/total_value = list() //export instance => total value of sold objects
 
 // external_report works as "transaction" object, pass same one in if you're doing more than one export in single go
-/proc/export_item_and_contents(atom/movable/AM, apply_elastic = TRUE, delete_unsold = TRUE, dry_run = FALSE, datum/export_report/external_report, pirate_exports = FALSE)
+/proc/export_item_and_contents(atom/movable/AM, apply_elastic = TRUE, delete_unsold = TRUE, dry_run = FALSE, datum/export_report/external_report)
 	if(!GLOB.exports_list.len)
 		setupExports()
 
@@ -42,8 +42,6 @@ Then the player gets the profit from selling his own wasted time.
 	for(var/atom/movable/thing as anything in reverse_range(contents))
 		var/sold = FALSE
 		for(var/datum/export/export as anything in GLOB.exports_list)
-			if(istype(export, /datum/export/pirate) && !pirate_exports)
-				continue
 			if(export.applies_to(thing, apply_elastic))
 				if(!dry_run && (SEND_SIGNAL(thing, COMSIG_ITEM_PRE_EXPORT) & COMPONENT_STOP_EXPORT))
 					break
