@@ -1444,3 +1444,13 @@
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/navbeacon
 	req_components = list()
+
+/obj/item/circuitboard/machine/dimension_window
+	name = "Dimensional Window"
+	greyscale_colors = CIRCUIT_COLOR_SCIENCE
+	build_path = /obj/machinery/dimension_window
+	req_components = list(
+		/datum/stock_part/capacitor = 2,
+		/datum/stock_part/micro_laser = 2,
+		/obj/item/assembly/signaler/anomaly/dimensional = 1,
+	)
