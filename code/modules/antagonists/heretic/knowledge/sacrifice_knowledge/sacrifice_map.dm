@@ -42,6 +42,14 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	name = "rust heretic sacrifice landmark"
 	for_heretic_path = PATH_RUST
 
+/obj/effect/landmark/heretic/blade
+	name = "blade heretic sacrifice landmark"
+	for_heretic_path = PATH_BLADE
+
+/obj/effect/landmark/heretic/cosmic
+	name = "cosmic heretic sacrifice landmark"
+	for_heretic_path = PATH_COSMIC
+
 // A fluff signpost object that doesn't teleport you somewhere when you touch it.
 /obj/structure/no_effect_signpost
 	name = "signpost"
@@ -114,3 +122,11 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	name = "Mansus Rust Gate"
 	ambience_index = AMBIENCE_REEBE
 	sound_environment = SOUND_ENVIRONMENT_SEWER_PIPE
+
+/area/centcom/heretic_sacrifice/blade
+	name = "Mansus Blade Gate"
+	sound_environment = SOUND_ENVIRONMENT_BATHROOM
+
+/area/centcom/heretic_sacrifice/cosmic
+	name = "Mansus Cosmic Gate"
+	sound_environment = SOUND_ENVIRONMENT_UNDERWATER
