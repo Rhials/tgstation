@@ -2,9 +2,17 @@
 "ab" = (
 /turf/open/space/basic,
 /area/space)
+"ag" = (
+/turf/open/floor/iron/freezer,
+/area/centcom/heretic_sacrifice/blade)
 "bm" = (
 /obj/effect/landmark/heretic/blade,
 /turf/open/floor/iron/white/smooth_half,
+/area/centcom/heretic_sacrifice/blade)
+"br" = (
+/obj/structure/kitchenspike,
+/obj/effect/gibspawner/human/bodypartless,
+/turf/open/floor/iron/showroomfloor,
 /area/centcom/heretic_sacrifice/blade)
 "cd" = (
 /obj/effect/decal/cleanable/ash{
@@ -44,6 +52,9 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/centcom/heretic_sacrifice/rust)
+"gA" = (
+/turf/open/floor/iron/white/side,
+/area/centcom/heretic_sacrifice/blade)
 "gJ" = (
 /obj/effect/decal/remains/human,
 /turf/open/misc/dirt/jungle/dark{
@@ -55,34 +66,15 @@
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/indestructible/necropolis/air,
 /area/centcom/heretic_sacrifice/flesh)
-"ja" = (
-/turf/open/floor/iron/showroomfloor,
-/area/centcom/heretic_sacrifice/blade)
 "jg" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/structure/cable,
 /turf/open/floor/plating/rust,
 /area/centcom/heretic_sacrifice/rust)
-"jh" = (
-/obj/structure/kitchenspike,
-/obj/effect/gibspawner/human/bodypartless,
-/turf/open/floor/iron/showroomfloor,
-/area/centcom/heretic_sacrifice/blade)
 "jB" = (
 /obj/machinery/light/very_dim/directional/south,
 /turf/open/misc/asteroid,
 /area/centcom/heretic_sacrifice/void)
-"jS" = (
-/obj/effect/decal/cleanable/blood/footprints,
-/obj/effect/decal/cleanable/blood/tracks,
-/obj/effect/decal/cleanable/blood/gibs/old{
-	pixel_y = 18
-	},
-/turf/open/floor/iron/showroomfloor,
-/area/centcom/heretic_sacrifice/blade)
-"kK" = (
-/turf/open/floor/iron/freezer,
-/area/centcom/heretic_sacrifice/blade)
 "lz" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/ashplanet/wateryrock{
@@ -108,6 +100,9 @@
 	},
 /turf/open/floor/plating,
 /area/centcom/heretic_sacrifice/rust)
+"mU" = (
+/turf/open/floor/iron/white/smooth_half,
+/area/centcom/heretic_sacrifice/blade)
 "mZ" = (
 /obj/effect/decal/fakelattice{
 	density = 0
@@ -121,11 +116,6 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
-"nI" = (
-/obj/effect/decal/cleanable/blood/tracks,
-/obj/effect/decal/cleanable/blood/footprints,
-/turf/open/floor/iron/showroomfloor,
-/area/centcom/heretic_sacrifice/blade)
 "nL" = (
 /obj/structure/stone_tile/cracked{
 	dir = 4
@@ -163,11 +153,6 @@
 	},
 /turf/open/misc/ironsand,
 /area/centcom/heretic_sacrifice/rust)
-"pz" = (
-/obj/structure/kitchenspike,
-/obj/effect/gibspawner/human,
-/turf/open/floor/iron/showroomfloor,
-/area/centcom/heretic_sacrifice/blade)
 "pN" = (
 /obj/effect/turf_decal/weather/dirt{
 	dir = 9
@@ -179,11 +164,6 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
-"qa" = (
-/turf/open/floor/iron/white/side{
-	dir = 1
-	},
-/area/centcom/heretic_sacrifice/blade)
 "qn" = (
 /obj/effect/decal/remains/human,
 /turf/open/misc/asteroid,
@@ -208,10 +188,6 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
-"rq" = (
-/obj/structure/kitchenspike_frame,
-/turf/open/floor/iron/showroomfloor,
-/area/centcom/heretic_sacrifice/blade)
 "rP" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/blood/old,
@@ -238,9 +214,6 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
-"tZ" = (
-/turf/open/floor/iron/white/side,
-/area/centcom/heretic_sacrifice/blade)
 "ug" = (
 /turf/closed/wall/mineral/silver,
 /area/centcom/heretic_sacrifice/blade)
@@ -307,11 +280,13 @@
 	name = "void glass floor"
 	},
 /area/centcom/heretic_sacrifice/void)
-"yc" = (
+"xU" = (
+/obj/effect/decal/cleanable/blood/footprints,
 /obj/effect/decal/cleanable/blood/tracks,
-/turf/open/floor/iron/white/side{
-	dir = 1
+/obj/effect/decal/cleanable/blood/gibs/old{
+	pixel_y = 17
 	},
+/turf/open/floor/iron/showroomfloor,
 /area/centcom/heretic_sacrifice/blade)
 "yC" = (
 /obj/effect/turf_decal/trimline/brown/line{
@@ -319,7 +294,19 @@
 	},
 /turf/open/floor/plating,
 /area/centcom/heretic_sacrifice/rust)
-"yD" = (
+"yG" = (
+/obj/effect/decal/cleanable/blood/footprints,
+/obj/effect/decal/cleanable/blood/tracks,
+/obj/effect/decal/cleanable/blood/gibs/old{
+	pixel_y = 18
+	},
+/turf/open/floor/iron/showroomfloor,
+/area/centcom/heretic_sacrifice/blade)
+"yO" = (
+/obj/effect/decal/remains/xeno,
+/turf/open/floor/iron/showroomfloor,
+/area/centcom/heretic_sacrifice/blade)
+"yQ" = (
 /obj/effect/decal/cleanable/blood/footprints,
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/iron/showroomfloor,
@@ -333,6 +320,12 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
+"zG" = (
+/obj/machinery/door/airlock/freezer,
+/obj/effect/mapping_helpers/airlock/locked,
+/obj/effect/mapping_helpers/airlock/access/all/admin,
+/turf/open/floor/iron/freezer,
+/area/centcom/heretic_sacrifice/blade)
 "zU" = (
 /obj/effect/decal/fakelattice{
 	density = 0
@@ -369,6 +362,12 @@
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/plating,
 /area/centcom/heretic_sacrifice/rust)
+"BZ" = (
+/obj/effect/decal/cleanable/blood/tracks,
+/turf/open/floor/iron/white/side{
+	dir = 1
+	},
+/area/centcom/heretic_sacrifice/blade)
 "Cf" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/weather,
@@ -406,12 +405,6 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
-"En" = (
-/obj/machinery/door/airlock/freezer,
-/obj/effect/mapping_helpers/airlock/locked,
-/obj/effect/mapping_helpers/airlock/access/all/admin,
-/turf/open/floor/iron/freezer,
-/area/centcom/heretic_sacrifice/blade)
 "ER" = (
 /turf/open/misc/ironsand,
 /area/centcom/heretic_sacrifice/rust)
@@ -444,6 +437,11 @@
 "HQ" = (
 /turf/closed/indestructible/necropolis,
 /area/centcom/heretic_sacrifice/flesh)
+"HZ" = (
+/turf/open/floor/iron/white/side{
+	dir = 1
+	},
+/area/centcom/heretic_sacrifice/blade)
 "Ie" = (
 /obj/effect/turf_decal/weather/dirt{
 	dir = 1
@@ -479,6 +477,10 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
+"JH" = (
+/obj/effect/decal/remains/human,
+/turf/open/floor/iron/showroomfloor,
+/area/centcom/heretic_sacrifice/blade)
 "JJ" = (
 /obj/effect/decal/remains/human,
 /turf/open/indestructible/necropolis/air,
@@ -563,6 +565,10 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
+"Oe" = (
+/obj/structure/kitchenspike_frame,
+/turf/open/floor/iron/showroomfloor,
+/area/centcom/heretic_sacrifice/blade)
 "OD" = (
 /obj/effect/landmark/heretic,
 /turf/open/misc/dirt/jungle/wasteland{
@@ -618,14 +624,6 @@
 	},
 /turf/open/floor/plating,
 /area/centcom/heretic_sacrifice/rust)
-"Rp" = (
-/obj/effect/decal/cleanable/blood/footprints,
-/obj/effect/decal/cleanable/blood/tracks,
-/obj/effect/decal/cleanable/blood/gibs/old{
-	pixel_y = 17
-	},
-/turf/open/floor/iron/showroomfloor,
-/area/centcom/heretic_sacrifice/blade)
 "RW" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/stone,
@@ -643,9 +641,6 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
-"SB" = (
-/turf/open/floor/iron/white/smooth_half,
-/area/centcom/heretic_sacrifice/blade)
 "Tf" = (
 /obj/effect/decal/cleanable/food/salt,
 /turf/open/indestructible/necropolis/air,
@@ -690,6 +685,11 @@
 "Wb" = (
 /turf/open/misc/asteroid,
 /area/centcom/heretic_sacrifice/void)
+"Wn" = (
+/obj/effect/decal/cleanable/blood/tracks,
+/obj/effect/decal/cleanable/blood/footprints,
+/turf/open/floor/iron/showroomfloor,
+/area/centcom/heretic_sacrifice/blade)
 "WD" = (
 /turf/closed/indestructible/iron{
 	opacity = 1
@@ -706,10 +706,18 @@
 /obj/effect/gibspawner/generic/animal,
 /turf/open/floor/stone,
 /area/centcom/heretic_sacrifice/flesh)
+"Yi" = (
+/obj/structure/kitchenspike,
+/obj/effect/gibspawner/human,
+/turf/open/floor/iron/showroomfloor,
+/area/centcom/heretic_sacrifice/blade)
 "Yp" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/indestructible/necropolis/air,
 /area/centcom/heretic_sacrifice/flesh)
+"YN" = (
+/turf/open/floor/iron/showroomfloor,
+/area/centcom/heretic_sacrifice/blade)
 "ZA" = (
 /turf/closed/indestructible/riveted/boss,
 /area/centcom/heretic_sacrifice/ash)
@@ -1422,16 +1430,16 @@ ab
 ab
 Fd
 ug
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
 ug
 Fd
 WD
@@ -1466,16 +1474,16 @@ ab
 ab
 Fd
 ug
-kK
-ja
-jh
-ja
-kK
-kK
-ja
-pz
-ja
-kK
+ag
+YN
+br
+YN
+ag
+ag
+YN
+Yi
+yO
+ag
 ug
 Fd
 WD
@@ -1510,16 +1518,16 @@ ab
 ab
 Fd
 ug
-kK
-ja
-ja
-ja
-kK
-kK
-ja
-ja
-ja
-kK
+ag
+YN
+JH
+YN
+ag
+ag
+YN
+YN
+YN
+ag
 ug
 Fd
 WD
@@ -1554,16 +1562,16 @@ ab
 ab
 Fd
 ug
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
 ug
 Fd
 WD
@@ -1597,17 +1605,17 @@ ab
 (21,1,1) = {"
 ab
 Fd
-En
-Rp
-yD
-nI
-yc
-SB
-SB
-tZ
-ja
-ja
-ja
+zG
+xU
+yQ
+Wn
+BZ
+mU
+mU
+gA
+YN
+YN
+YN
 ug
 Fd
 WD
@@ -1641,17 +1649,17 @@ ab
 (22,1,1) = {"
 ab
 Fd
-En
-jS
-yD
-ja
-qa
+zG
+yG
+yQ
+YN
+HZ
 bm
-SB
-tZ
-ja
-ja
-ja
+mU
+gA
+YN
+YN
+YN
 ug
 Fd
 WD
@@ -1686,16 +1694,16 @@ ab
 ab
 Fd
 ug
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
 ug
 Fd
 WD
@@ -1730,16 +1738,16 @@ ab
 ab
 Fd
 ug
-kK
-ja
-ja
-ja
-kK
-kK
-ja
-ja
-ja
-kK
+ag
+YN
+YN
+YN
+ag
+ag
+JH
+YN
+YN
+ag
 ug
 Fd
 WD
@@ -1774,16 +1782,16 @@ ab
 ab
 Fd
 ug
-kK
-ja
-rq
-ja
-kK
-kK
-ja
-jh
-ja
-kK
+ag
+YN
+Oe
+YN
+ag
+ag
+YN
+br
+YN
+ag
 ug
 Fd
 WD
@@ -1818,16 +1826,16 @@ ab
 ab
 Fd
 ug
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
-kK
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
+ag
 ug
 Fd
 WD
