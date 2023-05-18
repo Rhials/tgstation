@@ -24,6 +24,6 @@ GLOBAL_LIST_INIT(meteors_stray, list(/obj/effect/meteor/medium=15, /obj/effect/m
 						  /obj/effect/meteor/banana=25, /obj/effect/meteor/meaty=10, /obj/effect/meteor/meaty/xeno=8, /obj/effect/meteor/emp = 30, \
 						  /obj/effect/meteor/cluster=20, /obj/effect/meteor/tunguska=1)) //for stray meteor event (bigger numbers for a bit finer weighting)
 
-GLOBAL_LIST_INIT(meteors_sandstorm, list(/obj/effect/meteor/sand=45, /obj/effect/meteor/dust=5)) //for sandstorm event
+GLOBAL_LIST_INIT(meteors_sandstorm, list(/obj/effect/meteor/sand=40, /obj/effect/meteor/dust=10)) //for sandstorm event
 
 GLOBAL_LIST_INIT(meteorsSPOOKY, list(/obj/effect/meteor/pumpkin))

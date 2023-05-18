@@ -8,11 +8,11 @@
  */
 
 /datum/round_event_control/sandstorm
-	name = "Sandstorm: Directional"
+	name = "Sandstorm"
 	typepath = /datum/round_event/sandstorm
 	max_occurrences = 3
-	min_players = 35
-	earliest_start = 35 MINUTES
+	min_players = 20
+	earliest_start = 25 MINUTES
 	category = EVENT_CATEGORY_SPACE
 	description = "A wave of space dust continually grinds down a side of the station."
 	min_wizard_trigger_potency = 6
@@ -51,7 +51,7 @@
 			return
 
 	priority_announce("A large wave of space dust is approaching from the [start_side_text] side of the station. \
-		Impact is expected in the next two minutes. All employees are encouranged to assist in repairs and damage mitigation if possible.", "Collision Emergency Alert")
+		Impact is expected in the next two minutes. All employees are encouraged to assist in repairs and damage mitigation if possible.", "Collision Emergency Alert")
 
 /datum/round_event/sandstorm/tick()
 	spawn_meteors(15, GLOB.meteors_sandstorm, start_side)
