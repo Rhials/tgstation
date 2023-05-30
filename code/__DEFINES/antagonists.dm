@@ -327,7 +327,7 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 #define ANTAG_GROUP_XENOS "Xenomorph Infestation"
 #define ANTAG_GROUP_FUGITIVES "Escaped Fugitives"
 #define ANTAG_GROUP_HUNTERS "Bounty Hunters"
-#define ANTAG_GROUP_PARADOX "Spacetime Aberrations"
+#define ANTAG_GROUP_PARADOX "Spacetime Aberration"
 
 
 // If this flag is enabled the antagonist datum allows the antagonist to be inducted into a nuclear operative team.
