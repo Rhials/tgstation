@@ -7,6 +7,7 @@ export const ANTAG2COLOR = {
   'Spacetime Aberrations': 'light-grey',
   'Escaped Fugitives': 'orange',
   'Bounty Hunters': 'yellow',
+  'Xenomorph Infestation': 'violet',
 } as const;
 
 export const THREAT = {
