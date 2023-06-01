@@ -45,14 +45,26 @@
 		var/discount = uplink_item.get_discount_value(discount_size)
 		discount *= rand(110, 150) / 100
 
-		discount = min(discount, 0.85) //But let's not get TOO crazy (like if we get a really high multiplier + big discount).
+		discount = min(discount, 0.90) //But let's not get TOO crazy (like if we get a really high multiplier + big discount).
 
 		uplink_item.limited_stock = limited_stock
 		uplink_item.category = category
 		uplink_item.cost = round((taken_item.cost * batch_size) * discount)
 		uplink_item.name += " -- Buy [batch_size], get [round(discount * 100)]% off!"
-		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [uplink_item.cost]. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
-		uplink_item.desc += pick("Why pass up this incredible deal?", "BUY NOW!!!!!", "An absolute firesale!", "You'd have to be a MORON not to buy this one!", "This one's special, buy it now!", "Those idiots won't know what hit them!", "Show 'em who's boss!", "You ain't gonna see a deal like this again!", "Buy now or SUFFER THE CONSEQUENCES.")
+		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [uplink_item.cost]. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
+		uplink_item.desc += pick(
+			"Why pass up this incredible deal?",
+			"BUY NOW!!!!!",
+			"An absolute firesale!",
+			"You'd have to be a MORON not to buy this one!",
+			"This one's special, buy it now!",
+			"Those idiots won't know what hit them!",
+			"Show 'em who's boss!",
+			"You ain't gonna see a deal like this again!",
+			"Buy now or SUFFER THE CONSEQUENCES.",
+			"Buy now and get ABSOLUTELY NOTHING extra!",
+			"If you don't buy this, you'll lose!"
+		)
 		uplink_item.item = taken_item.item
 		uplink_item.item_count = batch_size
 
@@ -113,6 +125,8 @@
 	var/lock_other_purchases = FALSE
 	///The number of items to be spawned on purchase. Meant to be overridden for batch orders.
 	var/item_count = 1
+	///Can this item be purchased after a delcaration of war?
+	var/war_restricted = FALSE
 
 /datum/uplink_item/New()
 	. = ..()
