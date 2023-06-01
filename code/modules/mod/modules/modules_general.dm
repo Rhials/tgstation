@@ -365,7 +365,7 @@
 	/// The temperature we are regulating to.
 	var/temperature_setting = BODYTEMP_NORMAL
 	/// Minimum temperature we can set.
-	var/min_temp = 293.15
+	var/min_temp = T20C
 	/// Maximum temperature we can set.
 	var/max_temp = 318.15
 
@@ -520,6 +520,7 @@
 			/obj/item/clothing/head/utility/chefhat,
 			/obj/item/clothing/head/costume/papersack,
 			/obj/item/clothing/head/caphat/beret,
+			/obj/item/clothing/head/helmet/space/beret,
 			))
 
 /obj/item/mod/module/hat_stabilizer/on_suit_activation()

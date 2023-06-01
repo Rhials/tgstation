@@ -1,9 +1,8 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "ae" = (
 /obj/structure/cable,
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Guest Room APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /turf/open/floor/carpet/purple,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
 "ag" = (
@@ -98,9 +97,8 @@
 	},
 /area/ruin/space/has_grav/hotel/workroom)
 "bj" = (
-/obj/machinery/power/apc/highcap/five_k/directional/north{
-	name = "Guest Room APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /turf/open/floor/wood/parquet,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
@@ -189,9 +187,8 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Dock APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /obj/structure/chair{
 	dir = 1
@@ -274,9 +271,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 8
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/west,
 /obj/structure/table/wood/fancy/purple,
 /obj/machinery/light/directional/south,
 /turf/open/floor/carpet/lone,
@@ -312,11 +307,6 @@
 	dir = 1
 	},
 /area/ruin/space/has_grav/hotel/dock)
-"db" = (
-/turf/open/misc/beach/coastline_b{
-	dir = 8
-	},
-/area/ruin/space/has_grav/hotel/pool)
 "dd" = (
 /obj/structure/sink/directional/west,
 /turf/open/floor/iron/showroomfloor,
@@ -437,9 +427,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 8
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/west,
 /obj/structure/table/wood/fancy/royalblue,
 /obj/machinery/light/directional/north,
 /turf/open/floor/carpet/orange,
@@ -677,9 +665,7 @@
 /turf/open/floor/iron/sepia,
 /area/ruin/space/has_grav/hotel/pool)
 "gW" = (
-/obj/structure/sign/poster/official/cleanliness{
-	pixel_y = 32
-	},
+/obj/structure/sign/poster/official/cleanliness/directional/north,
 /turf/open/floor/iron/freezer,
 /area/ruin/space/has_grav/hotel/pool)
 "hb" = (
@@ -779,9 +765,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 8
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/west,
 /obj/structure/table/wood/fancy/green,
 /turf/open/floor/carpet/purple,
 /area/ruin/space/has_grav/hotel/guestroom/room_5)
@@ -792,9 +776,8 @@
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/has_grav/hotel/bar)
 "hT" = (
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Kitchen APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/has_grav/hotel/bar)
@@ -1187,9 +1170,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 4
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/east,
 /obj/structure/table/wood/fancy/cyan,
 /obj/machinery/light/directional/south,
 /turf/open/floor/carpet/red,
@@ -1264,9 +1245,7 @@
 /area/ruin/space/has_grav/hotel/bar)
 "lh" = (
 /obj/effect/turf_decal/siding/wood,
-/obj/structure/sign/poster/official/no_erp{
-	pixel_y = 32
-	},
+/obj/structure/sign/poster/official/no_erp/directional/north,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/hotel)
 "lj" = (
@@ -1366,9 +1345,8 @@
 /turf/open/floor/iron/sepia,
 /area/ruin/space/has_grav/hotel/pool)
 "mh" = (
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Guest Room APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /turf/open/floor/carpet/red,
 /area/ruin/space/has_grav/hotel/guestroom/room_3)
@@ -1785,9 +1763,8 @@
 /turf/open/floor/wood/tile,
 /area/ruin/space/has_grav/hotel)
 "qG" = (
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Custodial APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /obj/structure/sink/directional/west,
 /obj/item/reagent_containers/spray/cleaner,
@@ -1906,9 +1883,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 8
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/west,
 /obj/structure/table/wood/fancy/green,
 /obj/machinery/light/directional/south,
 /turf/open/floor/carpet/purple,
@@ -2721,7 +2696,7 @@
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel)
 "CG" = (
-/turf/open/misc/beach/coastline_t{
+/turf/open/misc/beach/coast{
 	dir = 8
 	},
 /area/ruin/space/has_grav/hotel/pool)
@@ -2811,7 +2786,7 @@
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/hotel/bar)
 "DK" = (
-/turf/open/misc/beach/coastline_t,
+/turf/open/water/beach,
 /area/ruin/space/has_grav/hotel/pool)
 "DO" = (
 /obj/effect/turf_decal/loading_area,
@@ -2889,9 +2864,8 @@
 "EJ" = (
 /obj/structure/table/wood/fancy/purple,
 /obj/item/paper_bin,
-/obj/machinery/power/apc/highcap/five_k/directional/north{
-	name = "Guest Room APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /obj/item/pen,
 /turf/open/floor/carpet/lone,
@@ -2967,9 +2941,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 4
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/east,
 /obj/structure/table/wood/fancy/orange,
 /obj/machinery/light/directional/north,
 /obj/item/reagent_containers/cup/glass/mug/tea,
@@ -3031,9 +3003,8 @@
 /area/ruin/space/has_grav/hotel)
 "Gd" = (
 /obj/structure/cable,
-/obj/machinery/power/apc/highcap/five_k/directional/north{
-	name = "Power Storage APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/hotel/power)
 "Gg" = (
@@ -3161,7 +3132,7 @@
 /area/ruin/space/has_grav/hotel/bar)
 "HI" = (
 /obj/machinery/light/directional/west,
-/turf/open/misc/beach/coastline_t,
+/turf/open/water/beach,
 /area/ruin/space/has_grav/hotel/pool)
 "HP" = (
 /obj/structure/table/wood/fancy/red,
@@ -3339,9 +3310,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 8
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/west,
 /obj/structure/table/wood/fancy/royalblue,
 /turf/open/floor/carpet/orange,
 /area/ruin/space/has_grav/hotel/guestroom/room_6)
@@ -3494,9 +3463,8 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/hotel)
 "MQ" = (
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Pool Room APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /turf/open/floor/iron/freezer,
 /area/ruin/space/has_grav/hotel/pool)
@@ -3509,9 +3477,7 @@
 	dir = 8
 	},
 /obj/structure/table/wood/fancy/red,
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 4
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/east,
 /obj/machinery/button/door/directional/north{
 	id = "a2";
 	name = "privacy button";
@@ -3589,9 +3555,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 4
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/east,
 /obj/structure/table/wood/fancy/orange,
 /turf/open/floor/carpet/royalblue,
 /area/ruin/space/has_grav/hotel/guestroom/room_4)
@@ -3654,9 +3618,7 @@
 	dir = 8
 	},
 /obj/structure/table/wood/fancy/red,
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 4
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/east,
 /turf/open/floor/carpet/green,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
 "OT" = (
@@ -3665,9 +3627,8 @@
 /area/ruin/space/has_grav/hotel)
 "OW" = (
 /obj/structure/table/wood/fancy/orange,
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Guest Room APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /turf/open/floor/carpet/royalblue,
 /area/ruin/space/has_grav/hotel/guestroom/room_4)
@@ -3858,9 +3819,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 4
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/east,
 /obj/structure/table/wood/fancy/cyan,
 /turf/open/floor/carpet/red,
 /area/ruin/space/has_grav/hotel/guestroom/room_3)
@@ -3983,9 +3942,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/structure/window/reinforced/tinted/frosted{
-	dir = 8
-	},
+/obj/structure/window/reinforced/tinted/frosted/spawner/directional/west,
 /obj/structure/table/wood/fancy/purple,
 /turf/open/floor/carpet/lone,
 /area/ruin/space/has_grav/hotel/guestroom/room_1)
@@ -4212,9 +4169,8 @@
 /area/template_noop)
 "VM" = (
 /obj/structure/table/reinforced/plastitaniumglass,
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Staff Room APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /obj/item/gps/spaceruin{
 	name = "hotel gps"
@@ -4516,9 +4472,8 @@
 "YE" = (
 /obj/structure/table/wood/fancy/royalblue,
 /obj/item/paper_bin,
-/obj/machinery/power/apc/highcap/five_k/directional/south{
-	name = "Guest Room APC"
-	},
+/obj/machinery/power/apc/auto_name/directional/south,
+/obj/effect/mapping_helpers/apc/cell_5k,
 /obj/structure/cable,
 /obj/item/pen,
 /turf/open/floor/carpet/orange,
@@ -6658,11 +6613,11 @@ MQ
 JY
 ma
 JC
-db
-db
-db
-db
-db
+DK
+DK
+DK
+DK
+DK
 xP
 ma
 JY
@@ -6731,11 +6686,11 @@ Iw
 Vq
 Si
 QP
-db
-db
-db
-db
-db
+DK
+DK
+DK
+DK
+DK
 nJ
 mL
 JY
@@ -6804,11 +6759,11 @@ JY
 JY
 Fi
 QP
-db
-db
-db
-db
-db
+DK
+DK
+DK
+DK
+DK
 nJ
 qg
 JY
@@ -6877,11 +6832,11 @@ yV
 JY
 wW
 Cu
-db
-db
-db
-db
-db
+DK
+DK
+DK
+DK
+DK
 Qc
 dN
 JY

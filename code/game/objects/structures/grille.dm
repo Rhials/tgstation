@@ -11,6 +11,7 @@
 	anchored = TRUE
 	pass_flags_self = PASSGRILLE
 	flags_1 = CONDUCT_1
+	obj_flags = CAN_BE_HIT | IGNORE_DENSITY
 	pressure_resistance = 5*ONE_ATMOSPHERE
 	armor_type = /datum/armor/structure_grille
 	max_integrity = 50
@@ -104,7 +105,7 @@
 			var/obj/structure/window/window_path = the_rcd.window_type
 			if(!ispath(window_path))
 				CRASH("Invalid window path type in RCD: [window_path]")
-			if(!valid_window_location(T, user.dir, is_fulltile = initial(window_path.fulltile)))
+			if(!valid_build_direction(T, user.dir, is_fulltile = initial(window_path.fulltile)))
 				balloon_alert(user, "window already here!")
 				return FALSE
 			var/obj/structure/window/WD = new the_rcd.window_type(T, user.dir)
@@ -324,6 +325,8 @@
 	if(!in_range(src, user))//To prevent TK and mech users from getting shocked
 		return FALSE
 	var/turf/T = get_turf(src)
+	if(T.overfloor_placed)//cant be a floor in the way!
+		return FALSE
 	var/obj/structure/cable/C = T.get_cable_node()
 	if(C)
 		if(electrocute_mob(user, C, src, 1, TRUE))
@@ -347,6 +350,8 @@
 			var/obj/O = AM
 			if(O.throwforce != 0)//don't want to let people spam tesla bolts, this way it will break after time
 				var/turf/T = get_turf(src)
+				if(T.overfloor_placed)
+					return FALSE
 				var/obj/structure/cable/C = T.get_cable_node()
 				if(C)
 					playsound(src, 'sound/magic/lightningshock.ogg', 100, TRUE, extrarange = 5)
