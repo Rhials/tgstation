@@ -323,3 +323,9 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 #define ANTAG_GROUP_SYNDICATE "Syndicate"
 #define ANTAG_GROUP_WIZARDS "Wizard Federation"
 #define ANTAG_GROUP_XENOS "Xenomorph Infestation"
+
+///Defines pertaining to war ops delcaration
+#define CHALLENGE_TELECRYSTALS 280
+#define CHALLENGE_TIME_LIMIT (5 MINUTES)
+#define CHALLENGE_MIN_PLAYERS 50
+#define CHALLENGE_SHUTTLE_DELAY (25 MINUTES) // 25 minutes, so the ops have at least 5 minutes before the shuttle is callable.

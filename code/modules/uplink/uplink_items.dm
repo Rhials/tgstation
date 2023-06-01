@@ -67,6 +67,7 @@
 		)
 		uplink_item.item = taken_item.item
 		uplink_item.item_count = batch_size
+		uplink_item.constitutes_warcrime = TRUE
 
 		sales += uplink_item
 	return sales
@@ -126,6 +127,8 @@
 	///The number of items to be spawned on purchase. Meant to be overridden for batch orders.
 	var/item_count = 1
 	///Can this item be purchased after a delcaration of war?
+	var/constitutes_warcrime = FALSE
+	///Has this purchase option been locked down due to the declaration of war?
 	var/war_restricted = FALSE
 
 /datum/uplink_item/New()
@@ -158,6 +161,13 @@
 /// Spawns an item and logs its purchase
 /datum/uplink_item/proc/purchase(mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
 	for(var/spawn_count in 1 to item_count)
+		if(constitutes_warcrime)
+			if((world.time - SSticker.round_start_time < CHALLENGE_TIME_LIMIT))
+				to_chat(user, span_warning("A message flashes on your uplink screen: 'Your purchase is still being prepared and cannot be purchased at this time!'"))
+				return
+			else if(war_restricted)
+				to_chat(user, span_warning("A message flashes on your uplink screen: 'This purchase cannot be made due to your sector's current state of war!")) //God this is such a fucking stupid sentence
+
 		var/atom/spawned_object = spawn_item(item, user, uplink_handler, source)
 		if(purchase_log_vis && uplink_handler.purchase_log)
 			uplink_handler.purchase_log.LogPurchase(spawned_object, src, cost)

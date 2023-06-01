@@ -1,8 +1,3 @@
-#define CHALLENGE_TELECRYSTALS 280
-#define CHALLENGE_TIME_LIMIT (5 MINUTES)
-#define CHALLENGE_MIN_PLAYERS 50
-#define CHALLENGE_SHUTTLE_DELAY (25 MINUTES) // 25 minutes, so the ops have at least 5 minutes before the shuttle is callable.
-
 GLOBAL_LIST_EMPTY(jam_on_wardec)
 
 /obj/item/nuclear_challenge
@@ -88,6 +83,10 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 	for(var/obj/machinery/computer/camera_advanced/shuttle_docker/dock as anything in GLOB.jam_on_wardec)
 		dock.jammed = TRUE
 
+	for(var/datum/uplink_item/purchase_option as anything in SStraitor.uplink_items)
+		if(purchase_option.constitutes_warcrime)
+			purchase_option.war_restricted = TRUE
+
 	qdel(src)
 
 /obj/item/nuclear_challenge/proc/distribute_tc()
@@ -172,8 +171,3 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 
 /obj/item/nuclear_challenge/literally_just_does_the_message/distribute_tc()
 	return
-
-#undef CHALLENGE_TELECRYSTALS
-#undef CHALLENGE_TIME_LIMIT
-#undef CHALLENGE_MIN_PLAYERS
-#undef CHALLENGE_SHUTTLE_DELAY
