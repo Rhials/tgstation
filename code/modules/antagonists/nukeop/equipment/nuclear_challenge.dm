@@ -1,3 +1,13 @@
+#define CHALLENGE_TELECRYSTALS 280
+#define CHALLENGE_TIME_LIMIT (5 MINUTES)
+#define CHALLENGE_MIN_PLAYERS 1
+#define CHALLENGE_SHUTTLE_DELAY (25 MINUTES) // 25 minutes, so the ops have at least 5 minutes before the shuttle is callable.
+///How many batch discounts do we
+#define COVERT_BATCH_QUANTITY 6
+#define COVERT_ORIGINAL_PRICE_MINIMUM 6
+#define COVERT_ORIGINAL_PRICE_MAXIMUM 60
+
+
 GLOBAL_LIST_EMPTY(jam_on_wardec)
 
 /obj/item/nuclear_challenge
@@ -83,10 +93,6 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 	for(var/obj/machinery/computer/camera_advanced/shuttle_docker/dock as anything in GLOB.jam_on_wardec)
 		dock.jammed = TRUE
 
-	for(var/datum/uplink_item/purchase_option as anything in SStraitor.uplink_items)
-		if(purchase_option.constitutes_warcrime)
-			purchase_option.war_restricted = TRUE
-
 	qdel(src)
 
 /obj/item/nuclear_challenge/proc/distribute_tc()
@@ -142,6 +148,20 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 			return FALSE
 	return TRUE
 
+/obj/item/nuclear_challenge/proc/on_war_expiration()
+	if(QDELETED(src))
+		return
+
+	var/list/batch_uplink_offers = list()
+	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
+		if(item.item && !item.cant_discount && (item.purchasable_from & uplink_type.uplink_flag) && item.cost > COVERT_ORIGINAL_PRICE_MINIMUM && item.cost < COVERT_ORIGINAL_PRICE_MAXIMUM)
+			batch_uplink_offers += item
+
+	for(var/datum/team/nuclear/nukie_team in GLOB.antagonist_teams)
+		nukie_team.team_discounts += create_batch_sales(COVERT_BATCH_QUANTITY, /datum/uplink_category/batch_discounts, 1, batch_uplink_offers)
+
+	say("War opportunity missed, opening covert market") //finish later
+
 /obj/item/nuclear_challenge/clownops
 	uplink_type = /obj/item/uplink/clownop
 
@@ -171,3 +191,11 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 
 /obj/item/nuclear_challenge/literally_just_does_the_message/distribute_tc()
 	return
+
+#undef CHALLENGE_TELECRYSTALS
+#undef CHALLENGE_TIME_LIMIT
+#undef CHALLENGE_MIN_PLAYERS
+#undef CHALLENGE_SHUTTLE_DELAY
+#undef COVERT_BATCH_QUANTITY
+#undef COVERT_ORIGINAL_PRICE_MINIMUM
+#undef COVERT_ORIGINAL_PRICE_MAXIMUM

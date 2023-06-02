@@ -334,9 +334,3 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 #define HUNTER_PACK_RUSSIAN "russian_hunters"
 #define HUNTER_PACK_BOUNTY "bounty_hunters"
 #define HUNTER_PACK_PSYKER "psyker_hunters"
-
-///Defines pertaining to war ops delcaration
-#define CHALLENGE_TELECRYSTALS 280
-#define CHALLENGE_TIME_LIMIT (5 MINUTES)
-#define CHALLENGE_MIN_PLAYERS 50
-#define CHALLENGE_SHUTTLE_DELAY (25 MINUTES) // 25 minutes, so the ops have at least 5 minutes before the shuttle is callable.

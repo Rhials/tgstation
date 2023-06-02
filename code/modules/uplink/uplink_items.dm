@@ -51,7 +51,7 @@
 		uplink_item.category = category
 		uplink_item.cost = round((taken_item.cost * batch_size) * discount)
 		uplink_item.name += " -- Buy [batch_size], get [round(discount * 100)]% off!"
-		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [uplink_item.cost]. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
+		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [uplink_item.cost / batch_size] TC. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
 		uplink_item.desc += pick(
 			"Why pass up this incredible deal?",
 			"BUY NOW!!!!!",
@@ -63,11 +63,10 @@
 			"You ain't gonna see a deal like this again!",
 			"Buy now or SUFFER THE CONSEQUENCES.",
 			"Buy now and get ABSOLUTELY NOTHING extra!",
-			"If you don't buy this, you'll lose!"
+			"If you don't buy this, you'll lose!",
 		)
 		uplink_item.item = taken_item.item
 		uplink_item.item_count = batch_size
-		uplink_item.constitutes_warcrime = TRUE
 
 		sales += uplink_item
 	return sales
@@ -126,16 +125,19 @@
 	var/lock_other_purchases = FALSE
 	///The number of items to be spawned on purchase. Meant to be overridden for batch orders.
 	var/item_count = 1
-	///Can this item be purchased after a delcaration of war?
-	var/constitutes_warcrime = FALSE
-	///Has this purchase option been locked down due to the declaration of war?
-	var/war_restricted = FALSE
 
 /datum/uplink_item/New()
 	. = ..()
 	if(stock_key != UPLINK_SHARED_STOCK_UNIQUE)
 		return
 	stock_key = type
+
+/datum/uplink_category
+	/// Name of the category
+	var/name
+	/// Weight of the category. Used to determine the positioning in the uplink. High weight = appears first
+	var/weight = 0
+
 
 /// Returns by how much percentage do we reduce the price of the selected item
 /datum/uplink_item/proc/get_discount()
@@ -161,13 +163,6 @@
 /// Spawns an item and logs its purchase
 /datum/uplink_item/proc/purchase(mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
 	for(var/spawn_count in 1 to item_count)
-		if(constitutes_warcrime)
-			if((world.time - SSticker.round_start_time < CHALLENGE_TIME_LIMIT))
-				to_chat(user, span_warning("A message flashes on your uplink screen: 'Your purchase is still being prepared and cannot be purchased at this time!'"))
-				return
-			else if(war_restricted)
-				to_chat(user, span_warning("A message flashes on your uplink screen: 'This purchase cannot be made due to your sector's current state of war!")) //God this is such a fucking stupid sentence
-
 		var/atom/spawned_object = spawn_item(item, user, uplink_handler, source)
 		if(purchase_log_vis && uplink_handler.purchase_log)
 			uplink_handler.purchase_log.LogPurchase(spawned_object, src, cost)
@@ -193,12 +188,6 @@
 			return A
 	to_chat(user, span_boldnotice("[A] materializes onto the floor!"))
 	return A
-
-/datum/uplink_category
-	/// Name of the category
-	var/name
-	/// Weight of the category. Used to determine the positioning in the uplink. High weight = appears first
-	var/weight = 0
 
 /datum/uplink_category/discounts
 	name = "Discounted Gear"
