@@ -269,7 +269,7 @@
 	. = ..()
 	if(!CONFIG_GET(flag/disable_warops))
 		var/mob/living/carbon/human/leader = owner.current
-		var/obj/item/war_declaration = new challengeitem(leader.drop_location())
+		var/obj/item/war_declaration = new challengeitem(leader.drop_location(), nuke_team)
 		leader.put_in_hands(war_declaration)
 		nuke_team.war_button_ref = WEAKREF(war_declaration)
 	addtimer(CALLBACK(src, PROC_REF(nuketeam_name_assign)), 1)

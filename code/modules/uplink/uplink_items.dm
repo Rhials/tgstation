@@ -73,6 +73,8 @@
 	/// Uses the purchase log, so items purchased that are not visible in the purchase log will not count towards this.
 	/// However, they won't be purchasable afterwards.
 	var/lock_other_purchases = FALSE
+	/// How many items do we go through the process of purchasing?
+	var/item_count = 1
 
 /datum/uplink_item/New()
 	. = ..()
@@ -109,10 +111,13 @@
 
 /// Spawns an item and logs its purchase
 /datum/uplink_item/proc/purchase(mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
-	var/atom/A = spawn_item(item, user, uplink_handler, source)
-	log_uplink("[key_name(user)] purchased [src] for [cost] telecrystals from [source]'s uplink")
-	if(purchase_log_vis && uplink_handler.purchase_log)
-		uplink_handler.purchase_log.LogPurchase(A, src, cost)
+	for(var/spawn_count in 1 to item_count)
+		var/atom/spawned_object = spawn_item(item, user, uplink_handler, source)
+		if(purchase_log_vis && uplink_handler.purchase_log)
+			uplink_handler.purchase_log.LogPurchase(spawned_object, src, cost)
+		spawned_object.pixel_x = rand(-6, 6)
+		spawned_object.pixel_y = rand(-6, 6)
+	log_uplink("[key_name(user)] purchased [item_count] [src] for [cost] telecrystals from [source]'s uplink")
 	if(lock_other_purchases)
 		uplink_handler.shop_locked = TRUE
 
@@ -145,9 +150,16 @@
 	name = "Limited Stock Team Gear"
 	weight = -2
 
+/datum/uplink_category/batch_discounts
+	name = "Bulk Discount Offers"
+	weight = -3
+
 //Discounts (dynamically filled above)
 /datum/uplink_item/discounts
 	category = /datum/uplink_category/discounts
+
+/datum/uplink_item/batch_discounts
+	category = /datum/uplink_category/batch_discounts
 
 // Special equipment (Dynamically fills in uplink component)
 /datum/uplink_item/special_equipment
