@@ -116,9 +116,8 @@
  * mode - Uses SCANNER_CONDENSED or SCANNER_VERBOSE to decide whether to give a list of all individual limb damage
  * advanced - Whether it will give more advanced details, such as husk source.
  * tochat - Whether to immediately post the result into the chat of the user, otherwise it will return the results.
- * ignore_visibility - Whether we want to ignore disease visibility flags or not.
  */
-/proc/healthscan(mob/user, mob/living/target, mode = SCANNER_VERBOSE, advanced = FALSE, tochat = TRUE, ignore_visibility = FALSE)
+/proc/healthscan(mob/user, mob/living/target, mode = SCANNER_VERBOSE, advanced = FALSE, tochat = TRUE)
 	if(user.incapacitated())
 		return
 
@@ -363,7 +362,7 @@
 	//Diseases
 	for(var/thing in target.diseases)
 		var/datum/disease/D = thing
-		if(!(D.visibility_flags & HIDDEN_SCANNER) || ignore_visibility)
+		if(!(D.visibility_flags & HIDDEN_SCANNER) || isobserver(user))
 			render_list += "<span class='alert ml-1'><b>Warning: [D.form] detected</b>\n\
 			<div class='ml-2'>Name: [D.name].\nType: [D.spread_text].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure_text]</div>\
 			</span>" // divs do not need extra linebreak
