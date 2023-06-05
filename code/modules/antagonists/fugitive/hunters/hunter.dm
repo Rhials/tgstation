@@ -175,3 +175,119 @@
 	result += "</div>"
 
 	return result.Join("<br>")
+
+///A fugitive tracking HUD implement, derived from cult's Bloodsense ability.
+/atom/movable/screen/alert/fugitive_tracker
+	name = "Fugitive Tracker"
+	desc = "Links you to the Central Bounty Hunter Database, tracking down any wanted criminals in your area."
+	icon_state = "cult_sense"
+	alerttooltipstyle = "cult"
+	///Who we're currently tracking.
+	var/static/image/current_target
+	///The angle we displaying our arrow at.
+	var/angle = 0
+	///Fugitives that we are tracking. Captured fugitives have a mutable appearance of them saved to be displayed on the HUD.
+	var/list/fugitives_to_track = list()
+	///Which fugitive we're looking at.
+	var/fugitive_index = 0
+	///Who we're currently tracking
+	var/mob/fugitive_target
+
+/atom/movable/screen/alert/fugitive_tracker/Initialize(mapload)
+	. = ..()
+	current_target = new('icons/hud/screen_alert.dmi', "mini_nar")
+	START_PROCESSING(SSprocessing, src)
+
+	for(var/datum/antagonist/fugitive/fugitive_datum in GLOB.antagonists)
+		fugitives_to_track += fugitive_datum.owner
+
+	fugitive_target = pick_n_take(fugitives_to_track)
+	set_signals()
+
+/atom/movable/screen/alert/fugitive_tracker/Destroy()
+	STOP_PROCESSING(SSprocessing, src)
+	return ..()
+
+/atom/movable/screen/alert/fugitive_tracker/process()
+	if(!owner.mind)
+		return
+
+	var/datum/antagonist/fugitive_hunter/antag_datum = owner.mind.has_antag_datum(/datum/antagonist/fugitive_hunter)
+
+	if(!antag_datum)
+		return
+
+	if(!fugitive_target)
+		animate(src, transform = null, time = 1, loop = 0)
+		angle = 0
+		cut_overlays()
+		icon_state = "runed_sense1" //win pic here
+
+	var/datum/objective/capture_objective = locate() in antag_datum.hunter_team.objectives
+
+	/*
+	if(!blood_target)
+		if()
+			if(icon_state == "runed_sense0")
+				return
+			animate(src, transform = null, time = 1, loop = 0)
+			angle = 0
+			cut_overlays()
+			icon_state = "runed_sense0"
+			desc = "Nar'Sie demands that [sac_objective.target] be sacrificed before the summoning ritual can begin."
+			add_overlay(sac_objective.sac_image)
+		return
+	var/turf/P = get_turf(blood_target)
+	var/turf/Q = get_turf(owner)
+	if(!P || !Q || (P.z != Q.z)) //Whoever we're looking for is off of the z-level, or gone gone.
+		icon_state = "runed_sense2"
+		desc = "You can no longer sense your target's presence."
+		return
+	if(isliving(blood_target))
+		var/mob/living/real_target = blood_target
+		desc = "You are currently tracking [real_target.real_name] in [get_area_name(blood_target)]."
+	else
+		desc = "You are currently tracking [blood_target] in [get_area_name(blood_target)]."
+	var/target_angle = get_angle(Q, P)
+	var/target_dist = get_dist(P, Q)
+	cut_overlays()
+	switch(target_dist)
+		if(0 to 1)
+			icon_state = "runed_sense2"
+		if(2 to 8)
+			icon_state = "arrow8"
+		if(9 to 15)
+			icon_state = "arrow7"
+		if(16 to 22)
+			icon_state = "arrow6"
+		if(23 to 29)
+			icon_state = "arrow5"
+		if(30 to 36)
+			icon_state = "arrow4"
+		if(37 to 43)
+			icon_state = "arrow3"
+		if(44 to 50)
+			icon_state = "arrow2"
+		if(51 to 57)
+			icon_state = "arrow1"
+		if(58 to 64)
+			icon_state = "arrow0"
+		if(65 to 400)
+			icon_state = "arrow"
+	var/difference = target_angle - angle
+	angle = target_angle
+	if(!difference)
+		return
+	var/matrix/final = matrix(transform)
+	final.Turn(difference)
+	animate(src, transform = final, time = 5, loop = 0)
+
+	*/
+
+/atom/movable/screen/alert/fugitive_tracker/proc/set_signals()
+	RegisterSignal(fugitive_target, COMSIG_PARENT_QDELETING, PROC_REF(on_target_delete))
+
+/atom/movable/screen/alert/fugitive_tracker/proc/on_target_delete()
+	fugitive_target = null
+
+	return pick_n_take(fugitives_to_track)
