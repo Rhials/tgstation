@@ -180,8 +180,7 @@
 /atom/movable/screen/alert/fugitive_tracker
 	name = "Fugitive Tracker"
 	desc = "Links you to the Central Bounty Hunter Database, tracking down any wanted criminals in your area."
-	icon_state = "cult_sense"
-	alerttooltipstyle = "cult"
+	icon_state = "hunter_template"
 	///Who we're currently tracking.
 	var/static/image/current_target
 	///The angle we displaying our arrow at.
@@ -198,11 +197,12 @@
 	current_target = new('icons/hud/screen_alert.dmi', "mini_nar")
 	START_PROCESSING(SSprocessing, src)
 
-	for(var/datum/antagonist/fugitive/fugitive_datum in GLOB.antagonists)
-		fugitives_to_track += fugitive_datum.owner
+	for(var/datum/antagonist/fugitive/fugitive_datum in GLOB.antagonists) //Fugitive hunters aren't really "assigned" fugitives to hunt down, so we just look for all of them.
+		fugitives_to_track += fugitive_datum.owner						//Roundend reporting uses all fugitives for its win conditions too, so the bounty hunters ARE all technically after the same guys.
 
-	fugitive_target = pick_n_take(fugitives_to_track)
-	set_signals()
+	if(length(fugitives_to_track))
+		fugitive_target = pick_n_take(fugitives_to_track)
+		set_signals()
 
 /atom/movable/screen/alert/fugitive_tracker/Destroy()
 	STOP_PROCESSING(SSprocessing, src)
@@ -212,18 +212,24 @@
 	if(!owner.mind)
 		return
 
-	var/datum/antagonist/fugitive_hunter/antag_datum = owner.mind.has_antag_datum(/datum/antagonist/fugitive_hunter)
+	if(!fugitive_target)
+		if(length(fugitives_to_track))
+			pick_n_take(fugitives_to_track)
+		else
+			animate(src, transform = null, time = 1, loop = 0)
+			angle = 0
+			cut_overlays()
+			icon_state = "runed_sense1" //win pic here
+			desc = "No fugitives left to capture. Great work!"
 
-	if(!antag_datum)
+	var/turf/owner_turf = get_turf(owner)
+	var/turf/target_turf = get_turf(fugitive_target)
+	if(!owner_turf || !target_turf || (owner_turf.z != target_turf.z)) //Whoever we're looking for is off of the z-level or inaccessible.
+		icon_state = "runed_sense2"
+		desc = "Our target is out of range!"
 		return
 
-	if(!fugitive_target)
-		animate(src, transform = null, time = 1, loop = 0)
-		angle = 0
-		cut_overlays()
-		icon_state = "runed_sense1" //win pic here
 
-	var/datum/objective/capture_objective = locate() in antag_datum.hunter_team.objectives
 
 	/*
 	if(!blood_target)
@@ -252,27 +258,9 @@
 	var/target_dist = get_dist(P, Q)
 	cut_overlays()
 	switch(target_dist)
-		if(0 to 1)
+		if(0 to 2)
 			icon_state = "runed_sense2"
-		if(2 to 8)
-			icon_state = "arrow8"
-		if(9 to 15)
-			icon_state = "arrow7"
-		if(16 to 22)
-			icon_state = "arrow6"
-		if(23 to 29)
-			icon_state = "arrow5"
-		if(30 to 36)
-			icon_state = "arrow4"
-		if(37 to 43)
-			icon_state = "arrow3"
-		if(44 to 50)
-			icon_state = "arrow2"
-		if(51 to 57)
-			icon_state = "arrow1"
-		if(58 to 64)
-			icon_state = "arrow0"
-		if(65 to 400)
+		if(2 to INFINITY)
 			icon_state = "arrow"
 	var/difference = target_angle - angle
 	angle = target_angle
@@ -285,9 +273,10 @@
 	*/
 
 /atom/movable/screen/alert/fugitive_tracker/proc/set_signals()
-	RegisterSignal(fugitive_target, COMSIG_PARENT_QDELETING, PROC_REF(on_target_delete))
+	RegisterSignal(fugitive_target, COMSIG_FUGITIVE_CAPTURED, PROC_REF(clear_target))
+	RegisterSignal(fugitive_target, COMSIG_PARENT_QDELETING, PROC_REF(clear_target))
 
-/atom/movable/screen/alert/fugitive_tracker/proc/on_target_delete()
+/atom/movable/screen/alert/fugitive_tracker/proc/clear_target()
 	fugitive_target = null
 
 	return pick_n_take(fugitives_to_track)

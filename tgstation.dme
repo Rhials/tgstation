@@ -273,6 +273,7 @@
 #include "code\__DEFINES\dcs\signals\signals_event.dm"
 #include "code\__DEFINES\dcs\signals\signals_fish.dm"
 #include "code\__DEFINES\dcs\signals\signals_food.dm"
+#include "code\__DEFINES\dcs\signals\signals_fugitive.dm"
 #include "code\__DEFINES\dcs\signals\signals_gib.dm"
 #include "code\__DEFINES\dcs\signals\signals_global.dm"
 #include "code\__DEFINES\dcs\signals\signals_global_object.dm"
