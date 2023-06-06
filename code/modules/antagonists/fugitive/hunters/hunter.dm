@@ -65,6 +65,7 @@
 
 /datum/antagonist/fugitive_hunter/apply_innate_effects(mob/living/mob_override)
 	add_team_hud(mob_override || owner.current)
+	owner.current.throw_alert("fugitive tracker", /atom/movable/screen/alert/fugitive_tracker)
 
 /datum/team/fugitive_hunters
 	var/backstory = "error"
@@ -187,18 +188,20 @@
 	var/angle = 0
 	///Fugitives that we are tracking. Captured fugitives have a mutable appearance of them saved to be displayed on the HUD.
 	var/list/fugitives_to_track = list()
-	///Which fugitive we're looking at.
-	var/fugitive_index = 0
 	///Who we're currently tracking
 	var/mob/fugitive_target
+	///The overlay we are putting over the backdrop.
+	var/fugitive_overlay
+	///The overlay we display when all fugitives are done and gone.
+	var/static/image/win_overlay
 
 /atom/movable/screen/alert/fugitive_tracker/Initialize(mapload)
 	. = ..()
-	current_target = new('icons/hud/screen_alert.dmi', "mini_nar")
+	win_overlay = new('icons/hud/screen_alert.dmi', "hunter_win")
 	START_PROCESSING(SSprocessing, src)
 
 	for(var/datum/antagonist/fugitive/fugitive_datum in GLOB.antagonists) //Fugitive hunters aren't really "assigned" fugitives to hunt down, so we just look for all of them.
-		fugitives_to_track += fugitive_datum.owner	//Roundend reporting uses all fugitives for its win conditions too, so the bounty hunters ARE all technically after the same guys.
+		fugitives_to_track += fugitive_datum.owner.current	//Roundend reporting uses all fugitives for its win conditions too, so the bounty hunters ARE all technically after the same guys.
 
 	if(length(fugitives_to_track))
 		fugitive_target = pick_n_take(fugitives_to_track)
@@ -215,21 +218,25 @@
 	if(!fugitive_target)
 		if(length(fugitives_to_track))
 			pick_n_take(fugitives_to_track)
+			fugitive_overlay = get_flat_existing_human_icon(fugitive_target)
+			return
 		else
 			animate(src, transform = null, time = 1, loop = 0)
 			angle = 0
 			cut_overlays()
-			icon_state = "hunter_win" //win pic here
+			fugitive_overlay = win_overlay
+			icon_state = "hunter_win"
 			desc = "No fugitives left to capture. Great work!"
+			return
 
 	var/turf/owner_turf = get_turf(owner)
 	var/turf/target_turf = get_turf(fugitive_target)
 	if(!owner_turf || !target_turf || (owner_turf.z != target_turf.z)) //Whoever we're looking for is off of the z-level or inaccessible.
-		icon_state = "runed_sense2"
+		fugitive_overlay = "runed_sense2"
 		desc = "Our target is out of range! They must be somewhere very far away..."
 		return
 
-
+	add_overlay(fugitive_overlay)
 
 	/*
 	if(!blood_target)
