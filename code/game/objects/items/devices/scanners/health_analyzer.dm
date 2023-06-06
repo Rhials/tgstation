@@ -362,9 +362,12 @@
 	//Diseases
 	for(var/thing in target.diseases)
 		var/datum/disease/D = thing
-		if(!(D.visibility_flags & HIDDEN_SCANNER) || isobserver(user))
-			render_list += "<span class='alert ml-1'><b>Warning: [D.form] detected</b>\n\
-			<div class='ml-2'>Name: [D.name].\nType: [D.spread_text].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure_text]</div>\
+		if(!(D.visibility_flags & HIDDEN_SCANNER))
+			if(isobserver(user))
+				render_list += "<span class='alert ml-1'><b>Hidden virus detected: [D.form]</b>\n"
+			else
+				render_list += "<span class='alert ml-1'><b>Warning: [D.form] detected</b>\n"
+			render_list += "<div class='ml-2'>Name: [D.name].\nType: [D.spread_text].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure_text]</div>\
 			</span>" // divs do not need extra linebreak
 
 	// Blood Level
