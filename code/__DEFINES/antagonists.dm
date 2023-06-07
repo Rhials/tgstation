@@ -334,3 +334,20 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 #define HUNTER_PACK_RUSSIAN "Russian Fugitive Hunters"
 #define HUNTER_PACK_BOUNTY "Bounty Fugitive Hunters"
 #define HUNTER_PACK_PSYKER "Psyker Fugitive Hunters"
+
+///Defines related to
+#define CHALLENGE_TELECRYSTALS 280
+#define CHALLENGE_TIME_LIMIT (5 MINUTES)
+#define CHALLENGE_MIN_PLAYERS 50
+#define CHALLENGE_SHUTTLE_DELAY (25 MINUTES) // 25 minutes, so the ops have at least 5 minutes before the shuttle is callable.
+
+GLOBAL_LIST_EMPTY(jam_on_wardec)
+
+/// Defines for the covert market.
+
+/// How many batch discounts do we give if we choose not to go to war.
+#define COVERT_BATCH_QUANTITY 6
+/// The minimum cost of an item to be put into a discount batch.
+#define COVERT_ORIGINAL_PRICE_MINIMUM 7
+/// The maximum cost of an item to be put into a discount batch, to prevent things from being prohibitively expensive (affordable on a non-war budget).
+#define COVERT_ORIGINAL_PRICE_MAXIMUM 55
