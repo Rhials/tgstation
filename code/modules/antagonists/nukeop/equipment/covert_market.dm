@@ -24,7 +24,7 @@
 	if(activated)
 		return
 
-	var/datum/component/uplink/new_uplink = AddComponent(/datum/component/uplink, owner = src, lockable = FALSE, enabled = TRUE, uplink_flag = UPLINK_SPECIAL, starting_tc = 0, uplink_handler_override = null,)
+	var/datum/component/uplink/new_uplink = AddComponent(/datum/component/uplink, owner = src, lockable = FALSE, enabled = TRUE, uplink_flag = UPLINK_NUKE_OPS, starting_tc = 0, uplink_handler_override = null,)
 
 	var/list/batch_uplink_offers = list()
 	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
