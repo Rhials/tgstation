@@ -9,6 +9,9 @@
 /// This item is purchasable to clown ops
 #define UPLINK_CLOWN_OPS (1 << 2)
 
+/// This item is only purchasable by "special" implants. Also works as a type for generic implants that load no default categories.
+#define UPLINK_SPECIAL (1 << 2)
+
 /// Progression gets turned into a user-friendly form. This is just an abstract equation that makes progression not too large.
 #define DISPLAY_PROGRESSION(time) round(time/60, 0.01)
 
