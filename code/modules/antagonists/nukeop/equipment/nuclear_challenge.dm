@@ -10,12 +10,6 @@
 			Must be used within five minutes, or your benefactors will lose interest."
 	var/declaring_war = FALSE
 	var/uplink_type = /obj/item/uplink/nuclear
-	///This war declaration device's associated team.
-	var/datum/team/nuclear/nukie_team
-
-/obj/item/nuclear_challenge/Initialize(mapload, our_team)
-	. = ..()
-	nukie_team = our_team
 
 /obj/item/nuclear_challenge/attack_self(mob/living/user)
 	if(!check_allowed(user))

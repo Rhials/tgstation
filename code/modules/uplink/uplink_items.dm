@@ -151,7 +151,7 @@
 	weight = -2
 
 /datum/uplink_category/batch_discounts
-	name = "Bulk Discount Offers"
+	name = "Covert Operations Discount Offers"
 	weight = -3
 
 //Discounts (dynamically filled above)
