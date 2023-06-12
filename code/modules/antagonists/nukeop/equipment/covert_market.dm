@@ -38,7 +38,6 @@
 
 /// Creates "batch sales" of nukie items, wherein a large discount is offered, however a high minimum of the item MUST be purchased, all at once.
 /// Takes an average discount (sometimes a big discount) and adds a 1.1-1.5x multiplier to it, capped at 90% off.
-/// Given as an option when nukies specifically opt OUT of war.
 /obj/item/covert_market/proc/create_batch_sales(sale_count, datum/uplink_category/category, limited_stock, list/sale_items)
 	var/list/sales = list()
 	var/list/sale_items_copy = sale_items.Copy()
@@ -48,7 +47,7 @@
 
 		var/batch_size = rand(4, 7)
 
-		if(prob(20))
+		if(prob(15))
 			batch_size = rand(11, 15)
 
 		var/discount_size = TRAITOR_DISCOUNT_AVERAGE
@@ -72,7 +71,7 @@
 			"Why pass up this incredible deal?",
 			"BUY NOW!!!!!",
 			"An absolute firesale!",
-			"You'd have to be a MORON not to buy this one!",
+			"You'd have to be a real MORON not to buy this one!",
 			"This one's special, buy it now!",
 			"Those idiots won't know what hit them!",
 			"Show 'em who's boss!",
