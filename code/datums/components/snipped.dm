@@ -1,4 +1,4 @@
-///This component makes turfs give way when stepped over.
+///This component makes stuff give way when stepped over.
 /datum/component/snipped
 	///signal list given to connect_loc
 	var/static/list/loc_connections = list(
