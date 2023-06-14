@@ -50,3 +50,39 @@
 	SIGNAL_HANDLER
 
 	examine_list += span_warning("[parent] looks like it's barely held in place, and will collapse under any weight!")
+
+/obj/item/tampering_saw
+	name = "tampering saw"
+	desc = "An arm-mounted holographic blade. Its lengthy blade can be used to sabotage equipment, "
+	icon_state = "tampering_saw"
+	inhand_icon_state = "tampering_saw"
+	attack_verb_continuous = list("devastates", "brutalizes", "commits a war crime against", "obliterates", "humiliates")
+	attack_verb_simple = list("devastate", "brutalize", "commit a war crime against", "obliterate", "humiliate")
+	tool_behaviour = null
+
+/obj/item/snipper/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/transforming, \
+		force_on = 12, \
+		throwforce_on = 6, \ //You're not supposed to throw it dumbass
+		hitsound_on = hitsound, \
+		w_class_on = WEIGHT_CLASS_NORMAL, \
+		clumsy_check = FALSE)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
+
+/*
+ * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
+ *
+ * Gives it saw behaviors when active.
+ */
+/obj/item/snipper/proc/on_transform(obj/item/source, mob/user, active)
+	SIGNAL_HANDLER
+
+	if(active)
+		tool_behaviour = TOOL_SAW
+	else
+		tool_behaviour = initial(tool_behaviour)
+
+	balloon_alert(user, "[name] [active ? "active!":"disabled"]")
+	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 5, TRUE)
+	return COMPONENT_NO_DEFAULT_MESSAGE
