@@ -19,6 +19,7 @@
 	bio = 100
 	fire = 95
 	acid = 95
+	wound = 5
 
 /obj/item/clothing/under/plasmaman/examine(mob/user)
 	. = ..()
@@ -75,7 +76,7 @@
 
 /obj/item/clothing/under/plasmaman/enviroslacks
 	name = "enviroslacks"
-	desc = "The pet project of a particularly posh plasmaman, this custom suit was quickly appropriated by Nanotrasen for its detectives, lawyers, and bartenders alike."
+	desc = "The pet project of a particularly posh plasmaman, this custom suit was quickly appropriated by Nanotrasen for its lawyers, and bartenders alike."
 	icon_state = "enviroslacks"
 	inhand_icon_state = null
 
