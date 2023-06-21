@@ -5,9 +5,8 @@
 	name = "watchful eye"
 	desc = "There's something out here with you, watching you drift through the inky blackness of the cosmos. \
 		Truth be told, it's been watching you for longer than you know, but this is the closest look it's gotten so far."
-	icon = 'icons/hud/screen_alert.dmi'
-	icon_state = "cult_sense"
-	base_icon_state = "cult_sense"
+	icon = 'icons/obj/eye.dmi'
+	icon_state = "the_eye"
 	light_power = 1
 	anchored = TRUE
 	density = TRUE
