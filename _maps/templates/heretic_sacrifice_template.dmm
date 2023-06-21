@@ -12,6 +12,7 @@
 "br" = (
 /obj/structure/kitchenspike,
 /obj/effect/gibspawner/human/bodypartless,
+/obj/machinery/light/floor,
 /turf/open/floor/iron/showroomfloor,
 /area/centcom/heretic_sacrifice/blade)
 "cd" = (
@@ -66,6 +67,12 @@
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/indestructible/necropolis/air,
 /area/centcom/heretic_sacrifice/flesh)
+"is" = (
+/obj/structure/railing/corner{
+	dir = 8
+	},
+/turf/open/floor/iron/freezer,
+/area/centcom/heretic_sacrifice/blade)
 "jg" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/structure/cable,
@@ -75,6 +82,12 @@
 /obj/machinery/light/very_dim/directional/south,
 /turf/open/misc/asteroid,
 /area/centcom/heretic_sacrifice/void)
+"lk" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/open/floor/iron/freezer,
+/area/centcom/heretic_sacrifice/blade)
 "lz" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/ashplanet/wateryrock{
@@ -142,6 +155,9 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating/rust,
 /area/centcom/heretic_sacrifice/rust)
+"pc" = (
+/turf/open/floor/black,
+/area/centcom/heretic_sacrifice/cosmic)
 "ps" = (
 /obj/effect/turf_decal/weather,
 /turf/open/floor/plating,
@@ -202,7 +218,7 @@
 	},
 /area/centcom/heretic_sacrifice/ash)
 "sA" = (
-/turf/open/space/basic,
+/turf/closed/wall/space,
 /area/centcom/heretic_sacrifice/cosmic)
 "tF" = (
 /obj/effect/turf_decal/weather/dirt{
@@ -228,7 +244,7 @@
 /area/centcom/heretic_sacrifice/rust)
 "uP" = (
 /obj/effect/landmark/heretic/cosmic,
-/turf/open/space/basic,
+/turf/open/floor/black,
 /area/centcom/heretic_sacrifice/cosmic)
 "uT" = (
 /obj/structure/cable,
@@ -332,6 +348,12 @@
 	},
 /turf/open/floor/plating/rust,
 /area/centcom/heretic_sacrifice/rust)
+"Aj" = (
+/obj/structure/railing/corner{
+	dir = 4
+	},
+/turf/open/floor/iron/freezer,
+/area/centcom/heretic_sacrifice/blade)
 "AH" = (
 /obj/effect/turf_decal/trimline/brown/corner,
 /turf/open/floor/plating/rust,
@@ -362,6 +384,10 @@
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/plating,
 /area/centcom/heretic_sacrifice/rust)
+"BA" = (
+/obj/structure/railing/corner,
+/turf/open/floor/iron/freezer,
+/area/centcom/heretic_sacrifice/blade)
 "BZ" = (
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/iron/white/side{
@@ -421,6 +447,12 @@
 	slowdown = 0
 	},
 /area/centcom/heretic_sacrifice/ash)
+"GN" = (
+/obj/structure/railing/corner{
+	dir = 1
+	},
+/turf/open/floor/iron/freezer,
+/area/centcom/heretic_sacrifice/blade)
 "GX" = (
 /obj/effect/landmark/heretic/flesh,
 /turf/open/indestructible/necropolis/air,
@@ -567,6 +599,7 @@
 /area/centcom/heretic_sacrifice/ash)
 "Oe" = (
 /obj/structure/kitchenspike_frame,
+/obj/machinery/light/floor,
 /turf/open/floor/iron/showroomfloor,
 /area/centcom/heretic_sacrifice/blade)
 "OD" = (
@@ -709,6 +742,7 @@
 "Yi" = (
 /obj/structure/kitchenspike,
 /obj/effect/gibspawner/human,
+/obj/machinery/light/floor,
 /turf/open/floor/iron/showroomfloor,
 /area/centcom/heretic_sacrifice/blade)
 "Yp" = (
@@ -721,6 +755,12 @@
 "ZA" = (
 /turf/closed/indestructible/riveted/boss,
 /area/centcom/heretic_sacrifice/ash)
+"ZC" = (
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/open/floor/iron/freezer,
+/area/centcom/heretic_sacrifice/blade)
 
 (1,1,1) = {"
 ab
@@ -858,16 +898,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -902,16 +942,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -946,16 +986,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -990,16 +1030,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -1034,16 +1074,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
 uP
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -1078,16 +1118,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -1122,16 +1162,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -1166,16 +1206,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -1210,16 +1250,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -1254,16 +1294,16 @@ ab
 ab
 Fd
 sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
-sA
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
+pc
 sA
 Fd
 ZA
@@ -1565,10 +1605,10 @@ ug
 ag
 ag
 ag
-ag
-ag
-ag
-ag
+BA
+ZC
+ZC
+Aj
 ag
 ag
 ag
@@ -1697,10 +1737,10 @@ ug
 ag
 ag
 ag
-ag
-ag
-ag
-ag
+is
+lk
+lk
+GN
 ag
 ag
 ag
