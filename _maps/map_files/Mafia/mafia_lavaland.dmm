@@ -55,6 +55,8 @@
 	icon_state = "mining";
 	name = "miner equipment locker"
 	},
+/obj/item/pickaxe/rusted,
+/obj/item/shovel,
 /turf/open/floor/fakebasalt,
 /area/centcom/mafia)
 "am" = (
@@ -78,6 +80,8 @@
 	icon_state = "mining";
 	name = "miner equipment locker"
 	},
+/obj/item/pickaxe,
+/obj/item/shovel,
 /turf/open/floor/iron,
 /area/centcom/mafia)
 "ap" = (
@@ -101,6 +105,8 @@
 	icon_state = "mining";
 	name = "miner equipment locker"
 	},
+/obj/item/pickaxe,
+/obj/item/shovel,
 /turf/open/floor/iron,
 /area/centcom/mafia)
 "as" = (
@@ -108,6 +114,10 @@
 	dir = 9
 	},
 /turf/open/floor/iron,
+/area/centcom/mafia)
+"at" = (
+/obj/effect/mob_spawn/corpse/goliath,
+/turf/open/floor/fakebasalt,
 /area/centcom/mafia)
 "av" = (
 /obj/mafia_game_board,
@@ -143,6 +153,8 @@
 	icon_state = "mining";
 	name = "miner equipment locker"
 	},
+/obj/item/pickaxe,
+/obj/item/shovel,
 /turf/open/floor/iron,
 /area/centcom/mafia)
 "aA" = (
@@ -207,6 +219,8 @@
 	icon_state = "mining";
 	name = "miner equipment locker"
 	},
+/obj/item/pickaxe,
+/obj/item/shovel,
 /turf/open/floor/iron,
 /area/centcom/mafia)
 "aI" = (
@@ -218,6 +232,8 @@
 	icon_state = "mining";
 	name = "miner equipment locker"
 	},
+/obj/item/pickaxe,
+/obj/item/shovel,
 /turf/open/floor/iron,
 /area/centcom/mafia)
 "aJ" = (
@@ -239,6 +255,8 @@
 	icon_state = "mining";
 	name = "miner equipment locker"
 	},
+/obj/item/pickaxe,
+/obj/item/shovel,
 /turf/open/floor/iron,
 /area/centcom/mafia)
 "aL" = (
@@ -590,7 +608,7 @@ aq
 ap
 aq
 aZ
-aq
+at
 ap
 aB
 aC
