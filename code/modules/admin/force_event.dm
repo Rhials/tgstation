@@ -68,6 +68,24 @@
 			"category" = event_control.category,
 			"has_customization" = !!length(event_control.admin_setup),
 		))
+
+	for(var/datum/round_event_control/event_control as anything in SSevents.restricted_events)
+		if(!categories_seen[event_control.category])
+			categories_seen[event_control.category] = TRUE
+			UNTYPED_LIST_ADD(categories, list(
+				"name" = event_control.category,
+				"icon" = category_to_icons[event_control.category],
+			))
+		//adds the event, greyed out and unable to be clicked, with a tooltip (assuming I actually figure out how to do this!)
+		UNTYPED_LIST_ADD(events, list(
+			"name" = event_control.name,
+			"description" = "This event cannot be run on this map.", //Override the tooltip with a message explaining why it cannot be run.
+			"color" = "#808080", //doesnt work
+			"category" = event_control.category,
+			"has_customization" = !!length(event_control.admin_setup),
+		))
+
+
 	data["categories"] = categories
 	data["events"] = events
 	return data

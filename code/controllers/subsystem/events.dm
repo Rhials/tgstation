@@ -6,6 +6,8 @@ SUBSYSTEM_DEF(events)
 	var/list/control = list() //list of all datum/round_event_control. Used for selecting events based on weight and occurrences.
 	var/list/running = list() //list of all existing /datum/round_event
 	var/list/currentrun = list()
+	///A list of events that are unable to be run
+	var/list/restricted_events = list()
 
 	var/scheduled = 0 //The next world.time that a naturally occuring random event can be selected.
 	var/frequency_lower = 1800 //3 minutes lower bound.
@@ -16,8 +18,11 @@ SUBSYSTEM_DEF(events)
 /datum/controller/subsystem/events/Initialize()
 	for(var/type in typesof(/datum/round_event_control))
 		var/datum/round_event_control/event = new type()
-		if(!event.typepath || !event.valid_for_map())
+		if(!event.typepath)
 			continue //don't want this one! leave it for the garbage collector
+		if(!event.valid_for_map())
+			restricted_events += event //keeps the event in a seperate list of events that won't be considered for running, but still be displayed on
+			continue
 		control += event //add it to the list of all events (controls)
 	reschedule()
 	// Instantiate our holidays list if it hasn't been already
