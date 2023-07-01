@@ -2743,6 +2743,7 @@
 #include "code\modules\antagonists\traitor\objectives\demoralise_poster.dm"
 #include "code\modules\antagonists\traitor\objectives\destroy_heirloom.dm"
 #include "code\modules\antagonists\traitor\objectives\destroy_item.dm"
+#include "code\modules\antagonists\traitor\objectives\dirty_bomb.dm"
 #include "code\modules\antagonists\traitor\objectives\eyesnatching.dm"
 #include "code\modules\antagonists\traitor\objectives\hack_comm_console.dm"
 #include "code\modules\antagonists\traitor\objectives\infect.dm"
