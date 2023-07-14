@@ -110,10 +110,29 @@
 
 /obj/vehicle/sealed/car/clowncar/Bump(atom/bumped)
 	. = ..()
-	if(isliving(bumped) && !istype(bumped, /mob/living/basic/deer))
+	if(isliving(bumped))
 		if(ismegafauna(bumped))
 			return
 		var/mob/living/hittarget_living = bumped
+
+		if(istype(hittarget_living, /mob/living/basic/deer))
+			visible_message(span_warning("[src] careens into [hittarget_living] and spins out of control!"))
+			for(var/mob/living/carbon/carbon_occupant in occupants)
+				if(prob(65)) //The randomstep on dump_mobs throws occupants into each other and causes wounds already, but we want this to be even MORE violent.
+					for(var/obj/item/bodypart/head/head_to_wound as anything in carbon_occupant.bodyparts)
+						var/type_wound = pick(list(
+						/datum/wound/blunt/critical,
+						/datum/wound/blunt/severe,
+						))
+						head_to_wound.force_wound_upwards(type_wound, smited = TRUE)
+
+			hittarget_living.adjustBruteLoss(200)
+
+			log_combat(src, hittarget_living, "rammed into", null, "injuring all passengers and killing the [hittarget_living]")
+			dump_mobs(TRUE)
+			playsound(src, pick('sound/vehicles/car_crash.ogg'), 80)
+			return
+
 		if(iscarbon(hittarget_living))
 			var/mob/living/carbon/carb = hittarget_living
 			carb.Paralyze(4 SECONDS) //I play to make sprites go horizontal
