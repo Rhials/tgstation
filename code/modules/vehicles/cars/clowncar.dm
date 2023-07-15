@@ -121,16 +121,18 @@
 				if(prob(65)) //The randomstep on dump_mobs throws occupants into each other and causes wounds already, but we want this to be even MORE violent.
 					for(var/obj/item/bodypart/head/head_to_wound as anything in carbon_occupant.bodyparts)
 						var/type_wound = pick(list(
-						/datum/wound/blunt/critical,
+						/datum/wound/blunt/moderate,
 						/datum/wound/blunt/severe,
 						))
 						head_to_wound.force_wound_upwards(type_wound, smited = TRUE)
+						carbon_occupant.playsound_local(src, 'sound/weapons/flash_ring.ogg', 75)
+						carbon_occupant.set_eye_blur_if_lower(rand(10 SECONDS, 20 SECONDS))
 
 			hittarget_living.adjustBruteLoss(200)
 
 			log_combat(src, hittarget_living, "rammed into", null, "injuring all passengers and killing the [hittarget_living]")
 			dump_mobs(TRUE)
-			playsound(src, pick('sound/vehicles/car_crash.ogg'), 80)
+			playsound(src, 'sound/vehicles/car_crash.ogg', 100)
 			return
 
 		if(iscarbon(hittarget_living))
