@@ -68,6 +68,7 @@
 		"ghostian2" = "Ian",
 		"ghostking" = "King",
 		"skeleghost" = "Skeleton",
+		"mysteryghost" = "Mystery",
 	)
 
 /datum/preference/choiced/ghost_form/init_possible_values()
