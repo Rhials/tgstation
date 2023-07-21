@@ -1,5 +1,7 @@
 /mob/living/Initialize(mapload)
 	. = ..()
+	if(current_size != RESIZE_DEFAULT_SIZE)
+		update_transform(current_size)
 	AddElement(/datum/element/movetype_handler)
 	register_init_signals()
 	if(unique_name)
@@ -204,7 +206,7 @@
 	if(len)
 		for(var/obj/item/I in held_items)
 			if(!holding.len)
-				holding += "[p_they(TRUE)] [p_are()] holding \a [I]"
+				holding += "[p_They()] [p_are()] holding \a [I]"
 			else if(held_items.Find(I) == len)
 				holding += ", and \a [I]."
 			else
@@ -379,24 +381,26 @@
 		if(GRAB_KILL)
 			offset = GRAB_PIXEL_SHIFT_NECK
 	M.setDir(get_dir(M, src))
+	var/target_pixel_x = M.base_pixel_x + M.body_position_pixel_x_offset
+	var/target_pixel_y = M.base_pixel_y + M.body_position_pixel_y_offset
 	switch(M.dir)
 		if(NORTH)
-			animate(M, pixel_x = M.base_pixel_x, pixel_y = M.base_pixel_y + offset, 3)
+			animate(M, pixel_x = target_pixel_x, pixel_y = target_pixel_y + offset, 3)
 		if(SOUTH)
-			animate(M, pixel_x = M.base_pixel_x, pixel_y = M.base_pixel_y - offset, 3)
+			animate(M, pixel_x = target_pixel_x, pixel_y = target_pixel_y - offset, 3)
 		if(EAST)
 			if(M.lying_angle == 270) //update the dragged dude's direction if we've turned
 				M.set_lying_angle(90)
-			animate(M, pixel_x = M.base_pixel_x + offset, pixel_y = M.base_pixel_y, 3)
+			animate(M, pixel_x = target_pixel_x + offset, pixel_y = target_pixel_y, 3)
 		if(WEST)
 			if(M.lying_angle == 90)
 				M.set_lying_angle(270)
-			animate(M, pixel_x = M.base_pixel_x - offset, pixel_y = M.base_pixel_y, 3)
+			animate(M, pixel_x = target_pixel_x - offset, pixel_y = target_pixel_y, 3)
 
 /mob/living/proc/reset_pull_offsets(mob/living/M, override)
 	if(!override && M.buckled)
 		return
-	animate(M, pixel_x = M.base_pixel_x, pixel_y = M.base_pixel_y, 1)
+	animate(M, pixel_x = M.base_pixel_x + M.body_position_pixel_x_offset , pixel_y = M.base_pixel_y + M.body_position_pixel_y_offset, 1)
 
 //mob verbs are a lot faster than object verbs
 //for more info on why this is not atom/pull, see examinate() in mob.dm
@@ -605,8 +609,8 @@
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return
-	set_lying_angle(0)
 	set_body_position(STANDING_UP)
+	set_lying_angle(0)
 
 
 /mob/living/proc/rest_checks_callback()
@@ -623,8 +627,7 @@
 /mob/living/proc/on_lying_down(new_lying_angle)
 	if(layer == initial(layer)) //to avoid things like hiding larvas.
 		layer = LYING_MOB_LAYER //so mob lying always appear behind standing mobs
-	add_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED), LYING_DOWN_TRAIT)
-	set_density(FALSE) // We lose density and stop bumping passable dense things.
+	add_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED, TRAIT_UNDENSE), LYING_DOWN_TRAIT)
 	if(HAS_TRAIT(src, TRAIT_FLOORED) && !(dir & (NORTH|SOUTH)))
 		setDir(pick(NORTH, SOUTH)) // We are and look helpless.
 	body_position_pixel_y_offset = PIXEL_Y_OFFSET_LYING
@@ -634,9 +637,15 @@
 /mob/living/proc/on_standing_up()
 	if(layer == LYING_MOB_LAYER)
 		layer = initial(layer)
-	set_density(initial(density)) // We were prone before, so we become dense and things can bump into us again.
-	remove_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED), LYING_DOWN_TRAIT)
-	body_position_pixel_y_offset = 0
+	remove_traits(list(TRAIT_UI_BLOCKED, TRAIT_PULL_BLOCKED, TRAIT_UNDENSE), LYING_DOWN_TRAIT)
+	// Make sure it doesn't go out of the southern bounds of the tile when standing.
+	body_position_pixel_y_offset = (current_size-1) * world.icon_size/2
+
+/mob/living/proc/update_density()
+	if(HAS_TRAIT(src, TRAIT_UNDENSE))
+		set_density(FALSE)
+	else
+		set_density(TRUE)
 
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
@@ -1305,8 +1314,7 @@
 		// Disconnect AI's in shells
 		if(Robot.connected_ai)
 			Robot.connected_ai.disconnect_shell()
-		if(Robot.mmi)
-			qdel(Robot.mmi)
+		QDEL_NULL(Robot.mmi)
 		Robot.notify_ai(AI_NOTIFICATION_NEW_BORG)
 	else
 		for(var/obj/item/item in src)
@@ -1385,30 +1393,30 @@
 				/mob/living/basic/cow,
 				/mob/living/basic/giant_spider,
 				/mob/living/basic/giant_spider/hunter,
+				/mob/living/basic/mining/goliath,
+				/mob/living/basic/headslug,
 				/mob/living/basic/killer_tomato,
 				/mob/living/basic/lizard,
 				/mob/living/basic/mouse,
+				/mob/living/basic/mushroom,
 				/mob/living/basic/pet/dog/breaddog,
 				/mob/living/basic/pet/dog/corgi,
 				/mob/living/basic/pet/dog/pug,
+				/mob/living/basic/pet/fox,
 				/mob/living/basic/statue,
 				/mob/living/basic/stickman,
 				/mob/living/basic/stickman/dog,
 				/mob/living/simple_animal/crab,
 				/mob/living/simple_animal/hostile/asteroid/basilisk/watcher,
-				/mob/living/simple_animal/hostile/asteroid/goliath/beast,
 				/mob/living/simple_animal/hostile/bear,
 				/mob/living/simple_animal/hostile/blob/blobbernaut/independent,
 				/mob/living/simple_animal/hostile/gorilla,
-				/mob/living/simple_animal/hostile/headcrab,
 				/mob/living/simple_animal/hostile/megafauna/dragon/lesser,
 				/mob/living/simple_animal/hostile/morph,
-				/mob/living/simple_animal/hostile/mushroom,
 				/mob/living/simple_animal/hostile/retaliate/goat,
 				/mob/living/simple_animal/parrot,
 				/mob/living/simple_animal/pet/cat,
 				/mob/living/simple_animal/pet/cat/cak,
-				/mob/living/simple_animal/pet/fox,
 			)
 			new_mob = new picked_animal(loc)
 
@@ -1787,6 +1795,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(NAMEOF(src, body_position))
 			set_body_position(var_value)
 			. = TRUE
+		if(NAMEOF(src, current_size))
+			if(var_value == 0) //prevents divisions of and by zero.
+				return FALSE
+			update_transform(var_value/current_size)
+			. = TRUE
 
 	if(!isnull(.))
 		datum_flags |= DF_VAR_EDITED
@@ -1797,8 +1810,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	switch(var_name)
 		if(NAMEOF(src, maxHealth))
 			updatehealth()
-		if(NAMEOF(src, resize))
-			update_transform()
 		if(NAMEOF(src, lighting_cutoff))
 			sync_lighting_plane_cutoff()
 
@@ -2243,7 +2254,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	overeatduration = 0
 
 
-/// Changes the value of the [living/body_position] variable.
+/// Changes the value of the [living/body_position] variable. Call this before set_lying_angle()
 /mob/living/proc/set_body_position(new_value)
 	if(body_position == new_value)
 		return
@@ -2261,8 +2272,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /// Proc to append behavior to the condition of being floored. Called when the condition starts.
 /mob/living/proc/on_floored_start()
 	if(body_position == STANDING_UP) //force them on the ground
-		set_lying_angle(pick(90, 270))
 		set_body_position(LYING_DOWN)
+		set_lying_angle(pick(90, 270))
 		on_fall()
 
 
