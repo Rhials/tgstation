@@ -1,6 +1,6 @@
 /obj/item/covert_market
 	name = "Covert Operations Market Uplink"
-	desc = "An uplink that connects to a black-market surplus equipment market. These dealers value their secrecy, and will cut off communications if your operative team does something conspicuous like declaring war."
+	desc = "An uplink that connects you to an underground network of black-market equipment smugglers. These dealers value their secrecy, and will not do business if your operative team has done anything too conspicuous (like delcaring war)."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "gangtool-purple"
 	inhand_icon_state = "radio"
@@ -24,7 +24,7 @@
 	if(activated)
 		return
 
-	var/datum/component/uplink/new_uplink = AddComponent(/datum/component/uplink, owner = src, lockable = FALSE, enabled = TRUE, uplink_flag = UPLINK_NUKE_OPS, starting_tc = 0, uplink_handler_override = null,)
+	var/datum/component/uplink/new_uplink = AddComponent(/datum/component/uplink, owner = src, lockable = FALSE, enabled = TRUE, uplink_flag = NONE, starting_tc = 0, uplink_handler_override = null)
 
 	var/list/batch_uplink_offers = list()
 	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
