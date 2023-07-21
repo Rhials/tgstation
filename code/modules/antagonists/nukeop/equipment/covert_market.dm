@@ -2,7 +2,7 @@
 	name = "Covert Operations Market Uplink"
 	desc = "An uplink that connects you to an underground network of black-market equipment smugglers. These dealers value their secrecy, and will not do business if your operative team has done anything too conspicuous (like delcaring war)."
 	icon = 'icons/obj/device.dmi'
-	icon_state = "gangtool-purple"
+	icon_state = "covert_uplink" //This has associated overlay sprites you should use
 	inhand_icon_state = "radio"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
@@ -66,7 +66,7 @@
 		uplink_item.category = category
 		uplink_item.cost = round((taken_item.cost * batch_size) * discount)
 		uplink_item.name += " -- Buy [batch_size], get [round(discount * 100)]% off!"
-		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [round(uplink_item.cost / batch_size)] TC. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
+		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable", "economy")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [round(uplink_item.cost / batch_size)] TC. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
 		uplink_item.desc += pick(
 			"Why pass up this incredible deal?",
 			"BUY NOW!!!!!",
@@ -79,9 +79,15 @@
 			"Buy now or SUFFER THE CONSEQUENCES.",
 			"Buy now and get ABSOLUTELY NOTHING extra!",
 			"If you don't buy this, you'll lose!",
+			"This deal is extra special, don't miss it!",
 		)
 		uplink_item.item = taken_item.item
 		uplink_item.item_count = batch_size
 
 		sales += uplink_item
 	return sales
+
+/obj/item/covert_market/update_overlays()
+	. = ..()
+	if(activated)
+		. += "uplink_overlay_active"
