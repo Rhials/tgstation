@@ -1,23 +1,64 @@
 /datum/traitor_objective_category/dirty_bomb
-	name = "Deploy a %GASNAME% dirty bomb in the %AREANAME%"
+	name = "Deploy Dirty Bomb"
 	objectives = list(
-		/datum/traitor_objective/dirty_bomb = 1,
+		/datum/traitor_objective/dirty_bomb/miasma = 1,
+		/datum/traitor_objective/dirty_bomb/water_vapor = 1,
+		/datum/traitor_objective/dirty_bomb/plasma = 1,
+		/datum/traitor_objective/dirty_bomb/hydrogen = 1,
 	)
 
 /datum/traitor_objective/dirty_bomb
-	name = "Deploy a %GASNAME% bomb in the %GASAREA%" //I think this is what the replacetext was for?
-	description = "Trigger a gas bomb."
-
-	progression_minimum = 25 MINUTES //maybe make these vary for subtypes??
+	name = "Deploy a %GASNAME% bomb in the %GASAREA%"
+	description = "Trigger a dirty bomb, carrying a payload of %GASNAME%. The device must "
 	progression_reward = list(10 MINUTES, 12 MINUTES)
-	telecrystal_reward = list(1, 2)
+	telecrystal_reward = list(1, 2) //TC reward should remain consistent since each type requires the same amount of effort.
+
+	abstract_type = /datum/traitor_objective/dirty_bomb
+	duplicate_type = /datum/traitor_objective/dirty_bomb
 
 	var/progression_objectives_minimum = 20 MINUTES
 	/// Area where the GAS will be released (fill the room with gyass)
 	var/area/target_area
 
+	var/gas_to_spawn = GAS_O2
+
+/datum/traitor_objective/dirty_bomb/miasma
+	gas_to_spawn = GAS_MIASMA
+	progression_minimum = 15 MINUTES
+
+/datum/traitor_objective/dirty_bomb/vapor
+	gas_to_spawn = GAS_WATER_VAPOR
+	progression_minimum = 15 MINUTES
+
+/datum/traitor_objective/dirty_bomb/plasma
+	gas_to_spawn = GAS_PLASMA
+	progression_minimum = 35 MINUTES
+
+/datum/traitor_objective/dirty_bomb/hydrogen
+	gas_to_spawn = GAS_HYDROGEN
+	progression_minimum = 45 MINUTES
+
 /datum/traitor_objective/dirty_bomb/generate_objective(datum/mind/generating_for, list/possible_duplicates)
-	replace_in_name("%GASNAME%", "whatever the gas name is")
+	var/list/possible_areas = GLOB.the_station_areas.Copy()
+	for(var/area/possible_area as anything in possible_areas)
+		if(ispath(possible_area, /area/station/hallway))
+			possible_areas += possible_area
+			continue
+
+		if(ispath(possible_area, /area/station/security))
+			possible_areas += possible_area
+			continue
+
+		if(ispath(possible_area, /area/station/commons))
+			possible_areas += possible_area
+			continue
+
+		if(ispath(possible_area, /area/station/service))
+			possible_areas += possible_area
+			continue
+
+	target_area = pick(possible_areas)
+	replace_in_name("%GASNAME%", gas_to_spawn)
 	replace_in_name("%GASAREA%", initial(target_area.name))
 	return TRUE
 
