@@ -1,6 +1,7 @@
 /obj/item/covert_market
 	name = "Covert Operations Market Uplink"
-	desc = "An uplink that connects you to an underground network of black-market equipment smugglers. These dealers value their secrecy, and will not do business if your operative team has done anything too conspicuous (like delcaring war)."
+	desc = "An uplink that connects you to an underground network of black-market equipment smugglers. \
+		These dealers value their secrecy, and will not do business if your operative team has done anything too conspicuous (like delcaring war)."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "covert_uplink" //This has associated overlay sprites you should use
 	inhand_icon_state = "radio"
@@ -11,30 +12,74 @@
 
 /obj/item/covert_market/Initialize(mapload)
 	. = ..()
-	if(world.time - SSticker.round_start_time > CHALLENGE_TIME_LIMIT)
-		on_war_rejection() ///Instantly opens the bargain market for midround nukies.
+	if((world.time - SSticker.round_start_time > CHALLENGE_TIME_LIMIT) && !GLOB.war_declared)
+		unlock_market(FALSE) ///Instantly opens the bargain market for midround nukies.
 	else
-		addtimer(CALLBACK(src, PROC_REF(on_war_rejection)), CHALLENGE_TIME_LIMIT - world.time + SSticker.round_start_time) //We open up the discount batch market automatically if not done so deliberately.
+		update_appearance(UPDATE_OVERLAYS)
+		addtimer(CALLBACK(src, PROC_REF(unlock_market)), CHALLENGE_TIME_LIMIT - world.time + SSticker.round_start_time)
 
-///When we know we aren't going to war, we make the market available.
-/obj/item/covert_market/proc/on_war_rejection()
-	if(QDELETED(src))
+/obj/item/covert_market/examine(mob/user)
+	. = ..()
+	if(GLOB.war_declared)
+		. += span_notice("<b>This uplink has been locked and rendered inaccessible due to the recent declaration of war.</B>")
+	else
+		if(!activated)
+			. += span_notice("<b>You can gain access to the market early by using your war declaration device on this uplink.</B>")
+
+/obj/item/covert_market/attack_self(obj/item/attacking_item, mob/user, params)
+	. = ..()
+	if(.) //If true is returned here the uplink component is in place.
 		return
 
+	if(GLOB.war_declared)
+		to_chat(user, span_notice("An error message flashes across the screen. This device cannot be used while at war!"))
+		return
+
+	if(!activated)
+		to_chat(user, span_notice("An error message flashes across the screen. This uplink is still being prepared!"))
+
+/obj/item/covert_market/attackby(obj/item/attacking_item, mob/user, params)
+	..()
+
+	if(istype(attacking_item, /obj/item/nuclear_challenge))
+		if(GLOB.war_declared)
+			balloon_alert(user, "war has already been declared!")
+			return
+		if(activated)
+			balloon_alert(user, "market already unlocked!")
+			return
+		var/are_you_sure = tgui_alert(usr, "Are you sure you wish to unlock the [src]? You will not be able to declare war if you do!", "Reject war?", list("Yes", "No"))
+		if(are_you_sure != "Yes")
+			return
+		do_sparks(2, source = attacking_item)
+		qdel(attacking_item)
+		unlock_market(FALSE)
+		balloon_alert_to_viewers("market unlocked!")
+
+///When we know we aren't going to war, we make the market available.
+/obj/item/covert_market/proc/unlock_market(time_expired = TRUE)
+	if(QDELETED(src))
+		return
 	if(activated)
+		return
+	if(GLOB.war_declared) //Updates to the "rejected" overlay
+		update_appearance(UPDATE_OVERLAYS)
 		return
 
 	var/datum/component/uplink/new_uplink = AddComponent(/datum/component/uplink, owner = src, lockable = FALSE, enabled = TRUE, uplink_flag = NONE, starting_tc = 0, uplink_handler_override = null)
 
 	var/list/batch_uplink_offers = list()
 	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
-		if(item.item && !item.cant_discount && (item.purchasable_from & UPLINK_NUKE_OPS) && item.cost > COVERT_ORIGINAL_PRICE_MINIMUM && item.cost < COVERT_ORIGINAL_PRICE_MAXIMUM)
+		if(item.item && !item.cant_discount && (item.purchasable_from & UPLINK_NUKE_OPS) && item.cost >= COVERT_ORIGINAL_PRICE_MINIMUM && item.cost <= COVERT_ORIGINAL_PRICE_MAXIMUM)
 			batch_uplink_offers += item
 
 	new_uplink.uplink_handler.extra_purchasable += create_batch_sales(COVERT_BATCH_QUANTITY, /datum/uplink_category/batch_discounts, 1, batch_uplink_offers)
 
-	say("The deadline for launching a major operation has passed. Access to the covert discount market has been approved. Happy shopping!")
+	if(time_expired)
+		say("The deadline for launching a major operation has passed. Access to the covert discount market has been approved. Happy shopping!")
+
 	activated = TRUE
+	update_appearance(UPDATE_OVERLAYS)
 
 /// Creates "batch sales" of nukie items, wherein a large discount is offered, however a high minimum of the item MUST be purchased, all at once.
 /// Takes an average discount (sometimes a big discount) and adds a 1.1-1.5x multiplier to it, capped at 90% off.
@@ -91,3 +136,8 @@
 	. = ..()
 	if(activated)
 		. += "uplink_overlay_active"
+	else
+		if(GLOB.war_declared)
+			. += "uplink_overlay_war"
+		else
+			. += "uplink_overlay_pending"

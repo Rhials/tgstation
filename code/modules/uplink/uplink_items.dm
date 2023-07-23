@@ -116,8 +116,6 @@
 		var/atom/spawned_object = spawn_item(item, user, uplink_handler, source)
 		if(purchase_log_vis && uplink_handler.purchase_log)
 			uplink_handler.purchase_log.LogPurchase(spawned_object, src, cost)
-		spawned_object.pixel_x = rand(-6, 6)
-		spawned_object.pixel_y = rand(-6, 6)
 	log_uplink("[key_name(user)] purchased [item_count] [src] for [cost] telecrystals from [source]'s uplink")
 	if(lock_other_purchases)
 		uplink_handler.shop_locked = TRUE
@@ -126,20 +124,22 @@
 /datum/uplink_item/proc/spawn_item(spawn_path, mob/user, datum/uplink_handler/uplink_handler, atom/movable/source)
 	if(!spawn_path)
 		return
-	var/atom/A
+	var/atom/spawned_item
 	if(ispath(spawn_path))
-		A = new spawn_path(get_turf(user))
+		spawned_item = new spawn_path(get_turf(user))
 	else
-		A = spawn_path
+		spawned_item = spawn_path
 	if(refundable)
-		A.AddElement(/datum/element/uplink_reimburse, (refund_amount ? refund_amount : cost))
-	if(ishuman(user) && isitem(A))
-		var/mob/living/carbon/human/H = user
-		if(H.put_in_hands(A))
-			to_chat(H, span_boldnotice("[A] materializes into your hands!"))
-			return A
-	to_chat(user, span_boldnotice("[A] materializes onto the floor!"))
-	return A
+		spawned_item.AddElement(/datum/element/uplink_reimburse, (refund_amount ? refund_amount : cost))
+	if(ishuman(user) && isitem(spawned_item))
+		var/mob/living/carbon/human/human_user = user
+		if(human_user.put_in_hands(spawned_item))
+			to_chat(human_user, span_boldnotice("[spawned_item] materializes into your hands!"))
+			return spawned_item
+	spawned_item.pixel_x = rand(-6, 6)
+	spawned_item.pixel_y = rand(-6, 6)
+	to_chat(user, span_boldnotice("[spawned_item] materializes onto the floor!"))
+	return spawned_item
 
 /datum/uplink_category/discounts
 	name = "Discounted Gear"
@@ -154,7 +154,7 @@
 	weight = -2
 
 /datum/uplink_category/batch_discounts
-	name = "Covert Operations Discount Offers"
+	name = "Discount Market"
 	weight = -3
 
 //Discounts (dynamically filled above)

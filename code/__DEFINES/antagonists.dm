@@ -377,8 +377,8 @@ GLOBAL_LIST_EMPTY(jam_on_wardec)
 /// Defines for the covert market.
 
 /// How many batch discounts do we give if we choose not to go to war.
-#define COVERT_BATCH_QUANTITY 6
+#define COVERT_BATCH_QUANTITY 7
 /// The minimum cost of an item to be put into a discount batch.
 #define COVERT_ORIGINAL_PRICE_MINIMUM 7
 /// The maximum cost of an item to be put into a discount batch, to prevent things from being prohibitively expensive (affordable on a non-war budget).
-#define COVERT_ORIGINAL_PRICE_MAXIMUM 55
+#define COVERT_ORIGINAL_PRICE_MAXIMUM 40

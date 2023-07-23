@@ -1,3 +1,5 @@
+GLOBAL_VAR_INIT(war_declared, FALSE)
+
 /obj/item/nuclear_challenge
 	name = "Declaration of War (Challenge Mode)"
 	icon = 'icons/obj/device.dmi'
@@ -80,6 +82,8 @@
 
 	for(var/obj/machinery/computer/camera_advanced/shuttle_docker/dock as anything in GLOB.jam_on_wardec)
 		dock.jammed = TRUE
+
+	GLOB.war_declared = TRUE //Now we're officially at war.
 
 	qdel(src)
 
