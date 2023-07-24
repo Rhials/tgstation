@@ -391,7 +391,10 @@
 "er" = (
 /obj/structure/table/wood,
 /obj/item/food/syndicake{
-	pixel_y = 3
+	pixel_y = 10
+	},
+/obj/item/covert_market{
+	pixel_x = 3
 	},
 /turf/open/floor/wood/tile,
 /area/centcom/syndicate_mothership/control)
@@ -3556,7 +3559,7 @@
 /area/centcom/syndicate_mothership/control)
 "Qh" = (
 /obj/structure/window/reinforced/survival_pod/spawner/directional/south{
-	name = "Frosted Window";
+	name = "Frosted Window"
 	},
 /obj/item/soap/syndie,
 /obj/structure/sign/poster/contraband/got_wood/directional/east,

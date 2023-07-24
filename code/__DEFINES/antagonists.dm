@@ -373,6 +373,7 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 #define CHALLENGE_SHUTTLE_DELAY (25 MINUTES) // 25 minutes, so the ops have at least 5 minutes before the shuttle is callable.
 
 GLOBAL_LIST_EMPTY(jam_on_wardec)
+GLOBAL_VAR_INIT(war_declared, FALSE)
 
 /// Defines for the covert market.
 

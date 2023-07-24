@@ -1,5 +1,3 @@
-GLOBAL_VAR_INIT(war_declared, FALSE)
-
 /obj/item/nuclear_challenge
 	name = "Declaration of War (Challenge Mode)"
 	icon = 'icons/obj/device.dmi'
