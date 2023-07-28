@@ -28,8 +28,6 @@
 
 /obj/item/covert_market/attack_self(obj/item/attacking_item, mob/user, params)
 	. = ..()
-	if(.) //If true is returned here the uplink component is in place.
-		return
 
 	if(GLOB.war_declared)
 		to_chat(user, span_notice("An error message flashes across the screen. This device cannot be used while at war!"))
@@ -66,7 +64,15 @@
 		update_appearance(UPDATE_OVERLAYS)
 		return
 
-	var/datum/component/uplink/new_uplink = AddComponent(/datum/component/uplink, owner = src, lockable = FALSE, enabled = TRUE, uplink_flag = NONE, starting_tc = 0, uplink_handler_override = null)
+	var/datum/component/uplink/new_uplink =	AddComponent(\
+		/datum/component/uplink, \
+		owner = src, \
+		lockable = FALSE, \
+		enabled = TRUE, \
+		uplink_flag = NONE, \
+		starting_tc = 0, \
+		uplink_handler_override = null, \
+	)
 
 	var/list/batch_uplink_offers = list()
 	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
@@ -111,7 +117,7 @@
 		uplink_item.category = category
 		uplink_item.cost = round((taken_item.cost * batch_size) * discount)
 		uplink_item.name += " -- Buy [batch_size], get [round(discount * 100)]% off!"
-		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable", "economy")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [round(uplink_item.cost / batch_size)] TC. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
+		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable", "economy")] order of [taken_item.name]s. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [round(uplink_item.cost / batch_size)] TC. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
 		uplink_item.desc += pick(
 			"Why pass up this incredible deal?",
 			"BUY NOW!!!!!",
