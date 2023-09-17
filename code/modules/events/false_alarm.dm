@@ -22,6 +22,12 @@
 	fakeable = FALSE
 	/// Admin's pick of fake event (wow! you picked blob!! you're so creative and smart!)
 	var/forced_type
+	/// The stored name of the event, used for broadcasting to deadchat.
+	var/stored_name
+
+/datum/round_event/falsealarm/setup()
+	. = ..()
+
 
 /datum/round_event/falsealarm/announce(fake)
 	if(fake) //What are you doing
@@ -35,13 +41,14 @@
 	else
 		event_control = pick(events_list)
 	if(event_control)
+		stored_name = event_control.name
 		var/datum/round_event/Event = new event_control.typepath()
-		message_admins("False Alarm: [Event]")
+		message_admins("False Alarm: [stored_name]")
 		Event.kill() //do not process this event - no starts, no ticks, no ends
 		Event.announce(TRUE) //just announce it like it's happening
 
-/datum/round_event/falsealarm/deadchat_broadcast(message, source, mob/follow_target, turf/turf_target, speaker_key, message_type, admin_only)
-	deadchat_broadcast(": [] has just been[random ? " randomly" : ""] triggered[cause ? " by [cause]" : ""]!", "<b>[control.name]</b>", message_type=DEADCHAT_ANNOUNCEMENT)
+/datum/round_event/falsealarm/announce_deadchat(random, cause)
+	deadchat_broadcast(": [event_control.name] has just been[random ? " randomly" : ""] triggered[cause ? " by [cause]" : ""]!", "<b>[control.name]</b>", message_type=DEADCHAT_ANNOUNCEMENT)
 
 /proc/gather_false_events(players_amt)
 	. = list()
