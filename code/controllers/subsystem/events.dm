@@ -75,7 +75,7 @@ SUBSYSTEM_DEF(events)
 				return
 		sum_of_weights += E.weight
 
-	sum_of_weights = rand(0,sum_of_weights) //reusing this variable. It now represents the 'weight' we want to select
+	sum_of_weights = rand(1,sum_of_weights) //reusing this variable. It now represents the 'weight' we want to select
 
 	for(var/datum/round_event_control/E in control)
 		if(!E.can_spawn_event(players_amt))
