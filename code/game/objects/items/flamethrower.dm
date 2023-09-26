@@ -17,18 +17,28 @@
 	trigger_guard = TRIGGER_GUARD_NORMAL
 	light_system = MOVABLE_LIGHT
 	light_on = FALSE
-	var/status = FALSE
-	var/lit = FALSE //on or off
-	var/operating = FALSE//cooldown
+	///Is our attached igniter secured to the flamethrower?
+	var/igniter_status = FALSE
+	///Are we lit or not?
+	var/lit = FALSE
+	///Are we currently throwing gas or in a cooldown?
+	var/operating = FALSE
+	///Our attached welding tool.
 	var/obj/item/weldingtool/weldtool = null
+	///Our attached igniter.
 	var/obj/item/assembly/igniter/igniter = null
+	///Our attached plasma container.
 	var/obj/item/tank/internals/plasma/ptank = null
-	var/warned_admins = FALSE //for the message_admins() when lit
+	///Have we notified the admins that this flamerthrower has been ignited before?
+	var/warned_admins = FALSE
 	//variables for prebuilt flamethrowers
 	var/create_full = FALSE
 	var/create_with_tank = FALSE
+	///Our attached igniter type
 	var/igniter_type = /obj/item/assembly/igniter
+	///Sound played on ignition
 	var/acti_sound = 'sound/items/welderactivate.ogg'
+	///Sound played on deignition
 	var/deac_sound = 'sound/items/welderdeactivate.ogg'
 
 /obj/item/flamethrower/Initialize(mapload)
@@ -64,7 +74,7 @@
 /obj/item/flamethrower/update_overlays()
 	. = ..()
 	if(igniter)
-		. += "+igniter[status]"
+		. += "+igniter[igniter_status]"
 	if(ptank)
 		. += "+ptank"
 	if(lit)
@@ -87,7 +97,7 @@
 
 /obj/item/flamethrower/wrench_act(mob/living/user, obj/item/tool)
 	. = TRUE
-	if(status)
+	if(igniter_status)
 		return FALSE
 	tool.play_tool_sound(src)
 	var/turf/T = get_turf(src)
@@ -106,8 +116,8 @@
 /obj/item/flamethrower/screwdriver_act(mob/living/user, obj/item/tool)
 	if(igniter && !lit)
 		tool.play_tool_sound(src)
-		status = !status
-		to_chat(user, span_notice("[igniter] is now [status ? "secured" : "unsecured"]!"))
+		igniter_status = !igniter_status
+		balloon_alert(user, "[igniter] [igniter_status ? "secured" : "unsecured"]!")
 		update_appearance()
 		return TRUE
 
@@ -165,7 +175,7 @@
 	if(!ptank)
 		to_chat(user, span_notice("Attach a plasma tank first!"))
 		return
-	if(!status)
+	if(!igniter_status)
 		to_chat(user, span_notice("Secure the igniter first!"))
 		return
 	to_chat(user, span_notice("You [lit ? "extinguish" : "ignite"] [src]!"))
@@ -188,7 +198,7 @@
 	igniter = locate(/obj/item/assembly/igniter) in contents
 	weldtool.status = FALSE
 	igniter.secured = FALSE
-	status = TRUE
+	igniter_status = TRUE
 	update_appearance()
 
 //Called from turf.dm turf/dblclick
@@ -237,7 +247,7 @@
 		if(!igniter)
 			igniter = new igniter_type(src)
 		igniter.secured = FALSE
-		status = TRUE
+		igniter_status = TRUE
 		if(create_with_tank)
 			ptank = new /obj/item/tank/internals/plasma/full(src)
 		update_appearance()

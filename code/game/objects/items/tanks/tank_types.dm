@@ -91,14 +91,18 @@
 
 /obj/item/tank/internals/plasma/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/flamethrower))
-		var/obj/item/flamethrower/F = W
-		if ((!F.status) || (F.ptank))
+		var/obj/item/flamethrower/flamer = W
+		if((!flamer.igniter_status))
+			balloon_alert(user, "secure the igniter first!")
 			return
-		if(!user.transferItemToLoc(src, F))
+		if(flamer.ptank)
+			balloon_alert(user, "tank already in place!")
 			return
-		src.master = F
-		F.ptank = src
-		F.update_appearance()
+		if(!user.transferItemToLoc(src, flamer))
+			return
+		src.master = flamer
+		flamer.ptank = src
+		flamer.update_appearance()
 	else
 		return ..()
 
