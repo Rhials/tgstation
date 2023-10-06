@@ -49,22 +49,47 @@
 
 	return pick(possible_spawns)
 
+/**
+ * Forces a random event
+ *
+ * Locates the round_event_control typepath passed on the event controller, and forces it to run an event.
+ *
+ * * event_typepath - the /datum/round_event_control of the event we wish to run.
+ * * cause - a string explaining the cause of the event. Should be in lowercase with no bookending punctuation or spaces.
+ */
+
 /proc/force_event(event_typepath, cause)
 	var/datum/round_event_control/our_event = locate(event_typepath) in SSevents.control
 	if(!our_event)
 		CRASH("Attempted to force event [event_typepath], but the event path could not be found!")
 	our_event.run_event(event_cause = cause)
 
+/**
+ * Forces a random event, asynchronously
+ *
+ * Locates the round_event_control typepath passed on the event controller, and forces it to run asynchronously.
+ *
+ * * event_typepath - the /datum/round_event_control of the event we wish to run.
+ * * cause - a string explaining the cause of the event. Should be in lowercase with no bookending punctuation or spaces.
+ */
 /proc/force_event_async(event_typepath, cause)
 	var/datum/round_event_control/our_event = locate(event_typepath) in SSevents.control
 	if(!our_event)
 		CRASH("Attempted to force event [event_typepath], but the event path could not be found!")
 	INVOKE_ASYNC(our_event, TYPE_PROC_REF(/datum/round_event_control, run_event), event_cause = cause)
 
-/proc/force_event_after(event_typepath, cause, duration)
+/**
+ * Forces a random event after the given delay.
+ *
+ * Locates the round_event_control typepath passed on the event controller, and forces it to run after the given delay has passed.
+ *
+ * * event_typepath - the /datum/round_event_control of the event we wish to run.
+ * * cause - a string explaining the cause of the event. Should be in lowercase with no bookending punctuation or spaces.
+ */
+/proc/force_event_after(event_typepath, cause, delay)
 	var/datum/round_event_control/our_event = locate(event_typepath) in SSevents.control
 	if(!our_event)
 		CRASH("Attempted to force event [event_typepath], but the event path could not be found!")
-	addtimer(CALLBACK(our_event, TYPE_PROC_REF(/datum/round_event_control, run_event), FALSE, null, FALSE, cause), duration)
+	addtimer(CALLBACK(our_event, TYPE_PROC_REF(/datum/round_event_control, run_event), FALSE, null, FALSE, cause), delay)
 
 #undef UNLIT_AREA_BRIGHTNESS

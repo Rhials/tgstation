@@ -64,6 +64,9 @@
 	update_use_power(ACTIVE_POWER_USE)
 	update_appearance()
 
+	if(obj_flags & EMAGGED && prob(60))
+		force_event_after(/datum/round_event_control/bitrunning_glitch, "quantum server tampering", rand(30 SECONDS, 90 SECONDS))
+
 	return TRUE
 
 /// Initializes a new domain if the given key is valid and the user has enough points

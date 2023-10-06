@@ -150,3 +150,18 @@
 	servo_bonus = servo_rating
 
 	SEND_SIGNAL(src, COMSIG_BITRUNNER_SERVER_UPGRADED, servo_rating)
+
+/obj/machinery/quantum_server/emag_act(mob/user, obj/item/card/emag/emag_card)
+	if(obj_flags & EMAGGED)
+		return FALSE
+	obj_flags |= EMAGGED
+	if(!isnull(generated_domain) && is_operational)
+		force_event_after(/datum/round_event_control/bitrunning_glitch, "quantum server tampering", 5 SECONDS)
+
+	balloon_alert(user, "domain destabilized")
+
+	var/datum/effect_system/spark_spread/quantum/spark_system = new /datum/effect_system/spark_spread/quantum()
+	spark_system.set_up(3, TRUE, src)
+	spark_system.start()
+
+	return TRUE
