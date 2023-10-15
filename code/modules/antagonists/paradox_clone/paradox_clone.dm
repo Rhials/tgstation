@@ -72,6 +72,45 @@
 	// This may result in some minutely imperfect memories, but it'll do
 	original_mind.quick_copy_all_memories(owner)
 
+///Creates the clone body at the selected turf. Will not fire if the camera is viewing the clone target.
+/datum/antagonist/paradox_clone/proc/make_clone()
+	var/datum/mind/player_mind = new /datum/mind(owner.key)
+	player_mind.active = TRUE
+
+	var/mob/living/carbon/human/clone_victim = select_victim()
+	var/mob/living/carbon/human/clone = clone_victim.make_full_human_copy(get_turf(owner))
+	player_mind.transfer_to(clone)
+
+	var/datum/antagonist/paradox_clone/new_datum = player_mind.add_antag_datum(/datum/antagonist/paradox_clone)
+	new_datum.original_ref = WEAKREF(clone_victim.mind)
+	new_datum.setup_clone()
+
+	playsound(clone, 'sound/weapons/zapbang.ogg', 30, TRUE)
+	new /obj/item/storage/toolbox/mechanical(clone.loc) //so they dont get stuck in maints
+
+	message_admins("[ADMIN_LOOKUPFLW(clone)] has been made into a Paradox Clone by the midround ruleset.")
+	clone.log_message("was spawned as a Paradox Clone of [key_name(clone)] by the midround ruleset.", LOG_GAME)
+
+	return clone
+
+/**
+ * Trims through GLOB.player_list and finds a target
+ * Returns a single human victim, if none is possible then returns null.
+ */
+/datum/antagonist/paradox_clone/proc/select_victim()
+	var/list/possible_targets = list()
+
+	for(var/mob/living/carbon/human/player in GLOB.player_list)
+		if(!player.client || !player.mind || player.stat)
+			continue
+		if(!(player.mind.assigned_role.job_flags & JOB_CREW_MEMBER))
+			continue
+		possible_targets += player
+
+	if(possible_targets.len)
+		return pick(possible_targets)
+	return FALSE
+
 /datum/antagonist/paradox_clone/roundend_report_header()
 	return "<span class='header'>A paradox clone appeared on the station!</span><br>"
 
