@@ -311,8 +311,8 @@
 
 	clone.dress_up_as_job(SSjob.GetJob(job))
 
-	for(var/datum/quirk/original_quircks as anything in quirks)
-		clone.add_quirk(original_quircks.type, override_client = client)
+	for(var/datum/quirk/original_quirks as anything in quirks)
+		clone.add_quirk(original_quirks.type, override_client = client)
 	for(var/datum/mutation/human/mutations in dna.mutations)
 		clone.dna.add_mutation(mutations)
 

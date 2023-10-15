@@ -73,12 +73,12 @@
 	original_mind.quick_copy_all_memories(owner)
 
 ///Creates the clone body at the selected turf. Will not fire if the camera is viewing the clone target.
-/datum/antagonist/paradox_clone/proc/make_clone()
+/datum/antagonist/paradox_clone/proc/make_clone(creation_turf)
 	var/datum/mind/player_mind = new /datum/mind(owner.key)
 	player_mind.active = TRUE
 
 	var/mob/living/carbon/human/clone_victim = select_victim()
-	var/mob/living/carbon/human/clone = clone_victim.make_full_human_copy(get_turf(owner))
+	var/mob/living/carbon/human/clone = clone_victim.make_full_human_copy(creation_turf)
 	player_mind.transfer_to(clone)
 
 	var/datum/antagonist/paradox_clone/new_datum = player_mind.add_antag_datum(/datum/antagonist/paradox_clone)

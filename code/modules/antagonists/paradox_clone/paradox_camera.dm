@@ -17,32 +17,35 @@
 	lighting_cutoff_blue = 20
 	sight = SEE_SELF|SEE_THRU
 	initial_language_holder = /datum/language_holder/universal
-
-	var/freemove = TRUE
-	var/freemove_end = 0
-	var/freemove_end_timerid
-
 	var/mob/living/paradox_target
-	var/list/viewing_locations
-
-	var/last_move_tick = 0
-	var/move_delay = 1
+	var/list/viewing_locations = list()
 
 /mob/camera/paradox/Initialize(mapload)
 	.= ..()
 
-	ADD_TRAIT(src, TRAIT_SIXTHSENSE, INNATE_TRAIT) //at least they'll have SOMEONE to talk to
+	ADD_TRAIT(src, TRAIT_SIXTHSENSE, INNATE_TRAIT)
 
-	var/datum/atom_hud/my_hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED ]
+	viewing_locations += pick(GLOB.generic_maintenance_landmarks)
+	viewing_locations += pick(GLOB.generic_maintenance_landmarks)
+	viewing_locations += pick(GLOB.generic_maintenance_landmarks) //3, my favorite number. Too short to put in a loop, too long to write out normally without
+
+	var/datum/atom_hud/my_hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	my_hud.show_to(src)
 
-	freemove_end = world.time + PREP_TIME
-	freemove_end_timerid = addtimer(CALLBACK(src, PROC_REF(infect_random_patient_zero)), PREP_TIME, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(deploy_clone)), PREP_TIME, TIMER_STOPPABLE)
 
 /mob/camera/paradox/Login()
 	. = ..()
 	if(!. || !client)
 		return FALSE
-	to_chat(src, span_warning("You have [DisplayTimeText(freemove_end - world.time)] to select your first host. Click on a human to select your host."))
+	to_chat(src, span_warning("You have [DisplayTimeText(PREP_TIME)] to make your plan and select a spawn location."))
+
+/mob/camera/paradox/proc/deploy_clone(delivery_turf)
+	var/datum/antagonist/paradox_clone/clone_datum = src.mind.has_antag_datum(/datum/antagonist/paradox_clone)
+	if(delivery_turf)
+		clone_datum.make_clone(delivery_turf)
+	else
+		clone_datum.make_clone(pick(viewing_locations))
+	return
 
 #undef PREP_TIME
