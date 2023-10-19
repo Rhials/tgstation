@@ -156,3 +156,7 @@
 
 #define CHEF_TOURISTS_SERVED "Tourists Served As Chef"
 #define BARTENDER_TOURISTS_SERVED "Tourists Served As Bartender"
+
+/// Score IDs for legendary skill achievements.
+#define SCORE_LEGENDARY_MINER "Mining Legendary Skill Score"
+#define SCORE_LEGENDARY_FISHER "Fishing Legendary Skill Score"
