@@ -15,7 +15,7 @@
 
 /datum/antagonist/paradox_clone/New()
 	. = ..()
-	clone_victim = select_victim()
+	clone_victim = original_ref = WEAKREF(select_victim())
 
 /datum/antagonist/paradox_clone/get_preview_icon()
 	var/icon/final_icon = render_preview_outfit(preview_outfit)
@@ -80,16 +80,10 @@
 
 ///Creates the clone body at the selected turf. Will not fire if the camera is viewing the clone target.
 /datum/antagonist/paradox_clone/proc/make_clone(creation_turf)
-	var/datum/mind/player_mind = new /datum/mind(owner.key)
-	player_mind.active = TRUE
-
+	setup_clone()
 	var/mob/living/carbon/human/victim_body = clone_victim.current
 	var/mob/living/carbon/human/clone = victim_body.make_full_human_copy(creation_turf)
-	player_mind.transfer_to(clone)
-
-	var/datum/antagonist/paradox_clone/new_datum = player_mind.add_antag_datum(/datum/antagonist/paradox_clone)
-	new_datum.original_ref = WEAKREF(clone_victim)
-	new_datum.setup_clone()
+	owner.transfer_to(clone)
 
 	playsound(clone, 'sound/weapons/zapbang.ogg', 30, TRUE)
 	new /obj/item/storage/toolbox/mechanical(clone.loc) //so they dont get stuck in maints

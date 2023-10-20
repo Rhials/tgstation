@@ -1,4 +1,4 @@
-#define PREP_TIME 3 MINUTES
+#define PREP_TIME 5 MINUTES
 
 /mob/camera/paradox
 	name = "Spacetime Ripple"

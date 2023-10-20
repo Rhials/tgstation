@@ -888,8 +888,11 @@
 	return ..()
 
 /datum/dynamic_ruleset/midround/from_ghosts/paradox_clone/generate_ruleset_body(mob/applicant)
+	var/datum/mind/player_mind = new /datum/mind(applicant.key)
+	player_mind.active = TRUE
 	var/mob/camera/paradox/paradox_camera = new /mob/camera/paradox(pick(possible_spawns))
 	paradox_camera.key = applicant.key
+	applicant.mind.add_antag_datum(/datum/antagonist/paradox_clone)
 	message_admins("[ADMIN_LOOKUPFLW(paradox_camera)] has been summoned as a paradox clone by the midround ruleset.")
 	log_game("[key_name(paradox_camera)] was spawned as a paradox clone by the midround ruleset.")
 	return paradox_camera
