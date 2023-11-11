@@ -900,7 +900,7 @@
 	paradox_camera.key = applicant.key
 	applicant.mind.add_antag_datum(/datum/antagonist/paradox_clone)
 	message_admins("[ADMIN_LOOKUPFLW(paradox_camera)] has been summoned as a paradox clone by the midround ruleset.")
-	log_game("[key_name(paradox_camera)] was spawned as a paradox clone by the midround ruleset.")
+	log_game("[key_name(paradox_camera)] has been selected to spawn as a paradox clone by the midround ruleset.")
 	return paradox_camera
 
 #undef MALF_ION_PROB

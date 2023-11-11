@@ -26,8 +26,6 @@
 	ADD_TRAIT(src, TRAIT_SIXTHSENSE, INNATE_TRAIT)
 
 	viewing_locations += pick(GLOB.generic_maintenance_landmarks)
-	viewing_locations += pick(GLOB.generic_maintenance_landmarks)
-	viewing_locations += pick(GLOB.generic_maintenance_landmarks) //3, my favorite number. Too short to put in a loop, too long to write out normally without looking weird.
 
 	var/datum/atom_hud/my_hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	my_hud.show_to(src)

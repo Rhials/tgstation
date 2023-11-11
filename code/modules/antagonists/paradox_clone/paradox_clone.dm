@@ -10,12 +10,10 @@
 
 	///Weakref to the mind of the original, the clone's target.
 	var/datum/weakref/original_ref
-	///Who is our victim?
-	var/datum/mind/clone_victim
 
 /datum/antagonist/paradox_clone/New()
 	. = ..()
-	clone_victim = original_ref = WEAKREF(select_victim())
+	original_ref = WEAKREF(select_victim())
 
 /datum/antagonist/paradox_clone/get_preview_icon()
 	var/icon/final_icon = render_preview_outfit(preview_outfit)
@@ -81,16 +79,15 @@
 ///Creates the clone body at the selected turf. Will not fire if the camera is viewing the clone target.
 /datum/antagonist/paradox_clone/proc/make_clone(creation_turf)
 	setup_clone()
-	var/mob/living/carbon/human/victim_body = clone_victim.current
+	var/datum/mind/victim_mind = original_ref.resolve()
+	var/mob/living/carbon/human/victim_body = victim_mind.current
 	var/mob/living/carbon/human/clone = victim_body.make_full_human_copy(creation_turf)
 	owner.transfer_to(clone)
 
 	playsound(clone, 'sound/weapons/zapbang.ogg', 30, TRUE)
 	new /obj/item/storage/toolbox/mechanical(clone.loc) //so they dont get stuck in maints
 
-	message_admins("[ADMIN_LOOKUPFLW(clone)] has been made into a Paradox Clone by the midround ruleset.")
-	clone.log_message("was spawned as a Paradox Clone of [key_name(clone)] by the midround ruleset.", LOG_GAME)
-
+	clone.log_message("has been put into the game as a paradox clone of [key_name(clone)].", LOG_GAME)
 	return clone
 
 /**
