@@ -8,7 +8,7 @@
 	max_occurrences = 3
 	weight = 8
 	category = EVENT_CATEGORY_FRIENDLY
-	description = "The station is blasted with a beam of gentle photonic energy, providing benefits to anyone who basks in the light."
+	description = "The station is blasted with a beam of gentle photonic energy, providing benefits to anyone who basks in its light."
 	min_wizard_trigger_potency = 1
 	max_wizard_trigger_potency = 3
 
@@ -16,31 +16,63 @@
 	start_when = 1
 	end_when = 100
 	announce_when = 7
-	///A list of potential areas to trigger the event in.
-	var/static/list/valid_areas = list(
+	///The area the event effect will impact.
+	var/area/chosen_area
+	///A list of potential areas to trigger the event in. Meant to be "public-facing", large areas that wouldn't be disruptive for people to crowd in. No maints.
+	var/static/list/valid_areas = typecacheof(list(
+		/area/station/cargo/lobby,
+		/area/station/cargo/sorting,
+		/area/station/cargo/warehouse,
+		/area/station/command/corporate_showroom,
+		/area/station/command/corporate_suite,
+		/area/station/command/gateway,
+		/area/station/commons,
+		/area/station/construction,
+		/area/station/construction/storage_wing,
+		/area/station/engineering/hallway,
+		/area/station/engineering/lobby,
+		/area/station/engineering/main,
+		/area/station/engineering/atmos/pumproom, //admittedly this one could be a bit disruptive but also heheheha
+		/area/station/escapepodbay,
 		/area/station/hallway,
-
-
-
-
-
-
-
-
-
-	)
-
+		/area/station/holodeck,
+		/area/station/medical/coldroom, //hehe
+		/area/station/medical/cryo,
+		/area/station/medical/exam_room,
+		/area/station/medical/patients_rooms,
+		/area/station/medical/psychology,
+		/area/station/science/lab,
+		/area/station/science/lobby,
+		/area/station/science/research,
+		/area/station/security/courtroom,
+		/area/station/security/holding_cell,
+		/area/station/security/processing,
+		/area/station/service/bar,
+		/area/station/service/barber,
+		/area/station/service/cafeteria,
+		/area/station/service/chapel,
+		/area/station/service/greenroom,
+		/area/station/service/library,
+		/area/station/service/theater,
+	))
 
 /datum/round_event/photonic_animation/setup()
 	end_when += rand(15, 60)
 	announce_when = 7
 
+	var/list/possible_areas = typecache_filter_list(GLOB.areas, valid_areas)
+	if(!length(possible_areas))
+		stack_trace("No valid areas to run this event in! Something must be very wrong.")
+		return
+
+	chosen_area = pick(valid_areas)
 
 /datum/round_event/photonic_animation/announce(fake)
 	priority_announce(
-		"Celestial readings indicate a nearby star is emitting an abnormal amount of polarized photons at the hull of [station_name()]. Expected impact site: [].",
+		"Celestial readings indicate a nearby star is emitting an abnormal amount of polarized photons at the hull of [station_name()]. Expected impact site: [chosen_area.name].",
 		"Anomaly Alert",
 	)
 
 /datum/round_event/photonic_animation/start()
-	SSweather.run_weather(/datum/weather/rad_storm)
+	for(var/turf/turf_to_glow in get_area_turfs(chosen_area, subtypes = TRUE)) //Maybe make this FALSE for better control at the cost of a longer typecache?
+		turf_to_glow.emp_act()
