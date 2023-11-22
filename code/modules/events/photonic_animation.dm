@@ -65,7 +65,7 @@
 		stack_trace("No valid areas to run this event in! Something must be very wrong.")
 		return
 
-	chosen_area = pick(valid_areas)
+	chosen_area = pick(possible_areas)
 
 /datum/round_event/photonic_animation/announce(fake)
 	priority_announce(
@@ -74,5 +74,5 @@
 	)
 
 /datum/round_event/photonic_animation/start()
-	for(var/turf/turf_to_glow in get_area_turfs(chosen_area, subtypes = TRUE)) //Maybe make this FALSE for better control at the cost of a longer typecache?
+	for(var/turf/turf_to_glow in get_area_turfs(chosen_area))
 		turf_to_glow.emp_act()
