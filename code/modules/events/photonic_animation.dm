@@ -1,6 +1,6 @@
-/// "Photonic Animation" event, station is hit with sci-fi light particles or whatever that recharge and reinvigorate anyone they touch.
-/// Provides small but useful positive effects (minor heals, satiaitey, slightly recharging held items) for players
-/// over time when in the chosen area. Benefits should be broad enough that any job can consider visiting the area, since the goal is to bring people together.
+/// "Photonic Animation" event, station is hit with sci-fi light particles or whatever that reinvigorate anyone they touch.
+/// Provides small but useful positive effects (minor heals, satiaitey, slightly recharging held items) for players over time when in the chosen area.
+/// Benefits should be broad enough that any job can consider visiting the area, since the goal is to bring people together.
 /// Triggers in publish-ish areas (dorm halls), or places that won't encourage B&E or cause problems if 10 people suddenly barge in and camp out in it.
 /datum/round_event_control/photonic_animation
 	name = "Photonic Animation"
@@ -72,10 +72,19 @@
 
 /datum/round_event/photonic_animation/announce(fake)
 	priority_announce(
-		"Celestial readings indicate a nearby star is emitting an abnormal amount of polarized photons at the hull of [station_name()]. Expected impact site: [chosen_area.name].",
+		"A nearby celestial body is emitting an abnormal amount of polarized photons at the hull of [station_name()]. \
+		Expected impact site: [chosen_area.name]. Employees are encouraged to investigate the area and report any ",
 		"Anomaly Alert",
 	)
 
 /datum/round_event/photonic_animation/start()
 	for(var/turf/turf_to_glow in affected_turf_list)
 		turf_to_glow.emp_act()
+
+	RegisterSignal(chosen_area, COMSIG_ENTER_AREA, PROC_REF(apply_status_effect))
+
+/datum/round_event/photonic_animation/end()
+	UnregisterSignal(chosen_area, COMSIG_ENTER_AREA)
+
+/datum/round_event/photonic_animation/proc/apply_status_effect()
+	return
