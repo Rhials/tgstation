@@ -78,13 +78,26 @@
 	)
 
 /datum/round_event/photonic_animation/start()
-	for(var/turf/turf_to_glow in affected_turf_list)
-		turf_to_glow.emp_act()
-
 	RegisterSignal(chosen_area, COMSIG_ENTER_AREA, PROC_REF(apply_status_effect))
+
+/datum/round_event/photonic_animation/tick()
+	for(var/turf/turf_to_glow in affected_turf_list)
+		if(isopenturf(turf_to_glow) && prob(30))
+			new /obj/effect/temp_visual/photonic_glow(turf_to_glow)
 
 /datum/round_event/photonic_animation/end()
 	UnregisterSignal(chosen_area, COMSIG_ENTER_AREA)
 
 /datum/round_event/photonic_animation/proc/apply_status_effect()
 	return
+
+/obj/effect/temp_visual/photonic_glow
+	name = "photonic glow"
+	icon_state = "heal"
+	duration = 10
+
+/obj/effect/temp_visual/photonic_glow/Initialize(mapload)
+	add_atom_colour(COLOR_YELLOW, FIXED_COLOUR_PRIORITY)
+	. = ..()
+	pixel_x = rand(-12, 12)
+	pixel_y = rand(-9, 0)
