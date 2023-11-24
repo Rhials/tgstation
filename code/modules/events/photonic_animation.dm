@@ -14,10 +14,12 @@
 
 /datum/round_event/photonic_animation
 	start_when = 1
-	end_when = 100
-	announce_when = 7
+	end_when = 90
+	announce_when = 10
 	///The area the event effect will impact.
 	var/area/chosen_area
+	///A list of turfs that will be affected by this event.
+	var/list/affected_turf_list = list()
 	///A list of potential areas to trigger the event in. Meant to be "public-facing", large areas that wouldn't be disruptive for people to crowd in. No maints.
 	var/static/list/valid_areas = typecacheof(list(
 		/area/station/cargo/lobby,
@@ -66,6 +68,7 @@
 		return
 
 	chosen_area = pick(possible_areas)
+	affected_turf_list += get_area_turfs(chosen_area)
 
 /datum/round_event/photonic_animation/announce(fake)
 	priority_announce(
@@ -74,5 +77,5 @@
 	)
 
 /datum/round_event/photonic_animation/start()
-	for(var/turf/turf_to_glow in get_area_turfs(chosen_area))
+	for(var/turf/turf_to_glow in affected_turf_list)
 		turf_to_glow.emp_act()
