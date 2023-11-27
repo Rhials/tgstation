@@ -139,6 +139,7 @@
 		audible_message(span_warning("[icon2html(src, hearers(src))] *beep*"))
 		bomb_active = TRUE
 		START_PROCESSING(SSobj, src)
+		notify_ghosts("A pizza bomb has been triggered by [user]!", src, "Pizza Bomb!", ghost_sound = 'sound/items/timer.ogg', notify_volume = 50)
 	update_appearance()
 
 /obj/item/pizzabox/attack_self_secondary(mob/user)
