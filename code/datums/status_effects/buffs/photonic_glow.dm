@@ -4,22 +4,22 @@
 	id = "glowing"
 	alert_type = /atom/movable/screen/alert/status_effect/photonic_glow
 	remove_on_fullheal = FALSE
+	///Should we be ramping up or fading away our effects? Switched when the user enters/exits the designated area.
+	var/gaining_power = FALSE
 
-/datum/status_effect/drugginess/on_creation(mob/living/new_owner, duration = 10 SECONDS)
+/datum/status_effect/photonic_glow/on_creation(mob/living/new_owner, duration = 10 SECONDS)
 	src.duration = duration
 	return ..()
 
-/datum/status_effect/drugginess/on_apply()
+/datum/status_effect/photonic_glow/on_apply()
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(death_effect))
 
 	return TRUE
 
-/datum/status_effect/drugginess/on_remove()
+/datum/status_effect/photonic_glow/on_remove()
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH)
 
-	owner.clear_mood_event(id)
-
-/datum/status_effect/drugginess/proc/death_effect(datum/source)
+/datum/status_effect/photonic_glow/proc/death_effect(datum/source)
 	SIGNAL_HANDLER
 
 	qdel(src)

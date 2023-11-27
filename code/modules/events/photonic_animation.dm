@@ -78,26 +78,34 @@
 	)
 
 /datum/round_event/photonic_animation/start()
-	RegisterSignal(chosen_area, COMSIG_ENTER_AREA, PROC_REF(apply_status_effect))
+	RegisterSignal(chosen_area, COMSIG_AREA_ENTERED, PROC_REF(apply_glow))
 
 /datum/round_event/photonic_animation/tick()
 	for(var/turf/turf_to_glow in affected_turf_list)
-		if(isopenturf(turf_to_glow) && prob(30))
-			new /obj/effect/temp_visual/photonic_glow(turf_to_glow)
+		if(isopenturf(turf_to_glow) && prob(10))
+			new /obj/effect/temp_visual/photonic_fizzle(turf_to_glow)
 
 /datum/round_event/photonic_animation/end()
-	UnregisterSignal(chosen_area, COMSIG_ENTER_AREA)
+	UnregisterSignal(chosen_area, COMSIG_AREA_ENTERED, COMSIG_AREA_EXITED)
 
-/datum/round_event/photonic_animation/proc/apply_status_effect()
-	return
+/datum/round_event/photonic_animation/proc/apply_glow(datum/source, atom/movable/arrived, area/old_area)
+	SIGNAL_HANDLER
+	if(!isliving(arrived))
+		return
 
-/obj/effect/temp_visual/photonic_glow
+	var/mob/living/mob_to_glow = arrived
+	var/datum/status_effect/photonic_glow/applied_effect = mob_to_glow.apply_status_effect(/datum/status_effect/photonic_glow)
+	RegisterSignal(chosen_area, COMSIG_AREA_EXITED, PROC_REF(remove_glow), applied_effect)
+
+///Informs the user's status effect that they are no longer meant to self-refresh and should fade away.
+/datum/round_event/photonic_animation/proc/remove_glow(datum/source, atom/movable/gone, direction, datum/status_effect/photonic_glow/effect_to_remove)
+	SIGNAL_HANDLER
+
+	if(effect_to_remove)
+		effect_to_remove.gaining_power = FALSE
+
+/obj/effect/temp_visual/photonic_fizzle
 	name = "photonic glow"
-	icon_state = "heal"
+	icon_state = "electricity3" //This will look like SHIT
 	duration = 10
 
-/obj/effect/temp_visual/photonic_glow/Initialize(mapload)
-	add_atom_colour(COLOR_YELLOW, FIXED_COLOUR_PRIORITY)
-	. = ..()
-	pixel_x = rand(-12, 12)
-	pixel_y = rand(-9, 0)
