@@ -1,18 +1,18 @@
-/// "Photonic Animation" event, station is hit with sci-fi light particles or whatever that reinvigorate anyone they touch.
+/// "Photonic Beam" event, station is hit with sci-fi light particles or whatever that reinvigorate anyone they touch.
 /// Provides small but useful positive effects (minor heals, satiaitey, slightly recharging held items) for players over time when in the chosen area.
 /// Benefits should be broad enough that any job can consider visiting the area, since the goal is to bring people together.
 /// Triggers in publish-ish areas (dorm halls), or places that won't encourage B&E or cause problems if 10 people suddenly barge in and camp out in it.
-/datum/round_event_control/photonic_animation
-	name = "Photonic Animation"
-	typepath = /datum/round_event/photonic_animation
+/datum/round_event_control/photonic_beam
+	name = "Photonic Beam"
+	typepath = /datum/round_event/photonic_beam
 	max_occurrences = 3
 	weight = 8
 	category = EVENT_CATEGORY_FRIENDLY
-	description = "The station is blasted with a beam of gentle photonic energy, providing benefits to anyone who basks in its light."
+	description = "The station is blasted with a beam of gentle photonic energy, making an area provide a gentle positive buff to players in the chosen area."
 	min_wizard_trigger_potency = 1
 	max_wizard_trigger_potency = 3
 
-/datum/round_event/photonic_animation
+/datum/round_event/photonic_beam
 	start_when = 1
 	end_when = 90
 	announce_when = 10
@@ -58,7 +58,7 @@
 		/area/station/service/theater,
 	))
 
-/datum/round_event/photonic_animation/setup()
+/datum/round_event/photonic_beam/setup()
 	end_when += rand(15, 60)
 	announce_when = 7
 
@@ -70,25 +70,26 @@
 	chosen_area = pick(possible_areas)
 	affected_turf_list += get_area_turfs(chosen_area)
 
-/datum/round_event/photonic_animation/announce(fake)
+/datum/round_event/photonic_beam/announce(fake)
 	priority_announce(
 		"A nearby celestial body is emitting an abnormal amount of polarized photons at the hull of [station_name()]. \
-		Expected impact site: [chosen_area.name]. Employees are encouraged to investigate the area and report any ",
-		"Anomaly Alert",
+		Expected impact site: [chosen_area.name]. Employees are encouraged to investigate and report any \
+		[pick("reinvigorating", "positive", "painful", "abnormal", "rejuvinating")] effects from [pick("existing", "relaxing", "congregating", "occupying", "sitting")] in the area.",
+		"Solar Alert",
 	)
 
-/datum/round_event/photonic_animation/start()
+/datum/round_event/photonic_beam/start()
 	RegisterSignal(chosen_area, COMSIG_AREA_ENTERED, PROC_REF(apply_glow))
 
-/datum/round_event/photonic_animation/tick()
+/datum/round_event/photonic_beam/tick()
 	for(var/turf/turf_to_glow in affected_turf_list)
 		if(isopenturf(turf_to_glow) && prob(10))
 			new /obj/effect/temp_visual/photonic_fizzle(turf_to_glow)
 
-/datum/round_event/photonic_animation/end()
+/datum/round_event/photonic_beam/end()
 	UnregisterSignal(chosen_area, COMSIG_AREA_ENTERED, COMSIG_AREA_EXITED)
 
-/datum/round_event/photonic_animation/proc/apply_glow(datum/source, atom/movable/arrived, area/old_area)
+/datum/round_event/photonic_beam/proc/apply_glow(datum/source, atom/movable/arrived, area/old_area)
 	SIGNAL_HANDLER
 	if(!isliving(arrived))
 		return
@@ -98,7 +99,7 @@
 	RegisterSignal(chosen_area, COMSIG_AREA_EXITED, PROC_REF(remove_glow), applied_effect)
 
 ///Informs the user's status effect that they are no longer meant to self-refresh and should fade away.
-/datum/round_event/photonic_animation/proc/remove_glow(datum/source, atom/movable/gone, direction, datum/status_effect/photonic_glow/effect_to_remove)
+/datum/round_event/photonic_beam/proc/remove_glow(datum/source, atom/movable/gone, direction, datum/status_effect/photonic_glow/effect_to_remove)
 	SIGNAL_HANDLER
 
 	if(effect_to_remove)
@@ -106,6 +107,6 @@
 
 /obj/effect/temp_visual/photonic_fizzle
 	name = "photonic glow"
-	icon_state = "electricity3" //This will look like SHIT
+	icon_state = "blessed"
 	duration = 10
 
