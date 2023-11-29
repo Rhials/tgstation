@@ -108,5 +108,5 @@
 /obj/effect/temp_visual/photonic_fizzle
 	name = "photonic glow"
 	icon_state = "blessed"
-	duration = 10
+	duration = 4 SECONDS
 

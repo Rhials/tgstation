@@ -15,10 +15,6 @@
 	///How powerful should our effect be, from 0-100% intensity.
 	var/glow_power = 10
 
-/datum/status_effect/photonic_glow/on_creation(mob/living/new_owner, duration = 10 SECONDS)
-	src.duration = duration
-	return ..()
-
 /datum/status_effect/photonic_glow/on_apply()
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(death_effect))
 	return TRUE
@@ -38,6 +34,9 @@
 	var/filter = owner.get_filter(GLOWY_FILTER)
 	animate(filter, alpha = glow_power, time = 0.5 SECONDS, loop = -1)
 	animate(alpha = 0, time = 0.5 SECONDS)
+
+	if(prob(30))
+		new /obj/effect/temp_visual/photonic_fizzle(owner) //replace this with a new effect
 
 	//It's a beam of powerful starlight hitting the station. Vampires do not like sunlight.
 	if(isvampire(owner))
@@ -61,7 +60,7 @@
 /atom/movable/screen/alert/status_effect/photonic_glow
 	name = "Glowing"
 	desc = "Your skin feels tingly. Your electronics are softly humming. Something about where you're standing feels quite pleasant..."
-	icon_state = "woozy"
+	icon_state = "photonic_glow"
 
 #undef TICK_INTENSITY_INCREMENT
 #undef GLOWY_FILTER
