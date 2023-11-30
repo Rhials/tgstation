@@ -35,8 +35,8 @@
 	animate(filter, alpha = glow_power, time = 0.5 SECONDS, loop = -1)
 	animate(alpha = 0, time = 0.5 SECONDS)
 
-	if(prob(30))
-		new /obj/effect/temp_visual/photonic_fizzle(owner) //replace this with a new effect
+	if(prob(15))
+		new /obj/effect/temp_visual/impact_effect/ion(get_turf(owner))
 
 	//It's a beam of powerful starlight hitting the station. Vampires do not like sunlight.
 	if(isvampire(owner))
