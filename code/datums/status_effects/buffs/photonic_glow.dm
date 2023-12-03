@@ -35,18 +35,17 @@
 	animate(filter, alpha = glow_power, time = 0.5 SECONDS, loop = -1)
 	animate(alpha = 0, time = 0.5 SECONDS)
 
-	if(prob(15))
-		new /obj/effect/temp_visual/impact_effect/ion(get_turf(owner))
-
 	//It's a beam of powerful starlight hitting the station. Vampires do not like sunlight.
 	if(isvampire(owner))
+		linked_alert.desc = "The sunlight is burning your skin! ARGH!!!"
 		if(glow_power == 100)
 			to_chat(owner, span_boldwarning("The intensity of the starlight overwhelms your form. The brightness intensifies to a burning white light, and suddenly... nothing."))
 			owner.dust(TRUE, TRUE)
 			return
 
 		owner.apply_damage(glow_power * 0.10, BURN)
-		to_chat(owner, span_userdanger("Your skin is seared by the intense beam of starlight!"))
+		if(prob(25))
+			to_chat(owner, span_userdanger("Your skin is seared by the intense beam of starlight!"))
 
 /datum/status_effect/photonic_glow/on_remove()
 	owner.remove_filter(GLOWY_FILTER)
