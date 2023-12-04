@@ -37,15 +37,7 @@
 
 	//It's a beam of powerful starlight hitting the station. Vampires do not like sunlight.
 	if(isvampire(owner))
-		linked_alert.desc = "The sunlight is burning your skin! ARGH!!!"
-		if(glow_power == 100)
-			to_chat(owner, span_boldwarning("The intensity of the starlight overwhelms your form. The brightness intensifies to a burning white light, and suddenly... nothing."))
-			owner.dust(TRUE, TRUE)
-			return
-
-		owner.apply_damage(glow_power * 0.10, BURN)
-		if(prob(25))
-			to_chat(owner, span_userdanger("Your skin is seared by the intense beam of starlight!"))
+		vampire_burn()
 
 /datum/status_effect/photonic_glow/on_remove()
 	owner.remove_filter(GLOWY_FILTER)
@@ -54,6 +46,17 @@
 /datum/status_effect/photonic_glow/proc/death_effect(datum/source)
 	SIGNAL_HANDLER
 	qdel(src)
+
+/datum/status_effect/photonic_glow/proc/vampire_burn()
+	linked_alert.desc = "The starlight is burning your skin! ARGH!!!"
+	if(glow_power == 100)
+		to_chat(owner, span_boldwarning("The intensity of the starlight overwhelms your form! The brightness intensifies to a burning white light, and suddenly... nothing."))
+		owner.dust(TRUE, TRUE)
+		return
+
+	owner.apply_damage(glow_power * 0.15, BURN) //At this rate, if you walk in with full HP you'll be dusted around when you enter hardcrit.
+	if(prob(25))
+		to_chat(owner, span_userdanger("Your skin is seared by the intense beam of starlight!"))
 
 /// The status effect popup for photonic glow.
 /atom/movable/screen/alert/status_effect/photonic_glow
