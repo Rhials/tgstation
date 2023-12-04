@@ -36,8 +36,19 @@
 	animate(alpha = 0, time = 0.5 SECONDS)
 
 	//It's a beam of powerful starlight hitting the station. Vampires do not like sunlight.
-	if(isvampire(owner))
+	if(isvampire(owner)) //Banished to its own proc so as to not pollute the main chain.
 		vampire_burn()
+		return
+
+	var/need_mob_update = FALSE
+	need_mob_update += owner.adjustBruteLoss(-1 * seconds_between_ticks, updating_health = FALSE, forced = TRUE)
+	need_mob_update += owner.adjustFireLoss(-1 * seconds_between_ticks, updating_health = FALSE, forced = TRUE)
+	need_mob_update += owner.adjustToxLoss(-1 * seconds_between_ticks, updating_health = FALSE, forced = TRUE)
+	need_mob_update += owner.adjustOxyLoss(-1 * seconds_between_ticks, updating_health = FALSE, forced = TRUE)
+	need_mob_update += owner.adjustStaminaLoss(-1 * seconds_between_ticks, updating_stamina = FALSE, forced = TRUE)
+
+	if(need_mob_update)
+		owner.updatehealth()
 
 /datum/status_effect/photonic_glow/on_remove()
 	owner.remove_filter(GLOWY_FILTER)
