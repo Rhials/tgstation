@@ -21,7 +21,7 @@
 	/// See: [/datum/component/tackler/var/speed]
 	var/tackle_speed = 1
 	/// See: [/datum/component/tackler/var/skill_mod]
-	var/skill_mod = 0
+	var/skill_mod = 1
 
 /obj/item/clothing/gloves/tackler/Destroy()
 	tackler = null
@@ -78,7 +78,10 @@
 	name = "guerrilla gloves"
 	desc = "Superior quality combative gloves, good for performing tackle takedowns as well as absorbing electrical shocks."
 	siemens_coefficient = 0
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 0, ACID = 0)
+	armor_type = /datum/armor/combat_insulated
+
+/datum/armor/combat_insulated
+	bio = 50
 
 /obj/item/clothing/gloves/tackler/rocket
 	name = "rocket gloves"

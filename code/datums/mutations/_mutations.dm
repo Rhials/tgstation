@@ -1,5 +1,4 @@
 /datum/mutation
-
 	var/name
 
 /datum/mutation/human
@@ -17,7 +16,7 @@
 	/// Visual indicators upon the character of the owner of this mutation
 	var/static/list/visual_indicators = list()
 	/// The path of action we grant to our user on mutation gain
-	var/datum/action/cooldown/spell/power_path
+	var/datum/action/cooldown/power_path
 	/// Which mutation layer to use
 	var/layer_used = MUTATIONS_LAYER
 	/// To restrict mutation to only certain species
@@ -87,6 +86,12 @@
 		copy_mutation(copymut)
 	update_valid_chromosome_list()
 
+/datum/mutation/human/Destroy()
+	power_path = null
+	dna = null
+	owner = null
+	return ..()
+
 /datum/mutation/human/proc/on_acquiring(mob/living/carbon/human/acquirer)
 	if(!acquirer || !istype(acquirer) || acquirer.stat == DEAD || (src in acquirer.dna.mutations))
 		return TRUE
@@ -121,7 +126,7 @@
 /datum/mutation/human/proc/get_visual_indicator()
 	return
 
-/datum/mutation/human/proc/on_life(delta_time, times_fired)
+/datum/mutation/human/proc/on_life(seconds_per_tick, times_fired)
 	return
 
 /datum/mutation/human/proc/on_losing(mob/living/carbon/human/owner)
@@ -138,11 +143,7 @@
 		mut_overlay.Remove(get_visual_indicator())
 		owner.overlays_standing[layer_used] = mut_overlay
 		owner.apply_overlay(layer_used)
-	if(power_path)
-		// Any powers we made are linked to our mutation datum,
-		// so deleting ourself will also delete it and remove it
-		// ...Why don't all mutations delete on loss? Not sure.
-		qdel(src)
+	qdel(src)
 
 /mob/living/carbon/proc/update_mutations_overlay()
 	return
@@ -174,9 +175,9 @@
  * returns an instance of a power if modification was complete
  */
 /datum/mutation/human/proc/modify()
-	if(modified || !power_path || !owner)
+	if(modified || !power_path || QDELETED(owner))
 		return
-	var/datum/action/cooldown/spell/modified_power = locate(power_path) in owner.actions
+	var/datum/action/cooldown/modified_power = locate(power_path) in owner.actions
 	if(!modified_power)
 		CRASH("Genetic mutation [type] called modify(), but could not find a action to modify!")
 	modified_power.cooldown_time *= GET_MUTATION_ENERGY(src) // Doesn't do anything for mutations with energy_coeff unset
@@ -213,7 +214,7 @@
 	if(!ispath(power_path) || !owner)
 		return FALSE
 
-	var/datum/action/cooldown/spell/new_power = new power_path(src)
+	var/datum/action/cooldown/new_power = new power_path(src)
 	new_power.background_icon_state = "bg_tech_blue"
 	new_power.base_background_icon_state = new_power.background_icon_state
 	new_power.active_background_icon_state = "[new_power.base_background_icon_state]_active"

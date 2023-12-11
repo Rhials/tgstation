@@ -56,13 +56,13 @@
 			inserted_disk = disk
 			return
 		else
-			balloon_alert(user, span_warning("[disk] is stuck to your hand."))
+			balloon_alert(user, "it's stuck to your hand!")
 			return ..()
 	return ..()
 
 /obj/machinery/doppler_array/wrench_act(mob/living/user, obj/item/tool)
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/doppler_array/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!default_deconstruction_screwdriver(user, "[base_icon_state]", "[base_icon_state]", tool))

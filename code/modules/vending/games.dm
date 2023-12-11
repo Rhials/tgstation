@@ -52,7 +52,9 @@
 				/obj/item/skillchip/appraiser = 2,
 				/obj/item/skillchip/basketweaving = 2,
 				/obj/item/skillchip/bonsai = 2,
+				/obj/item/skillchip/intj = 2,
 				/obj/item/skillchip/light_remover = 2,
+				/obj/item/skillchip/master_angler = 2,
 				/obj/item/skillchip/sabrage = 2,
 				/obj/item/skillchip/useless_adapter = 5,
 				/obj/item/skillchip/wine_taster = 2,
@@ -64,8 +66,8 @@
 			"products" = list(
 				/obj/item/camera = 3,
 				/obj/item/camera_film = 5,
-				/obj/item/cardpack/resin = 10,
-				/obj/item/cardpack/series_one = 10,
+				/obj/item/cardpack/resin = 20, //Both card packs have had their count raised to 20 from 10 until card persistance is implimented.
+				/obj/item/cardpack/series_one = 20,
 				/obj/item/dyespray = 3,
 				/obj/item/hourglass = 2,
 				/obj/item/instrument/piano_synth/headphones = 4,
@@ -79,6 +81,7 @@
 		/obj/item/dice/fudge = 9,
 		/obj/item/clothing/shoes/wheelys/skishoes = 4,
 		/obj/item/instrument/musicalmoth = 1,
+		/obj/item/gun/ballistic/revolver/russian = 1, //the most dangerous game
 	)
 	premium = list(
 		/obj/item/disk/holodisk = 5,

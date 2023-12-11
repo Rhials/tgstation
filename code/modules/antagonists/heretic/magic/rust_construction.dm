@@ -5,7 +5,7 @@
 	overlay_icon_state = "bg_heretic_border"
 	button_icon_state = "shield"
 	ranged_mousepointer = 'icons/effects/mouse_pointers/throw_target.dmi'
-	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_HANDS_BLOCKED
+	check_flags = AB_CHECK_INCAPACITATED|AB_CHECK_CONSCIOUS|AB_CHECK_HANDS_BLOCKED
 
 	school = SCHOOL_FORBIDDEN
 	cooldown_time = 5 SECONDS
@@ -46,7 +46,7 @@
 /datum/action/cooldown/spell/pointed/rust_construction/cast(turf/open/cast_on)
 	. = ..()
 	var/rises_message = "rises out of [cast_on]"
-	var/turf/closed/wall/new_wall = cast_on.PlaceOnTop(/turf/closed/wall)
+	var/turf/closed/wall/new_wall = cast_on.place_on_top(/turf/closed/wall)
 	if(!istype(new_wall))
 		return
 

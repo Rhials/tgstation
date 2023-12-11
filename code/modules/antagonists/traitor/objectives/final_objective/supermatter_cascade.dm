@@ -3,7 +3,7 @@
 	description = "Destroy the station by causing a supermatter cascade. Go to %AREA% to retrieve the destabilizing crystal \
 		and use it on the supermatter."
 
-	///area type the objective owner must be in to recieve the destabilizing crystal
+	///area type the objective owner must be in to receive the destabilizing crystal
 	var/area/dest_crystal_area_pickup
 	///checker on whether we have sent the crystal yet.
 	var/sent_crystal = FALSE
@@ -25,7 +25,7 @@
 	var/list/possible_areas = GLOB.the_station_areas.Copy()
 	for(var/area/possible_area as anything in possible_areas)
 		//remove areas too close to the destination, too obvious for our poor shmuck, or just unfair
-		if(istype(possible_area, /area/station/hallway) || istype(possible_area, /area/station/security))
+		if(ispath(possible_area, /area/station/hallway) || ispath(possible_area, /area/station/security))
 			possible_areas -= possible_area
 	if(length(possible_areas) == 0)
 		return FALSE

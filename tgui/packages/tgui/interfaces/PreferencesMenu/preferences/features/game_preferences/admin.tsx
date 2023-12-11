@@ -1,4 +1,10 @@
-import { CheckboxInput, FeatureColorInput, Feature, FeatureDropdownInput, FeatureToggle } from '../base';
+import {
+  CheckboxInput,
+  FeatureColorInput,
+  Feature,
+  FeatureDropdownInput,
+  FeatureToggle,
+} from '../base';
 import { multiline } from 'common/string';
 
 export const asaycolor: Feature<string> = {
@@ -40,5 +46,11 @@ export const ghost_roles_as_admin: FeatureToggle = {
     state. However, this does not suppress notifications when you are
     a regular player (deadminned).
 `,
+  component: CheckboxInput,
+};
+
+export const comms_notification: FeatureToggle = {
+  name: 'Enable comms console sound',
+  category: 'ADMIN',
   component: CheckboxInput,
 };

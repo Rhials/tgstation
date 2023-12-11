@@ -14,7 +14,7 @@ Difficulty: Hard
 
 /mob/living/simple_animal/hostile/megafauna/wendigo
 	name = "wendigo"
-	desc = "A mythological man-eating legendary creature, you probably aren't going to survive this."
+	desc = "A mythological man-eating legendary creature, the sockets of it's eyes track you with an unsatiated hunger."
 	health = 2500
 	maxHealth = 2500
 	icon_state = "wendigo"
@@ -34,8 +34,6 @@ Difficulty: Hard
 	aggro_vision_range = 18 // man-eating for a reason
 	speed = 6
 	move_to_delay = 6
-	rapid_melee = 8 // every 1/4 second
-	melee_queue_distance = 18 // as far as possible really, need this because of charging and teleports
 	ranged = TRUE
 	pixel_x = -16
 	base_pixel_x = -16
@@ -50,7 +48,7 @@ Difficulty: Hard
 	achievement_type = /datum/award/achievement/boss/wendigo_kill
 	crusher_achievement_type = /datum/award/achievement/boss/wendigo_crusher
 	score_achievement_type = /datum/award/score/wendigo_score
-	death_message = "falls, shaking the ground around it"
+	death_message = "falls to the ground in a bloody heap, shaking the arena"
 	death_sound = 'sound/effects/gravhit.ogg'
 	footstep_type = FOOTSTEP_MOB_HEAVY
 	attack_action_types = list(/datum/action/innate/megafauna_attack/heavy_stomp,
@@ -208,8 +206,9 @@ Difficulty: Hard
 	COOLDOWN_START(src, scream_cooldown, scream_cooldown_time)
 	SLEEP_CHECK_DEATH(5, src)
 	playsound(loc, 'sound/magic/demon_dies.ogg', 600, FALSE, 10)
-	animate(src, pixel_z = rand(5, 15), time = 1, loop = 20)
-	animate(pixel_z = 0, time = 1)
+	var/pixel_shift = rand(5, 15)
+	animate(src, pixel_z = pixel_shift, time = 1, loop = 20, flags = ANIMATION_RELATIVE)
+	animate(pixel_z = -pixel_shift, time = 1, flags = ANIMATION_RELATIVE)
 	for(var/mob/living/dizzy_target in get_hearers_in_view(7, src) - src)
 		dizzy_target.set_dizzy_if_lower(12 SECONDS)
 		to_chat(dizzy_target, span_danger("The wendigo screams loudly!"))
@@ -269,6 +268,10 @@ Difficulty: Hard
 /mob/living/simple_animal/hostile/megafauna/wendigo/death(gibbed, list/force_grant)
 	if(health > 0)
 		return
+
+	if(!true_spawn)
+		return ..()
+
 	var/obj/effect/portal/permanent/one_way/exit = new /obj/effect/portal/permanent/one_way(starting)
 	exit.id = "wendigo arena exit"
 	exit.add_atom_colour(COLOR_RED_LIGHT, ADMIN_COLOUR_PRIORITY)
@@ -292,8 +295,8 @@ Difficulty: Hard
 
 /obj/item/wendigo_blood
 	name = "bottle of wendigo blood"
-	desc = "You're not actually going to drink this, are you?"
-	icon = 'icons/obj/wizard.dmi'
+	desc = "A bottle of viscous red liquid... You're not actually going to drink this, are you?"
+	icon = 'icons/obj/mining_zones/artefacts.dmi'
 	icon_state = "vial"
 
 /obj/item/wendigo_blood/attack_self(mob/living/user)
@@ -310,7 +313,7 @@ Difficulty: Hard
 
 /obj/item/crusher_trophy/wendigo_horn
 	name = "wendigo horn"
-	desc = "A horn from the head of an unstoppable beast."
+	desc = "A gnarled horn ripped from the skull of a wendigo. Suitable as a trophy for a kinetic crusher."
 	icon_state = "wendigo_horn"
 	denied_type = /obj/item/crusher_trophy/wendigo_horn
 
@@ -329,12 +332,13 @@ Difficulty: Hard
 
 /obj/item/wendigo_skull
 	name = "wendigo skull"
-	desc = "A skull of a massive hulking beast."
-	icon = 'icons/obj/ice_moon/artifacts.dmi'
+	desc = "A bloody skull torn from a murderous beast, the soulless eye sockets seem to constantly track your movement."
+	icon = 'icons/obj/mining_zones/artefacts.dmi'
 	icon_state = "wendigo_skull"
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 
+#undef WENDIGO_ENRAGED
 #undef WENDIGO_CIRCLE_SHOTCOUNT
 #undef WENDIGO_CIRCLE_REPEATCOUNT
 #undef WENDIGO_SPIRAL_SHOTCOUNT

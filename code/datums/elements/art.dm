@@ -8,10 +8,10 @@
 	if(!isatom(target) || isarea(target))
 		return ELEMENT_INCOMPATIBLE
 	impressiveness = impress
-	RegisterSignal(target, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 
 /datum/element/art/Detach(datum/target)
-	UnregisterSignal(target, COMSIG_PARENT_EXAMINE)
+	UnregisterSignal(target, COMSIG_ATOM_EXAMINE)
 	return ..()
 
 /datum/element/art/proc/apply_moodlet(atom/source, mob/living/user, impress)
@@ -24,10 +24,10 @@
 			msg = "What \a [pick("masterpiece", "chef-d'oeuvre")]. So [pick("trascended", "awe-inspiring", "bewitching", "impeccable")]!"
 		if (GOOD_ART to GREAT_ART)
 			user.add_mood_event("artgood", /datum/mood_event/artgood)
-			msg = "[source.p_theyre(TRUE)] a [pick("respectable", "commendable", "laudable")] art piece, easy on the keen eye."
+			msg = "[source.p_Theyre()] a [pick("respectable", "commendable", "laudable")] art piece, easy on the keen eye."
 		if (BAD_ART to GOOD_ART)
 			user.add_mood_event("artok", /datum/mood_event/artok)
-			msg = "[source.p_theyre(TRUE)] fair to middling, enough to be called an \"art object\"."
+			msg = "[source.p_Theyre()] fair to middling, enough to be called an \"art object\"."
 		if (0 to BAD_ART)
 			user.add_mood_event("artbad", /datum/mood_event/artbad)
 			msg = "Wow, [source.p_they()] sucks."
@@ -47,10 +47,8 @@
 	if(!do_after(user, 2 SECONDS, target = source))
 		return
 	var/mult = 1
-	if(isobj(source))
-		var/obj/art_piece = source
-		mult = art_piece.get_integrity() / art_piece.max_integrity
-
+	if(source.uses_integrity)
+		mult = source.get_integrity() / source.max_integrity
 	apply_moodlet(source, user, impressiveness * mult)
 
 /datum/element/art/rev

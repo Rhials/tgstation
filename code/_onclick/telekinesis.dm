@@ -93,7 +93,7 @@
 /obj/item/tk_grab
 	name = "Telekinetic Grab"
 	desc = "Magic"
-	icon = 'icons/obj/magic.dmi'//Needs sprites
+	icon = 'icons/effects/magic.dmi'//Needs sprites
 	icon_state = "2"
 	item_flags = NOBLUDGEON | ABSTRACT | DROPDEL
 	//inhand_icon_state = null
@@ -110,6 +110,8 @@
 
 /obj/item/tk_grab/Destroy()
 	STOP_PROCESSING(SSfastprocess, src)
+	if(!QDELETED(focus))
+		REMOVE_TRAIT(focus, TRAIT_TELEKINESIS_CONTROLLED, REF(tk_user))
 	focus = null
 	tk_user = null
 	return ..()
@@ -179,9 +181,11 @@
 				focus.do_attack_animation(target, null, focus)
 		else if(isgun(I)) //I've only tested this with guns, and it took some doing to make it work
 			. = I.afterattack(target, tk_user, 0, params)
+		. |= AFTERATTACK_PROCESSED_ITEM
 
 	user.changeNext_move(CLICK_CD_MELEE)
 	update_appearance()
+	return .
 
 /obj/item/tk_grab/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
@@ -257,6 +261,7 @@
 	if(!check_if_focusable(target))
 		return
 	focus = target
+	ADD_TRAIT(focus, TRAIT_TELEKINESIS_CONTROLLED, REF(tk_user))
 	update_appearance()
 	apply_focus_overlay()
 	return TRUE

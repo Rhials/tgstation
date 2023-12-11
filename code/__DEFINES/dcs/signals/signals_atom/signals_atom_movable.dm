@@ -47,15 +47,20 @@
 #define COMSIG_MOVABLE_THROW_LANDED "movable_throw_landed"
 ///from base of atom/movable/on_changed_z_level(): (turf/old_turf, turf/new_turf, same_z_layer)
 #define COMSIG_MOVABLE_Z_CHANGED "movable_ztransit"
-///from base of atom/movable/Hear(): (proc args list(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list()))
+///called before hearing a message from atom/movable/Hear():
+#define COMSIG_MOVABLE_PRE_HEAR "movable_pre_hear"
+	///cancel hearing the message because we're doing something else presumably
+	#define COMSIG_MOVABLE_CANCEL_HEARING (1<<0)
+///from base of atom/movable/Hear(): (proc args list(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range))
 #define COMSIG_MOVABLE_HEAR "movable_hear"
 	#define HEARING_MESSAGE 1
 	#define HEARING_SPEAKER 2
 	#define HEARING_LANGUAGE 3
 	#define HEARING_RAW_MESSAGE 4
-	/* #define HEARING_RADIO_FREQ 5
+	#define HEARING_RADIO_FREQ 5
 	#define HEARING_SPANS 6
-	#define HEARING_MESSAGE_MODE 7 */
+	#define HEARING_MESSAGE_MODE 7
+	#define HEARING_RANGE 8
 
 ///called when the movable is added to a disposal holder object for disposal movement: (obj/structure/disposalholder/holder, obj/machinery/disposal/source)
 #define COMSIG_MOVABLE_DISPOSING "movable_disposing"
@@ -65,18 +70,12 @@
 #define COMSIG_MOVABLE_SET_ANCHORED "movable_set_anchored"
 ///from base of atom/movable/setGrabState(): (newstate)
 #define COMSIG_MOVABLE_SET_GRAB_STATE "living_set_grab_state"
-///Called when the movable tries to change its dynamic light color setting, from base atom/movable/lighting_overlay_set_color(): (color)
-#define COMSIG_MOVABLE_LIGHT_OVERLAY_SET_RANGE "movable_light_overlay_set_color"
-///Called when the movable tries to change its dynamic light power setting, from base atom/movable/lighting_overlay_set_power(): (power)
-#define COMSIG_MOVABLE_LIGHT_OVERLAY_SET_POWER "movable_light_overlay_set_power"
-///Called when the movable tries to change its dynamic light range setting, from base atom/movable/lighting_overlay_set_range(): (range)
-#define COMSIG_MOVABLE_LIGHT_OVERLAY_SET_COLOR "movable_light_overlay_set_range"
-///Called when the movable tries to toggle its dynamic light LIGHTING_ON status, from base atom/movable/lighting_overlay_toggle_on(): (new_state)
-#define COMSIG_MOVABLE_LIGHT_OVERLAY_TOGGLE_ON "movable_light_overlay_toggle_on"
 ///called when the movable's glide size is updated: (new_glide_size)
 #define COMSIG_MOVABLE_UPDATE_GLIDE_SIZE "movable_glide_size"
 ///Called when a movable is hit by a plunger in layer mode, from /obj/item/plunger/attack_atom()
 #define COMSIG_MOVABLE_CHANGE_DUCT_LAYER "movable_change_duct_layer"
+///Called before a movable is being teleported from `check_teleport_valid()`: (destination, channel)
+#define COMSIG_MOVABLE_TELEPORTING "movable_teleporting"
 ///Called when a movable is being teleported from `do_teleport()`: (destination, channel)
 #define COMSIG_MOVABLE_TELEPORTED "movable_teleported"
 ///Called after a movable is teleported from `do_teleport()`: ()
@@ -101,15 +100,13 @@
 	#define MOVABLE_SAY_QUOTE_MESSAGE 1
 	#define MOVABLE_SAY_QUOTE_MESSAGE_SPANS 2
 	#define MOVABLE_SAY_QUOTE_MESSAGE_MODS 3
-/// Sent from /atom/movable/proc/lang_treat() before it runs.
-#define COMSIG_MOVABLE_TREAT_MESSAGE "movable_treat_message"
-	// Used to access COMSIG_MOVABLE_TREAT_MESSAGE argslist
-	/// The index of args that corresponds to the mob speaking
-	#define MOVABLE_TREAT_MESSAGE_SPEAKER 1
-	/// The index of args that corresponds to the spoken language
-	#define MOVABLE_TREAT_MESSAGE_LANGUAGE 2
-	/// The index of args that corresponds to the actual message
-	#define MOVABLE_TREAT_MESSAGE_MESSAGE 3
-	#define MOVABLE_TREAT_MESSAGE_SPANS 4
-	#define MOVABLE_TREAT_MESSAGE_MODS 5
-	#define MOVABLE_TREAT_MESSAGE_NOQUOTE 6
+
+/// Sent from /atom/movable/proc/compose_message() after the name part: (list/stored_name, visible_name)
+#define COMSIG_MOVABLE_MESSAGE_GET_NAME_PART "movable_message_get_name_part"
+	///The index of the name part
+	#define NAME_PART_INDEX 1
+
+/// From /datum/element/immerse/proc/add_submerge_overlay(): (visual_overlay)
+#define COMSIG_MOVABLE_EDIT_UNIQUE_IMMERSE_OVERLAY "movable_edit_unique_submerge_overlay"
+/// From base of area/Exited(): (area/left, direction)
+#define COMSIG_MOVABLE_EXITED_AREA "movable_exited_area"

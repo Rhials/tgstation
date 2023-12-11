@@ -1,7 +1,7 @@
-#define AIRLOCK_CONTROL_RANGE 5
-
 // This code allows for airlocks to be controlled externally by setting an id_tag and comm frequency (disables ID access)
 /obj/machinery/door/airlock
+	opens_with_door_remote = TRUE
+
 	/// The current state of the airlock, used to construct the airlock overlays
 	var/airlock_state
 	var/frequency
@@ -12,7 +12,7 @@
 	update_appearance()
 
 	stoplag(0.2 SECONDS)
-	open(forced = TRUE)
+	open(FORCING_DOOR_CHECKS)
 
 	locked = TRUE
 	update_appearance()
@@ -32,7 +32,7 @@
 	return ..()
 
 /obj/machinery/airlock_sensor
-	icon = 'icons/obj/airlock_machines.dmi'
+	icon = 'icons/obj/machines/wallmounts.dmi'
 	icon_state = "airlock_sensor_off"
 	base_icon_state = "airlock_sensor"
 	name = "airlock sensor"

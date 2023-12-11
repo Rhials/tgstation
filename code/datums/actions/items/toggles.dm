@@ -80,6 +80,17 @@
 		return FALSE
 	return ..()
 
+/datum/action/item_action/toggle_hud
+	name = "Toggle Implant HUD"
+	desc = "Disables your HUD implant's visuals. You can still access examine information."
+
+/datum/action/item_action/toggle_hud/Trigger(trigger_flags)
+	. = ..()
+	if(!.)
+		return
+	var/obj/item/organ/internal/cyberimp/eyes/hud/hud_implant = target
+	hud_implant.toggle_hud(owner)
+
 /datum/action/item_action/wheelys
 	name = "Toggle Wheels"
 	desc = "Pops out or in your shoes' wheels."
@@ -98,3 +109,10 @@
 	background_icon = 'icons/mob/actions/actions_items.dmi'
 	background_icon_state = "storage_gather_switch"
 	overlay_icon_state = "bg_tech_border"
+
+/datum/action/item_action/flip
+	name = "Flip"
+
+/datum/action/item_action/call_link
+	name = "Call MODlink"
+

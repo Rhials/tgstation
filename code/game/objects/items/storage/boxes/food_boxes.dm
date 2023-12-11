@@ -2,7 +2,7 @@
 
 /obj/item/storage/box/donkpockets
 	name = "box of donk-pockets"
-	desc = "<B>Instructions:</B> <I>Heat in microwave. Product will stay perpetually warmed with cutting edge Donk Co. technology.</I>"
+	desc = "Instructions: Heat in microwave. Product will stay perpetually warmed with cutting edge Donk Co. technology."
 	icon_state = "donkpocketbox"
 	illustration = null
 	/// What type of donk pocket are we gonna cram into this box?
@@ -49,11 +49,12 @@
 /obj/item/storage/box/papersack
 	name = "paper sack"
 	desc = "A sack neatly crafted out of paper."
+	icon = 'icons/obj/storage/paperbag.dmi'
 	icon_state = "paperbag_None"
 	inhand_icon_state = null
 	illustration = null
 	resistance_flags = FLAMMABLE
-	foldable = null
+	foldable_result = null
 	/// A list of all available papersack reskins
 	var/list/papersack_designs = list()
 	///What design from papersack_designs we are currently using.
@@ -141,6 +142,13 @@
 /obj/item/storage/box/papersack/meat/PopulateContents()
 	for(var/i in 1 to 7)
 		new /obj/item/food/meat/slab(src)
+
+/obj/item/storage/box/papersack/wheat
+	desc = "It's a bit dusty, and smells like a barnyard."
+
+/obj/item/storage/box/papersack/wheat/PopulateContents()
+	for(var/i in 1 to 7)
+		new /obj/item/food/grown/wheat(src)
 
 /obj/item/storage/box/ingredients //This box is for the randomly chosen version the chef used to spawn with, it shouldn't actually exist.
 	name = "ingredients box"
@@ -260,7 +268,7 @@
 		new /obj/item/food/grown/oat(src)
 	new /obj/item/food/grown/cocoapod(src)
 	new /obj/item/food/grown/wheat(src)
-	new /obj/item/reagent_containers/honeycomb(src)
+	new /obj/item/food/honeycomb(src)
 	new /obj/item/seeds/poppy(src)
 
 /obj/item/storage/box/ingredients/carnivore
@@ -305,25 +313,26 @@
 	new /obj/item/food/grown/onion/red(src)
 	new /obj/item/food/grown/onion/red(src)
 	new /obj/item/food/grown/tomato(src)
-	new /obj/item/reagent_containers/condiment/quality_oil(src)
+	new /obj/item/reagent_containers/condiment/olive_oil(src)
 
 /obj/item/storage/box/ingredients/random
 	theme_name = "random"
 	desc = "This box should not exist, contact the proper authorities."
 
 /obj/item/storage/box/ingredients/random/Initialize(mapload)
-	.=..()
+	. = ..()
 	var/chosen_box = pick(subtypesof(/obj/item/storage/box/ingredients) - /obj/item/storage/box/ingredients/random)
 	new chosen_box(loc)
 	return INITIALIZE_HINT_QDEL
 
 /obj/item/storage/box/gum
 	name = "bubblegum packet"
-	desc = "The packaging is entirely in japanese, apparently. You can't make out a single word of it."
+	desc = "The packaging is entirely in Japanese, apparently. You can't make out a single word of it."
+	icon = 'icons/obj/storage/gum.dmi'
 	icon_state = "bubblegum_generic"
 	w_class = WEIGHT_CLASS_TINY
 	illustration = null
-	foldable = null
+	foldable_result = null
 	custom_price = PAYCHECK_CREW
 
 /obj/item/storage/box/gum/Initialize(mapload)
@@ -419,9 +428,9 @@
 /obj/item/storage/box/tiziran_cans/PopulateContents()
 	for(var/i in 1 to 8)
 		var/random_food = pick_weight(list(
-			/obj/item/food/canned_jellyfish = 5,
-			/obj/item/food/desert_snails = 5,
-			/obj/item/food/larvae = 5,
+			/obj/item/food/canned/jellyfish = 5,
+			/obj/item/food/canned/desert_snails = 5,
+			/obj/item/food/canned/larvae = 5,
 			))
 		new random_food(src)
 
@@ -457,7 +466,7 @@
 			/obj/item/food/cheese/wheel = 5,
 			/obj/item/food/grown/toechtauese = 10,
 			/obj/item/reagent_containers/condiment/cornmeal = 5,
-			/obj/item/reagent_containers/condiment/quality_oil = 5,
+			/obj/item/reagent_containers/condiment/olive_oil = 5,
 			/obj/item/reagent_containers/condiment/yoghurt = 5,
 			))
 		new random_food(src)

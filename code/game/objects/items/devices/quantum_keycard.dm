@@ -1,7 +1,7 @@
 /obj/item/quantum_keycard
 	name = "quantum keycard"
 	desc = "A keycard able to link to a quantum pad's particle signature, allowing other quantum pads to travel there instead of their linked pad."
-	icon = 'icons/obj/device.dmi'
+	icon = 'icons/obj/devices/tool.dmi'
 	icon_state = "quantum_keycard_gags"
 	greyscale_config = /datum/greyscale_config/quantum_keycard
 	greyscale_colors = "#FFFFFF"
@@ -41,7 +41,7 @@
 		. += span_notice("Insert [src] into an active quantum pad to link it.")
 
 /obj/item/quantum_keycard/AltClick(mob/living/user)
-	if(!istype(user) || !user.canUseTopic(src, be_close = TRUE, no_dexterity = TRUE, no_tk = FALSE, need_hands = !iscyborg(user)))
+	if(!istype(user) || !user.can_perform_action(src, NEED_DEXTERITY))
 		return
 	to_chat(user, span_notice("You start pressing [src]'s unlink button..."))
 	if(do_after(user, 40, target = src))

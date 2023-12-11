@@ -1,11 +1,11 @@
 /datum/traitor_objective/ultimate/romerol
 	name = "Spread the experimental bioterror agent Romerol by calling a droppod down at %AREA%"
-	description = "Go to %AREA%, and recieve the bioterror agent. Spread it to the crew, \
+	description = "Go to %AREA%, and receive the bioterror agent. Spread it to the crew, \
 	and watch then raise from the dead as mindless killing machines. Warning: The undead will attack you too."
 
 	//this is a prototype so this progression is for all basic level kill objectives
 
-	///area type the objective owner must be in to recieve the romerol
+	///area type the objective owner must be in to receive the romerol
 	var/area/romerol_spawnarea_type
 	///checker on whether we have sent the romerol yet.
 	var/sent_romerol = FALSE
@@ -14,7 +14,7 @@
 	var/list/possible_areas = GLOB.the_station_areas.Copy()
 	for(var/area/possible_area as anything in possible_areas)
 		//remove areas too close to the destination, too obvious for our poor shmuck, or just unfair
-		if(istype(possible_area, /area/station/hallway) || istype(possible_area, /area/station/security))
+		if(ispath(possible_area, /area/station/hallway) || ispath(possible_area, /area/station/security))
 			possible_areas -= possible_area
 	if(length(possible_areas) == 0)
 		return FALSE
@@ -36,7 +36,7 @@
 				return
 			var/area/delivery_area = get_area(user)
 			if(delivery_area.type != romerol_spawnarea_type)
-				to_chat(user, span_warning("You must be in [initial(romerol_spawnarea_type.name)] to recieve the bioterror agent."))
+				to_chat(user, span_warning("You must be in [initial(romerol_spawnarea_type.name)] to receive the bioterror agent."))
 				return
 			sent_romerol = TRUE
 			podspawn(list(

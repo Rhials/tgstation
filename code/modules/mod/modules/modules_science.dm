@@ -74,7 +74,6 @@
 	if(mod.wearer.has_gravity())
 		new /obj/effect/temp_visual/mook_dust(get_turf(src))
 	mod.wearer.AddElement(/datum/element/forced_gravity, 0)
-	mod.wearer.update_gravity(mod.wearer.has_gravity())
 	playsound(src, 'sound/effects/gravhit.ogg', 50)
 
 /obj/item/mod/module/anomaly_locked/antigrav/on_deactivation(display_message = TRUE, deleting = FALSE)
@@ -82,7 +81,6 @@
 	if(!.)
 		return
 	mod.wearer.RemoveElement(/datum/element/forced_gravity, 0)
-	mod.wearer.update_gravity(mod.wearer.has_gravity())
 	if(deleting)
 		return
 	if(mod.wearer.has_gravity())
@@ -91,6 +89,9 @@
 
 /obj/item/mod/module/anomaly_locked/antigrav/prebuilt
 	prebuilt = TRUE
+
+/obj/item/mod/module/anomaly_locked/antigrav/prebuilt/locked
+	core_removable = FALSE
 
 ///Teleporter - Lets the user teleport to a nearby location.
 /obj/item/mod/module/anomaly_locked/teleporter
@@ -130,3 +131,6 @@
 
 /obj/item/mod/module/anomaly_locked/teleporter/prebuilt
 	prebuilt = TRUE
+
+/obj/item/mod/module/anomaly_locked/teleporter/prebuilt/locked
+	core_removable = FALSE

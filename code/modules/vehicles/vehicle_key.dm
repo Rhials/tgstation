@@ -26,12 +26,22 @@
 /obj/item/key/janitor
 	desc = "A keyring with a small steel key, and a pink fob reading \"Pussy Wagon\"."
 	icon_state = "keyjanitor"
+	force = 2
+	w_class = WEIGHT_CLASS_SMALL
+	throwforce = 9
+	hitsound = SFX_SWING_HIT
+	attack_verb_continuous = list("stubs", "pokes")
+	attack_verb_simple = list("stub", "poke")
+	sharpness = SHARP_EDGED
+	embedding = list("pain_mult" = 1, "embed_chance" = 30, "fall_chance" = 70)
+	wound_bonus = -1
+	bare_wound_bonus = 2
 
 /obj/item/key/janitor/suicide_act(mob/living/carbon/user)
 	switch(user.mind?.get_skill_level(/datum/skill/cleaning))
 		if(SKILL_LEVEL_NONE to SKILL_LEVEL_NOVICE) //Their mind is too weak to ascend as a janny
 			user.visible_message(span_suicide("[user] is putting \the [src] in [user.p_their()] mouth and is trying to become one with the janicart, but has no idea where to start! It looks like [user.p_theyre()] trying to commit suicide!"))
-			user.gib()
+			user.gib(DROP_ALL_REMAINS)
 			return MANUAL_SUICIDE
 		if(SKILL_LEVEL_APPRENTICE to SKILL_LEVEL_JOURNEYMAN) //At least they tried
 			user.visible_message(span_suicide("[user] is putting \the [src] in [user.p_their()] mouth and has inefficiently become one with the janicart! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -66,7 +76,7 @@
 
 /obj/item/key/lasso
 	name = "bone lasso"
-	desc = "Perfect for taming all kinds of supernatural beasts! (Warning: only perfect for taming one kind of supernatural beast.)"
+	desc = "The perfect tool for directing a Goliath! If only it made them move any faster..."
 	force = 12
 	icon_state = "lasso"
 	inhand_icon_state = "chain"
