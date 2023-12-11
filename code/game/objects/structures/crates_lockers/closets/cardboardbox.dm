@@ -170,7 +170,7 @@
 		if(passenger.stat == CONSCIOUS) //If you can't contribute to pushing around the box, you can't speed it up
 			move_speed_multiplier -= 0.05 //multi-man taxi action
 
-/obj/structure/closet/cardboard/car/open(mob/living/user, force)
+/obj/structure/closet/cardboard/car/open(mob/living/user, force, special_effects = TRUE)
 	. = ..()
 
 	move_speed_multiplier = initial(move_speed_multiplier)
@@ -228,7 +228,7 @@
  */
 
 /obj/item/boxcar_spraycan/proc/worthiness_check(mob/living/user, silent = FALSE)
-	if(user.mind?.miming == TRUE || HAS_TRAIT(user, TRAIT_MUTE) || obj_flags & EMAGGED) //Mimes n' mutes, unless its emagged
+	if(HAS_MIND_TRAIT(user, TRAIT_MIMING) || HAS_TRAIT(user, TRAIT_MUTE) || obj_flags & EMAGGED) //Mimes n' mutes, unless its emagged
 		if(!silent)
 			balloon_alert(user, "the nozzle moves!")
 			playsound(get_turf(src), 'sound/machines/ping.ogg', 35, TRUE)
