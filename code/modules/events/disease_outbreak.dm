@@ -159,6 +159,9 @@
 		message_admins("Event Disease Outbreak: Classic attempted to start, but failed to find a candidate target.")
 		log_game("Event Disease Outbreak: Classic attempted to start, but failed to find a candidate target")
 
+/datum/round_event/disease_outbreak/generate_extra_info()
+	. += "Disease: [illness_type]"
+
 /datum/round_event_control/disease_outbreak/advanced
 	name = "Disease Outbreak: Advanced"
 	typepath = /datum/round_event/disease_outbreak/advanced

@@ -312,4 +312,8 @@ Runs the event
 	SSevents.running += src
 	return ..()
 
+///Generates the extra info that observers can get as a popup.
+/datum/round_event/proc/generate_extra_info() //Try making this a tooltip -- look at TCG cards
+	return span_deadsay("<b>[control.name]: </b> ")
+
 #undef RANDOM_EVENT_ADMIN_INTERVENTION_TIME
