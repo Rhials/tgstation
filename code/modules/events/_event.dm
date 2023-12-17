@@ -213,7 +213,14 @@ Runs the event
 
 ///Annouces the event name to deadchat, override this if what an event should show to deadchat is different to its event name.
 /datum/round_event/proc/announce_deadchat(random, cause)
-	deadchat_broadcast(" has just been[random ? " randomly" : ""] triggered[cause ? " by [cause]" : ""]!", "<b>[control.name]</b>", message_type=DEADCHAT_ANNOUNCEMENT) //STOP ASSUMING IT'S BADMINS!
+	var/extra_info = generate_extra_info()
+	var/give_extra_info = FALSE
+	if(extra_info)
+		give_extra_info = TRUE
+	deadchat_broadcast(" has just been[random ? " randomly" : ""] triggered[cause ? " by [cause]" : ""]![give_extra_info ? " [span_tooltip(extra_info, "<b>(Info)</b>")]" : ""]",
+		"<b>[control.name]</b>",
+		message_type=DEADCHAT_ANNOUNCEMENT
+	) //STOP ASSUMING IT'S BADMINS!
 
 //Called when the tick is equal to the start_when variable.
 //Allows you to start before announcing or vice versa.
@@ -313,7 +320,7 @@ Runs the event
 	return ..()
 
 ///Generates the extra info that observers can get as a popup.
-/datum/round_event/proc/generate_extra_info() //Try making this a tooltip -- look at TCG cards
-	return span_deadsay("<b>[control.name]: </b> ")
+/datum/round_event/proc/generate_extra_info()
+	return
 
 #undef RANDOM_EVENT_ADMIN_INTERVENTION_TIME
