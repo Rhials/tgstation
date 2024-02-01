@@ -439,9 +439,40 @@
 	incompatible_modules = list(/obj/item/mod/module/dispenser)
 	cooldown_time = 5 SECONDS
 	/// Path we dispense.
-	var/dispense_type = /obj/item/food/burger/plain
+	var/atom/dispense_type = /obj/item/food/burger/plain
 	/// Time it takes for us to dispense.
 	var/dispense_time = 0 SECONDS
+	/// A preview of the item we will be previewing
+	var/mutable_appearance/preview
+
+/obj/item/mod/module/dispenser/add_item_action(action_or_action_type)
+	. = ..()
+	if(!.)
+		return
+
+	var/mutable_appearance/preview_overlay = new(dispense_type)
+	var/icon/size_check = icon(initial(dispense_type::icon), icon_state = initial(dispense_type::icon_state))
+	var/scale = 1
+	var/width = size_check.Width()
+	var/height = size_check.Height()
+	if(width > world.icon_size || height > world.icon_size)
+		if(width >= height)
+			scale = world.icon_size / width
+		else
+			scale = world.icon_size / height
+	preview_overlay.transform = preview_overlay.transform.Scale(scale)
+	preview_overlay.appearance_flags |= TILE_BOUND
+	preview_overlay.layer = FLOAT_LAYER
+	preview_overlay.plane = FLOAT_PLANE
+	action.add_overlay(preview_overlay)
+
+/obj/item/mod/module/dispenser/remove_item_action()
+	. = ..()
+	clear_preview()
+
+/obj/item/mod/module/dispenser/Destroy()
+	clear_preview()
+	. = ..()
 
 /obj/item/mod/module/dispenser/on_use()
 	. = ..()
@@ -456,6 +487,15 @@
 	playsound(src, 'sound/machines/click.ogg', 100, TRUE)
 	drain_power(use_power_cost)
 	return dispensed
+
+/obj/item/mod/module/dispenser/proc/clear_preview()
+	if(isnull(preview))
+		return
+	var/datum/action/item_action/mod/pinnable/module/attached_action = pinned_to[REF(mod.wearer)]
+	if(!attached_action)
+		return
+	attached_action.cut_overlay(preview)
+	QDEL_NULL(preview)
 
 ///Longfall - Nullifies fall damage, removing charge instead.
 /obj/item/mod/module/longfall
