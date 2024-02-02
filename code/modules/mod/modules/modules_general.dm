@@ -464,7 +464,8 @@
 	preview_overlay.appearance_flags |= TILE_BOUND
 	preview_overlay.layer = FLOAT_LAYER
 	preview_overlay.plane = FLOAT_PLANE
-	action.add_overlay(preview_overlay)
+	var/datum/action/item_action/mod/pinnable/module/return_action = .
+	return_action.apply_button_overlay(preview_overlay)
 
 /obj/item/mod/module/dispenser/remove_item_action()
 	. = ..()
@@ -489,12 +490,6 @@
 	return dispensed
 
 /obj/item/mod/module/dispenser/proc/clear_preview()
-	if(isnull(preview))
-		return
-	var/datum/action/item_action/mod/pinnable/module/attached_action = pinned_to[REF(mod.wearer)]
-	if(!attached_action)
-		return
-	attached_action.cut_overlay(preview)
 	QDEL_NULL(preview)
 
 ///Longfall - Nullifies fall damage, removing charge instead.
