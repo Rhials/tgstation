@@ -1191,10 +1191,18 @@
 		mode = SHUTTLE_ENDGAME
 
 /obj/docking_port/mobile/pod/proc/initiate_collision()
-	var/turf/destination = pick(get_area_turfs(/area/shuttle/escape))
+	var/turf/destination = pick(get_area(src))
 	var/obj/docking_port/stationary/target_port = new /obj/docking_port/stationary()
 	destination = target_port
 	SSshuttle.moveShuttle(shuttle_id, destination, 15 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(begin_collision)), 10 SECONDS)
+
+/obj/docking_port/mobile/pod/proc/begin_collision() //Put in the alert effects on the shuttle over here
+	var/list/mobs = mobs_in_area_type(list(get_area(src)))
+	for(var/mob/living/mob as anything in mobs)
+		var/shake_intensity = mob.buckled ? 0.25 : 1
+		if(mob.client)
+			shake_camera(mob, 5 SECONDS, shake_intensity)
 
 /obj/docking_port/mobile/emergency/on_emergency_dock()
 	return

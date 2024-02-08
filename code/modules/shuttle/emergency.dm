@@ -680,9 +680,8 @@
 		update_appearance()
 		var/list/mobs = mobs_in_area_type(list(/area/shuttle/escape))
 		for(var/mob/living/mob as anything in mobs)
-			var/shake_intensity = mob.buckled ? 0.25 : 1
 			if(mob.client)
-				shake_camera(mob, 3 SECONDS, shake_intensity)
+				shake_camera(mob, 1 SECONDS, strength = 2)
 		return
 
 	locked = FALSE
