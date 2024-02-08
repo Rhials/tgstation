@@ -659,15 +659,32 @@
 	density = FALSE
 	icon_keyboard = null
 	icon_screen = "pod_on"
+	///Are we preparing to crash into the evac shuttle??
+	var/crashing = FALSE
 
 /obj/machinery/computer/shuttle/pod/Initialize(mapload)
 	. = ..()
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_lock))
 
 /obj/machinery/computer/shuttle/pod/emag_act(mob/user, obj/item/card/emag/emag_card)
-	if(obj_flags & EMAGGED)
+	if(obj_flags & EMAGGED || crashing)
 		return FALSE
+
 	obj_flags |= EMAGGED
+	var/obj/docking_port/mobile/pod/our_pod = SSshuttle.getShuttle(shuttleId)
+	if(our_pod.mode != SHUTTLE_IDLE)
+		our_pod.collide_with_evac()
+		crashing = TRUE
+		balloon_alert(user, "controls overridden, hang on!")
+		icon_screen = "emagged_general"
+		update_appearance()
+		var/list/mobs = mobs_in_area_type(list(/area/shuttle/escape))
+		for(var/mob/living/mob as anything in mobs)
+			var/shake_intensity = mob.buckled ? 0.25 : 1
+			if(mob.client)
+				shake_camera(mob, 3 SECONDS, shake_intensity)
+		return
+
 	locked = FALSE
 	balloon_alert(user, "alert level checking disabled")
 	icon_screen = "emagged_general"

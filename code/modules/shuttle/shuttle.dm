@@ -303,12 +303,6 @@
 	if (HAS_TRAIT(SSstation, STATION_TRAIT_BIGGER_PODS))
 		roundstart_template = /datum/map_template/shuttle/escape_pod/luxury
 
-/obj/docking_port/stationary/escape_pod/proc/collide_with_evac()
-	var/turf/destination = pick(get_area_turfs(/area/shuttle/escape))
-	var/obj/docking_port/stationary/target_port = new /obj/docking_port/stationary()
-	destination = target_port
-	initiate_docking(destination)
-
 // should fit the syndicate infiltrator, and smaller ships like the battlecruiser corvettes and fighters
 /obj/docking_port/stationary/syndicate
 	name = "near the station"
@@ -1195,6 +1189,12 @@
 	if(launch_status == ENDGAME_LAUNCHED)
 		initiate_docking(SSshuttle.getDock("[shuttle_id]_away")) //Escape pods dock at centcom
 		mode = SHUTTLE_ENDGAME
+
+/obj/docking_port/mobile/pod/proc/collide_with_evac()
+	var/turf/destination = pick(get_area_turfs(/area/shuttle/escape))
+	var/obj/docking_port/stationary/target_port = new /obj/docking_port/stationary()
+	destination = target_port
+	SSshuttle.moveShuttle(shuttle_id, destination, 15 SECONDS)
 
 /obj/docking_port/mobile/emergency/on_emergency_dock()
 	return
