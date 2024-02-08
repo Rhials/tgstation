@@ -1190,7 +1190,7 @@
 		initiate_docking(SSshuttle.getDock("[shuttle_id]_away")) //Escape pods dock at centcom
 		mode = SHUTTLE_ENDGAME
 
-/obj/docking_port/mobile/pod/proc/collide_with_evac()
+/obj/docking_port/mobile/pod/proc/initiate_collision()
 	var/turf/destination = pick(get_area_turfs(/area/shuttle/escape))
 	var/obj/docking_port/stationary/target_port = new /obj/docking_port/stationary()
 	destination = target_port

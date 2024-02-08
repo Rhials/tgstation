@@ -672,8 +672,8 @@
 
 	obj_flags |= EMAGGED
 	var/obj/docking_port/mobile/pod/our_pod = SSshuttle.getShuttle(shuttleId)
-	if(our_pod.mode != SHUTTLE_IDLE)
-		our_pod.collide_with_evac()
+	if(our_pod.mode != SHUTTLE_IDLE && SSshuttle.emergency.mode == SHUTTLE_ESCAPE)
+		our_pod.initiate_collision()
 		crashing = TRUE
 		balloon_alert(user, "controls overridden, hang on!")
 		icon_screen = "emagged_general"
