@@ -804,6 +804,15 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 	ghost_owner.observer_view(target)
 
+/atom/movable/screen/alert/notify_action/proc/backup_turf()
+	SIGNAL_HANDLER
+
+	var/atom/target = target_ref?.resolve()
+	if(isnull(target))
+		stack_trace("Notify popup tried to pick a backup teleport destination, but the target was already deleted!")
+		return
+	target_ref = get_turf(target)
+
 /atom/movable/screen/alert/poll_alert
 	name = "Looking for candidates"
 	icon_state = "template"

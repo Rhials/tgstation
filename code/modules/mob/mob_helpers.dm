@@ -309,6 +309,7 @@
 		toast.desc = "Click to [click_interact ? "play" : "view"]."
 		toast.name = header
 		toast.target_ref = WEAKREF(source)
+		toast.RegisterSignal(toast, COMSIG_QDELETING, TYPE_PROC_REF(/atom/movable/screen/alert/notify_action, backup_turf, ))
 
 /// Heals a robotic limb on a mob
 /proc/item_heal_robotic(mob/living/carbon/human/human, mob/user, brute_heal, burn_heal)
