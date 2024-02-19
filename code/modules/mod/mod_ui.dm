@@ -16,6 +16,7 @@
 		"has_pai" = ispAI(ai_assistant),
 		"is_ai" = ai_assistant && ai_assistant == user,
 		"link_id" = mod_link.id,
+		"link_freq" = mod_link.frequency,
 		"link_call" = mod_link.get_other()?.id,
 		// Wires
 		"open" = open,
@@ -52,7 +53,7 @@
 			"cooldown" = round(COOLDOWN_TIMELEFT(module, cooldown_timer), 1 SECONDS),
 			"id" = module.tgui_id,
 			"ref" = REF(module),
-			"configuration_data" = module.get_configuration()
+			"configuration_data" = module.get_configuration(user)
 		))
 	data["module_custom_status"] = module_custom_status
 	data["module_info"] = module_info

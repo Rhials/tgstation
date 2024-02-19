@@ -72,15 +72,13 @@
  *
  * Arguments:
  * * force - makes it not check for and remove the component from the parent
- * * silent - deletes the component without sending a [COMSIG_COMPONENT_REMOVING] signal
  */
-/datum/component/Destroy(force=FALSE, silent=FALSE)
+/datum/component/Destroy(force = FALSE)
 	if(!parent)
 		return ..()
 	if(!force)
 		_RemoveFromParent()
-	if(!silent)
-		SEND_SIGNAL(parent, COMSIG_COMPONENT_REMOVING, src)
+	SEND_SIGNAL(parent, COMSIG_COMPONENT_REMOVING, src)
 	parent = null
 	return ..()
 
@@ -241,8 +239,8 @@
 	var/current_type = parent_type
 	//and since most components are root level + 1, this won't even have to run
 	while (current_type != /datum/component)
-		current_type = type2parent(current_type)
 		. += current_type
+		current_type = type2parent(current_type)
 
 // The type arg is casted so initial works, you shouldn't be passing a real instance into this
 /**

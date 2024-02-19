@@ -10,6 +10,9 @@
 #define NUKE_RESULT_HIJACK_DISK 9
 #define NUKE_RESULT_HIJACK_NO_DISK 10
 
+/// Min players requireed for nukes to declare war
+#define CHALLENGE_MIN_PLAYERS 50
+
 //fugitive end results
 #define FUGITIVE_RESULT_BADASS_HUNTER 0
 #define FUGITIVE_RESULT_POSTMORTEM_HUNTER 1
@@ -80,6 +83,8 @@
 #define PATH_VOID "Void Path"
 #define PATH_BLADE "Blade Path"
 #define PATH_COSMIC "Cosmic Path"
+#define PATH_LOCK "Lock Path"
+#define PATH_MOON "Moon Path"
 
 /// Defines are used in /proc/has_living_heart() to report if the heretic has no heart period, no living heart, or has a living heart.
 #define HERETIC_NO_HEART_ORGAN -1
@@ -208,6 +213,9 @@ GLOBAL_LIST_INIT(ai_employers, list(
 /// Checks if the given mob is a blood cultist
 #define IS_CULTIST(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/cult))
 
+/// Checks if the given mob is a changeling
+#define IS_CHANGELING(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/changeling))
+
 /// Checks if the given mob is a nuclear operative
 #define IS_NUKE_OP(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/nukeop))
 
@@ -218,8 +226,10 @@ GLOBAL_LIST_INIT(ai_employers, list(
 #define IS_HERETIC(mob) (mob.mind?.has_antag_datum(/datum/antagonist/heretic))
 /// Check if the given mob is a heretic monster.
 #define IS_HERETIC_MONSTER(mob) (mob.mind?.has_antag_datum(/datum/antagonist/heretic_monster))
-/// Checks if the given mob is either a heretic or a heretic monster.
-#define IS_HERETIC_OR_MONSTER(mob) (IS_HERETIC(mob) || IS_HERETIC_MONSTER(mob))
+/// Check if the given mob is a  lunatic
+#define IS_LUNATIC(mob) (mob.mind?.has_antag_datum(/datum/antagonist/lunatic))
+/// Checks if the given mob is either a heretic, heretic monster or a lunatic.
+#define IS_HERETIC_OR_MONSTER(mob) (IS_HERETIC(mob) || IS_HERETIC_MONSTER(mob) || IS_LUNATIC(mob))
 
 /// Checks if the given mob is a wizard
 #define IS_WIZARD(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/wizard))
@@ -317,6 +327,7 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 #define ANTAG_GROUP_BIOHAZARDS "Biohazards"
 #define ANTAG_GROUP_CLOWNOPS "Clown Operatives"
 #define ANTAG_GROUP_ERT "Emergency Response Team"
+#define ANTAG_GROUP_GLITCH "Digital Anomalies"
 #define ANTAG_GROUP_HORRORS "Eldritch Horrors"
 #define ANTAG_GROUP_LEVIATHANS "Spaceborne Leviathans"
 #define ANTAG_GROUP_NINJAS "Ninja Clan"
@@ -328,10 +339,11 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 #define ANTAG_GROUP_FUGITIVES "Escaped Fugitives"
 #define ANTAG_GROUP_HUNTERS "Bounty Hunters"
 #define ANTAG_GROUP_PARADOX "Spacetime Aberrations"
+#define ANTAG_GROUP_CREW "Deviant Crew"
 
 
-// If this flag is enabled the antagonist datum allows the antagonist to be inducted into a nuclear operative team.
-#define FLAG_ANTAG_CAN_BE_INDUCTED (1 << 0)
+// This flag disables certain checks that presume antagonist datums mean 'baddie'.
+#define FLAG_FAKE_ANTAG (1 << 0)
 
 #define HUNTER_PACK_COPS "Spacepol Fugitive Hunters"
 #define HUNTER_PACK_RUSSIAN "Russian Fugitive Hunters"
@@ -369,7 +381,6 @@ GLOBAL_LIST_INIT(human_invader_antagonists, list(
 ///Defines related to war declaration
 #define CHALLENGE_TELECRYSTALS 280
 #define CHALLENGE_TIME_LIMIT (5 MINUTES)
-#define CHALLENGE_MIN_PLAYERS 50
 #define CHALLENGE_SHUTTLE_DELAY (25 MINUTES) // 25 minutes, so the ops have at least 5 minutes before the shuttle is callable.
 
 GLOBAL_LIST_EMPTY(jam_on_wardec)
@@ -383,3 +394,6 @@ GLOBAL_VAR_INIT(war_declared, FALSE)
 #define COVERT_ORIGINAL_PRICE_MINIMUM 7
 /// The maximum cost of an item to be put into a discount batch, to prevent things from being prohibitively expensive (affordable on a non-war budget).
 #define COVERT_ORIGINAL_PRICE_MAXIMUM 40
+
+///How many charges a freedom implant has before self-deleting.
+#define FREEDOM_IMPLANT_CHARGES 4
