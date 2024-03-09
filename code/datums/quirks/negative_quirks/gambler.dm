@@ -10,3 +10,10 @@
 	medical_record_text = "Patient has a compulsive need to spend any excess money on gambling"
 	hardcore_value = 5
 	mail_goodies = list(/obj/item/coin/adamantine)
+
+/datum/quirk/gambling_addict/add(client/client_source)
+	RegisterSignal(quirk_holder, COMSIG_MINOR_GAMBLE, PROC_REF(on_gamble_postpone))
+	RegisterSignal(quirk_holder, COMSIG_MAJOR_GAMBLE, PROC_REF(on_gamble_satisfaction))
+
+datum/quirk/gambling_addict/remove()
+	UnregisterSignal(quirk_holder, list(COMSIG_MAJOR_GAMBLE, COMSIG_MINOR_GAMBLE, COMSIG_MOB_SAY))
