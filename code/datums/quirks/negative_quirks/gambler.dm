@@ -14,6 +14,15 @@
 /datum/quirk/gambling_addict/add(client/client_source)
 	RegisterSignal(quirk_holder, COMSIG_MINOR_GAMBLE, PROC_REF(on_gamble_postpone))
 	RegisterSignal(quirk_holder, COMSIG_MAJOR_GAMBLE, PROC_REF(on_gamble_satisfaction))
+	RegisterSignal(quirk_holder, COMSIG_MAJOR_GAMBLE, PROC_REF(on_gamble_winner))
 
 datum/quirk/gambling_addict/remove()
 	UnregisterSignal(quirk_holder, list(COMSIG_MAJOR_GAMBLE, COMSIG_MINOR_GAMBLE, COMSIG_MOB_SAY))
+
+/datum/quirk/gambling_addict/proc/on_gamble_postpone()
+	SIGNAL_HANDLER
+	return
+
+/datum/quirk/gambling_addict/proc/on_gamble_winner()
+	SIGNAL_HANDLER
+	return
