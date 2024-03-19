@@ -1,6 +1,7 @@
-export type AvailableJob = keyof typeof JOB2ICON;
+export type AvailableJob = keyof typeof POI_ICONS;
 
-/** Icon map of jobs to their fontawesome5 (free) counterpart. */
-export const JOB2ICON = {
+/** Icon map of POIs to fontawesome5 symbols. */
+export const POI_ICONS = {
   Mech: 'car-battery',
+  'Unidentified': 'question-circle',
 } as const;

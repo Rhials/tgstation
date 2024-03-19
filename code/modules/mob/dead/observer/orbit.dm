@@ -93,10 +93,12 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 			var/mob/living/player = mob_poi
 			serialized["health"] = FLOOR((player.health / player.maxHealth * 100), 1)
 			if(issilicon(player))
-				serialized["job"] = player.job
+				serialized["icon"] = player.job
 			else
 				var/obj/item/card/id/id_card = player.get_idcard(hand_first = FALSE)
-				serialized["job"] = id_card?.get_trim_assignment()
+				serialized["icon"] = id_card?.get_trim_assignment()
+			if(!serialized["icon"] && player.mind?.assigned_role?.job_flags & JOB_CREW_MEMBER) //Crew with no icon, whether because they have no ID or because their job doesn't have one, get an unknown one.
+				serialized["icon"] = "Unidentified"
 
 		for(var/datum/antagonist/antag_datum as anything in mind.antag_datums)
 			if (antag_datum.show_to_ghosts)

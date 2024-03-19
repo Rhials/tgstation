@@ -15,6 +15,7 @@ import {
 import { Window } from 'tgui/layouts';
 
 import { JOB2ICON } from '../common/JobToIcon';
+import { POI_ICONS } from './poi_icons';
 import { ANTAG2COLOR } from './constants';
 import {
   getAntagCategories,
@@ -239,7 +240,7 @@ const ObservableSection = (props: {
 const ObservableItem = (props: { color?: string; item: Observable }) => {
   const { act } = useBackend<OrbitData>();
   const { color, item } = props;
-  const { extra, full_name, job, health, name, orbiters, ref } = item;
+  const { extra, full_name, icon, health, name, orbiters, ref } = item;
 
   const [autoObserve] = useLocalState<boolean>('autoObserve', false);
   const [heatMap] = useLocalState<boolean>('heatMap', false);
@@ -247,7 +248,7 @@ const ObservableItem = (props: { color?: string; item: Observable }) => {
   return (
     <Button
       color={getDisplayColor(item, heatMap, color)}
-      icon={(job && JOB2ICON[job]) || null}
+      icon={(icon && (JOB2ICON[icon] || POI_ICONS[icon])) || null}
       onClick={() => act('orbit', { auto_observe: autoObserve, ref: ref })}
       tooltip={(!!health || !!extra) && <ObservableTooltip item={item} />}
       tooltipPosition="bottom-start"
@@ -291,8 +292,8 @@ const ObservableTooltip = (props: { item: Observable | Antagonist }) => {
             {!!full_name && (
               <LabeledList.Item label="Real ID">{full_name}</LabeledList.Item>
             )}
-            {!!job && !antag && (
-              <LabeledList.Item label="Job">{job}</LabeledList.Item>
+            {!!icon && !antag && (
+              <LabeledList.Item label="Job">{icon}</LabeledList.Item>
             )}
             {!!antag && (
               <LabeledList.Item label="Threat">{antag}</LabeledList.Item>
