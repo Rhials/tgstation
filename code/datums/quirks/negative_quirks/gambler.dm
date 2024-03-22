@@ -2,10 +2,10 @@
 #define SATISFACTION_DECAY_RATE (1 SECONDS)
 
 ///The cap on how much satisfaction you can grind for with "lower level" means like coin flips or die.
-#define SATISFACTION_MINOR_CAP (6 MINUTES)
+#define SATISFACTION_MINOR_CAP (5 MINUTES)
 
 ///How much time is added to your satisfaction timer when
-#define SATISFACTION_RESTORE_MINIMUM (20 SECONDS)
+#define SATISFACTION_RESTORE_MINIMUM (8 SECONDS)
 ///How much time is added when meaninfully postponing urges.
 #define SATISFACTION_RESTORE_MEDIUM (70 SECONDS)
 ///How much time is added upon winning a jackpot.
@@ -41,10 +41,10 @@
 	. = ..()
 	satisfaction -= (SATISFACTION_DECAY_RATE * seconds_per_tick)
 
-/datum/quirk/gambling_addict/proc/on_gamble_postpone(datum/source, gambling_object, multiplier)
+/datum/quirk/gambling_addict/proc/on_gamble_postpone(datum/source, gambling_object, modifier)
 	SIGNAL_HANDLER
 	if(satisfaction <= SATISFACTION_MINOR_CAP)
-		satisfaction += SATISFACTION_RESTORE_MINIMUM * multiplier
+		satisfaction += SATISFACTION_RESTORE_MINIMUM + (modifier SECONDS) //This is kind of janky but for every extra side on your die, you get an extra second of postponement. Hit that d100!
 		if(prob(40)) //You'll be doing this very frequently and we don't want chat getting spammed.
 			to_chat(quirk_holder, span_notice("You look at the [gambling_object] in your hand and smirk slightly. You've won, but the feeling barely moves you..."))
 	return
@@ -71,6 +71,7 @@
 	return
 
 #undef SATISFACTION_DECAY_RATE
+#undef SATISFACTION_MINOR_CAP
 #undef SATISFACTION_RESTORE_MINIMUM
 #undef SATISFACTION_RESTORE_MEDIUM
 #undef SATISFACTION_RESTORE_MAXIMUM

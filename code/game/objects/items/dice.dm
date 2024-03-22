@@ -233,7 +233,7 @@
 		if(result == 1)
 			comment = "Ouch, bad luck."
 		if(result == sides) //Rolled the highest number possible. Must be a high enough number of sides to actually count.
-			SEND_SIGNAL(user, COMSIG_MINOR_GAMBLE, src)
+			SEND_SIGNAL(user, COMSIG_MINOR_GAMBLE, src, sides)
 	if(sides == 20 && result == 20)
 		comment = "NAT 20!"  // maint wanted this hardcoded to nat20 don't blame me
 	update_appearance()
