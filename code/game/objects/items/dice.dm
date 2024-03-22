@@ -229,8 +229,11 @@
 
 	var/fake_result = roll(sides)//Daredevil isn't as good as he used to be
 	var/comment = ""
-	if(sides > MIN_SIDES_ALERT && result == 1)  // less comment spam
-		comment = "Ouch, bad luck."
+	if(sides > MIN_SIDES_ALERT)  // less comment spam
+		if(result == 1)
+			comment = "Ouch, bad luck."
+		if(result == sides) //Rolled the highest number possible. Must be a high enough number of sides to actually count.
+			SEND_SIGNAL(user, COMSIG_MINOR_GAMBLE, src)
 	if(sides == 20 && result == 20)
 		comment = "NAT 20!"  // maint wanted this hardcoded to nat20 don't blame me
 	update_appearance()
@@ -323,6 +326,7 @@
 	selected_turf.visible_message(span_userdanger("[src] flares briefly."))
 
 	addtimer(CALLBACK(src, PROC_REF(effect), user, .), 1 SECONDS)
+	SEND_SIGNAL(user, COMSIG_GAMBLER_FATE, src)
 	COOLDOWN_START(src, roll_cd, 2.5 SECONDS)
 
 /obj/item/dice/d20/fate/equipped(mob/user, slot)

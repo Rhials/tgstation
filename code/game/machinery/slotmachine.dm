@@ -312,6 +312,7 @@
 				random_step(payout_coin, 2, 50)
 				playsound(src, pick(list('sound/machines/coindrop.ogg', 'sound/machines/coindrop2.ogg')), 50, TRUE)
 				sleep(REEL_DEACTIVATE_DELAY)
+		SEND_SIGNAL(user, COMSIG_HUGE_GAMBLE, src)
 
 	else if(linelength == 5)
 		visible_message("<b>[src]</b> says, 'Big Winner! You win a thousand credits!'")
@@ -336,6 +337,7 @@
 		animate(get_filter("jackpot_rays"), offset = 10, time = 3 SECONDS, loop = -1)
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/datum, remove_filter), "jackpot_rays"), 3 SECONDS)
 		playsound(src, 'sound/machines/roulettejackpot.ogg', 50, TRUE)
+		SEND_SIGNAL(user, COMSIG_MAJOR_GAMBLE, src) //THIS CURRENTLY GETS CALLED AFTER THE HUGE GAMBLE SIGNAL IS SENT, DO SOMETHING ABOUT THAT.
 
 /// Checks for a jackpot (5 matching icons in the middle row) with the given icon name
 /obj/machinery/computer/slot_machine/proc/check_jackpot(name)

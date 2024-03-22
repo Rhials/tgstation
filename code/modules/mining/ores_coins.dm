@@ -523,6 +523,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	return TRUE//did the coin flip? useful for suicide_act
 
 /obj/item/coin/proc/heads_action(mob/user)
+	SEND_SIGNAL(user, COMSIG_MINOR_GAMBLE, src)
 	return
 
 /obj/item/coin/proc/tails_action(mob/user)
