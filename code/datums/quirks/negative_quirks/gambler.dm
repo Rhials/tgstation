@@ -25,7 +25,7 @@
 	medical_record_text = "Patient is hopelessly addicted to gambling and games of chance."
 	hardcore_value = 5
 	mail_goodies = list(/obj/item/coin/adamantine)
-	///A value recording how "satisfied" the user is. Recorded and managed in time values to make tuning easier.
+	///A value recording how "satisfied" the user is. Recorded and managed in time values to make tuning the reward values easier.
 	var/satisfaction = (5 MINUTES)
 
 /datum/quirk/gambling_addict/add(client/client_source)
@@ -38,7 +38,9 @@
 	UnregisterSignal(quirk_holder, list(COMSIG_MINOR_GAMBLE, COMSIG_MAJOR_GAMBLE, COMSIG_HUGE_GAMBLE, COMSIG_GAMBLER_FATE))
 
 /datum/quirk/gambling_addict/process(seconds_per_tick)
-	. = ..()
+	if(quirk_holder.stat == DEAD)
+		return
+
 	satisfaction -= (SATISFACTION_DECAY_RATE * seconds_per_tick)
 
 /datum/quirk/gambling_addict/proc/on_gamble_postpone(datum/source, gambling_object, modifier)
