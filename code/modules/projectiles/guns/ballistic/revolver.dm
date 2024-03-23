@@ -275,6 +275,7 @@
 
 		if(loaded_rounds && is_target_face)
 			user.add_mood_event("russian_roulette_win", /datum/mood_event/russian_roulette_win, loaded_rounds)
+			SEND_SIGNAL(user, COMSIG_MAJOR_GAMBLE, src)
 
 		user.visible_message(span_danger("*click*"))
 		playsound(src, dry_fire_sound, 30, TRUE)

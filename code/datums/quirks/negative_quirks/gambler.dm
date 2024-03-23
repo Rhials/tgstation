@@ -43,6 +43,8 @@
 
 	satisfaction -= (SATISFACTION_DECAY_RATE * seconds_per_tick)
 
+	quirk_holder.balloon_alert(satisfaction) //This is just for easier reading.
+
 /datum/quirk/gambling_addict/proc/on_gamble_postpone(datum/source, gambling_object, modifier)
 	SIGNAL_HANDLER
 	if(satisfaction <= SATISFACTION_MINOR_CAP)

@@ -292,6 +292,7 @@
 /obj/machinery/computer/slot_machine/proc/give_prizes(usrname, mob/user)
 	var/linelength = get_lines()
 	var/did_player_win = TRUE
+	var/jackpot_winner = FALSE
 
 	if(check_jackpot(FA_ICON_BOMB))
 		var/obj/item/grenade/flashbang/bang = new(get_turf(src))
@@ -312,6 +313,7 @@
 				random_step(payout_coin, 2, 50)
 				playsound(src, pick(list('sound/machines/coindrop.ogg', 'sound/machines/coindrop2.ogg')), 50, TRUE)
 				sleep(REEL_DEACTIVATE_DELAY)
+		jackpot_winner = TRUE
 		SEND_SIGNAL(user, COMSIG_HUGE_GAMBLE, src)
 
 	else if(linelength == 5)
@@ -337,7 +339,8 @@
 		animate(get_filter("jackpot_rays"), offset = 10, time = 3 SECONDS, loop = -1)
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/datum, remove_filter), "jackpot_rays"), 3 SECONDS)
 		playsound(src, 'sound/machines/roulettejackpot.ogg', 50, TRUE)
-		SEND_SIGNAL(user, COMSIG_MAJOR_GAMBLE, src) //THIS CURRENTLY GETS CALLED AFTER THE HUGE GAMBLE SIGNAL IS SENT, DO SOMETHING ABOUT THAT.
+		if(!jackpot_winner)
+			SEND_SIGNAL(user, COMSIG_MAJOR_GAMBLE, src)
 
 /// Checks for a jackpot (5 matching icons in the middle row) with the given icon name
 /obj/machinery/computer/slot_machine/proc/check_jackpot(name)

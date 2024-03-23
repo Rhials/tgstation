@@ -330,6 +330,10 @@
 
 /datum/mood_event/russian_roulette_win/add_effects(loaded_rounds)
 	mood_change = 2 ** loaded_rounds
+	var/mob/living/living_owner = owner
+	if(living_owner.get_quirk(/datum/quirk/gambling_addict))
+		description += " I want to do that again!"
+		mood_change += 4
 
 /datum/mood_event/fishing
 	description = "Fishing is relaxing."
