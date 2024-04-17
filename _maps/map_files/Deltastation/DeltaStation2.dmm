@@ -42018,10 +42018,6 @@
 /turf/open/floor/iron,
 /area/station/service/kitchen/abandoned)
 "ksJ" = (
-/obj/structure/sign/nanotrasen{
-	pixel_x = -32;
-	pixel_y = -32
-	},
 /obj/machinery/light/small/directional/south,
 /obj/item/kirbyplants/organic/plant22,
 /obj/effect/turf_decal/tile/blue/half/contrasted,
@@ -61169,6 +61165,7 @@
 /area/station/service/theater/abandoned)
 "prt" = (
 /obj/item/kirbyplants/random,
+/obj/structure/sign/poster/official/nanotrasen_logo/directional/north,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "pru" = (
