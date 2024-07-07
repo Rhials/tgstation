@@ -27,7 +27,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	///Does the mask have an FOV?
 	var/has_fov = TRUE
 	///Cigarette in the mask
-	var/obj/item/clothing/mask/cigarette/cig
+	var/obj/item/cigarette/cig
 	voice_filter = "lowpass=f=750,volume=2"
 
 /datum/armor/mask_gas
@@ -84,7 +84,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 /obj/item/clothing/mask/gas/attackby(obj/item/tool, mob/user)
 	var/valid_wearer = ismob(loc)
 	var/mob/wearer = loc
-	if(istype(tool, /obj/item/clothing/mask/cigarette))
+	if(istype(tool, /obj/item/cigarette))
 		if(flags_cover & MASKCOVERSMOUTH)
 			balloon_alert(user, "mask's mouth is covered!")
 			return ..()
@@ -219,13 +219,18 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	flags_cover = MASKCOVERSEYES
 	visor_flags_inv = HIDEEYES
 	visor_flags_cover = MASKCOVERSEYES
+	visor_vars_to_toggle = VISOR_FLASHPROTECT | VISOR_TINT
 	resistance_flags = FIRE_PROOF
+	clothing_flags = parent_type::clothing_flags | INTERNALS_ADJUST_EXEMPT
 
 /datum/armor/gas_welding
 	melee = 10
 	bio = 100
 	fire = 100
 	acid = 55
+
+/obj/item/clothing/mask/gas/welding/attack_self(mob/user)
+	adjust_visor(user)
 
 /obj/item/clothing/mask/gas/welding/adjust_visor(mob/living/user)
 	. = ..()
@@ -273,6 +278,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	dye_color = DYE_CLOWN
 	w_class = WEIGHT_CLASS_SMALL
 	flags_cover = MASKCOVERSEYES
+	clothing_traits = list(TRAIT_PERCEIVED_AS_CLOWN)
 	resistance_flags = FLAMMABLE
 	actions_types = list(/datum/action/item_action/adjust)
 	dog_fashion = /datum/dog_fashion/head/clown

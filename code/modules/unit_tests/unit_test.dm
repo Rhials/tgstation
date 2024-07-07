@@ -222,8 +222,6 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 	var/list/returnable_list = list()
 	// The following are just generic, singular types.
 	returnable_list = list(
-		//this is somehow a subtype of /atom/movable, because of its purpose...
-		/image/appearance,
 		//Never meant to be created, errors out the ass for mobcode reasons
 		/mob/living/carbon,
 		//And another
@@ -278,8 +276,6 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 	returnable_list += typesof(/obj/effect/baseturf_helper)
 	//No tauma to pass in
 	returnable_list += typesof(/mob/camera/imaginary_friend)
-	//No pod to gondola
-	returnable_list += typesof(/mob/living/simple_animal/pet/gondola/gondolapod)
 	//No heart to give
 	returnable_list += typesof(/obj/structure/ethereal_crystal)
 	//No linked console
@@ -342,7 +338,7 @@ GLOBAL_VAR_INIT(focused_tests, focused_tests())
 	if(length(focused_tests))
 		tests_to_run = focused_tests
 
-	tests_to_run = sortTim(tests_to_run, GLOBAL_PROC_REF(cmp_unit_test_priority))
+	sortTim(tests_to_run, GLOBAL_PROC_REF(cmp_unit_test_priority))
 
 	var/list/test_results = list()
 

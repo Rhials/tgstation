@@ -1,3 +1,5 @@
+#define MAX_CONTAINER_PRINT_AMOUNT 50
+
 /obj/machinery/chem_master
 	name = "ChemMaster 3000"
 	desc = "Used to separate chemicals and distribute them in a variety of forms."
@@ -26,8 +28,8 @@
 	var/printing_progress
 	/// Number of containers to be printed
 	var/printing_total
-	/// The amount of containers that can be printed in 1 cycle
-	var/printing_amount = 1
+	/// The time it takes to print a container
+	var/printing_speed = 0.75 SECONDS
 
 /obj/machinery/chem_master/Initialize(mapload)
 	create_reagents(100)
@@ -76,7 +78,7 @@
 /obj/machinery/chem_master/examine(mob/user)
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads:<br>Reagent buffer capacity: <b>[reagents.maximum_volume]</b> units.<br>Number of containers printed per cycle <b>[printing_amount]</b>.")
+		. += span_notice("The status display reads:<br>Reagent buffer capacity: <b>[reagents.maximum_volume]</b> units.<br>Printing speed: <b>[0.75 SECONDS / printing_speed * 100]%</b>.")
 		if(!QDELETED(beaker))
 			. += span_notice("[beaker] of <b>[beaker.reagents.maximum_volume]u</b> capacity inserted")
 			. += span_notice("Right click with empty hand to remove beaker")
@@ -90,7 +92,7 @@
 
 /obj/machinery/chem_master/update_appearance(updates)
 	. = ..()
-	if(panel_open || (machine_stat & (NOPOWER|BROKEN)))
+	if(panel_open || !is_operational)
 		set_light(0)
 	else
 		set_light(1, 1, "#fffb00")
@@ -110,7 +112,7 @@
 		. += mutable_appearance(icon, base_icon_state + "_overlay_extruder")
 
 	// Screen overlay
-	if(!panel_open && !(machine_stat & (NOPOWER | BROKEN)))
+	if(!panel_open && is_operational)
 		var/screen_overlay = base_icon_state + "_overlay_screen"
 		if(is_printing)
 			screen_overlay += "_active"
@@ -121,15 +123,9 @@
 
 	// Buffer reagents overlay
 	if(reagents.total_volume)
-		var/threshold = null
 		var/static/list/fill_icon_thresholds = list(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
-		for(var/i in 1 to fill_icon_thresholds.len)
-			if(ROUND_UP(100 * (reagents.total_volume / reagents.maximum_volume)) >= fill_icon_thresholds[i])
-				threshold = i
-		if(threshold)
-			var/fill_name = "chemmaster[fill_icon_thresholds[threshold]]"
-			var/mutable_appearance/filling = mutable_appearance('icons/obj/medical/reagent_fillings.dmi', fill_name)
-			filling.color = mix_color_from_reagents(reagents.reagent_list)
+		var/mutable_appearance/filling = reagent_threshold_overlay(reagents, 'icons/obj/medical/reagent_fillings.dmi', "chemmaster", fill_icon_thresholds)
+		if(!isnull(filling))
 			. += filling
 
 /obj/machinery/chem_master/Exited(atom/movable/gone, direction)
@@ -149,10 +145,11 @@
 	for(var/obj/item/reagent_containers/cup/beaker/beaker in component_parts)
 		reagents.maximum_volume += beaker.reagents.maximum_volume
 
-	printing_amount = 0
+	//Servo tier determines printing speed
+	printing_speed = 1 SECONDS
 	for(var/datum/stock_part/servo/servo in component_parts)
-		printing_amount += servo.tier * 12.5
-	printing_amount = min(50, ROUND_UP(printing_amount))
+		printing_speed -= servo.tier * 0.25 SECONDS
+	printing_speed = max(printing_speed, 0.25 SECONDS)
 
 ///Return a map of category->list of containers this machine can print
 /obj/machinery/chem_master/proc/load_printable_containers()
@@ -264,6 +261,7 @@
 /obj/machinery/chem_master/ui_static_data(mob/user)
 	var/list/data = list()
 
+	data["maxPrintable"] = MAX_CONTAINER_PRINT_AMOUNT
 	data["categories"] = list()
 	for(var/category in printable_containers)
 		//make the category
@@ -293,7 +291,6 @@
 	.["isPrinting"] = is_printing
 	.["printingProgress"] = printing_progress
 	.["printingTotal"] = printing_total
-	.["maxPrintable"] = printing_amount
 
 	//contents of source beaker
 	var/list/beaker_data = null
@@ -469,7 +466,7 @@
 			item_count = text2num(item_count)
 			if(isnull(item_count) || item_count <= 0)
 				return FALSE
-			item_count = min(item_count, printing_amount)
+			item_count = min(item_count, MAX_CONTAINER_PRINT_AMOUNT)
 			var/volume_in_each = round(reagents.total_volume / item_count, CHEMICAL_VOLUME_ROUNDING)
 
 			// Generate item name
@@ -529,7 +526,7 @@
 	//print more items
 	item_count --
 	if(item_count > 0)
-		addtimer(CALLBACK(src, PROC_REF(create_containers), user, item_count, item_name, volume_in_each), 0.75 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(create_containers), user, item_count, item_name, volume_in_each), printing_speed)
 	else
 		is_printing = FALSE
 		update_appearance(UPDATE_OVERLAYS)
@@ -544,3 +541,5 @@
 	if(!length(containers))
 		containers = list(CAT_CONDIMENTS = GLOB.reagent_containers[CAT_CONDIMENTS])
 	return containers
+
+#undef MAX_CONTAINER_PRINT_AMOUNT
