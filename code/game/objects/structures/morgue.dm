@@ -488,6 +488,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		for(var/obj/O in conts) //conts defined above, ignores crematorium and tray
 			if(istype(O, /obj/effect/dummy/phased_mob)) //they're not physical, don't burn em.
 				continue
+			if(O.resistance_flags & INDESTRUCTIBLE)
+				continue
 			qdel(O)
 
 		if(!locate(/obj/effect/decal/cleanable/ash) in get_step(src, dir))//prevent pile-up
