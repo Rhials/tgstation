@@ -72,7 +72,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 // Trait added to the user of a hippocratic oath status effect
 #define TRAIT_HIPPOCRATIC_OATH "hippocratic_oath"
 #define TRAIT_IGNORESLOWDOWN "ignoreslow"
-#define TRAIT_IGNOREDAMAGESLOWDOWN "ignoredamageslowdown"
 /// Makes it so the mob can use guns regardless of tool user status
 #define TRAIT_GUN_NATURAL "gunnatural"
 /// Causes death-like unconsciousness
@@ -234,6 +233,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_EXAMINE_FITNESS "reveal_power_level"
 /// These mobs have particularly hygienic tongues
 #define TRAIT_WOUND_LICKER "wound_licker"
+/// Mobs with this trait are allowed to use silicon emotes
+#define TRAIT_SILICON_EMOTES_ALLOWED "silicon_emotes_allowed"
 
 /// This trait designate that the mob was originally a monkey
 #define TRAIT_BORN_MONKEY "born_as_a_monkey"
@@ -972,6 +973,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// changelings with this trait can no longer talk over the hivemind
 #define TRAIT_CHANGELING_HIVEMIND_MUTE "ling_mute"
+/// This guy is a hulk! (Bulky and green, lacks tact)
 #define TRAIT_HULK "hulk"
 /// Isn't attacked harmfully by blob structures
 #define TRAIT_BLOB_ALLY "blob_ally"
