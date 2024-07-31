@@ -1,9 +1,9 @@
 ///How many batch discounts do we generate
-#define BATCH_DISCOUNT_QUANTITY 6
+#define BATCH_DISCOUNT_QUANTITY 5
 ///Minimum discount price for a batch offer
 #define BATCH_DISCOUNT_PRICE_MINIMUM 6
 ///Maximum discount price for a batch offer
-#define BATCH_DISCOUNT_PRICE_MAXIMUM 60
+#define BATCH_DISCOUNT_PRICE_MAXIMUM 40
 
 /datum/antagonist/nukeop
 	name = ROLE_NUCLEAR_OPERATIVE
@@ -70,7 +70,7 @@
 			for(var/datum/uplink_item/sale_proposition in uplink_items)
 				if(sale_proposition.cost > BATCH_DISCOUNT_PRICE_MINIMUM && sale_proposition.cost < BATCH_DISCOUNT_PRICE_MAXIMUM)
 					batch_sale_eligible += sale_proposition
-					nuke_team.team_discounts += create_batch_sales(BATCH_DISCOUNT_QUANTITY, /datum/uplink_category/batch_discounts, 1, batch_sale_eligible)
+			nuke_team.team_discounts += create_batch_sales(BATCH_DISCOUNT_QUANTITY, /datum/uplink_category/batch_discounts, batch_sale_eligible)
 		uplink.uplink_handler.extra_purchasable += nuke_team.team_discounts
 
 	memorize_code()

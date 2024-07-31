@@ -45,7 +45,7 @@
 
 /// Creates "batch sales" of nukie items, wherein a large discount is offered, however a high minimum of the item MUST be purchased, all at once.
 /// Takes an average discount (sometimes a big discount) and adds a 1.1-1.5x multiplier to it, capped at 90% off.
-/proc/create_batch_sales(sale_count, datum/uplink_category/category, limited_stock, list/sale_items)
+/proc/create_batch_sales(sale_count, datum/uplink_category/category, list/sale_items)
 	var/list/sales = list()
 	var/list/sale_items_copy = sale_items.Copy()
 	for (var/i in 1 to sale_count)
@@ -69,7 +69,7 @@
 
 		discount = min(discount, 0.90) //But let's not get TOO crazy (like if we get a really high multiplier + big discount).
 
-		uplink_item.limited_stock = limited_stock
+		uplink_item.limited_stock = 1
 		uplink_item.category = category
 		uplink_item.cost = round((taken_item.cost * batch_size) * discount)
 		uplink_item.name += " -- Buy [batch_size], get [round(discount * 100)]% off!"
@@ -86,9 +86,11 @@
 			"Buy now or SUFFER THE CONSEQUENCES.",
 			"Buy now and get ABSOLUTELY NOTHING extra!",
 			"If you don't buy this, you'll lose!",
+			"You NEED this. Buy it IMMEDIATELY.",
 		)
 		uplink_item.item = taken_item.item
 		uplink_item.item_count = batch_size
+		uplink_item.stock_key = WEAKREF(uplink_item)
 
 		sales += uplink_item
 	return sales
