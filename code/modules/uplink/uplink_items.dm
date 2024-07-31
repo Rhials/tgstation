@@ -52,14 +52,14 @@
 		var/datum/uplink_item/taken_item = pick_n_take(sale_items_copy)
 		var/datum/uplink_item/uplink_item = new taken_item.type()
 
-		var/batch_size = rand(4, 7)
+		var/batch_size = rand(7, 10)
 
 		if(prob(20))
 			batch_size = rand(11, 15)
 
 		var/discount_size = TRAITOR_DISCOUNT_AVERAGE
 
-		if(prob(20))
+		if(prob(5)) //Rare chance for a huge discount.
 			discount_size = TRAITOR_DISCOUNT_BIG
 
 		///We grab the item's discount value and add a multiplier, rather than just generating a random discount amount.
@@ -71,9 +71,9 @@
 
 		uplink_item.limited_stock = 1
 		uplink_item.category = category
-		uplink_item.cost = round((taken_item.cost * batch_size) * discount)
+		uplink_item.cost = round((taken_item.cost * batch_size) * (1 - discount))
 		uplink_item.name += " -- Buy [batch_size], get [round(discount * 100)]% off!"
-		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [uplink_item.cost / batch_size] TC. This surplus package will save you [(taken_item.cost * batch_size) - (uplink_item.cost)] TC! "
+		uplink_item.desc = "A [pick("bargain", "batch", "marked-down", "discounted", "cheap", "surplus", "budget", "affordable")] order of [taken_item.name]. Must be purchased in a batch of [batch_size] units. Original unit price: [taken_item.cost] TC. Discounted unit price: [round(uplink_item.cost / batch_size)] TC. This surplus package will save you [round((taken_item.cost * batch_size) - (uplink_item.cost))] TC! "
 		uplink_item.desc += pick(
 			"Why pass up this incredible deal?",
 			"BUY NOW!!!!!",
