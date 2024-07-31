@@ -192,8 +192,6 @@
 		spawned_object.pixel_y = rand(-6, 6)
 	log_uplink("[key_name(user)] purchased [item_count] [src] for [cost] telecrystals from [source]'s uplink")
 	user.playsound_local(get_turf(user), 'sound/effects/kaching.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
-	if(purchase_log_vis && uplink_handler.purchase_log)
-		uplink_handler.purchase_log.LogPurchase(spawned_item, src, cost)
 	if(lock_other_purchases)
 		uplink_handler.shop_locked = TRUE
 
