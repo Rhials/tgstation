@@ -1,5 +1,5 @@
 /obj/item/seeds/onion
-	name = "pack of onion seeds"
+	name = "onion seed pack"
 	desc = "These seeds grow into onions."
 	icon_state = "seed-onion"
 	species = "onion"
@@ -13,7 +13,7 @@
 	instability = 10
 	growthstages = 3
 	weed_chance = 3
-	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
+	growing_icon = 'icons/obj/service/hydroponics/growing_vegetables.dmi'
 	reagents_add = list(/datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.1, /datum/reagent/consumable/tearjuice = 0.25)
 	mutatelist = list(/obj/item/seeds/onion/red)
 
@@ -29,7 +29,7 @@
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/onion_slice, 2, 15, screentip_verb = "Cut")
 
 /obj/item/seeds/onion/red
-	name = "pack of red onion seeds"
+	name = "red onion seed pack"
 	desc = "For growing exceptionally potent onions."
 	icon_state = "seed-onionred"
 	species = "onion_red"

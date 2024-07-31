@@ -7,11 +7,11 @@ on:
 
 jobs:
   update-dmapi:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Update the TGS DMAPI
     steps:
     - name: Clone
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Branch
       run: |
@@ -28,8 +28,8 @@ jobs:
     - name: Commit and Push
       continue-on-error: true
       run: |
-        git config user.name tgstation-server
-        git config user.email tgstation-server@users.noreply.github.com
+        git config user.name "tgstation-server-ci[bot]"
+        git config user.email "161980869+tgstation-server-ci[bot]@users.noreply.github.com"
         git add .
         git commit -m 'Update TGS DMAPI'
         git push -f -u origin tgs-dmapi-update

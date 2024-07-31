@@ -20,7 +20,7 @@
 // Ruin solars define, /area/solars was moved to /area/station/solars, causing the solars specific areas to lose their properties
 /area/ruin/space/solars
 	requires_power = FALSE
-	area_flags = UNIQUE_AREA | AREA_USES_STARLIGHT
+	area_flags = UNIQUE_AREA
 	flags_1 = NONE
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
@@ -33,7 +33,7 @@
 // Ruins of "onehalf" ship
 
 /area/ruin/space/has_grav/onehalf/hallway
-	name = "\improper Hallway"
+	name = "\improper Half-Station Hallway"
 
 /area/ruin/space/has_grav/onehalf/drone_bay
 	name = "\improper Mining Drone Bay"
@@ -42,7 +42,7 @@
 	name = "\improper Crew Quarters"
 
 /area/ruin/space/has_grav/onehalf/bridge
-	name = "\improper Bridge"
+	name = "\improper Half-Station Bridge"
 
 /area/ruin/space/has_grav/powered/dinner_for_two
 	name = "Dinner for Two"
@@ -310,7 +310,7 @@
 	icon = 'icons/area/areas_ruins.dmi' // Solars inheriet areas_misc.dmi, not areas_ruin.dmi
 	icon_state = "os_charlie_solars"
 	requires_power = FALSE
-	area_flags = UNIQUE_AREA | AREA_USES_STARLIGHT
+	area_flags = UNIQUE_AREA
 	sound_environment = SOUND_AREA_SPACE
 
 /area/ruin/space/ancientstation/charlie/storage
@@ -534,7 +534,7 @@
 /area/ruin/space/djstation/solars
 	name = "\improper DJ Station Solars"
 	icon_state = "DJ"
-	area_flags = UNIQUE_AREA | AREA_USES_STARLIGHT
+	area_flags = UNIQUE_AREA
 	has_gravity = STANDARD_GRAVITY
 
 /area/ruin/space/djstation/service
@@ -552,7 +552,7 @@
 
 /area/ruin/space/tcommsat_oldaisat // Since tcommsat was moved to /area/station/, this turf doesn't inhereit its properties anymore
 	name = "\improper Abandoned Satellite"
-	ambientsounds = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg', 'sound/ambience/ambitech.ogg',\
+	ambientsounds = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen9.ogg', 'sound/ambience/ambitech.ogg',\
 											'sound/ambience/ambitech2.ogg', 'sound/ambience/ambitech3.ogg', 'sound/ambience/ambimystery.ogg')
 	airlock_wires = /datum/wires/airlock/engineering
 
@@ -598,6 +598,13 @@
 /area/ruin/space/has_grav/derelictsulaco
 	name = "\improper Derelict Sulaco"
 
+/area/ruin/space/has_grav/powered/biooutpost
+	name = "\improper Bioresearch Outpost"
+	area_flags = UNIQUE_AREA | NOTELEPORT
+
+/area/ruin/space/has_grav/powered/biooutpost/vault
+	name = "\improper Bioresearch Outpost Secure Testing"
+
 // Space Ghost Kitchen
 /area/ruin/space/space_ghost_restaurant
 	name = "\improper Space Ghost Restaurant"
@@ -631,25 +638,25 @@
 	name = "Waystation Maintenance"
 
 /area/ruin/space/has_grav/waystation/qm
-	name = "Quartermaster Office"
+	name = "Waystation Quartermaster Office"
 
 /area/ruin/space/has_grav/waystation/dorms
-	name = "Living Space"
+	name = "Waystation Living Space"
 
 /area/ruin/space/has_grav/waystation/kitchen
-	name = "Kitchen"
+	name = "Waystation Kitchen"
 
 /area/ruin/space/has_grav/waystation/cargobay
-	name = "Cargo Bay"
+	name = "Waystation Cargo Bay"
 
 /area/ruin/space/has_grav/waystation/securestorage
-	name = "Secure Storage"
+	name = "Waystation Secure Storage"
 
 /area/ruin/space/has_grav/waystation/cargooffice
-	name = "Cargo Office"
+	name = "Waystation Cargo Office"
 
 /area/ruin/space/has_grav/powered/waystation/assaultpod
-	name = "Assault Pod"
+	name = "Waystation Assault Pod"
 
 /area/ruin/space/has_grav/waystation/power
 	name = "Waystation Electrical"
@@ -664,7 +671,7 @@
 	icon = 'icons/area/areas_ruins.dmi'
 	icon_state = "ruins"
 	requires_power = FALSE
-	ambientsounds = list('sound/ambience/ambigen13.ogg','sound/ambience/ambigen14.ogg','sound/ambience/ambinice.ogg')
+	ambientsounds = list('sound/ambience/ambigen12.ogg','sound/ambience/ambigen13.ogg','sound/ambience/ambinice.ogg')
 
 // the outlet
 /area/ruin/space/has_grav/the_outlet/storefront
@@ -682,3 +689,77 @@
 //SYN-C Brutus, derelict frigate
 /area/ruin/space/has_grav/infested_frigate
 	name = "SYN-C Brutus"
+
+//garbage trucks
+/area/ruin/space/has_grav/garbagetruck
+	name = "Decommissioned Garbage Truck"
+	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+	ambience_index = AMBIENCE_MAINT
+
+/area/ruin/space/has_grav/garbagetruck/foodwaste
+
+/area/ruin/space/has_grav/garbagetruck/medicalwaste
+
+/area/ruin/space/has_grav/garbagetruck/squat
+
+/area/ruin/space/has_grav/garbagetruck/toystore
+
+//Donk Co trading outpost
+/area/ruin/space/has_grav/hauntedtradingpost
+	name = "\improper Donk Co. Trading Outpost"
+	icon_state = "donk_public"
+	sound_environment = SOUND_AREA_STANDARD_STATION
+
+/area/ruin/space/has_grav/hauntedtradingpost/public
+	name = "\improper Donk Co. Trading Outpost Public Meeting Area And Cafeteria"
+
+/area/ruin/space/has_grav/hauntedtradingpost/public/corridor
+	name = "\improper Donk Co. Trading Outpost Public Docks And Corridors"
+	sound_environment = SOUND_AREA_LARGE_ENCLOSED
+
+/area/ruin/space/has_grav/hauntedtradingpost/employees
+	name = "\improper Donk Co. Trading Outpost Employees Lounge"
+	icon_state = "donk_employees"
+	airlock_wires = /datum/wires/airlock/engineering
+	sound_environment = SOUND_AREA_MEDIUM_SOFTFLOOR
+
+/area/ruin/space/has_grav/hauntedtradingpost/employees/workstation
+	name = "\improper Donk Co. Trading Outpost Engineering Station"
+
+/area/ruin/space/has_grav/hauntedtradingpost/employees/corridor
+	name = "\improper Donk Co. Trading Outpost Secure Corridor"
+	icon_state = "donk_command"
+
+/area/ruin/space/has_grav/hauntedtradingpost/employees/breakroom
+	name = "\improper Donk Co. Trading Outpost Break Room"
+
+/area/ruin/space/has_grav/hauntedtradingpost/maint
+	name = "\improper Donk Co. Trading Outpost Auxiliary Storage Room"
+	icon_state = "donk_maints"
+	airlock_wires = /datum/wires/airlock/maint
+	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
+	ambience_index = AMBIENCE_MAINT
+
+/area/ruin/space/has_grav/hauntedtradingpost/maint/toolstorage
+
+/area/ruin/space/has_grav/hauntedtradingpost/maint/toystorage
+
+/area/ruin/space/has_grav/hauntedtradingpost/maint/disposals
+	name = "\improper Donk Co. Trading Outpost Waste Management Station"
+	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+
+/area/ruin/space/has_grav/hauntedtradingpost/office
+	name = "\improper Donk Co. Trading Outpost Captains Office"
+	icon_state = "donk_command"
+	airlock_wires = /datum/wires/airlock/cargo
+	sound_environment = SOUND_ENVIRONMENT_ROOM
+
+/area/ruin/space/has_grav/hauntedtradingpost/office/meetingroom
+	name = "\improper Donk Co. Trading Outpost Board Room"
+
+/area/ruin/space/has_grav/hauntedtradingpost/aicore
+	name = "\improper Cybersun AI Core"
+	icon_state = "donk_command"
+	airlock_wires = /datum/wires/airlock/security
+	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+	ambience_index = AMBIENCE_DANGER

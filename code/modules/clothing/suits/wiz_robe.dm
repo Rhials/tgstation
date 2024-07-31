@@ -49,13 +49,24 @@
 	resistance_flags = FLAMMABLE
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
 
+/obj/item/clothing/head/wizard/chanterelle
+	name = "chanterelle hat"
+	desc = "An oversized chanterelle with hollow out space to fit a head in. Kinda looks like wizard's hat."
+	icon_state = "chanterelle"
+	inhand_icon_state = "chanterellehat"
+	armor_type = /datum/armor/none
+	resistance_flags = FLAMMABLE
+
+/obj/item/clothing/head/wizard/chanterelle/fr
+	resistance_flags = FIRE_PROOF
+
 /obj/item/clothing/head/wizard/marisa
 	name = "witch hat"
 	desc = "Strange-looking hat-wear. Makes you want to cast fireballs."
 	icon_state = "witch_hat"
 	greyscale_colors = "#343640#e0cab8#e0cab8"
 	greyscale_config = /datum/greyscale_config/witch_hat
-	greyscale_config_worn = /datum/greyscale_config/witch_hat_worn
+	greyscale_config_worn = /datum/greyscale_config/witch_hat/worn
 	flags_1 = IS_PLAYER_COLORABLE_1
 	dog_fashion = null
 
@@ -66,7 +77,7 @@
 	inhand_icon_state = "tapehat"
 	dog_fashion = null
 	worn_y_offset = 6
-	body_parts_covered = HEAD|HAIR
+	body_parts_covered = HEAD //this used to also cover HAIR, but that was never valid code as HAIR is not actually a body_part define!
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR
 
 /obj/item/clothing/head/wizard/magus
@@ -205,6 +216,48 @@
 	actions_types = list(/datum/action/item_action/stickmen)
 
 
+/obj/item/clothing/suit/wizrobe/durathread
+	name = "durathread robe"
+	desc = "A rather dull durathread robe; not quite as protective as a proper piece of armour, but much stylish."
+	icon_state = "durathread-fake"
+	inhand_icon_state = null
+	armor_type = /datum/armor/robe_durathread
+
+/datum/armor/robe_durathread
+	melee = 15
+	bullet = 5
+	laser = 25
+	energy = 30
+	bomb = 10
+	fire = 30
+	acid = 40
+
+/obj/item/clothing/suit/wizrobe/durathread/fire
+	name = "pyromancer robe"
+	desc = "A rather dull durathread robe; not quite as protective as an woven armour, but much stylish."
+	icon_state = "durathread-fire"
+
+/obj/item/clothing/suit/wizrobe/durathread/ice
+	name = "pyromancer robe"
+	desc = "A rather dull durathread robe; not quite as protective as an woven armour, but much stylish."
+	icon_state = "durathread-ice"
+
+/obj/item/clothing/suit/wizrobe/durathread/electric
+	name = "electromancer robe"
+	desc = "Doesn't actually conduit or isolate from electricity. Though it does have some durability on account of being made from durathread."
+	icon_state = "durathread-electric"
+
+/obj/item/clothing/suit/wizrobe/durathread/earth
+	name = "geomancer robe"
+	desc = "A rather dull durathread robe; not quite as protective as an woven armour, but much stylish."
+	icon_state = "durathread-earth"
+
+/obj/item/clothing/suit/wizrobe/durathread/necro
+	name = "necromancer robe"
+	desc = "A rather dull durathread robe; not quite as protective as an woven armour, but much stylish."
+	icon_state = "durathread-necro"
+
+
 /obj/item/clothing/suit/wizrobe/paper/ui_action_click(mob/user, action)
 	stickmen()
 
@@ -220,7 +273,7 @@
 
 	usr.say("Rise, my creation! Off your page into this realm!", forced = "stickman summoning")
 	playsound(loc, 'sound/magic/summon_magic.ogg', 50, TRUE, TRUE)
-	var/mob/living/M = new /mob/living/basic/stickman(get_turf(usr))
+	var/mob/living/M = new /mob/living/basic/stickman/lesser(get_turf(usr))
 	M.faction += list("[REF(usr)]")
 	robe_charge = FALSE
 	sleep(3 SECONDS)

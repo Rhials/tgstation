@@ -7,6 +7,7 @@
 	show_in_antagpanel = FALSE //should only show subtypes
 	show_to_ghosts = TRUE
 	suicide_cry = "FOR THE MOTHERSHIP!!" // They can't even talk but y'know
+	stinger_sound = 'sound/ambience/antag/ayylien.ogg'
 	var/datum/team/abductor_team/team
 	var/sub_role
 	var/outfit
@@ -14,7 +15,6 @@
 	var/greet_text
 	/// Type path for the associated job datum.
 	var/role_job = /datum/job/abductor_agent
-	var/datum/action/cooldown/spell/summonitem/abductor/baton_return_spell
 
 /datum/antagonist/abductor/get_preview_icon()
 	var/mob/living/carbon/human/dummy/consistent/scientist = new
@@ -75,16 +75,11 @@
 	objectives += team.objectives
 	finalize_abductor()
 	ADD_TRAIT(owner, TRAIT_ABDUCTOR_TRAINING, ABDUCTOR_ANTAGONIST)
-	baton_return_spell = new(owner)
-	baton_return_spell.Grant(owner.current)
-	if(HAS_TRAIT(owner, TRAIT_ABDUCTOR_SCIENTIST_TRAINING))
-		baton_return_spell.Remove(owner.current)
 	return ..()
 
 /datum/antagonist/abductor/on_removal()
 	owner.special_role = null
 	REMOVE_TRAIT(owner, TRAIT_ABDUCTOR_TRAINING, ABDUCTOR_ANTAGONIST)
-	baton_return_spell.Remove(owner.current)
 	return ..()
 
 /datum/antagonist/abductor/greet()
@@ -199,7 +194,7 @@
 	explanation_text = "Experiment on [target_amount] humans."
 
 /datum/objective/experiment/check_completion()
-	for(var/obj/machinery/abductor/experiment/E in GLOB.machines)
+	for(var/obj/machinery/abductor/experiment/E as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/abductor/experiment))
 		if(!istype(team, /datum/team/abductor_team))
 			return FALSE
 		var/datum/team/abductor_team/T = team

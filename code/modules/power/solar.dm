@@ -6,7 +6,7 @@
 /obj/machinery/power/solar
 	name = "solar panel"
 	desc = "A solar panel. Generates electricity when in contact with sunlight."
-	icon = 'icons/obj/solar.dmi'
+	icon = 'icons/obj/machines/solar.dmi'
 	icon_state = "sp_base"
 	density = TRUE
 	use_power = NO_POWER_USE
@@ -42,6 +42,8 @@
 
 /obj/machinery/power/solar/Destroy()
 	unset_control() //remove from control computer
+	QDEL_NULL(panel)
+	QDEL_NULL(panel_edge)
 	return ..()
 
 /obj/machinery/power/solar/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
@@ -121,18 +123,16 @@
 		visually_turn(new_angle)
 		azimuth_current = new_angle
 
-/obj/machinery/power/solar/deconstruct(disassembled = TRUE)
-	if(!(flags_1 & NODECONSTRUCT_1))
-		if(disassembled)
-			var/obj/item/solar_assembly/S = locate() in src
-			if(S)
-				S.forceMove(loc)
-				S.give_glass(machine_stat & BROKEN)
-		else
-			playsound(src, SFX_SHATTER, 70, TRUE)
-			new /obj/item/shard(src.loc)
-			new /obj/item/shard(src.loc)
-	qdel(src)
+/obj/machinery/power/solar/on_deconstruction(disassembled)
+	if(disassembled)
+		var/obj/item/solar_assembly/S = locate() in src
+		if(S)
+			S.forceMove(loc)
+			S.give_glass(machine_stat & BROKEN)
+	else
+		playsound(src, SFX_SHATTER, 70, TRUE)
+		new /obj/item/shard(src.loc)
+		new /obj/item/shard(src.loc)
 
 /obj/machinery/power/solar/update_overlays()
 	. = ..()
@@ -250,7 +250,7 @@
 		return
 
 	var/sgen = SOLAR_GEN_RATE * sunfrac
-	add_avail(sgen)
+	add_avail(power_to_energy(sgen))
 	if(control)
 		control.gen += sgen
 
@@ -269,7 +269,7 @@
 /obj/item/solar_assembly
 	name = "solar panel assembly"
 	desc = "A solar panel assembly kit, allows constructions of a solar panel, or with a tracking circuit board, a solar tracker."
-	icon = 'icons/obj/solar.dmi'
+	icon = 'icons/obj/machines/solar.dmi'
 	icon_state = "sp_base"
 	inhand_icon_state = "electropack"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
@@ -369,7 +369,7 @@
 /obj/machinery/power/solar_control
 	name = "solar panel control"
 	desc = "A controller for solar panel arrays."
-	icon = 'icons/obj/computer.dmi'
+	icon = 'icons/obj/machines/computer.dmi'
 	icon_state = "computer"
 	density = TRUE
 	use_power = IDLE_POWER_USE

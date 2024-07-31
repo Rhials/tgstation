@@ -1,6 +1,6 @@
 /obj/machinery/modular_shield_generator
-	name = "Modular Shield Generator"
-	desc = "A forcefield generator, it seems more stationary than its cousins."
+	name = "modular shield generator"
+	desc = "A forcefield generator, it seems more stationary than its cousins. It cant handle G-force and will require frequent reboots when built on mobile craft."
 	icon = 'icons/obj/machines/modular_shield_generator.dmi'
 	icon_state = "gen_recovering_closed"
 	density = TRUE
@@ -99,7 +99,7 @@
 
 /obj/machinery/modular_shield_generator/Initialize(mapload)
 	. = ..()
-	wires = new /datum/wires/modular_shield_generator(src)
+	set_wires(new /datum/wires/modular_shield_generator(src))
 	if(mapload && active && anchored)
 		activate_shields()
 
@@ -162,6 +162,10 @@
 		return
 	activate_shields()
 
+/obj/machinery/modular_shield_generator/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	. = ..()
+	if(active)
+		deactivate_shields()
 
 ///generates the forcefield based on the given radius and calls calculate_regen to update the regen value accordingly
 /obj/machinery/modular_shield_generator/proc/activate_shields()
@@ -177,20 +181,26 @@
 		LAZYADD(list_of_turfs, get_perimeter(src, radius))
 
 		if(exterior_only)
-			for(var/turf/target_tile as anything in list_of_turfs)
-				if(!(isfloorturf(target_tile)) && !(locate(/obj/structure/emergency_shield/modular) in target_tile))
-					var/obj/structure/emergency_shield/modular/deploying_shield = new(target_tile)
-					deploying_shield.shield_generator = src
-					LAZYADD(deployed_shields, deploying_shield)
+			for(var/turf/open/target_tile in list_of_turfs)
+				if(isfloorturf(target_tile))
+					continue
+				if(locate(/obj/structure/emergency_shield/modular) in target_tile)
+					continue
+				var/obj/structure/emergency_shield/modular/deploying_shield = new(target_tile)
+				deploying_shield.shield_generator = src
+				LAZYADD(deployed_shields, deploying_shield)
+
 			addtimer(CALLBACK(src, PROC_REF(finish_field)), 2 SECONDS)
 			calculate_regeneration()
 			return
 
-		for(var/turf/target_tile as anything in list_of_turfs)
-			if(isopenturf(target_tile) && !(locate(/obj/structure/emergency_shield/modular) in target_tile))
-				var/obj/structure/emergency_shield/modular/deploying_shield = new(target_tile)
-				deploying_shield.shield_generator = src
-				LAZYADD(deployed_shields, deploying_shield)
+		for(var/turf/open/target_tile in list_of_turfs)
+			if(locate(/obj/structure/emergency_shield/modular) in target_tile)
+				continue
+			var/obj/structure/emergency_shield/modular/deploying_shield = new(target_tile)
+			deploying_shield.shield_generator = src
+			LAZYADD(deployed_shields, deploying_shield)
+
 		addtimer(CALLBACK(src, PROC_REF(finish_field)), 2 SECONDS)
 		calculate_regeneration()
 		return
@@ -198,20 +208,30 @@
 	//this code only runs on radius less than 10 and gives us a more accurate circle that is more compatible with decimal values
 	LAZYADD(inside_shield, circle_range_turfs(src, radius - 1))//in the future we might want to apply an effect to the turfs inside the shield
 	if(exterior_only)
-		for(var/turf/target_tile as anything in circle_range_turfs(src, radius))
-			if(!(isfloorturf(target_tile)) && !(target_tile in inside_shield) && !(locate(/obj/structure/emergency_shield/modular) in target_tile))
-				var/obj/structure/emergency_shield/modular/deploying_shield = new(target_tile)
-				deploying_shield.shield_generator = src
-				LAZYADD(deployed_shields, deploying_shield)
+		for(var/turf/open/target_tile in circle_range_turfs(src, radius))
+			if(isfloorturf(target_tile))
+				continue
+			if(target_tile in inside_shield)
+				continue
+			if(locate(/obj/structure/emergency_shield/modular) in target_tile)
+				continue
+			var/obj/structure/emergency_shield/modular/deploying_shield = new(target_tile)
+			deploying_shield.shield_generator = src
+			LAZYADD(deployed_shields, deploying_shield)
+
 		addtimer(CALLBACK(src, PROC_REF(finish_field)), 2 SECONDS)
 		calculate_regeneration()
 		return
 
-	for(var/turf/target_tile as anything in circle_range_turfs(src, radius))
-		if(isopenturf(target_tile) && !(target_tile in inside_shield) && !(locate(/obj/structure/emergency_shield/modular) in target_tile))
-			var/obj/structure/emergency_shield/modular/deploying_shield = new(target_tile)
-			deploying_shield.shield_generator = src
-			LAZYADD(deployed_shields, deploying_shield)
+	for(var/turf/open/target_tile in circle_range_turfs(src, radius))
+		if(target_tile in inside_shield)
+			continue
+		if(locate(/obj/structure/emergency_shield/modular) in target_tile)
+			continue
+		var/obj/structure/emergency_shield/modular/deploying_shield = new(target_tile)
+		deploying_shield.shield_generator = src
+		LAZYADD(deployed_shields, deploying_shield)
+
 	addtimer(CALLBACK(src, PROC_REF(finish_field)), 2 SECONDS)
 	calculate_regeneration()
 
@@ -362,9 +382,9 @@
 ///The general code used for machines that want to connect to the network
 /obj/machinery/modular_shield/module
 
-	name = "Modular Shield Debugger" //Filler name and sprite for testing
+	name = "modular shield debugger" //Filler name and sprite for testing
 	desc = "This is filler for testing you shouldn`t see this."
-	icon = 'icons/mecha/mech_bay.dmi'
+	icon = 'icons/obj/machines/mech_bay.dmi'
 	icon_state = "recharge_port"
 	density = TRUE
 
@@ -422,17 +442,21 @@
 /obj/machinery/modular_shield/module/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 
-	if(default_change_direction_wrench(user, tool))
-		if(shield_generator)
-			LAZYREMOVE(shield_generator.connected_modules, (src))
-			shield_generator.calculate_boost()
-			shield_generator = null
-			update_icon_state()
-		if(connected_node)
-			LAZYREMOVE(connected_node.connected_through_us, (src))
-			connected_node = null
-		connected_turf = get_step(loc, dir)
-		return TRUE
+	if(!default_change_direction_wrench(user, tool))
+		return FALSE
+
+	if(shield_generator)
+		LAZYREMOVE(shield_generator.connected_modules, (src))
+		shield_generator.calculate_boost()
+		shield_generator = null
+		update_icon_state()
+
+	if(connected_node)
+		LAZYREMOVE(connected_node.connected_through_us, (src))
+		connected_node = null
+
+	connected_turf = get_step(loc, dir)
+	return TRUE
 
 /obj/machinery/modular_shield/module/crowbar_act(mob/living/user, obj/item/tool)
 	. = ..()
@@ -482,7 +506,7 @@
 
 /obj/machinery/modular_shield/module/node
 
-	name = "Modular Shield Node"
+	name = "modular shield node"
 	desc = "A waist high mess of humming pipes and wires that extend the modular shield network."
 	icon = 'icons/obj/machines/modular_shield_generator.dmi'
 	icon_state = "node_off_closed"
@@ -498,16 +522,26 @@
 		return
 	icon_state = "node_on_[panel_open ? "open" : "closed"]"
 
-/obj/machinery/modular_shield/module/node/setDir(new_dir)
-	. = ..()
+
+/obj/machinery/modular_shield/module/node/wrench_act(mob/living/user, obj/item/tool)
+
+	if(!default_change_direction_wrench(user, tool))
+		return FALSE
 
 	disconnect_connected_through_us()
-	if(isnull(shield_generator))
-		return
-	LAZYREMOVE(shield_generator.connected_modules, (src))
-	shield_generator.calculate_boost()
-	shield_generator = null
-	update_icon_state()
+
+	if(shield_generator)
+		LAZYREMOVE(shield_generator.connected_modules, (src))
+		shield_generator.calculate_boost()
+		shield_generator = null
+		update_icon_state()
+
+	if(connected_node)
+		LAZYREMOVE(connected_node.connected_through_us, (src))
+		connected_node = null
+
+	connected_turf = get_step(loc, dir)
+	return TRUE
 
 //after trying to connect to a machine infront of us, we will try to link anything connected to us to a generator
 /obj/machinery/modular_shield/module/node/try_connect(user)
@@ -553,7 +587,7 @@
 
 /obj/machinery/modular_shield/module/charger
 
-	name = "Modular Shield Charger"
+	name = "modular shield charger"
 	desc = "A machine that somehow fabricates hardlight using electrons."
 	icon = 'icons/obj/machines/modular_shield_generator.dmi'
 	icon_state = "charger_off_closed"
@@ -581,7 +615,7 @@
 
 /obj/machinery/modular_shield/module/relay
 
-	name = "Modular Shield Relay"
+	name = "modular shield relay"
 	desc = "It helps the shield generator project farther out."
 	icon = 'icons/obj/machines/modular_shield_generator.dmi'
 	icon_state = "relay_off_closed"
@@ -609,7 +643,7 @@
 
 /obj/machinery/modular_shield/module/well
 
-	name = "Modular Shield Well"
+	name = "modular shield well"
 	desc = "A device used to hold more hardlight for the modular shield generator."
 	icon = 'icons/obj/machines/modular_shield_generator.dmi'
 	icon_state = "well_off_closed"
@@ -638,12 +672,13 @@
 
 //The shield itself
 /obj/structure/emergency_shield/modular
-	name = "Modular energy shield"
+	name = "modular energy shield"
 	desc = "An energy shield with varying configurations."
 	color = "#00ffff"
 	density = FALSE
 	alpha = 100
 	resistance_flags = INDESTRUCTIBLE //the shield itself is indestructible or atleast should be
+	no_damage_feedback = "weakening the generator sustaining it"
 
 	///The shield generator sustaining us
 	var/obj/machinery/modular_shield_generator/shield_generator
@@ -677,6 +712,7 @@
 
 //Damage from emp
 /obj/structure/emergency_shield/modular/emp_act(severity)
+	. = ..()
 	if(isnull(shield_generator))
 		qdel(src)
 		return

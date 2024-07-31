@@ -68,8 +68,6 @@ These are the few directives we have for project maintainers.
 
 These are not steadfast rules as maintainers are expected to use their best judgement when operating.
 
-Our team is entirely voluntary, as such we extend our thanks to maintainers, issue managers, and contributors alike for helping keep the project alive.
-
 </details>
 
 ### Issue Managers
@@ -90,7 +88,13 @@ Things you **CAN'T** do:
 * [Close PRs](https://imgur.com/w2RqpX8.png): Only maintainers are allowed to close PRs. Do not hit that button.
 * Close issues purely for breaking a template if the same information is contained without it.
 
+For more information reference the [Issue Manager Guide](.github/guides/ISSUE_MANAGER.md).
+
 </details>
+
+---
+
+Our team is entirely voluntary, as such we extend our thanks to maintainers, issue managers, and contributors alike for helping keep the project alive.
 
 ## Development Guides
 
@@ -105,7 +109,7 @@ Things you **CAN'T** do:
 
 #### Misc
 
-- [AI Datums](../code/datums/ai/making_your_ai.md)
+- [AI Datums](../code/datums/ai/learn_ai.md)
 - [Embedding TGUI Components in Chat](../tgui/docs/chat-embedded-components.md)
 - [Hard Deletes](./guides/HARDDELETES.md)
 - [MC Tab Guide](./guides/MC_tab.md)

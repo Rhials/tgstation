@@ -76,24 +76,9 @@
 	return
 
 /// Signal proc for [COMSIG_ITEM_AFTERATTACK] that allows for effects after an attack is done
-/datum/plant_gene/trait/attack/proc/after_plant_attack(obj/item/source, atom/target, mob/user, proximity_flag, click_parameters)
+/datum/plant_gene/trait/attack/proc/after_plant_attack(obj/item/source, atom/target, mob/user, click_parameters)
 	SIGNAL_HANDLER
-
-	if(!proximity_flag)
-		return
-
-	if(!ismovable(target))
-		return
-
-	. |= COMPONENT_AFTERATTACK_PROCESSED_ITEM
-
-	if(isobj(target))
-		var/obj/object_target = target
-		if(!(object_target.obj_flags & CAN_BE_HIT))
-			return .
-
 	INVOKE_ASYNC(src, PROC_REF(after_attack_effect), source, target, user)
-	return .
 
 /*
  * Effects done when we hit people with our plant, AFTER the attack is done.
@@ -181,7 +166,10 @@
 	. = ..()
 	if(!.)
 		return
-
+	if(genes_to_check)
+		genes_to_check = string_list(genes_to_check)
+	if(traits_to_check)
+		traits_to_check = string_list(traits_to_check)
 	our_plant.AddElement(/datum/element/plant_backfire, cancel_action_on_backfire, traits_to_check, genes_to_check)
 	RegisterSignal(our_plant, COMSIG_PLANT_ON_BACKFIRE, PROC_REF(on_backfire))
 
@@ -267,7 +255,7 @@
 		return
 
 	our_chili = WEAKREF(our_plant)
-	RegisterSignals(our_plant, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), PROC_REF(stop_backfire_effect))
+	RegisterSignals(our_plant, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED), PROC_REF(stop_backfire_effect))
 
 /*
  * Begin processing the trait on backfire.
@@ -462,7 +450,7 @@
 
 /// Walking Mushroom's transformation gene
 /datum/plant_gene/trait/mob_transformation/shroom
-	killer_plant = /mob/living/simple_animal/hostile/mushroom
+	killer_plant = /mob/living/basic/mushroom
 	mob_health_multiplier = 0.25
 	mob_melee_multiplier = 0.05
 	mob_speed_multiplier = 0.02
@@ -630,11 +618,11 @@
 /datum/plant_gene/trait/gas_production/on_new_seed(obj/item/seeds/new_seed)
 	RegisterSignal(new_seed, COMSIG_SEED_ON_PLANTED, PROC_REF(set_home_tray))
 	RegisterSignal(new_seed, COMSIG_SEED_ON_GROW, PROC_REF(try_release_gas))
-	RegisterSignal(new_seed, COMSIG_PARENT_QDELETING, PROC_REF(stop_gas))
+	RegisterSignal(new_seed, COMSIG_QDELETING, PROC_REF(stop_gas))
 	stinky_seed = WEAKREF(new_seed)
 
 /datum/plant_gene/trait/gas_production/on_removed(obj/item/seeds/old_seed)
-	UnregisterSignal(old_seed, list(COMSIG_PARENT_QDELETING, COMSIG_SEED_ON_PLANTED, COMSIG_SEED_ON_GROW))
+	UnregisterSignal(old_seed, list(COMSIG_QDELETING, COMSIG_SEED_ON_PLANTED, COMSIG_SEED_ON_GROW))
 	stop_gas()
 
 /*

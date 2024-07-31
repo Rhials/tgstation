@@ -11,7 +11,7 @@
 		user.reset_perspective(null)
 	user.remote_control = null
 
-//this datum manages it's own references
+//this datum manages its own references
 
 /datum/holocall
 	///the one that called
@@ -352,7 +352,7 @@
 	outfit_type = /datum/outfit/syndicate_empty/battlecruiser
 
 /datum/preset_holoimage/hivebot
-	nonhuman_mobtype = /mob/living/simple_animal/hostile/hivebot
+	nonhuman_mobtype = /mob/living/basic/hivebot
 
 /datum/preset_holoimage/ai
 	nonhuman_mobtype = /mob/living/silicon/ai

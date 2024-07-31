@@ -4,7 +4,7 @@
 ///A lavaland geyser that spawns chems and can be mining scanned for points. Made to work with the plumbing pump to extract that sweet rare nectar
 /obj/structure/geyser
 	name = "geyser"
-	icon = 'icons/obj/lavaland/terrain.dmi'
+	icon = 'icons/obj/mining_zones/terrain.dmi'
 	icon_state = "geyser"
 	anchored = TRUE
 
@@ -39,13 +39,13 @@
 	if(erupting_state)
 		icon_state = erupting_state
 	else
-		var/mutable_appearance/I = mutable_appearance('icons/obj/lavaland/terrain.dmi', "[icon_state]_soup")
+		var/mutable_appearance/I = mutable_appearance('icons/obj/mining_zones/terrain.dmi', "[icon_state]_soup")
 		I.color = mix_color_from_reagents(reagents.reagent_list)
 		add_overlay(I)
 
 ///start making those CHHHHHEEEEEEMS. Called whenever chems are removed, it's fine because START_PROCESSING checks if we arent already processing
 /obj/structure/geyser/proc/start_chemming()
-	START_PROCESSING(SSplumbing, src) //It's main function is to be plumbed, so use SSplumbing
+	START_PROCESSING(SSplumbing, src) //Its main function is to be plumbed, so use SSplumbing
 
 ///We're full so stop processing
 /obj/structure/geyser/proc/stop_chemming()
@@ -167,14 +167,12 @@
 
 	playsound(src, 'sound/machines/click.ogg', 10, TRUE)
 
-/obj/item/plunger/AltClick(mob/user)
-	if(!istype(user) || !user.can_perform_action(src))
-		return
-
+/obj/item/plunger/click_alt(mob/user)
 	var/new_layer = tgui_input_list(user, "Select a layer", "Layer", GLOB.plumbing_layers)
-	if(isnull(new_layer))
-		return
+	if(isnull(new_layer) || !user.can_perform_action(src))
+		return CLICK_ACTION_BLOCKING
 	target_layer = GLOB.plumbing_layers[new_layer]
+	return CLICK_ACTION_SUCCESS
 
 ///A faster reinforced plunger
 /obj/item/plunger/reinforced

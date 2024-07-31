@@ -59,12 +59,12 @@
 	master_speech = new(src)
 	master_speech.Grant(owner)
 
-/datum/component/mind_linker/Destroy(force, silent)
+/datum/component/mind_linker/Destroy(force)
 	for(var/mob/living/remaining_mob as anything in linked_mobs)
 		unlink_mob(remaining_mob)
 	linked_mobs.Cut()
 	QDEL_NULL(master_speech)
-	QDEL_NULL(post_unlink_callback)
+	post_unlink_callback = null
 	return ..()
 
 /datum/component/mind_linker/RegisterWithParent()
@@ -94,7 +94,7 @@
 	new_link.Grant(to_link)
 
 	linked_mobs[to_link] = new_link
-	RegisterSignals(to_link, list(COMSIG_LIVING_DEATH, COMSIG_PARENT_QDELETING), PROC_REF(sig_unlink_mob))
+	RegisterSignals(to_link, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING), PROC_REF(sig_unlink_mob))
 
 	return TRUE
 
@@ -115,7 +115,7 @@
 
 	post_unlink_callback?.Invoke(to_unlink)
 
-	UnregisterSignal(to_unlink, list(COMSIG_LIVING_DEATH, COMSIG_PARENT_QDELETING))
+	UnregisterSignal(to_unlink, list(COMSIG_LIVING_DEATH, COMSIG_QDELETING))
 
 	var/datum/action/innate/linked_speech/old_link = linked_mobs[to_unlink]
 	linked_mobs -= to_unlink
@@ -239,11 +239,10 @@
 	return ..() && (owner.stat != DEAD)
 
 /datum/action/innate/linked_speech/Activate()
-
 	var/datum/component/mind_linker/linker = target
 	var/mob/living/linker_parent = linker.parent
 
-	var/message = sanitize(tgui_input_text(owner, "Enter a message to transmit.", "[linker.network_name] Telepathy"))
+	var/message = tgui_input_text(owner, "Enter a message to transmit.", "[linker.network_name] Telepathy")
 	if(!message || QDELETED(src) || QDELETED(owner) || owner.stat == DEAD)
 		return
 
@@ -257,7 +256,8 @@
 	var/list/all_who_can_hear = assoc_to_keys(linker.linked_mobs) + linker_parent
 
 	for(var/mob/living/recipient as anything in all_who_can_hear)
-		to_chat(recipient, formatted_message)
+		var/avoid_highlighting = (recipient == owner) || (recipient == linker_parent)
+		to_chat(recipient, formatted_message, type = MESSAGE_TYPE_RADIO, avoid_highlighting = avoid_highlighting)
 
 	for(var/mob/recipient as anything in GLOB.dead_mob_list)
-		to_chat(recipient, "[FOLLOW_LINK(recipient, owner)] [formatted_message]")
+		to_chat(recipient, "[FOLLOW_LINK(recipient, owner)] [formatted_message]", type = MESSAGE_TYPE_RADIO)

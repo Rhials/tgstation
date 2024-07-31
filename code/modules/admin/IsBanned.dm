@@ -1,6 +1,6 @@
 //Blocks an attempt to connect before even creating our client datum thing.
 
-//How many new ckey matches before we revert the stickyban to it's roundstart state
+//How many new ckey matches before we revert the stickyban to its roundstart state
 //These are exclusive, so once it goes over one of these numbers, it reverts the ban
 #define STICKYBAN_MAX_MATCHES 15
 #define STICKYBAN_MAX_EXISTING_USER_MATCHES 3 //ie, users who were connected before the ban triggered
@@ -43,12 +43,14 @@
 
 		var/client_is_in_db = query_client_in_db.NextRow()
 		if(!client_is_in_db)
-			
 			var/reject_message = "Failed Login: [ckey] [address]-[computer_id] - New Account attempting to connect during panic bunker, but was rejected due to no prior connections to game servers (no database entry)"
 			log_access(reject_message)
 			if (message)
 				message_admins(span_adminnotice("[reject_message]"))
+			qdel(query_client_in_db)
 			return list("reason"="panicbunker", "desc" = "Sorry but the server is currently not accepting connections from never before seen players")
+
+		qdel(query_client_in_db)
 
 	//Whitelist
 	if(!real_bans_only && !C && CONFIG_GET(flag/usewhitelist))
