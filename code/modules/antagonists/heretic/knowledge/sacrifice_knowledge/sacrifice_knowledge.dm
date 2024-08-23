@@ -75,7 +75,7 @@
 		return FALSE
 
 	// We've got no targets set, let's try to set some.
-	// If we recently failed to aquire targets, we will be unable to aquire any.
+	// If we recently failed to acquire targets, we will be unable to acquire any.
 	if(!LAZYLEN(heretic_datum.sac_targets))
 		atoms += user
 		return TRUE
@@ -189,7 +189,7 @@
  * Arguments
  * * user - the mob doing the sacrifice (a heretic)
  * * selected_atoms - a list of all atoms chosen. Should be (at least) one human.
- * * loc - the turf the sacrifice is occuring on
+ * * loc - the turf the sacrifice is occurring on
  */
 /datum/heretic_knowledge/hunt_and_sacrifice/proc/sacrifice_process(mob/living/user, list/selected_atoms, turf/loc)
 
@@ -416,20 +416,13 @@
 		usable_organs -= /obj/item/organ/internal/lungs/corrupt // Their lungs are already more cursed than anything I could give them
 
 	var/total_implant = rand(2, 4)
-	var/gave_any = FALSE
 
 	for (var/i in 1 to total_implant)
 		if (!length(usable_organs))
-			break
+			return
 		var/organ_path = pick_n_take(usable_organs)
 		var/obj/item/organ/internal/to_give = new organ_path
-		if (!to_give.Insert(sac_target))
-			qdel(to_give)
-		else
-			gave_any = TRUE
-
-	if (!gave_any)
-		return
+		to_give.Insert(sac_target)
 
 	new /obj/effect/gibspawner/human/bodypartless(get_turf(sac_target))
 	sac_target.visible_message(span_boldwarning("Several organs force themselves out of [sac_target]!"))
