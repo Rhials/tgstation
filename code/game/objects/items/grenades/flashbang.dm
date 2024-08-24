@@ -13,6 +13,13 @@
 	flashbang_range = reset_fantasy_variable("flashbang_range", flashbang_range)
 
 /obj/item/grenade/flashbang/detonate(mob/living/lanced_by)
+	if(iscarbon(loc) && !lanced_by) //Despite having a casing that's meant to stay intact when it explodes, these will absolutely take off your hand when they explode.
+		var/mob/living/carbon/user = loc
+		var/obj/item/bodypart/bodypart = user.get_holding_bodypart_of_item(src)
+		if(bodypart)
+			user.visible_message("<b>[span_danger("[src] goes off in [user]'s hand, shredding [user.p_their()] [bodypart.plaintext_zone]!")]</b>", span_userdanger("[src] goes off in your hand, obliterating your [bodypart.plaintext_zone]!"))
+			bodypart.force_wound_upwards(/datum/wound/blunt/bone/severe, FALSE, src)
+			user.apply_damage(20, BRUTE, bodypart, attacking_item = src)
 	. = ..()
 	if(!.)
 		return
