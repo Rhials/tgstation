@@ -20,6 +20,12 @@
 			user.visible_message("<b>[span_danger("[src] goes off in [user]'s hand, shredding [user.p_their()] [bodypart.plaintext_zone]!")]</b>", span_userdanger("[src] goes off in your hand, obliterating your [bodypart.plaintext_zone]!"))
 			bodypart.force_wound_upwards(/datum/wound/blunt/bone/severe, FALSE, src)
 			user.apply_damage(20, BRUTE, bodypart, attacking_item = src)
+
+	if((item_flags & IN_STORAGE))
+		playsound(get_turf(src), 'sound/weapons/flashbang.ogg', 20, TRUE)
+		qdel(src)
+		return
+
 	. = ..()
 	if(!.)
 		return
