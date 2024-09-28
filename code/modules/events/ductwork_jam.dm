@@ -36,14 +36,16 @@
 	if(prob(10)) //Sometimes a silly mob get picked as the clogger instead. Enterprising crew could potentially revive and play around with it?
 		var/static/list/silly_mob_list = list(
 		/mob/living/basic/deer,
-		/mob/living/basic/spider/maintenance,
-		/mob/living/basic/mouse,
+		/mob/living/basic/drone,
+		/mob/living/basic/chicken,
+		/mob/living/basic/wumborian_fugu,
 		)
 	else
 		var/static/list/mob_list = list(
 			/mob/living/basic/butterfly,
 			/mob/living/basic/spider/maintenance,
 			/mob/living/basic/mouse,
+			/mob/living/basic/axolotl,
 		)
 
 /datum/round_event/ductwork_jam/announce(fake)
@@ -68,7 +70,7 @@
 		vent_gasmix.gases[/datum/gas/miasma][MOLES] += (gas_to_spawn)
 	else
 		var/turf/vent_turf = get_turf(vent)
-		vent_turf.atmos_spawn_air("[GAS_MIASMA]=][gas_to_spawn];[TURF_TEMPERATURE(T20C)]")
+		vent_turf.atmos_spawn_air("[GAS_MIASMA]=[gas_to_spawn];[TURF_TEMPERATURE(T20C)]")
 
 /**
  * Finds a valid vent to spawn mobs from.
