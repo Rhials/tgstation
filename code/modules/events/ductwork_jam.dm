@@ -1,4 +1,4 @@
-#define GAS_LIMIT 25
+#define GAS_LIMIT 50
 
 ///Ductwork Jam random event
 ///A random vent begins leaking Miasma due to a dead animal clogging it up and spraying gross corpse fumes everywhere.
@@ -63,10 +63,10 @@
 	RegisterSignal(vent, COMSIG_PLUNGER_ACT, PROC_REF(plunger_unclog))
 
 /datum/round_event/ductwork_jam/tick()
-	if(!ISMULTIPLE(activeFor, 5))
+	if(!ISMULTIPLE(activeFor, 3))
 		return
 
-	var/gas_to_spawn = min(GAS_LIMIT, activeFor / 5)
+	var/gas_to_spawn = min(GAS_LIMIT, activeFor / 3)
 
 	if(vent.welded) //Sealing it up is just gonna spread it into the pipe network. Don't do that!
 		var/datum/gas_mixture/vent_gasmix = vent.airs[1]
