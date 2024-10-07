@@ -6,16 +6,29 @@
 	earliest_start = 5 MINUTES
 	category = EVENT_CATEGORY_FRIENDLY
 	description = "A colourful display can be seen through select windows. And the kitchen."
+	admin_setup = list(/datum/event_admin_setup/question/aurora_caelus)
 
 /datum/round_event_control/aurora_caelus/can_spawn_event(players, allow_magic = FALSE)
 	if(!SSmapping.empty_space)
 		return FALSE
 	return ..()
 
+/// Admins can force the kitchen fire if they want
+/datum/event_admin_setup/question/aurora_caelus
+	input_text = "Steamed Hams?"
+
+/datum/event_admin_setup/question/aurora_caelus/apply_to_event(datum/round_event/aurora_caelus/event)
+	event.kitchen_disaster = chosen
+	var/log_message = "[key_name_admin(usr)] has forced an Aurora Caelus event to start a fire in the kitchen."
+	message_admins(log_message)
+	log_admin(log_message)
+
 /datum/round_event/aurora_caelus
 	announce_when = 1
 	start_when = 21
 	end_when = 80
+	///Do we do a Simpsons bit and start a fire in the kitchen?
+	var/kitchen_disaster = FALSE
 
 /datum/round_event/aurora_caelus/announce(fake)
 	priority_announce("[station_name()]: A harmless cloud of ions is approaching your station, and will exhaust their energy battering the hull. Nanotrasen has approved a short break for all employees to relax and observe this very rare event. During this time, starlight will be bright but gentle, shifting between quiet green and blue colors. Any staff who would like to view these lights for themselves may proceed to the area nearest to them with viewing ports to open space. We hope you enjoy the lights.",
@@ -31,8 +44,10 @@
 	fade_kitchen(fade_in = TRUE)
 
 /datum/round_event/aurora_caelus/start()
-	if(!prob(1) && !check_holidays(APRIL_FOOLS))
+	if((prob(1) || !check_holidays(APRIL_FOOLS)) && !kitchen_disaster)
 		return
+
+	kitchen_disaster = TRUE
 
 	var/list/human_blacklist = list()
 	for(var/area/station/service/kitchen/affected_area in GLOB.areas)
