@@ -63,6 +63,11 @@
 	if(original)
 		create_sequence_actions()
 
+/datum/action/cooldown/link_to(target)
+	. = ..()
+	if(ranged_mousepointer)
+		RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(clear_mousepointer)) //This is the deepest type that uses mousepointers. If the functionality is moved to a lower type, update me.
+
 /datum/action/cooldown/create_button()
 	var/atom/movable/screen/movable/action_button/button = ..()
 	button.maptext = ""
@@ -125,7 +130,7 @@
 		ability.Grant(granted_to)
 
 /datum/action/cooldown/Remove(mob/removed_from)
-	UnregisterSignal(removed_from, COMSIG_HOSTILE_PRE_ATTACKINGTARGET)
+	UnregisterSignal(removed_from, list(COMSIG_HOSTILE_PRE_ATTACKINGTARGET, COMSIG_LIVING_DEATH))
 	if(click_to_activate && removed_from.click_intercept == src)
 		unset_click_ability(removed_from, refund_cooldown = FALSE)
 	for(var/datum/action/cooldown/ability as anything in initialized_actions)
@@ -323,10 +328,14 @@
 /datum/action/cooldown/proc/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	on_who.click_intercept = null
 	if(ranged_mousepointer)
-		on_who.client?.mouse_override_icon = initial(on_who.client?.mouse_override_icon)
+		var/client/client_to_clear = CLIENT_FROM_VAR(on_who)
+		if(!client_to_clear)
+			stack_trace("Deleting spell mousepointer from mob without a client.")
+		client_to_clear.mouse_override_icon = initial(client_to_clear.mouse_override_icon)
 		on_who.update_mouse_pointer()
+		on_who.click_intercept = null
+
 	build_all_button_icons(UPDATE_BUTTON_STATUS)
 	return TRUE
 
@@ -365,5 +374,11 @@
 	SEND_SIGNAL(src, COMSIG_ACTION_SET_STATPANEL, stat_panel_data)
 
 	return stat_panel_data
+
+/// Resets the mousepointer icon. Should probably be more centered around removal of the client from the body.
+/datum/action/cooldown/proc/clear_mousepointer(datum/source)
+	SIGNAL_HANDLER
+
+	unset_click_ability(owner)
 
 #undef COOLDOWN_NO_DISPLAY_TIME
