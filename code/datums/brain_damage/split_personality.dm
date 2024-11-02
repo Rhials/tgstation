@@ -3,16 +3,28 @@
 
 /datum/brain_trauma/severe/split_personality
 	name = "Split Personality"
-	desc = "Patient's brain is split into two personalities, which randomly switch control of the body."
+	desc = "Patient's brain is split into two or more personalities, which randomly switch control of the body."
 	scan_desc = "complete lobe separation"
 	gain_text = span_warning("You feel like your mind was split in two.")
 	lose_text = span_notice("You feel alone again.")
+	///Who currently occupies the body?
 	var/current_controller = OWNER
-	var/initialized = FALSE //to prevent personalities deleting themselves while we wait for ghosts
-	var/mob/living/split_personality/stranger_backseat //there's two so they can swap without overwriting
+	///To prevent personalities deleting themselves while we wait for ghosts.
+	var/initialized = FALSE
+	///There's two so they can swap without overwriting.
+	var/mob/living/split_personality/stranger_backseat
+	///The backseat for the actual owner of the body.
 	var/mob/living/split_personality/owner_backseat
-	///The role to display when polling ghost
+	///The role to display when polling ghost.
 	var/poll_role = "split personality"
+	///A list containing all of the personalities eligible for swapping.
+	var/list/mob/living/split_personality/personality_roster = list()
+	///A list of users who will be made into backseat personalities.
+	var/list/mob/living/split_personality/backseat_candidates = list()
+
+/datum/brain_trauma/severe/split_personality/New(list/backseater_list)
+	. = ..()
+	backseat_candidates = backseater_list
 
 /datum/brain_trauma/severe/split_personality/on_gain()
 	var/mob/living/M = owner
@@ -23,10 +35,17 @@
 	make_backseats()
 	get_ghost()
 
-/datum/brain_trauma/severe/split_personality/proc/make_backseats()
-	stranger_backseat = new(owner, src)
-	var/datum/action/personality_commune/stranger_spell = new(src)
-	stranger_spell.Grant(stranger_backseat)
+///Creates the backseats for the inactive personalities. Requested_backseats is the number of backseats that will be made/filled
+/datum/brain_trauma/severe/split_personality/proc/make_backseats(requested_backseats)
+	if(!stranger_backseat)
+		stranger_backseat = new(owner, src)
+		var/datum/action/personality_commune/stranger_spell = new(src)
+		stranger_spell.Grant(stranger_backseat)
+	for(var/new_personality in requested_backseats)
+		var/mob/living/split_personality/new_backseat = new(owner, src)
+		var/datum/action/personality_commune/stranger_spell = new(src)
+		stranger_spell.Grant(new_backseat)
+		personality_roster += new_backseat
 
 	owner_backseat = new(owner, src)
 	var/datum/action/personality_commune/owner_spell = new(src)
