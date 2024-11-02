@@ -546,7 +546,7 @@
 		GLOB.cult_narsie.souls += 1
 		if((GLOB.cult_narsie.souls == GLOB.cult_narsie.soul_goal) && (GLOB.cult_narsie.resolved == FALSE))
 			GLOB.cult_narsie.resolved = TRUE
-			sound_to_playing_players('sound/machines/alarm.ogg')
+			sound_to_playing_players('sound/announcer/alarm/nuke_alarm.ogg', 70)
 			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(cult_ending_helper), CULT_VICTORY_MASS_CONVERSION), 12 SECONDS)
 			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ending_helper)), 27 SECONDS)
 	if(client)
@@ -622,7 +622,7 @@
 
 /** Handles exposing a mob to reagents.
  *
- * If the methods include INGEST the mob tastes the reagents.
+ * If the methods include INGEST or INHALE, the mob tastes the reagents.
  * If the methods include VAPOR it incorporates permiability protection.
  */
 /mob/living/expose_reagents(list/reagents, datum/reagents/source, methods=TOUCH, volume_modifier=1, show_message=TRUE)
@@ -630,8 +630,8 @@
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
-	if(methods & INGEST)
-		taste(source)
+	if(methods & (INGEST | INHALE))
+		taste_list(reagents)
 
 	var/touch_protection = (methods & VAPOR) ? getarmor(null, BIO) * 0.01 : 0
 	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_MOB, src, reagents, methods, volume_modifier, show_message, touch_protection)
