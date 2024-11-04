@@ -30,9 +30,13 @@
 	var/obj/machinery/atmospherics/components/unary/vent_pump/vent
 	///What mob will be kicked out of the vent when cleared.
 	var/mob/spawned_mob = /mob/living/basic/mouse
+	///The vent gasmix for holding miasma when sealed.
+	var/datum/gas_mixture/internal_gasmix
 
 /datum/round_event/ductwork_jam/setup()
 	vent = get_vent()
+	internal_gasmix = new()
+	internal_gasmix.add_gases(/datum/gas/miasma)
 	if(prob(10)) //Sometimes a silly mob get picked as the clogger instead. Enterprising crew could potentially revive and play around with it?
 		var/static/list/silly_mob_list = list(
 		/mob/living/basic/deer,
@@ -66,15 +70,19 @@
 	if(!ISMULTIPLE(activeFor, 3))
 		return
 
+	var/turf/vent_turf = get_turf(vent)
+	if(vent_turf.return_air()?.return_pressure() > ONE_ATMOSPHERE * 2)
+		return
+
 	var/gas_to_spawn = min(GAS_LIMIT, activeFor / 3)
 
-	if(vent.welded) //Sealing it up is just gonna spread it into the pipe network. Don't do that!
-		var/datum/gas_mixture/vent_gasmix = vent.airs[1]
-		vent_gasmix.add_gases(/datum/gas/miasma)
-		vent_gasmix.gases[/datum/gas/miasma][MOLES] += (gas_to_spawn)
+	if(vent.welded) //Sealing it up is just gonna cause buildup. Don't do that!
+		internal_gasmix.gases[/datum/gas/miasma][MOLES] += (gas_to_spawn)
 	else
-		var/turf/vent_turf = get_turf(vent)
 		vent_turf.atmos_spawn_air("[GAS_MIASMA]=[gas_to_spawn];[TURF_TEMPERATURE(T20C)]")
+
+/datum/round_event/ductwork_jam/end()
+	release_trapped_gas()
 
 /**
  * Finds a valid vent to spawn mobs from.
@@ -117,8 +125,7 @@
 /datum/round_event/ductwork_jam/proc/vent_destroyed(datum/source)
 	SIGNAL_HANDLER
 	spawn_corpse()
-	///Add miasma release here
-	end() //Probably make this a different proc to handle post-event behavior
+	end()
 	kill()
 
 ///Clears the signals related to the event, before we wrap things up.
@@ -130,5 +137,12 @@
 	var/mob/living/dead_mob = new spawned_mob(get_turf(vent))
 	dead_mob.death(FALSE)
 	dead_mob.adjustOxyLoss(dead_mob.maxHealth)
+
+///Releases a gas buildup upon the destruction of the event/event ending.
+/datum/round_event/ductwork_jam/proc/release_trapped_gas()
+	var/datum/gas_mixture/vent_gasmix = vent.airs[1]
+	var/turf/vent_turf = get_turf(vent)
+	var/datum/gas_mixture/turf_gasmix = vent_turf.return_air()
+	turf_gasmix.merge(vent_gasmix)
 
 #undef GAS_LIMIT
