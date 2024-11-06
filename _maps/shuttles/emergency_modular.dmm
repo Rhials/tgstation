@@ -8,9 +8,6 @@
 "e" = (
 /turf/closed/wall/mineral/plastitanium,
 /area/shuttle/escape)
-"g" = (
-/turf/open/floor/pod/light,
-/area/shuttle/escape)
 "j" = (
 /obj/machinery/door/airlock/titanium{
 	name = "Emergency Shuttle Airlock"
@@ -21,12 +18,6 @@
 	name = "Kerfuffle-Shuttle"
 	},
 /turf/open/floor/plating,
-/area/shuttle/escape)
-"l" = (
-/obj/modular_map_root/modular_shuttle/bridge{
-	key = "bridge"
-	},
-/turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/escape)
 "n" = (
 /turf/open/floor/iron/white,
@@ -60,23 +51,23 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
 "H" = (
-/turf/closed/wall/mineral/titanium,
+/turf/open/space/basic,
 /area/shuttle/escape)
 "I" = (
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "J" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/turf/open/floor/plating,
+/turf/open/floor/pod/light,
 /area/shuttle/escape)
 "M" = (
-/turf/open/floor/pod,
+/turf/open/space/basic,
+/area/template_noop)
+"V" = (
+/obj/modular_map_root/modular_shuttle/bridge,
+/turf/open/space/basic,
 /area/shuttle/escape)
 "W" = (
-/obj/machinery/computer/emergency_shuttle{
-	dir = 1
-	},
-/turf/open/floor/plating,
+/turf/open/floor/pod,
 /area/shuttle/escape)
 "X" = (
 /obj/machinery/door/airlock/titanium{
@@ -87,26 +78,26 @@
 
 (1,1,1) = {"
 a
-c
-c
-J
-J
-J
-J
-J
-J
-c
+H
+H
+H
+H
+H
+H
+H
+H
+H
 X
 c
 j
-c
-J
-J
-J
-J
-J
-J
-c
+H
+H
+H
+H
+H
+H
+H
+H
 H
 a
 a
@@ -137,7 +128,7 @@ I
 I
 I
 I
-c
+H
 a
 a
 a
@@ -167,7 +158,7 @@ I
 I
 I
 I
-c
+H
 a
 a
 a
@@ -197,13 +188,13 @@ I
 I
 I
 I
-c
-c
-c
-J
-J
-J
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (5,1,1) = {"
 B
@@ -227,13 +218,13 @@ I
 I
 I
 I
-c
-I
-I
-I
-I
-I
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (6,1,1) = {"
 B
@@ -257,13 +248,13 @@ I
 I
 I
 I
-c
-I
-I
-I
-I
-I
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (7,1,1) = {"
 B
@@ -277,7 +268,7 @@ I
 I
 I
 w
-g
+J
 w
 I
 I
@@ -287,13 +278,13 @@ I
 I
 I
 I
-c
-I
-I
-I
-I
-I
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (8,1,1) = {"
 e
@@ -306,9 +297,9 @@ I
 I
 I
 I
-M
-M
-M
+W
+W
+W
 I
 I
 I
@@ -317,13 +308,13 @@ I
 I
 I
 I
-I
-I
-I
-I
-I
-I
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (9,1,1) = {"
 B
@@ -335,25 +326,25 @@ n
 n
 n
 n
-g
-M
-g
-M
-g
-n
-n
-n
-n
-n
-n
-n
-l
-I
-I
-I
-I
+J
 W
 J
+W
+J
+n
+n
+n
+n
+n
+n
+n
+V
+H
+H
+H
+H
+H
+H
 "}
 (10,1,1) = {"
 e
@@ -366,9 +357,9 @@ I
 I
 I
 I
-M
-M
-M
+W
+W
+W
 I
 I
 I
@@ -377,13 +368,13 @@ I
 I
 I
 I
-I
-I
-I
-I
-I
-I
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (11,1,1) = {"
 B
@@ -397,7 +388,7 @@ I
 I
 I
 w
-g
+J
 w
 I
 I
@@ -407,13 +398,13 @@ I
 I
 I
 I
-c
-I
-I
-I
-I
-I
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (12,1,1) = {"
 B
@@ -437,13 +428,13 @@ I
 I
 I
 I
-c
-I
-I
-I
-I
-I
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (13,1,1) = {"
 B
@@ -467,13 +458,13 @@ I
 I
 I
 I
-c
-I
-I
-I
-I
-I
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (14,1,1) = {"
 e
@@ -497,13 +488,13 @@ I
 I
 I
 I
-c
-c
-c
-J
-J
-J
-J
+H
+H
+H
+H
+H
+H
+H
 "}
 (15,1,1) = {"
 B
@@ -527,13 +518,13 @@ I
 I
 I
 I
-c
-a
-a
-a
-a
-a
-a
+H
+M
+M
+M
+M
+M
+M
 "}
 (16,1,1) = {"
 B
@@ -557,7 +548,7 @@ I
 I
 I
 I
-c
+H
 a
 a
 a
@@ -567,26 +558,26 @@ a
 "}
 (17,1,1) = {"
 a
+H
+H
+H
+H
+H
+H
+H
+H
+H
+X
 c
-c
-c
-J
-c
-c
-c
-c
-c
-J
-c
-c
-c
-J
-c
-c
-c
-J
-c
-c
+X
+H
+H
+H
+H
+H
+H
+H
+H
 H
 a
 a
