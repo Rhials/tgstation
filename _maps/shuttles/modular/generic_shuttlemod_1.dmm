@@ -7,14 +7,6 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"c" = (
-/obj/structure/reagent_dispensers/fueltank,
-/turf/open/floor/plating,
-/area/shuttle/escape)
-"e" = (
-/obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/plating,
-/area/shuttle/escape)
 "f" = (
 /obj/machinery/power/terminal{
 	dir = 1
@@ -38,14 +30,6 @@
 	name = "power storage unit"
 	},
 /obj/structure/cable,
-/turf/open/floor/plating,
-/area/shuttle/escape)
-"l" = (
-/obj/effect/decal/cleanable/garbage,
-/turf/open/floor/plating,
-/area/shuttle/escape)
-"m" = (
-/obj/modular_map_connector,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "p" = (
@@ -73,13 +57,12 @@
 "x" = (
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"A" = (
-/obj/structure/closet/crate,
-/obj/effect/spawner/random/maintenance/five,
-/turf/open/floor/plating,
-/area/shuttle/escape)
 "B" = (
 /turf/closed/wall,
+/area/shuttle/escape)
+"D" = (
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/floor/plating,
 /area/shuttle/escape)
 "H" = (
 /obj/structure/closet/crate,
@@ -104,10 +87,18 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"M" = (
+"K" = (
 /obj/effect/decal/cleanable/fuel_pool,
 /obj/machinery/light/small/directional/north,
 /obj/effect/decal/cleanable/cobweb,
+/turf/open/floor/plating,
+/area/shuttle/escape)
+"M" = (
+/obj/effect/decal/cleanable/oil/slippery,
+/turf/open/floor/plating,
+/area/shuttle/escape)
+"N" = (
+/obj/modular_map_connector,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "P" = (
@@ -123,7 +114,8 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "U" = (
-/obj/effect/decal/remains/human,
+/obj/structure/closet/crate,
+/obj/effect/spawner/random/maintenance/five,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "V" = (
@@ -147,9 +139,13 @@
 /obj/machinery/duct,
 /turf/open/floor/plating,
 /area/shuttle/escape)
+"Z" = (
+/obj/effect/decal/cleanable/garbage,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 
 (1,1,1) = {"
-U
+B
 B
 J
 J
@@ -159,17 +155,17 @@ B
 B
 "}
 (2,1,1) = {"
-c
+x
 B
-M
+K
 H
-A
+U
 a
 x
 B
 "}
 (3,1,1) = {"
-B
+x
 B
 S
 V
@@ -179,7 +175,7 @@ P
 B
 "}
 (4,1,1) = {"
-l
+Z
 t
 j
 V
@@ -189,7 +185,7 @@ X
 B
 "}
 (5,1,1) = {"
-m
+N
 B
 i
 u
@@ -199,7 +195,7 @@ x
 W
 "}
 (6,1,1) = {"
-x
+D
 Y
 r
 V
@@ -209,7 +205,7 @@ x
 B
 "}
 (7,1,1) = {"
-e
+M
 B
 B
 I
@@ -219,7 +215,7 @@ p
 B
 "}
 (8,1,1) = {"
-x
+M
 x
 R
 R
