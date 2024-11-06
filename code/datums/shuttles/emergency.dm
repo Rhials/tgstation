@@ -500,4 +500,12 @@
 /datum/map_template/shuttle/emergency/zeta/prerequisites_met()
 	return SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_ALIENTECH]
 
+/datum/map_template/shuttle/emergency/modular
+	suffix = "modular"
+	name = "Podge-Kerfuffle Transport Vessel"
+	credit_cost = CARGO_CRATE_VALUE * 5
+	description = "Want something fresh? Too lazy to build your own shuttle? Let our engineers at {Contract Procurement Candidate Identity Not Disclosed} build you something new and exciting! We can slap down a few prefabs and BOOM. New shuttle, never before seen design. Try it!"
+	admin_notes = "A shuttle with each section generated entirely modularly. You might get 4 medbays or 4 security rooms. No rerolls."
+	occupancy_limit = "???"
+
 #undef EMAG_LOCKED_SHUTTLE_COST
