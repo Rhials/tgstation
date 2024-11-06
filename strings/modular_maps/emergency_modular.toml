@@ -1,0 +1,7 @@
+directory = "_maps/shuttles/modular/"
+
+[rooms.generic_shuttlemod]
+modules = ["generic_shuttlemod_1.dmm"]
+
+[rooms.solars]
+modules = ["solars_1.dmm", "solars_2.dmm"]

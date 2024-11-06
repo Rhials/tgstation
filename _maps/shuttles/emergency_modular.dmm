@@ -97,8 +97,8 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "y" = (
-/obj/modular_map_root/djstation{
-	key = "solars"
+/obj/modular_map_root/modular_shuttle{
+	key = "generic_shuttlemod"
 	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
