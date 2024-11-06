@@ -1,0 +1,4 @@
+directory = "_maps/shuttles/modular/"
+
+[rooms.bridge]
+modules = ["bridge_1.dmm"]

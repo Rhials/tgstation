@@ -1,0 +1,156 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/effect/spawner/structure/window/reinforced/plasma,
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"j" = (
+/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/effect/spawner/structure/window/reinforced/plasma,
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"m" = (
+/turf/closed/wall/mineral/diamond,
+/area/shuttle/escape)
+"p" = (
+/obj/structure/chair/comfy/brown{
+	dir = 8
+	},
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"t" = (
+/obj/effect/spawner/structure/window/reinforced/plasma,
+/obj/modular_map_connector,
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"w" = (
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"z" = (
+/obj/structure/chair/comfy/brown{
+	dir = 4
+	},
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"O" = (
+/obj/structure/table/wood/fancy/black,
+/obj/item/reagent_containers/cup/glass/bottle/champagne{
+	pixel_x = 1;
+	pixel_y = 6
+	},
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"P" = (
+/obj/machinery/door/airlock/command/glass,
+/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"T" = (
+/obj/structure/table/wood/fancy/black,
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"Y" = (
+/obj/machinery/computer/emergency_shuttle{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/shuttle/escape)
+
+(1,1,1) = {"
+m
+m
+a
+a
+a
+m
+m
+"}
+(2,1,1) = {"
+m
+w
+w
+w
+w
+Y
+m
+"}
+(3,1,1) = {"
+a
+w
+w
+w
+w
+w
+a
+"}
+(4,1,1) = {"
+a
+w
+w
+w
+w
+w
+a
+"}
+(5,1,1) = {"
+P
+w
+z
+z
+z
+w
+a
+"}
+(6,1,1) = {"
+t
+w
+T
+O
+T
+w
+a
+"}
+(7,1,1) = {"
+P
+w
+p
+p
+p
+w
+j
+"}
+(8,1,1) = {"
+a
+w
+w
+w
+w
+w
+a
+"}
+(9,1,1) = {"
+a
+w
+w
+w
+w
+w
+a
+"}
+(10,1,1) = {"
+m
+w
+w
+w
+w
+w
+m
+"}
+(11,1,1) = {"
+m
+m
+a
+a
+a
+m
+m
+"}

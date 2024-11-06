@@ -504,18 +504,14 @@
 	suffix = "modular"
 	name = "Podge-Kerfuffle Transport Vessel"
 	credit_cost = CARGO_CRATE_VALUE * 8
-	description = "Want something fresh? Too lazy to build your own shuttle? Let our engineers at {Contract Procurement Candidate Identity Not Disclosed} build you something new and exciting! We can slap down a few prefabs and BOOM. New shuttle, never before seen design. Try it!"
+	description = "Want something fresh? Too lazy to build your own shuttle? Let our engineers at \[Contract Procurement Candidate Identity Not Disclosed\] build you something new and exciting! We can slap down a few prefabs and BOOM. New shuttle, never before seen design. Try it!"
 	admin_notes = "A shuttle with each section generated entirely modularly. You might get 4 medbays or 4 security rooms. No rerolls."
 	occupancy_limit = "???"
-
-/datum/map_template/shuttle/emergency/modular/post_load(obj/docking_port/mobile/mobile)
-	. = ..()
-	//Trigger modular segments here.
-
-/////////// djstation module roots
 
 /obj/modular_map_root/modular_shuttle
 	config_file = "strings/modular_maps/emergency_modular.toml"
 
+/obj/modular_map_root/modular_shuttle/bridge
+	config_file = "strings/modular_maps/emergency_modular_bridge.toml"
 
 #undef EMAG_LOCKED_SHUTTLE_COST
