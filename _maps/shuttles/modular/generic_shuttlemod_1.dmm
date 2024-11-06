@@ -7,6 +7,14 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
+"c" = (
+/obj/effect/decal/cleanable/plastic,
+/turf/open/floor/plating,
+/area/shuttle/escape)
+"e" = (
+/obj/effect/decal/cleanable/food/pie_smudge,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 "f" = (
 /obj/machinery/power/terminal{
 	dir = 1
@@ -32,11 +40,17 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/shuttle/escape)
+"n" = (
+/obj/effect/decal/cleanable/garbage,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 "p" = (
 /obj/structure/cable,
 /obj/machinery/light/small/directional/south,
 /obj/structure/closet/crate,
 /obj/effect/spawner/random/maintenance/two,
+/obj/item/wrench,
+/obj/item/multitool,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "r" = (
@@ -57,24 +71,29 @@
 "x" = (
 /turf/open/floor/plating,
 /area/shuttle/escape)
+"A" = (
+/obj/effect/decal/cleanable/fuel_pool,
+/obj/machinery/light/small/directional/north,
+/obj/effect/decal/cleanable/cobweb,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 "B" = (
 /turf/closed/wall,
 /area/shuttle/escape)
-"D" = (
-/obj/effect/decal/cleanable/blood/old,
+"C" = (
+/obj/structure/cable,
+/obj/machinery/power/port_gen/pacman,
+/turf/open/floor/plating,
+/area/shuttle/escape)
+"G" = (
+/obj/effect/decal/cleanable/oil/slippery,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "H" = (
 /obj/structure/closet/crate,
-/obj/item/knife/shiv{
-	pixel_x = -7;
-	pixel_y = -2
-	},
-/obj/item/knife/shiv,
-/obj/item/knife/shiv/carrot{
-	pixel_x = 7;
-	pixel_y = 3
-	},
+/obj/effect/spawner/random/maintenance/five,
+/obj/item/stack/sheet/mineral/plasma/five,
+/obj/item/stack/sheet/mineral/plasma/five,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "I" = (
@@ -87,35 +106,25 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"K" = (
-/obj/effect/decal/cleanable/fuel_pool,
-/obj/machinery/light/small/directional/north,
-/obj/effect/decal/cleanable/cobweb,
-/turf/open/floor/plating,
-/area/shuttle/escape)
 "M" = (
-/obj/effect/decal/cleanable/oil/slippery,
-/turf/open/floor/plating,
-/area/shuttle/escape)
-"N" = (
-/obj/modular_map_connector,
+/obj/structure/closet/crate,
+/obj/item/knife/shiv{
+	pixel_x = -7;
+	pixel_y = -2
+	},
+/obj/item/knife/shiv,
+/obj/item/knife/shiv/carrot{
+	pixel_x = 7;
+	pixel_y = 3
+	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "P" = (
-/obj/effect/decal/cleanable/food/pie_smudge,
+/obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "R" = (
 /obj/effect/spawner/structure/window/reinforced,
-/turf/open/floor/plating,
-/area/shuttle/escape)
-"S" = (
-/obj/effect/decal/cleanable/plastic,
-/turf/open/floor/plating,
-/area/shuttle/escape)
-"U" = (
-/obj/structure/closet/crate,
-/obj/effect/spawner/random/maintenance/five,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "V" = (
@@ -140,7 +149,7 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "Z" = (
-/obj/effect/decal/cleanable/garbage,
+/obj/modular_map_connector,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 
@@ -157,9 +166,9 @@ B
 (2,1,1) = {"
 x
 B
-K
+A
+M
 H
-U
 a
 x
 B
@@ -167,15 +176,15 @@ B
 (3,1,1) = {"
 x
 B
-S
+c
 V
 V
 u
-P
+e
 B
 "}
 (4,1,1) = {"
-Z
+n
 t
 j
 V
@@ -185,17 +194,17 @@ X
 B
 "}
 (5,1,1) = {"
-N
+Z
 B
 i
 u
 k
 f
-x
+G
 W
 "}
 (6,1,1) = {"
-D
+P
 Y
 r
 V
@@ -205,18 +214,18 @@ x
 B
 "}
 (7,1,1) = {"
-M
+x
 B
 B
 I
-j
+C
 u
 p
 B
 "}
 (8,1,1) = {"
-M
-x
+B
+B
 R
 R
 R
