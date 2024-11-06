@@ -7,13 +7,12 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"b" = (
-/obj/structure/table/glass,
-/obj/modular_map_connector,
+"c" = (
+/obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"d" = (
-/obj/structure/table/glass,
+"e" = (
+/obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "f" = (
@@ -22,11 +21,6 @@
 	},
 /obj/structure/cable,
 /obj/effect/decal/cleanable/fuel_pool,
-/turf/open/floor/plating,
-/area/shuttle/escape)
-"h" = (
-/obj/structure/table/glass,
-/obj/structure/table/glass,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "i" = (
@@ -44,6 +38,14 @@
 	name = "power storage unit"
 	},
 /obj/structure/cable,
+/turf/open/floor/plating,
+/area/shuttle/escape)
+"l" = (
+/obj/effect/decal/cleanable/garbage,
+/turf/open/floor/plating,
+/area/shuttle/escape)
+"m" = (
+/obj/modular_map_connector,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "p" = (
@@ -68,24 +70,28 @@
 /obj/effect/decal/cleanable/fuel_pool,
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"v" = (
-/obj/structure/reagent_dispensers/fueltank,
+"x" = (
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"x" = (
+"A" = (
+/obj/structure/closet/crate,
+/obj/effect/spawner/random/maintenance/five,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "B" = (
 /turf/closed/wall,
 /area/shuttle/escape)
-"G" = (
-/obj/effect/decal/remains/human,
-/obj/structure/table/glass,
-/turf/open/floor/plating,
-/area/shuttle/escape)
 "H" = (
-/obj/effect/decal/remains/robot,
-/obj/structure/table/glass,
+/obj/structure/closet/crate,
+/obj/item/knife/shiv{
+	pixel_x = -7;
+	pixel_y = -2
+	},
+/obj/item/knife/shiv,
+/obj/item/knife/shiv/carrot{
+	pixel_x = 7;
+	pixel_y = 3
+	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "I" = (
@@ -99,27 +105,25 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "M" = (
+/obj/effect/decal/cleanable/fuel_pool,
 /obj/machinery/light/small/directional/north,
-/obj/structure/closet/crate,
-/obj/item/knife/shiv{
-	pixel_x = -7;
-	pixel_y = -2
-	},
-/obj/item/knife/shiv,
-/obj/item/knife/shiv/carrot{
-	pixel_x = 7;
-	pixel_y = 3
-	},
+/obj/effect/decal/cleanable/cobweb,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "P" = (
-/obj/structure/cable,
-/obj/structure/closet/crate,
-/obj/effect/spawner/random/maintenance/five,
+/obj/effect/decal/cleanable/food/pie_smudge,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "R" = (
 /obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/shuttle/escape)
+"S" = (
+/obj/effect/decal/cleanable/plastic,
+/turf/open/floor/plating,
+/area/shuttle/escape)
+"U" = (
+/obj/effect/decal/remains/human,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "V" = (
@@ -145,37 +149,37 @@
 /area/shuttle/escape)
 
 (1,1,1) = {"
-d
-G
+U
 B
-d
-d
-d
+J
+J
+J
+J
 B
-h
+B
 "}
 (2,1,1) = {"
-d
-v
-B
-R
-J
-R
-B
-d
-"}
-(3,1,1) = {"
-d
-B
+c
 B
 M
-P
+H
+A
 a
+x
 B
+"}
+(3,1,1) = {"
+B
+B
+S
+V
+V
+u
+P
 B
 "}
 (4,1,1) = {"
-d
+l
 t
 j
 V
@@ -185,7 +189,7 @@ X
 B
 "}
 (5,1,1) = {"
-b
+m
 B
 i
 u
@@ -195,7 +199,7 @@ x
 W
 "}
 (6,1,1) = {"
-d
+x
 Y
 r
 V
@@ -205,22 +209,22 @@ x
 B
 "}
 (7,1,1) = {"
-d
+e
 B
 B
 I
 j
+u
 p
-B
 B
 "}
 (8,1,1) = {"
-d
-d
+x
+x
 R
 R
 R
 R
 R
-H
+B
 "}

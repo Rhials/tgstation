@@ -3,6 +3,19 @@
 /obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/wood,
 /area/shuttle/escape)
+"b" = (
+/obj/machinery/computer/communications{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"i" = (
+/obj/structure/chair/comfy/brown{
+	dir = 8
+	},
+/obj/effect/decal/cleanable/confetti,
+/turf/open/floor/wood,
+/area/shuttle/escape)
 "j" = (
 /obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/effect/spawner/structure/window/reinforced/plasma,
@@ -25,10 +38,24 @@
 "w" = (
 /turf/open/floor/wood,
 /area/shuttle/escape)
+"y" = (
+/obj/effect/decal/cleanable/confetti,
+/turf/open/floor/wood,
+/area/shuttle/escape)
 "z" = (
 /obj/structure/chair/comfy/brown{
 	dir = 4
 	},
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"C" = (
+/obj/machinery/computer/slot_machine,
+/obj/effect/decal/cleanable/confetti,
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"F" = (
+/obj/structure/table/wood/fancy/purple,
+/obj/effect/spawner/random/food_or_drink/pizzaparty,
 /turf/open/floor/wood,
 /area/shuttle/escape)
 "O" = (
@@ -48,10 +75,22 @@
 /obj/structure/table/wood/fancy/black,
 /turf/open/floor/wood,
 /area/shuttle/escape)
+"W" = (
+/obj/machinery/door/airlock/command/glass,
+/obj/effect/mapping_helpers/airlock/access/all/command/general,
+/obj/effect/decal/cleanable/confetti,
+/turf/open/floor/wood,
+/area/shuttle/escape)
+"X" = (
+/obj/structure/table/wood/fancy/black,
+/obj/effect/spawner/random/food_or_drink/pizzaparty,
+/turf/open/floor/wood,
+/area/shuttle/escape)
 "Y" = (
 /obj/machinery/computer/emergency_shuttle{
 	dir = 1
 	},
+/obj/effect/decal/cleanable/confetti,
 /turf/open/floor/wood,
 /area/shuttle/escape)
 
@@ -66,7 +105,7 @@ m
 "}
 (2,1,1) = {"
 m
-w
+C
 w
 w
 w
@@ -87,8 +126,8 @@ a
 w
 w
 w
-w
-w
+y
+y
 a
 "}
 (5,1,1) = {"
@@ -105,26 +144,26 @@ t
 w
 T
 O
-T
+X
 w
 a
 "}
 (7,1,1) = {"
-P
-w
+W
+y
 p
 p
-p
-w
+i
+y
 j
 "}
 (8,1,1) = {"
 a
+y
 w
 w
 w
-w
-w
+y
 a
 "}
 (9,1,1) = {"
@@ -138,11 +177,11 @@ a
 "}
 (10,1,1) = {"
 m
+F
 w
 w
-w
-w
-w
+y
+b
 m
 "}
 (11,1,1) = {"
