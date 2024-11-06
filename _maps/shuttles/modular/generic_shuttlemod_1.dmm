@@ -1,12 +1,13 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
-/turf/open/floor/mineral/titanium/tiled,
-/area/shuttle/escape)
+/turf/open/space/basic,
+/area/template_noop)
 "f" = (
 /obj/machinery/power/terminal{
 	dir = 1
 	},
 /obj/structure/cable,
+/obj/effect/decal/cleanable/fuel_pool,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "i" = (
@@ -30,7 +31,6 @@
 /obj/structure/cable,
 /obj/machinery/light/small/directional/south,
 /obj/structure/closet/crate,
-/obj/item/clothing/head/costume/ushanka,
 /obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/shuttle/escape)
@@ -47,6 +47,11 @@
 /obj/machinery/door/airlock/maintenance_hatch,
 /turf/open/floor/plating,
 /area/shuttle/escape)
+"u" = (
+/obj/structure/cable,
+/obj/effect/decal/cleanable/fuel_pool,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 "x" = (
 /turf/open/floor/plating,
 /area/shuttle/escape)
@@ -60,9 +65,8 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "I" = (
-/obj/structure/reagent_dispensers/plumbed{
-	dir = 8
-	},
+/obj/structure/reagent_dispensers/fueltank,
+/obj/effect/decal/cleanable/fuel_pool,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "J" = (
@@ -73,8 +77,15 @@
 "M" = (
 /obj/machinery/light/small/directional/north,
 /obj/structure/closet/crate,
-/obj/item/gps/spaceruin,
-/obj/effect/spawner/random/maintenance/three,
+/obj/item/knife/shiv{
+	pixel_x = -7;
+	pixel_y = -2
+	},
+/obj/item/knife/shiv,
+/obj/item/knife/shiv/carrot{
+	pixel_x = 7;
+	pixel_y = 3
+	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "P" = (
@@ -87,8 +98,13 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/shuttle/escape)
+"V" = (
+/obj/effect/decal/cleanable/fuel_pool,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 "W" = (
 /obj/machinery/duct,
+/obj/effect/decal/cleanable/fuel_pool,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "X" = (
@@ -123,16 +139,16 @@ B
 (3,1,1) = {"
 t
 j
-x
-x
-j
+V
+V
+u
 X
 B
 "}
 (4,1,1) = {"
 B
 i
-j
+u
 k
 f
 x
@@ -142,8 +158,8 @@ r
 Y
 H
 W
-x
-j
+V
+u
 x
 B
 "}
