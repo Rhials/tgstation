@@ -8,6 +8,9 @@
 "e" = (
 /turf/closed/wall/mineral/plastitanium,
 /area/shuttle/escape)
+"i" = (
+/turf/open/floor/pod,
+/area/shuttle/escape)
 "j" = (
 /obj/machinery/door/airlock/titanium{
 	name = "Emergency Shuttle Airlock"
@@ -24,12 +27,6 @@
 /area/shuttle/escape)
 "w" = (
 /turf/open/floor/iron/dark,
-/area/shuttle/escape)
-"y" = (
-/obj/modular_map_root/modular_shuttle{
-	key = "generic_shuttlemod"
-	},
-/turf/open/floor/plating,
 /area/shuttle/escape)
 "A" = (
 /obj/structure/window/reinforced/spawner/directional/south,
@@ -51,24 +48,25 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
 "H" = (
-/turf/open/space/basic,
+/obj/modular_map_root/modular_shuttle,
+/turf/open/floor/plating,
 /area/shuttle/escape)
 "I" = (
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "J" = (
-/turf/open/floor/pod/light,
-/area/shuttle/escape)
-"M" = (
 /turf/open/space/basic,
-/area/template_noop)
-"V" = (
+/area/shuttle/escape)
+"K" = (
 /obj/modular_map_root/modular_shuttle/bridge,
 /turf/open/space/basic,
 /area/shuttle/escape)
-"W" = (
-/turf/open/floor/pod,
+"M" = (
+/turf/open/floor/pod/light,
 /area/shuttle/escape)
+"W" = (
+/turf/open/space/basic,
+/area/template_noop)
 "X" = (
 /obj/machinery/door/airlock/titanium{
 	name = "Emergency Shuttle Airlock"
@@ -78,27 +76,27 @@
 
 (1,1,1) = {"
 a
-H
-H
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
+J
+J
 X
 c
 j
-H
-H
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
+J
+J
 a
 a
 a
@@ -128,7 +126,7 @@ I
 I
 I
 I
-H
+J
 a
 a
 a
@@ -158,7 +156,7 @@ I
 I
 I
 I
-H
+J
 a
 a
 a
@@ -188,18 +186,18 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (5,1,1) = {"
 B
 A
-y
+H
 I
 I
 I
@@ -210,7 +208,7 @@ I
 w
 w
 w
-y
+H
 I
 I
 I
@@ -218,13 +216,13 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (6,1,1) = {"
 B
@@ -248,13 +246,13 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (7,1,1) = {"
 B
@@ -268,7 +266,7 @@ I
 I
 I
 w
-J
+M
 w
 I
 I
@@ -278,13 +276,13 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (8,1,1) = {"
 e
@@ -297,9 +295,9 @@ I
 I
 I
 I
-W
-W
-W
+i
+i
+i
 I
 I
 I
@@ -308,13 +306,13 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (9,1,1) = {"
 B
@@ -326,25 +324,25 @@ n
 n
 n
 n
+M
+i
+M
+i
+M
+n
+n
+n
+n
+n
+n
+n
+K
 J
-W
 J
-W
 J
-n
-n
-n
-n
-n
-n
-n
-V
-H
-H
-H
-H
-H
-H
+J
+J
+J
 "}
 (10,1,1) = {"
 e
@@ -357,9 +355,9 @@ I
 I
 I
 I
-W
-W
-W
+i
+i
+i
 I
 I
 I
@@ -368,13 +366,13 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (11,1,1) = {"
 B
@@ -388,7 +386,7 @@ I
 I
 I
 w
-J
+M
 w
 I
 I
@@ -398,13 +396,13 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (12,1,1) = {"
 B
@@ -428,13 +426,13 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (13,1,1) = {"
 B
@@ -458,18 +456,18 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (14,1,1) = {"
 e
 e
-y
+H
 I
 I
 I
@@ -480,7 +478,7 @@ I
 w
 w
 w
-y
+H
 I
 I
 I
@@ -488,13 +486,13 @@ I
 I
 I
 I
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
 "}
 (15,1,1) = {"
 B
@@ -518,13 +516,13 @@ I
 I
 I
 I
-H
-M
-M
-M
-M
-M
-M
+J
+W
+W
+W
+W
+W
+W
 "}
 (16,1,1) = {"
 B
@@ -548,7 +546,7 @@ I
 I
 I
 I
-H
+J
 a
 a
 a
@@ -558,27 +556,27 @@ a
 "}
 (17,1,1) = {"
 a
-H
-H
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
+J
+J
 X
 c
 X
-H
-H
-H
-H
-H
-H
-H
-H
-H
+J
+J
+J
+J
+J
+J
+J
+J
+J
 a
 a
 a

@@ -510,8 +510,15 @@
 
 /obj/modular_map_root/modular_shuttle
 	config_file = "strings/modular_maps/emergency_modular.toml"
+	///A list of possible keys to pick modules from. Describes what the general facilities will be, but the room still varies based on the suffix.
+	var/list/possible_keys = list("medbay", "security", "generic")
+
+/obj/modular_map_root/modular_shuttle/New(loc, ...)
+	key = pick(possible_keys)
+	. = ..()
 
 /obj/modular_map_root/modular_shuttle/bridge
 	config_file = "strings/modular_maps/emergency_modular_bridge.toml"
+	possible_keys = list("bridge")
 
 #undef EMAG_LOCKED_SHUTTLE_COST
