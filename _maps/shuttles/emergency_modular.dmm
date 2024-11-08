@@ -8,10 +8,6 @@
 "e" = (
 /turf/closed/wall/mineral/plastitanium,
 /area/shuttle/escape)
-"g" = (
-/obj/item/shard/plastitanium,
-/turf/open/floor/iron/white,
-/area/shuttle/escape)
 "i" = (
 /turf/open/floor/pod,
 /area/shuttle/escape)
@@ -29,20 +25,8 @@
 "n" = (
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
-"p" = (
-/obj/effect/decal/cleanable/glass/plastitanium,
-/turf/open/floor/iron/dark,
-/area/shuttle/escape)
-"s" = (
-/obj/effect/decal/cleanable/glass/plastitanium/screws,
-/turf/open/floor/iron/white,
-/area/shuttle/escape)
 "w" = (
 /turf/open/floor/iron/dark,
-/area/shuttle/escape)
-"A" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,
-/turf/open/space/basic,
 /area/shuttle/escape)
 "B" = (
 /obj/machinery/power/shuttle_engine/propulsion{
@@ -82,26 +66,26 @@
 
 (1,1,1) = {"
 e
-e
-e
-A
-A
-A
-e
-e
-A
+J
+J
+J
+J
+J
+J
+J
+J
 X
 c
 j
-A
-e
-e
-A
-A
-A
-e
-e
-e
+J
+J
+J
+J
+J
+J
+J
+J
+J
 a
 a
 a
@@ -332,7 +316,7 @@ n
 n
 n
 n
-s
+n
 J
 J
 J
@@ -374,7 +358,7 @@ J
 e
 n
 n
-g
+n
 n
 n
 n
@@ -583,7 +567,7 @@ I
 I
 I
 I
-p
+w
 w
 w
 I
@@ -604,26 +588,26 @@ a
 "}
 (19,1,1) = {"
 e
-e
-e
-A
-A
-A
-e
-e
-A
+J
+J
+J
+J
+J
+J
+J
+J
 X
 c
 X
-A
-e
-e
-A
-A
-A
-e
-e
-e
+J
+J
+J
+J
+J
+J
+J
+J
+J
 a
 a
 a
