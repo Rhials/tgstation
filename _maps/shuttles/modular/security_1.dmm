@@ -87,7 +87,7 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "U" = (
-/obj/machinery/light/directional/east,
+/obj/machinery/light/directional/west,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "Z" = (
@@ -95,58 +95,58 @@
 /area/shuttle/escape)
 
 (1,1,1) = {"
-Z
-Z
-Z
-Z
-Z
-Z
-Z
-Z
-"}
-(2,1,1) = {"
-Z
+p
 h
 h
 h
 w
 E
-p
-Z
+h
+w
 "}
-(3,1,1) = {"
-Z
+(2,1,1) = {"
 p
 p
-p
-p
-p
-p
-Z
-"}
-(4,1,1) = {"
-Z
 p
 p
 p
 p
 p
 s
-Z
+"}
+(3,1,1) = {"
+p
+p
+p
+p
+p
+p
+p
+s
+"}
+(4,1,1) = {"
+p
+p
+p
+p
+p
+p
+p
+s
 "}
 (5,1,1) = {"
 q
-Z
+w
 z
 w
 l
 p
+p
 s
-Z
 "}
 (6,1,1) = {"
 n
-p
+U
 d
 Z
 F
@@ -156,7 +156,7 @@ v
 "}
 (7,1,1) = {"
 D
-U
+p
 d
 Z
 j
@@ -165,9 +165,9 @@ a
 B
 "}
 (8,1,1) = {"
-Z
-Z
-Z
+p
+p
+d
 Z
 T
 a

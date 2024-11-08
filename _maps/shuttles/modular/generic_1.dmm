@@ -41,7 +41,7 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "n" = (
-/obj/effect/decal/cleanable/garbage,
+/obj/effect/decal/cleanable/robot_debris,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "p" = (
@@ -61,6 +61,7 @@
 "t" = (
 /obj/structure/cable,
 /obj/machinery/door/airlock/maintenance_hatch,
+/obj/structure/cable,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "u" = (
@@ -83,6 +84,7 @@
 "C" = (
 /obj/structure/cable,
 /obj/machinery/power/port_gen/pacman,
+/obj/effect/decal/cleanable/glass/plasma,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "G" = (
@@ -94,6 +96,7 @@
 /obj/effect/spawner/random/maintenance/five,
 /obj/item/stack/sheet/mineral/plasma/five,
 /obj/item/stack/sheet/mineral/plasma/five,
+/obj/structure/cable,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "I" = (
@@ -120,11 +123,11 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "P" = (
-/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/vomit/old,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "R" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "V" = (
@@ -139,7 +142,6 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "X" = (
-/obj/structure/sign/warning/vacuum/external/directional/south,
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/shuttle/escape)
@@ -154,44 +156,44 @@
 /area/shuttle/escape)
 
 (1,1,1) = {"
-B
+J
 B
 J
 J
 J
-J
-B
-B
+x
+n
+R
 "}
 (2,1,1) = {"
-x
+j
 B
 A
 M
 H
 a
 x
-B
+J
 "}
 (3,1,1) = {"
-x
+j
 B
 c
 V
 V
 u
 e
-B
+J
 "}
 (4,1,1) = {"
-n
+j
 t
 j
 V
 V
 u
 X
-B
+J
 "}
 (5,1,1) = {"
 Z
@@ -204,14 +206,14 @@ G
 W
 "}
 (6,1,1) = {"
-P
+x
 Y
 r
 V
 V
 u
 x
-B
+J
 "}
 (7,1,1) = {"
 x
@@ -224,12 +226,12 @@ p
 B
 "}
 (8,1,1) = {"
-B
-B
+x
+P
+x
+x
 R
-R
-R
-R
-R
-B
+x
+x
+x
 "}

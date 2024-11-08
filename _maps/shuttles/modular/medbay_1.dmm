@@ -15,6 +15,12 @@
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
+"e" = (
+/obj/machinery/door/airlock/public/glass{
+	name = "Emergency Shuttle Infirmary"
+	},
+/turf/open/floor/plating,
+/area/shuttle/escape)
 "g" = (
 /obj/structure/table,
 /obj/item/defibrillator/loaded,
@@ -120,7 +126,7 @@
 (1,1,1) = {"
 x
 K
-K
+e
 j
 j
 K
@@ -131,8 +137,8 @@ j
 j
 E
 a
-a
-a
+L
+L
 X
 n
 j
@@ -181,8 +187,8 @@ j
 j
 p
 a
-a
-a
+P
+P
 h
 g
 j
