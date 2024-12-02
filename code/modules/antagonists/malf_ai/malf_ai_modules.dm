@@ -344,6 +344,10 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 		minor_announce("DOOMSDAY DEVICE OUT OF STATION RANGE, ABORTING", "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4", TRUE)
 		owner.ShutOffDoomsdayDevice()
 		return
+	if(owner.stat == DEAD)
+		minor_announce("CRITICAL ERROR IN CORE DOOMSDAY PROCESSING FUNCTIONS, ABORTING", "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4", TRUE)
+		owner.ShutOffDoomsdayDevice()
+		return
 	if(!timing)
 		STOP_PROCESSING(SSfastprocess, src)
 		return
@@ -909,7 +913,7 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module/malf))
 	cost = 30
 	upgrade = TRUE
 	unlock_text = span_notice("Virus package compiled. Select a target mech at any time. <b>You must remain on the station at all times. \
-		Loss of signal will result in total system lockout.</b>")
+		Loss of signal will result in total system lockout. If a Doomsday Device is active, destruction of your core will prevent it from completing!</b>")
 	unlock_sound = 'sound/vehicles/mecha/nominal.ogg'
 
 /datum/ai_module/malf/upgrade/mecha_domination/upgrade(mob/living/silicon/ai/AI)
