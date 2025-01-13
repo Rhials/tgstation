@@ -514,3 +514,18 @@
 /datum/religion_sect/music/on_conversion(mob/living/chap)
 	. = ..()
 	new /obj/item/choice_beacon/music(get_turf(chap))
+
+/datum/religion_sect/dream
+	name = "Dreaming God"
+	quote = "It was revealed to me in a dream..."
+	desc = "Divine the meaning of dreams. Grant others prophetic visions of the future. Lie to people about what you dreamed to sway them."
+	tgui_icon = "face-sleeping" //Check these again, might have a more ~dreamy~ looking one.
+	altar_icon_state = "convertaltar-white" //MAKE THIS
+	alignment = ALIGNMENT_NEUT
+	rites_list = list(/datum/religion_rites/dream, /datum/religion_rites/area_dream)
+
+/datum/religion_sect/dream/on_conversion(mob/living/carbon/new_convert)
+	..()
+
+/datum/religion_sect/dream/on_deconversion(mob/living/carbon/human/new_convert)
+	return ..()
