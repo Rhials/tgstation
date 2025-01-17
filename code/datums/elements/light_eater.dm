@@ -47,8 +47,9 @@
  * Arguments:
  * - [food][/atom]: The atom to start the search for lights at.
  * - [eater][/datum]: The light eater being used in this case.
+ * - silent: Do we produce a message as we eat this?
  */
-/datum/element/light_eater/proc/eat_lights(atom/food, datum/eater)
+/datum/element/light_eater/proc/eat_lights(atom/food, datum/eater, silent = FALSE)
 	var/list/buffet = table_buffet(food)
 	if(!LAZYLEN(buffet))
 		return 0
@@ -60,11 +61,12 @@
 	if(!.)
 		return
 
-	food.visible_message(
-		span_danger("Something dark in [eater] lashes out at [food] and [food.p_their()] light goes out in an instant!"),
-		span_userdanger("You feel something dark in [eater] lash out and gnaw through your light in an instant! It recedes just as fast, but you can feel that [eater.p_theyve()] left something hungry behind."),
-		span_danger("You feel a gnawing pulse eat at your sight.")
-	)
+	if(!silent)
+		food.visible_message(
+			span_danger("Something dark in [eater] lashes out at [food] and [food.p_their()] light goes out in an instant!"),
+			span_userdanger("You feel something dark in [eater] lash out and gnaw through your light in an instant! It recedes just as fast, but you can feel that [eater.p_theyve()] left something hungry behind."),
+			span_danger("You feel a gnawing pulse eat at your sight.")
+		)
 
 /**
  * Aggregates a list of the light sources attached to the target atom.
@@ -197,5 +199,5 @@
  */
 /datum/element/light_eater/proc/on_expose_atom(datum/reagent/source, atom/target, reac_volume)
 	SIGNAL_HANDLER
-	eat_lights(target, source)
+	eat_lights(target, source, TRUE)
 	return NONE
