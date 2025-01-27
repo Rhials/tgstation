@@ -6006,6 +6006,7 @@
 #include "code\modules\shuttle\shuttle_events\blackhole.dm"
 #include "code\modules\shuttle\shuttle_events\carp.dm"
 #include "code\modules\shuttle\shuttle_events\humans.dm"
+#include "code\modules\shuttle\shuttle_events\hyperspace_haunting.dm"
 #include "code\modules\shuttle\shuttle_events\meteors.dm"
 #include "code\modules\shuttle\shuttle_events\misc.dm"
 #include "code\modules\shuttle\shuttle_events\player_controlled.dm"
