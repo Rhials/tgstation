@@ -14,6 +14,8 @@
 	for(var/area/individual_area in areas_to_reveal)
 		RegisterSignal(individual_area, COMSIG_AREA_ENTERED, PROC_REF(reveal_ghost)) //Doesnt fucking work bc ghosts dont send this signal. Damnit.
 		RegisterSignal(individual_area, COMSIG_AREA_EXITED, PROC_REF(conceal_ghost))
+	for(var/mob/dead/observer/spooky_ghost in GLOB.player_list)
+		spooky_ghost.become_area_sensitive(INNATE_TRAIT)
 
 /datum/shuttle_event/hyperspace_haunting/proc/reveal_ghost(datum/source, atom/movable/arrived, area/old_area)
 	SIGNAL_HANDLER
