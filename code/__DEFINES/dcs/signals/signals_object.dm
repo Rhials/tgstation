@@ -588,3 +588,6 @@
 /// Sent from /datum/wires/attach_assembly() : (atom/holder)
 #define COMSIG_ASSEMBLY_PRE_ATTACH "assembly_pre_attach"
 	#define COMPONENT_CANCEL_ATTACH (1<<0)
+
+///Sent from /obj/item/ammo_box/attackby() : //Add vars here
+#define COMSIG_LOADING_MAGAZINE "loading_magazine"

@@ -163,6 +163,9 @@
 
 /obj/item/ammo_box/attackby(obj/item/tool, mob/user, params, silent = FALSE, replace_spent = 0)
 
+	if(SEND_SIGNAL(user, COMSIG_LOADING_MAGAZINE))
+		return
+
 	if(IS_WRITING_UTENSIL(tool))
 		if(!ammo_band_icon)
 			balloon_alert(user, "no indicator support!")
