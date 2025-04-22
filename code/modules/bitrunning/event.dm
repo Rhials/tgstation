@@ -19,8 +19,6 @@
 	if(!.)
 		return .
 
-	active_servers.Cut()
-
 	validate_servers()
 
 	if(length(active_servers))
@@ -30,7 +28,7 @@
 /datum/round_event_control/bitrunning_glitch/proc/validate_servers()
 	active_servers.Cut()
 	for(var/obj/machinery/quantum_server/server in SSmachines.get_machines_by_type(/obj/machinery/quantum_server))
-		if(server.validate_mutation_candidates() && server.generated_domain.difficulty != BITRUNNER_DIFFICULTY_NONE)
+		if(server.generated_domain.difficulty != BITRUNNER_DIFFICULTY_NONE && server.validate_mutation_candidates())
 			active_servers.Add(WEAKREF(server))
 
 	return length(active_servers) > 0
