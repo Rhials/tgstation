@@ -339,7 +339,8 @@
 	switch(roll)
 		if(1)
 			//Dust
-			selected_turf.visible_message(span_userdanger("[user] turns to dust!"))
+			INVOKE_ASYNC(user, PROC_REF(emote), "scream")
+			visible_message(span_bad("[user] shrieks in agony as they are reduced to dust!"), span_bad("Uh oh."), span_bad("You hear the distant ringing of a service bell eminate from [src]"))
 			user.investigate_log("has been dusted by a die of fate.", INVESTIGATE_DEATHS)
 			user.dust()
 		if(2)
@@ -421,7 +422,7 @@
 			new /obj/item/book/granter/action/spell/random(drop_location())
 		if(16)
 			//Servant & Servant Summon
-			selected_turf.visible_message(span_nicegreen("You hear the distant ringing of a service bell eminate from [src]"), span_nicegreen("You feel a tingle of magical summoning power at your fingertips!"), span_nicegreen("You hear the distant ringing of a service bell eminate from [src]"))
+			visible_message(span_nicegreen("You hear the distant ringing of a service bell eminate from [src]"), span_nicegreen("You feel a tingle of magical summoning power at your fingertips!"), span_nicegreen("You hear the distant ringing of a service bell eminate from [src]"))
 			var/mob/living/carbon/human/human_servant = new(drop_location())
 			do_smoke(0, holder = src, location = drop_location())
 
