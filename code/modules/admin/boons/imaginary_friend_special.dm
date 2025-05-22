@@ -13,9 +13,9 @@
  *
  * Is not tied to the brain trauma and can be used on all mobs, technically. Including cyborgs and simple/basic mobs.
  *
- * Warranty void if used on AI eyes or other imaginary friends. Please smite responsibly.
+ * Warranty void if used on AI eyes or other imaginary friends. Please use responsibly.
  **/
-/datum/smite/custom_imaginary_friend
+/datum/boon/custom_imaginary_friend
 	name = "Imaginary Friend (Special)"
 	/// Do we randomise friend appearances or not?
 	var/random_appearance
@@ -24,7 +24,7 @@
 	/// How many imaginary friends should be added when polling
 	var/polled_friend_count
 
-/datum/smite/custom_imaginary_friend/configure(client/user)
+/datum/boon/custom_imaginary_friend/configure(client/user)
 	var/appearance_choice = tgui_alert(user,
 		"Do you want the imaginary friend(s) to share name and appearance with their currently selected character preferences?",
 		"Imaginary Friend Appearance?",
@@ -52,7 +52,7 @@
 
 
 /// Try to offer the role to ghosts
-/datum/smite/custom_imaginary_friend/proc/poll_ghosts(client/user, mob/living/target)
+/datum/boon/custom_imaginary_friend/proc/poll_ghosts(client/user, mob/living/target)
 	var/list/volunteers = SSpolling.poll_ghost_candidates(
 		check_jobban = ROLE_PAI,
 		poll_time = 10 SECONDS,
@@ -76,7 +76,7 @@
 	return friend_candidates
 
 /// Pick client manually
-/datum/smite/custom_imaginary_friend/proc/pick_client(client/user)
+/datum/boon/custom_imaginary_friend/proc/pick_client(client/user)
 	var/picked_client = tgui_input_list(user, "Pick the player to put in control", "New Imaginary Friend", sort_list(GLOB.clients))
 	if(isnull(picked_client))
 		return
@@ -101,7 +101,7 @@
 	return list(friend_candidate_client)
 
 
-/datum/smite/custom_imaginary_friend/effect(client/user, mob/living/target)
+/datum/boon/custom_imaginary_friend/effect(client/user, mob/living/target)
 	. = ..()
 
 	// Run this check before and after polling, we don't wanna poll for something which already stopped existing

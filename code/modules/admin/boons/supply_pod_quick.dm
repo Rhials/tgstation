@@ -2,13 +2,13 @@
 #define SUPPLY_POD_QUICK_FIRE_RANGE 2
 
 /// Quickly throws a supply pod at the target, optionally with an item
-/datum/smite/supply_pod_quick
+/datum/boon/supply_pod_quick
 	name = "Supply Pod (Quick)"
 
 	/// What is sent down with the pod
 	var/target_path
 
-/datum/smite/supply_pod_quick/configure(client/user)
+/datum/boon/supply_pod_quick/configure(client/user)
 	var/attempted_target_path = input(
 		user,
 		"Enter typepath of an atom you'd like to send with the pod (type \"empty\" to send an empty pod):",
@@ -32,7 +32,7 @@
 			return FALSE
 	target_path = delivery
 
-/datum/smite/supply_pod_quick/effect(client/user, mob/living/target)
+/datum/boon/supply_pod_quick/effect(client/user, mob/living/target)
 	. = ..()
 	podspawn(list(
 		"target" = get_turf(target),

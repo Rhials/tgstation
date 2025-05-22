@@ -179,12 +179,12 @@ ADMIN_VERB_AND_CONTEXT_MENU(admin_smite, R_ADMIN|R_FUN, "Smite", "Smite a player
 	smite.do_effect(user, target)
 
 ADMIN_VERB_AND_CONTEXT_MENU(admin_boon, R_ADMIN|R_FUN, "Boon", "Bestow a boon, granting players luxuries or divine powers.", ADMIN_CATEGORY_FUN, mob/living/target in world) //Reword this it reads so weirdly
-	var/boon = tgui_input_list(user, "Choose a boon", "Be blessed, my child", GLOB.boons)
+	var/boon_to_grant = tgui_input_list(user, "Choose a boon", "Be blessed, my child", GLOB.boons)
 
-	if(QDELETED(target) || !boon)
+	if(QDELETED(target) || !boon_to_grant)
 		return
 
-	var/boon_path = GLOB.boons[boon]
+	var/boon_path = GLOB.boons[boon_to_grant]
 	var/datum/boon/boon = new boon_path
 	var/configuration_success = boon.configure(user)
 	if (configuration_success == FALSE)

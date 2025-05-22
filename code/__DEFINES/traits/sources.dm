@@ -31,6 +31,9 @@
 #define ADMIN_TRAIT "admin"
 /// Any traits given through a smite.
 #define SMITE_TRAIT "smite"
+/// Any traits given through a boon. //This isn't being used yet. It might not.
+#define BOON_TRAIT "boon"
+
 #define CHANGELING_TRAIT "changeling"
 #define CULT_TRAIT "cult"
 #define LICH_TRAIT "lich"

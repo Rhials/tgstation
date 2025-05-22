@@ -1,13 +1,13 @@
 #define SUPPLY_POD_FIRE_RANGE
 
 /// Throws a supply pod at the target, with no item inside
-/datum/smite/supply_pod
+/datum/boon/supply_pod
 	name = "Supply Pod"
 
 	// punish_log() is handled by the centcom_podlauncher datum
 	should_log = FALSE
 
-/datum/smite/supply_pod/effect(client/user, mob/living/target)
+/datum/boon/supply_pod/effect(client/user, mob/living/target)
 	. = ..()
 	var/datum/centcom_podlauncher/plaunch = new(user)
 	plaunch.specificTarget = target

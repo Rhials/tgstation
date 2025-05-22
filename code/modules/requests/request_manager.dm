@@ -212,6 +212,10 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 			SSadmin_verbs.dynamic_invoke_verb(ui.user, /datum/admin_verb/admin_smite, request.owner?.mob)
 			return TRUE
 
+		if ("boon")
+			SSadmin_verbs.dynamic_invoke_verb(ui.user, /datum/admin_verb/admin_boon, request.owner?.mob)
+			return TRUE
+
 		if ("rply")
 			if (request.req_type == REQUEST_PRAYER)
 				to_chat(usr, "Cannot reply to a prayer", confidential = TRUE)
