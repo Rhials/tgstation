@@ -3020,6 +3020,7 @@
 #include "code\modules\admin\topic.dm"
 #include "code\modules\admin\trophy_manager.dm"
 #include "code\modules\admin\whitelist.dm"
+#include "code\modules\admin\boons\_boon.dm"
 #include "code\modules\admin\callproc\callproc.dm"
 #include "code\modules\admin\smites\_smite.dm"
 #include "code\modules\admin\smites\bad_luck.dm"

@@ -178,6 +178,19 @@ ADMIN_VERB_AND_CONTEXT_MENU(admin_smite, R_ADMIN|R_FUN, "Smite", "Smite a player
 		return
 	smite.do_effect(user, target)
 
+ADMIN_VERB_AND_CONTEXT_MENU(admin_boon, R_ADMIN|R_FUN, "Boon", "Bestow a boon, granting players luxuries or divine powers.", ADMIN_CATEGORY_FUN, mob/living/target in world) //Reword this it reads so weirdly
+	var/boon = tgui_input_list(user, "Choose a boon", "Be blessed, my child", GLOB.boons)
+
+	if(QDELETED(target) || !boon)
+		return
+
+	var/boon_path = GLOB.boons[boon]
+	var/datum/boon/boon = new boon_path
+	var/configuration_success = boon.configure(user)
+	if (configuration_success == FALSE)
+		return
+	boon.do_effect(user, target)
+
 /// "Turns" people into objects. Really, we just add them to the contents of the item.
 /proc/objectify(atom/movable/target, path_or_instance)
 	var/atom/tomb
@@ -218,3 +231,9 @@ ADMIN_VERB_AND_CONTEXT_MENU(admin_smite, R_ADMIN|R_FUN, "Smite", "Smite a player
 	message_admins(msg)
 	admin_ticket_log(whom, msg)
 	log_admin("[key_name(src)] punished [key_name(whom)] with [punishment].")
+
+/client/proc/boon_log(whom, boon)
+	var/msg = "[key_name_admin(src)] booned [key_name_admin(whom)] with [boon]."
+	message_admins(msg)
+	admin_ticket_log(whom, msg)
+	log_admin("[key_name(src)] booned [key_name(whom)] with [boon].")

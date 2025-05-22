@@ -11,6 +11,15 @@ GLOBAL_VAR(stickbanadminexemptiontimerid) //stores the timerid of the callback t
 
 GLOBAL_LIST_INIT_TYPED(smites, /datum/smite, init_smites())
 
+/proc/init_boons()
+	var/list/boons = list()
+	for (var/_boon_path in subtypesof(/datum/boon))
+		var/datum/boon/boon_path = _boon_path
+		boons[initial(boon_path.name)] = boon_path
+	return boons
+
+GLOBAL_LIST_INIT_TYPED(boons, /datum/boon, init_boons())
+
 GLOBAL_VAR_INIT(admin_notice, "") // Admin notice that all clients see when joining the server
 
 // A list of all the special byond lists that need to be handled different by vv

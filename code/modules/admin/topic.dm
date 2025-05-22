@@ -967,6 +967,9 @@
 	else if(href_list["adminsmite"])
 		return SSadmin_verbs.dynamic_invoke_verb(usr, /datum/admin_verb/admin_smite, locate(href_list["adminsmite"]))
 
+	else if(href_list["adminboon"])
+		return SSadmin_verbs.dynamic_invoke_verb(usr, /datum/admin_verb/admin_boon, locate(href_list["adminboon"]))
+
 	else if(href_list["CentComReply"])
 		if(!check_rights(R_ADMIN))
 			return
