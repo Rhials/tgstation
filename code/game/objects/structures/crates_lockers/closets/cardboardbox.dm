@@ -193,8 +193,8 @@
 	move_speed_multiplier = initial(move_speed_multiplier)
 
 /obj/item/boxcar_spraycan
-	name = "box-car spraycan"
-	desc = "A Decroux brand box-car decal spraycan. The nozzle is secured by a cutting edge electronic lock. Used to convert a large enough box into a fully functional car. It looks like there's a label on the back..."
+	name = "box car spraycan"
+	desc = "A Decroux brand cardboard box decal spraycan. Used to convert a large enough cardboard box into a fully functional car. "
 	icon = 'icons/obj/art/crayons.dmi'
 	icon_state = "boxcar_can"
 	inhand_icon_state = "spraycan"
@@ -209,18 +209,22 @@
 
 /obj/item/boxcar_spraycan/examine(mob/user)
 	. = ..()
+	var/datum/job/user_job = user.mind?.assigned_role
+	if(user_job && is_mime_job(user_job))
+		. += "This is high-end stuff, usually only given out to the BEST of mimes. You should feel honored to have one of these. "
+
 	if(used)
-		. += span_notice("It feels considerably lighter than it should be. This can is probably empty...")
+		. += "It appears that has used it up already. "
+
+	. += "<i>It looks like there's a label on the back...</i>"
 
 /obj/item/boxcar_spraycan/examine_more(mob/user)
 	. = ..()
 
-	. += span_notice("The label on the back reads: 'Thank you for purchasing a Decroux Box-Car Spraycan. ") //rewrite all of this omg
-	. += span_notice("The spray nozzle will be electronically locked unless used by someone adhering to a vow of silence. ")
-	. += span_notice("Those who are bound to silence through other means may also qualify, due to their innate closeness to the spirit of mimery. ")
-	. += span_notice("This is a precaution to ensure excellence in mimery, and that a mockery isn't made of our craft. ")
-	. += span_notice("Lastly -- <i>No clowns.</i>'")
-
+	. += span_notice("The label on the back reads: 'Thank you for purchasing a Decroux Cardboard Car Spraycan. \
+						Decroux treats the art of mimery with utmost respect. \
+						This product is electronically locked, and may only be wielded by mimes, or others whom are bound to silence. \
+						Lastly -- <i>No clowns.</i>'")
 
 /obj/item/boxcar_spraycan/attack_self(mob/living/user, direction) //Used to test if you're "worthy" without using it directly on a box.
 	. = ..()
@@ -248,16 +252,23 @@
  */
 
 /obj/item/boxcar_spraycan/proc/worthiness_check(mob/living/user, silent = FALSE)
+	if(used)
+		balloon_alert()
+		return FALSE
+
 	if(HAS_MIND_TRAIT(user, TRAIT_MIMING) || HAS_TRAIT(user, TRAIT_MUTE) || obj_flags & EMAGGED) //Mimes n' mutes, unless its emagged
 		if(!silent)
 			balloon_alert(user, "the nozzle moves!")
 			playsound(get_turf(src), 'sound/machines/ping.ogg', 35, TRUE)
 		return TRUE
-	else
-		if(!silent)
-			balloon_alert(user, "the nozzle doesn't budge!")
-			playsound(get_turf(src), 'sound/machines/buzz/buzz-sigh.ogg', 35, TRUE)
-		if(is_clown_job(user.mind?.assigned_role)) //You had your warning, clown //add more clown states here (wizard convert, etc)
-			to_chat(user, span_alert("\The nozzle on the [src] sends a jolt of electricity through your hand! Distant, mocking French laughter echoes in the back of your mind..."))
-			user.electrocute_act(5, src, flags = SHOCK_SUPPRESS_MESSAGE)
+
+	if(!silent)
+		balloon_alert(user, "the nozzle doesn't budge!")
+		playsound(get_turf(src), 'sound/machines/buzz/buzz-sigh.ogg', 35, TRUE)
+		return FALSE
+
+	var/datum/job/user_job = user.mind?.assigned_role
+	if(user_job && is_clown_job(user_job)) //You had your warning, clown
+		to_chat(user, span_alert("\The nozzle on the [src] sends a jolt of electricity through your hand! Distant, French laughter echoes in the back of your mind..."))
+		user.electrocute_act(5, src, flags = SHOCK_SUPPRESS_MESSAGE)
 	return FALSE
