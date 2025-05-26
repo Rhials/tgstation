@@ -58,6 +58,8 @@
 	if(istype(W, /obj/item/boxcar_spraycan))
 		if(!boxcar_convertible)
 			balloon_alert(user, "cannot be painted!")
+			return
+
 		var/obj/item/boxcar_spraycan/spraycan = W
 		if(opened)
 			balloon_alert(user, "close the box first!")
