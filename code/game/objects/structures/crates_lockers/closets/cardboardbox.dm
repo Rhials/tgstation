@@ -33,7 +33,7 @@
 	/// Should the box make the occupant(s) perform an alert animation upon being opened?
 	var/should_alert = TRUE
 	/// Can we be converted into a box-car?
-	var/boxcar_convertible = TRUE
+	var/car_convertible = TRUE
 
 /obj/structure/closet/cardboard/Initialize(mapload)
 	. = ..()
@@ -56,7 +56,7 @@
 
 /obj/structure/closet/cardboard/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/boxcar_spraycan))
-		if(!boxcar_convertible)
+		if(!car_convertible)
 			balloon_alert(user, "cannot be painted!")
 			return
 
@@ -151,7 +151,7 @@
 	open_sound_volume = 35
 	close_sound_volume = 50
 	material_drop = /obj/item/stack/sheet/plasteel
-	boxcar_convertible = FALSE
+	car_convertible = FALSE
 
 /obj/structure/closet/cardboard/car
 	name = "cardboard box-car"
@@ -161,7 +161,7 @@
 	move_speed_multiplier = 0.5
 	COOLDOWN_DECLARE(move_sound_cooldown)
 	should_alert = FALSE
-	boxcar_convertible = FALSE
+	car_convertible = FALSE
 
 /obj/structure/closet/cardboard/car/relaymove(mob/living/user, direction)
 	. = ..()

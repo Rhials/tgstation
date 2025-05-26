@@ -16,7 +16,7 @@
 	max_integrity = 1 // "This dumb box shouldn't take more than one hit to make it vanish."
 	move_speed_multiplier = 0.5
 	enable_door_overlay = FALSE
-	boxcar_convertible = FALSE
+	car_convertible = FALSE
 
 /obj/structure/closet/cardboard/agent/Initialize(mapload)
 	. = ..()
