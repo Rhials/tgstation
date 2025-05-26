@@ -18,6 +18,7 @@
 	has_closed_overlay = FALSE
 	door_anim_time = 0 // no animation
 	can_install_electronics = FALSE
+	paint_jobs = null
 
 	/// Cooldown controlling when the box can trigger the Metal Gear Solid-style '!' alert.
 	COOLDOWN_DECLARE(alert_cooldown)
@@ -31,6 +32,8 @@
 	var/move_delay = FALSE
 	/// Should the box make the occupant(s) perform an alert animation upon being opened?
 	var/should_alert = TRUE
+	/// Can we be converted into a box-car?
+	var/boxcar_convertible = TRUE
 
 /obj/structure/closet/cardboard/Initialize(mapload)
 	. = ..()
@@ -53,6 +56,8 @@
 
 /obj/structure/closet/cardboard/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/boxcar_spraycan))
+		if(!boxcar_convertible)
+			balloon_alert(user, "cannot be painted!")
 		var/obj/item/boxcar_spraycan/spraycan = W
 		if(opened)
 			balloon_alert(user, "close the box first!")
@@ -69,10 +74,11 @@
 		balloon_alert_to_viewers("spraying...")
 
 		if(do_after(user, 6 SECONDS, src))
-			playsound(get_turf(user), 'sound/effects/spray2.ogg', 5, TRUE, 5)
-			new /obj/structure/closet/cardboard/car(get_turf(src))
+			playsound(get_turf(src), 'sound/effects/spray2.ogg', 50, TRUE)
+			var/obj/structure/closet/cardboard/car/new_boxcar = new (get_turf(src))
 			spraycan.used = TRUE
-			balloon_alert_to_viewers("conversion complete!")
+			spraycan.icon_state = "boxcar_can_used"
+			new_boxcar.balloon_alert_to_viewers("conversion complete!")
 			qdel(src)
 	return
 
@@ -143,6 +149,7 @@
 	open_sound_volume = 35
 	close_sound_volume = 50
 	material_drop = /obj/item/stack/sheet/plasteel
+	boxcar_convertible = FALSE
 
 /obj/structure/closet/cardboard/car
 	name = "cardboard box-car"
@@ -152,6 +159,7 @@
 	move_speed_multiplier = 0.5
 	COOLDOWN_DECLARE(move_sound_cooldown)
 	should_alert = FALSE
+	boxcar_convertible = FALSE
 
 /obj/structure/closet/cardboard/car/relaymove(mob/living/user, direction)
 	. = ..()
@@ -213,7 +221,7 @@
 	. = ..()
 
 	if(COOLDOWN_FINISHED(src, confirmation_cooldown))
-		COOLDOWN_START(src, confirmation_cooldown, 5 SECONDS)
+		COOLDOWN_START(src, confirmation_cooldown, 3 SECONDS)
 		worthiness_check(user)
 
 /obj/item/boxcar_spraycan/emag_act(mob/user)
@@ -243,8 +251,8 @@
 	else
 		if(!silent)
 			balloon_alert(user, "the nozzle doesn't budge!")
-			playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 35, TRUE)
-		if(is_clown_job(user.mind?.assigned_role) && prob(10)) //You had your warning, clown
+			playsound(get_turf(src), 'sound/machines/buzz/buzz-sigh.ogg', 35, TRUE)
+		if(is_clown_job(user.mind?.assigned_role)) //You had your warning, clown //add more clown states here (wizard convert, etc)
 			to_chat(user, span_alert("\The nozzle on the [src] sends a jolt of electricity through your hand! Distant, mocking French laughter echoes in the back of your mind..."))
 			user.electrocute_act(5, src, flags = SHOCK_SUPPRESS_MESSAGE)
 	return FALSE
