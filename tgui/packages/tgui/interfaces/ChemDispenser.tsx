@@ -1,7 +1,4 @@
-import { toFixed } from 'common/math';
-import { BooleanLike } from 'common/react';
-import { toTitleCase } from 'common/string';
-import { useBackend, useLocalState } from '../backend';
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -9,7 +6,11 @@ import {
   LabeledList,
   ProgressBar,
   Section,
-} from '../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+import { toTitleCase } from 'tgui-core/string';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 import { Beaker, BeakerDisplay } from './common/BeakerDisplay';
 
@@ -17,7 +18,12 @@ type DispensableReagent = {
   title: string;
   id: string;
   pH: number;
+  color: string;
   pHCol: string;
+};
+
+type TransferableBeaker = Beaker & {
+  transferAmounts: number[];
 };
 
 type Data = {
@@ -25,18 +31,20 @@ type Data = {
   amount: number;
   energy: number;
   maxEnergy: number;
+  displayedUnits: string;
+  displayedMaxUnits: string;
   chemicals: DispensableReagent[];
   recipes: string[];
   recordingRecipe: string[];
   recipeReagents: string[];
-  beaker: Beaker;
+  beaker: TransferableBeaker;
 };
 
 export const ChemDispenser = (props) => {
   const { act, data } = useBackend<Data>();
   const recording = !!data.recordingRecipe;
   const { recipeReagents = [], recipes = [], beaker } = data;
-  const [hasCol, setHasCol] = useLocalState('has_col', false);
+  const [showPhCol, setShowPhCol] = useState(false);
 
   const beakerTransferAmounts = beaker ? beaker.transferAmounts : [];
   const recordedContents =
@@ -46,6 +54,7 @@ export const ChemDispenser = (props) => {
       name: toTitleCase(id.replace(/_/, ' ')),
       volume: data.recordingRecipe[id],
     }));
+
   return (
     <Window width={565} height={620}>
       <Window.Content scrollable>
@@ -62,7 +71,6 @@ export const ChemDispenser = (props) => {
               <Button
                 icon="book"
                 disabled={!beaker}
-                content={'Reaction search'}
                 tooltip={
                   beaker
                     ? 'Look up recipes and reagents!'
@@ -70,13 +78,15 @@ export const ChemDispenser = (props) => {
                 }
                 tooltipPosition="bottom-start"
                 onClick={() => act('reaction_lookup')}
-              />
+              >
+                Reaction search
+              </Button>
               <Button
                 icon="cog"
                 tooltip="Color code the reagents by pH"
                 tooltipPosition="bottom-start"
-                selected={hasCol}
-                onClick={() => setHasCol(!hasCol)}
+                selected={showPhCol}
+                onClick={() => setShowPhCol(!showPhCol)}
               />
             </>
           }
@@ -84,7 +94,10 @@ export const ChemDispenser = (props) => {
           <LabeledList>
             <LabeledList.Item label="Energy">
               <ProgressBar value={data.energy / data.maxEnergy}>
-                {toFixed(data.energy) + ' units'}
+                {data.displayedUnits +
+                  ' / ' +
+                  data.displayedMaxUnits +
+                  ' units'}
               </ProgressBar>
             </LabeledList.Item>
           </LabeledList>
@@ -97,34 +110,38 @@ export const ChemDispenser = (props) => {
                 <Box inline mx={1}>
                   <Button
                     color="transparent"
-                    content="Clear recipes"
                     onClick={() => act('clear_recipes')}
-                  />
+                  >
+                    Clear recipes
+                  </Button>
                 </Box>
               )}
               {!recording && (
                 <Button
                   icon="circle"
                   disabled={!beaker}
-                  content="Record"
                   onClick={() => act('record_recipe')}
-                />
+                >
+                  Record
+                </Button>
               )}
               {recording && (
                 <Button
                   icon="ban"
                   color="transparent"
-                  content="Discard"
                   onClick={() => act('cancel_recording')}
-                />
+                >
+                  Discard
+                </Button>
               )}
               {recording && (
                 <Button
                   icon="save"
                   color="green"
-                  content="Save"
                   onClick={() => act('save_recording')}
-                />
+                >
+                  Save
+                </Button>
               )}
             </>
           }
@@ -136,13 +153,14 @@ export const ChemDispenser = (props) => {
                 icon="tint"
                 width="129.5px"
                 lineHeight={1.75}
-                content={recipe}
                 onClick={() =>
                   act('dispense_recipe', {
                     recipe: recipe,
                   })
                 }
-              />
+              >
+                {recipe}
+              </Button>
             ))}
             {recipes.length === 0 && <Box color="light-gray">No recipes.</Box>}
           </Box>
@@ -154,13 +172,14 @@ export const ChemDispenser = (props) => {
               key={amount}
               icon="plus"
               selected={amount === data.amount}
-              content={amount}
               onClick={() =>
                 act('amount', {
                   target: amount,
                 })
               }
-            />
+            >
+              {amount}
+            </Button>
           ))}
         >
           <Box mr={-1}>
@@ -168,25 +187,31 @@ export const ChemDispenser = (props) => {
               <Button
                 key={chemical.id}
                 icon="tint"
+                textColor={showPhCol ? chemical.pHCol : chemical.color}
                 width="129.5px"
                 lineHeight={1.75}
-                content={chemical.title}
                 tooltip={'pH: ' + chemical.pH}
+                style={{
+                  textShadow: '1px 1px 0 black',
+                }}
                 backgroundColor={
-                  recipeReagents.includes(chemical.id)
-                    ? hasCol
-                      ? 'black'
-                      : 'green'
-                    : hasCol
-                      ? chemical.pHCol
-                      : 'default'
+                  recipeReagents.includes(chemical.id) ? 'green' : 'default'
                 }
                 onClick={() =>
                   act('dispense', {
                     reagent: chemical.id,
                   })
                 }
-              />
+              >
+                <span
+                  style={{
+                    color: 'white',
+                    textShadow: 'none',
+                  }}
+                >
+                  {chemical.title}
+                </span>
+              </Button>
             ))}
           </Box>
         </Section>
@@ -197,9 +222,10 @@ export const ChemDispenser = (props) => {
               key={amount}
               icon="minus"
               disabled={recording}
-              content={amount}
               onClick={() => act('remove', { amount })}
-            />
+            >
+              {amount}
+            </Button>
           ))}
         >
           <BeakerDisplay

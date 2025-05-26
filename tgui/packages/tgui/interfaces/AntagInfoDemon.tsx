@@ -1,8 +1,9 @@
+import { Box, Section, Stack } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
 import { useBackend } from '../backend';
-import { Box, Section, Stack } from '../components';
-import { BooleanLike } from 'common/react';
 import { Window } from '../layouts';
-import { ObjectivePrintout, Objective } from './common/Objectives';
+import { Objective, ObjectivePrintout } from './common/Objectives';
 
 const jauntstyle = {
   color: 'lightblue',

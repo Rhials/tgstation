@@ -1,5 +1,7 @@
 /// Adds a list of fingerprints to the atom
 /atom/proc/add_fingerprint_list(list/fingerprints_to_add) //ASSOC LIST FINGERPRINT = FINGERPRINT
+	if (QDELETED(src))
+		return
 	if (isnull(fingerprints_to_add))
 		return
 	if (forensics)
@@ -10,7 +12,7 @@
 
 /// Adds a single fingerprint to the atom
 /atom/proc/add_fingerprint(mob/suspect, ignoregloves = FALSE) //Set ignoregloves to add prints irrespective of the mob having gloves on.
-	if (QDELING(src))
+	if (QDELETED(src))
 		return
 	if (isnull(forensics))
 		forensics = new(src)
@@ -19,6 +21,8 @@
 
 /// Add a list of fibers to the atom
 /atom/proc/add_fiber_list(list/fibers_to_add) //ASSOC LIST FIBERTEXT = FIBERTEXT
+	if (QDELETED(src))
+		return
 	if (isnull(fibers_to_add))
 		return
 	if (forensics)
@@ -29,6 +33,8 @@
 
 /// Adds a single fiber to the atom
 /atom/proc/add_fibers(mob/living/carbon/human/suspect)
+	if (QDELETED(src))
+		return
 	var/old = 0
 	if(suspect.gloves && istype(suspect.gloves, /obj/item/clothing))
 		var/obj/item/clothing/gloves/suspect_gloves = suspect.gloves
@@ -47,6 +53,8 @@
 
 /// Adds a list of hiddenprints to the atom
 /atom/proc/add_hiddenprint_list(list/hiddenprints_to_add) //NOTE: THIS IS FOR ADMINISTRATION FINGERPRINTS, YOU MUST CUSTOM SET THIS TO INCLUDE CKEY/REAL NAMES! CHECK FORENSICS.DM
+	if (QDELETED(src))
+		return
 	if (isnull(hiddenprints_to_add))
 		return
 	if (forensics)
@@ -57,6 +65,8 @@
 
 /// Adds a single hiddenprint to the atom
 /atom/proc/add_hiddenprint(mob/suspect)
+	if (QDELETED(src))
+		return
 	if (isnull(forensics))
 		forensics = new(src)
 	forensics.add_hiddenprint(suspect)
@@ -67,6 +77,8 @@
 	return FALSE
 
 /obj/add_blood_DNA(list/blood_DNA_to_add)
+	if (QDELETED(src))
+		return
 	. = ..()
 	if (isnull(blood_DNA_to_add))
 		return .
@@ -97,22 +109,55 @@
 /turf/closed/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
 	return FALSE
 
+/obj/item/clothing/under/add_blood_DNA(list/blood_DNA_to_add)
+	. = ..()
+	if(!.)
+		return
+	for(var/obj/item/clothing/accessory/thing_accessory as anything in attached_accessories)
+		if(prob(66))
+			continue
+		thing_accessory.add_blood_DNA(blood_DNA_to_add)
+
 /mob/living/carbon/human/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
-	if(wear_suit)
-		wear_suit.add_blood_DNA(blood_DNA_to_add)
-		update_worn_oversuit()
-	else if(w_uniform)
-		w_uniform.add_blood_DNA(blood_DNA_to_add)
-		update_worn_undersuit()
-	if(gloves)
-		var/obj/item/clothing/gloves/mob_gloves = gloves
-		mob_gloves.add_blood_DNA(blood_DNA_to_add)
-	else if(length(blood_DNA_to_add))
-		if (isnull(forensics))
+	return add_blood_DNA_to_items(blood_DNA_to_add)
+
+/// Adds blood DNA to certain slots the mob is wearing
+/mob/living/carbon/human/proc/add_blood_DNA_to_items(
+	list/blood_DNA_to_add,
+	target_flags = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_GLOVES|ITEM_SLOT_HEAD|ITEM_SLOT_MASK,
+)
+	if(QDELING(src))
+		return FALSE
+	if(!length(blood_DNA_to_add))
+		return FALSE
+
+	// Don't messy up our jumpsuit if we're got a coat
+	if((target_flags & ITEM_SLOT_OCLOTHING) && (wear_suit?.body_parts_covered & CHEST))
+		target_flags &= ~ITEM_SLOT_ICLOTHING
+
+	var/dirty_hands = !!(target_flags & (ITEM_SLOT_GLOVES|ITEM_SLOT_HANDS))
+	var/dirty_feet = !!(target_flags & ITEM_SLOT_FEET)
+	var/slots_to_bloody = target_flags & ~check_covered_slots()
+	var/list/all_worn = get_equipped_items()
+	for(var/obj/item/thing as anything in all_worn)
+		if(thing.slot_flags & slots_to_bloody)
+			thing.add_blood_DNA(blood_DNA_to_add)
+		if(thing.body_parts_covered & HANDS)
+			dirty_hands = FALSE
+		if(thing.body_parts_covered & FEET)
+			dirty_feet = FALSE
+
+	if(slots_to_bloody & ITEM_SLOT_HANDS)
+		for(var/obj/item/thing in held_items)
+			thing.add_blood_DNA(blood_DNA_to_add)
+
+	if(dirty_hands || dirty_feet || !length(all_worn))
+		if(isnull(forensics))
 			forensics = new(src)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
-		blood_in_hands = rand(2, 4)
-	update_worn_gloves()
+		if(dirty_hands)
+			blood_in_hands = rand(2, 4)
+	update_clothing(slots_to_bloody)
 	return TRUE
 
 /*

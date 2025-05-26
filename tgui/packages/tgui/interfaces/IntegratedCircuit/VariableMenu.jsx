@@ -1,14 +1,15 @@
+import { Component } from 'react';
 import {
   Box,
-  Stack,
-  Section,
   Button,
-  Input,
   Dropdown,
   Icon,
-} from '../../components';
-import { Component } from 'react';
-import { shallowDiffers } from 'common/react';
+  Input,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+import { shallowDiffers } from 'tgui-core/react';
+
 import {
   VARIABLE_ASSOC_LIST,
   VARIABLE_LIST,
@@ -95,7 +96,7 @@ export class VariableMenu extends Component {
                             onMouseDown={(e) => handleMouseDownSetter(e, val)}
                             color={val.color}
                             disabled={!!val.is_list}
-                            tooltip={multiline`
+                            tooltip={`
                             Drag me onto the circuit's grid
                             to make a setter for this variable`}
                             icon="pen"
@@ -104,7 +105,7 @@ export class VariableMenu extends Component {
                         <Stack.Item>
                           <Button
                             fluid
-                            tooltip={multiline`
+                            tooltip={`
                             Drag me onto the circuit's grid
                             to make a getter for this variable`}
                             color={val.color}
@@ -133,9 +134,9 @@ export class VariableMenu extends Component {
                   <Input
                     placeholder="Name"
                     fluid
-                    onChange={(e, nameVal) =>
+                    onChange={(val) =>
                       this.setState({
-                        variable_name: nameVal,
+                        variable_name: val,
                       })
                     }
                   />
@@ -143,7 +144,7 @@ export class VariableMenu extends Component {
                 <Stack.Item>
                   <Dropdown
                     options={types}
-                    displayText={variable_type}
+                    selected={variable_type}
                     className="IntegratedCircuit__BlueBorder"
                     color="black"
                     width="100%"

@@ -1,4 +1,4 @@
-import { useBackend, useLocalState } from '../backend';
+import { useState } from 'react';
 import {
   AnimatedNumber,
   Box,
@@ -6,12 +6,14 @@ import {
   NumberInput,
   Section,
   Stack,
-} from '../components';
-import { Window } from '../layouts';
-import { round, toFixed } from 'common/math';
-import { BooleanLike } from 'common/react';
+} from 'tgui-core/components';
+import { round, toFixed } from 'tgui-core/math';
+import { BooleanLike } from 'tgui-core/react';
 
-type Reagent = {
+import { useBackend } from '../backend';
+import { Window } from '../layouts';
+
+export type Reagent = {
   name: string;
   volume: number;
 };
@@ -27,14 +29,11 @@ export type MixingData = {
 export const ChemMixingChamber = (props) => {
   const { act, data } = useBackend<MixingData>();
 
-  const [reagentName, setReagentName] = useLocalState('reagentName', '');
-  const [reagentQuantity, setReagentQuantity] = useLocalState(
-    'reagentQuantity',
-    1,
-  );
+  const [reagentQuantity, setReagentQuantity] = useState(1);
 
   const { emptying, temperature, targetTemp, isReacting } = data;
   const reagents = data.reagents || [];
+
   return (
     <Window width={290} height={400}>
       <Window.Content>
@@ -54,7 +53,7 @@ export const ChemMixingChamber = (props) => {
                       value={round(targetTemp, 0.1)}
                       minValue={0}
                       maxValue={1000}
-                      onDrag={(e, value) =>
+                      onDrag={(value) =>
                         act('temperature', {
                           target: value,
                         })
@@ -126,7 +125,7 @@ export const ChemMixingChamber = (props) => {
                         step={1}
                         stepPixelSize={3}
                         width="39px"
-                        onDrag={(e, value) => setReagentQuantity(value)}
+                        onDrag={(value) => setReagentQuantity(value)}
                       />
                       <Box inline mr={1} />
                     </Stack.Item>

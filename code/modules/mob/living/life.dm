@@ -11,6 +11,7 @@
  */
 /mob/living/proc/Life(seconds_per_tick = SSMOBS_DT, times_fired)
 	set waitfor = FALSE
+	SHOULD_NOT_SLEEP(TRUE)
 
 	var/signal_result = SEND_SIGNAL(src, COMSIG_LIVING_LIFE, seconds_per_tick, times_fired)
 
@@ -21,9 +22,9 @@
 		var/turf/T = get_turf(src)
 		if(!T)
 			move_to_error_room()
-			var/msg = "[ADMIN_LOOKUPFLW(src)] was found to have no .loc with an attached client, if the cause is unknown it would be wise to ask how this was accomplished."
-			message_admins(msg)
-			send2tgs_adminless_only("Mob", msg, R_ADMIN)
+			var/msg = " was found to have no .loc with an attached client, if the cause is unknown it would be wise to ask how this was accomplished."
+			message_admins(ADMIN_LOOKUPFLW(src) + msg)
+			send2tgs_adminless_only("Mob", key_name_and_tag(src) + msg, R_ADMIN)
 			src.log_message("was found to have no .loc with an attached client.", LOG_GAME)
 
 		// This is a temporary error tracker to make sure we've caught everything
@@ -53,10 +54,6 @@
 		if (QDELETED(src)) // diseases can qdel the mob via transformations
 			return
 
-		if(stat != DEAD)
-			//Random events (vomiting etc)
-			handle_random_events(seconds_per_tick, times_fired)
-
 		//Handle temperature/pressure differences between body and environment
 		var/datum/gas_mixture/environment = loc.return_air()
 		if(environment)
@@ -64,10 +61,10 @@
 
 		handle_gravity(seconds_per_tick, times_fired)
 
-	handle_wounds(seconds_per_tick, times_fired)
-
-	if(machine)
-		machine.check_eye(src)
+	if(living_flags & QUEUE_NUTRITION_UPDATE)
+		mob_mood?.update_nutrition_moodlets()
+		hud_used?.hunger?.update_hunger_bar()
+		living_flags &= ~QUEUE_NUTRITION_UPDATE
 
 	if(stat != DEAD)
 		return 1
@@ -80,12 +77,6 @@
 	return
 
 /mob/living/proc/handle_diseases(seconds_per_tick, times_fired)
-	return
-
-/mob/living/proc/handle_wounds(seconds_per_tick, times_fired)
-	return
-
-/mob/living/proc/handle_random_events(seconds_per_tick, times_fired)
 	return
 
 // Base mob environment handler for body temperature
@@ -106,18 +97,19 @@
 /**
  * Get the fullness of the mob
  *
- * This returns a value form 0 upwards to represent how full the mob is.
- * The value is a total amount of consumable reagents in the body combined
- * with the total amount of nutrition they have.
- * This does not have an upper limit.
+ * Fullness is a representation of how much nutrition the mob has,
+ * including the nutrition of stuff yet to be digested (reagents in blood / stomach)
+ *
+ * * only_consumable - if TRUE, only consumable reagents are counted.
+ * Otherwise, all reagents contribute to fullness, despite not adding nutrition as they process.
+ *
+ * Returns a number representing fullness, scaled similarly to nutrition.
  */
-/mob/living/proc/get_fullness()
+/mob/living/proc/get_fullness(only_consumable)
 	var/fullness = nutrition
 	// we add the nutrition value of what we're currently digesting
-	for(var/bile in reagents.reagent_list)
-		var/datum/reagent/consumable/bits = bile
-		if(bits)
-			fullness += bits.get_nutriment_factor(src) * bits.volume / bits.metabolization_rate
+	for(var/datum/reagent/consumable/bits in reagents.reagent_list)
+		fullness += bits.get_nutriment_factor(src) * bits.volume / bits.metabolization_rate
 	return fullness
 
 /**

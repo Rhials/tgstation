@@ -1,18 +1,20 @@
-import { Window } from '../../layouts';
-import { useBackend, useLocalState } from '../../backend';
+import { useState } from 'react';
 import {
-  ByondUi,
-  Stack,
   Button,
-  Section,
-  ProgressBar,
+  ByondUi,
   LabeledList,
-} from '../../components';
-import { formatSiUnit } from '../../format';
-import { ModulesPane } from './ModulesPane';
-import { AlertPane } from './AlertPane';
+  ProgressBar,
+  Section,
+  Stack,
+} from 'tgui-core/components';
+import { formatSiUnit } from 'tgui-core/format';
+
+import { useBackend } from '../../backend';
+import { Window } from '../../layouts';
 import { AccessConfig } from '../common/AccessConfig';
+import { AlertPane } from './AlertPane';
 import { MainData } from './data';
+import { ModulesPane } from './ModulesPane';
 
 export const Mecha = (props) => {
   const { data } = useBackend<MainData>();
@@ -27,7 +29,7 @@ export const Mecha = (props) => {
 
 export const Content = (props) => {
   const { act, data } = useBackend<MainData>();
-  const [edit_access, editAccess] = useLocalState('edit_access', false);
+  const [edit_access, editAccess] = useState(false);
   const {
     name,
     mecha_flags,
@@ -36,6 +38,7 @@ export const Content = (props) => {
     one_access,
     regions,
     accesses,
+    diagnostic_status,
   } = data;
   const id_lock = mecha_flags & mechflag_keys['ID_LOCK_ON'];
   return (
@@ -47,12 +50,23 @@ export const Content = (props) => {
               fill
               title={name}
               buttons={
-                <Button
-                  icon="edit"
-                  tooltip="Rename"
-                  tooltipPosition="left"
-                  onClick={() => act('changename')}
-                />
+                <>
+                  <Button
+                    icon="edit"
+                    tooltip="Rename"
+                    tooltipPosition="left"
+                    onClick={() => act('changename')}
+                  />
+                  {!diagnostic_status && (
+                    <Button
+                      icon="tachograph-digital"
+                      color="violet"
+                      tooltip="Diagnostic"
+                      tooltipPosition="left"
+                      onClick={() => act('diagnostic')}
+                    />
+                  )}
+                </>
               }
             >
               <Stack fill vertical>
@@ -163,8 +177,8 @@ const PowerBar = (props) => {
           ? 'Power cell missing'
           : power_level === 1e31
             ? 'Infinite'
-            : `${formatSiUnit(power_level * 1000, 0, 'J')} of ${formatSiUnit(
-                power_max * 1000,
+            : `${formatSiUnit(power_level, 0, 'J')} of ${formatSiUnit(
+                power_max,
                 0,
                 'J',
               )}`}

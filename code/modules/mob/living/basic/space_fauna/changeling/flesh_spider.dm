@@ -28,7 +28,7 @@
 	melee_attack_cooldown = CLICK_CD_MELEE
 	attack_verb_continuous = "bites"
 	attack_verb_simple = "bite"
-	attack_sound = 'sound/weapons/bite.ogg'
+	attack_sound = 'sound/items/weapons/bite.ogg'
 	attack_vis_effect = ATTACK_EFFECT_BITE
 	unsuitable_cold_damage = 4
 	unsuitable_heat_damage = 4
@@ -41,13 +41,17 @@
 	lighting_cutoff_blue = 5
 	butcher_results = list(/obj/item/food/meat/slab/spider = 2, /obj/item/food/spiderleg = 8)
 	ai_controller = /datum/ai_controller/basic_controller/giant_spider
+	max_stamina = 200
+	stamina_crit_threshold = BASIC_MOB_NO_STAMCRIT
+	stamina_recovery = 5
+	max_stamina_slowdown = 12
 
 /mob/living/basic/flesh_spider/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_WEB_SURFER, INNATE_TRAIT)
 	AddElement(/datum/element/cliff_walking)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW)
-	AddElement(/datum/element/venomous, /datum/reagent/toxin/hunterspider, 5)
+	AddElement(/datum/element/venomous, /datum/reagent/toxin/hunterspider, 5, injection_flags = INJECT_CHECK_PENETRATE_THICK)
 	AddElement(/datum/element/web_walker, /datum/movespeed_modifier/fast_web)
 	AddElement(/datum/element/nerfed_pulling, GLOB.typecache_general_bad_things_to_easily_move)
 	AddElement(/datum/element/prevent_attacking_of_types, GLOB.typecache_general_bad_hostile_attack_targets, "this tastes awful!")

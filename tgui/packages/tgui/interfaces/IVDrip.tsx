@@ -1,15 +1,16 @@
-import { BooleanLike } from 'common/react';
-import { useBackend } from '../backend';
 import {
-  Tooltip,
   Box,
-  Slider,
-  ProgressBar,
-  NoticeBox,
   Button,
   LabeledList,
+  NoticeBox,
+  ProgressBar,
   Section,
-} from '../components';
+  Slider,
+  Tooltip,
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type IVDripData = {

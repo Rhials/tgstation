@@ -1,6 +1,15 @@
-import { BooleanLike } from 'common/react';
-import { useBackend, useLocalState } from '../backend';
-import { TextArea, Stack, Button, NoticeBox, Input, Box } from '../components';
+import { useState } from 'react';
+import {
+  Box,
+  Button,
+  Input,
+  NoticeBox,
+  Stack,
+  TextArea,
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type AdminhelpData = {
@@ -18,15 +27,9 @@ export const Adminhelp = (props) => {
     bannedFromUrgentAhelp,
     urgentAhelpPromptMessage,
   } = data;
-  const [requestForAdmin, setRequestForAdmin] = useLocalState(
-    'request_for_admin',
-    false,
-  );
-  const [currentlyInputting, setCurrentlyInputting] = useLocalState(
-    'confirm_request',
-    false,
-  );
-  const [ahelpMessage, setAhelpMessage] = useLocalState('ahelp_message', '');
+  const [requestForAdmin, setRequestForAdmin] = useState(false);
+  const [currentlyInputting, setCurrentlyInputting] = useState(false);
+  const [ahelpMessage, setAhelpMessage] = useState('');
 
   const confirmationText = 'alert admins';
   return (
@@ -41,16 +44,16 @@ export const Adminhelp = (props) => {
             <TextArea
               autoFocus
               height="100%"
-              value={ahelpMessage}
+              fluid
               placeholder="Admin help"
-              onChange={(e, value) => setAhelpMessage(value)}
+              onChange={setAhelpMessage}
             />
           </Stack.Item>
           {urgentAhelpEnabled && adminCount <= 0 && (
             <Stack.Item>
               <NoticeBox info>
                 {urgentAhelpPromptMessage}
-                {(currentlyInputting && (
+                {currentlyInputting ? (
                   <Box
                     mt={1}
                     width="100%"
@@ -65,7 +68,7 @@ export const Adminhelp = (props) => {
                       placeholder="Confirmation Prompt"
                       autoFocus
                       fluid
-                      onChange={(e, value) => {
+                      onChange={(value) => {
                         if (value === confirmationText) {
                           setRequestForAdmin(true);
                         }
@@ -73,10 +76,9 @@ export const Adminhelp = (props) => {
                       }}
                     />
                   </Box>
-                )) || (
+                ) : (
                   <Button
                     mt={1}
-                    content="Alert admins?"
                     onClick={() => {
                       if (requestForAdmin) {
                         setRequestForAdmin(false);
@@ -90,11 +92,13 @@ export const Adminhelp = (props) => {
                     tooltip={
                       bannedFromUrgentAhelp
                         ? 'You are banned from using urgent ahelps.'
-                        : null
+                        : undefined
                     }
                     fluid
                     textAlign="center"
-                  />
+                  >
+                    Alert admins?
+                  </Button>
                 )}
               </NoticeBox>
             </Stack.Item>
@@ -103,7 +107,6 @@ export const Adminhelp = (props) => {
             <Button
               color="good"
               fluid
-              content="Submit"
               textAlign="center"
               onClick={() =>
                 act('ahelp', {
@@ -111,7 +114,9 @@ export const Adminhelp = (props) => {
                   message: ahelpMessage,
                 })
               }
-            />
+            >
+              Submit
+            </Button>
           </Stack.Item>
         </Stack>
       </Window.Content>

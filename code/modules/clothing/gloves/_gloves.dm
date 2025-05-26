@@ -1,6 +1,7 @@
 /obj/item/clothing/gloves
 	name = "gloves"
 	gender = PLURAL //Carn: for grammarically correct text-parsing
+	clothing_flags = CLOTHING_MOD_OVERSLOTTING
 	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/clothing/gloves.dmi'
 	inhand_icon_state = "greyscale_gloves"
@@ -12,10 +13,14 @@
 	siemens_coefficient = 0.5
 	body_parts_covered = HANDS
 	slot_flags = ITEM_SLOT_GLOVES
+	drop_sound = 'sound/items/handling/glove_drop.ogg'
+	pickup_sound = 'sound/items/handling/glove_pick_up.ogg'
 	attack_verb_continuous = list("challenges")
 	attack_verb_simple = list("challenge")
 	strip_delay = 20
 	equip_delay_other = 40
+	article = "a pair of"
+
 	// Path variable. If defined, will produced the type through interaction with wirecutters.
 	var/cut_type = null
 	/// Used for handling bloody gloves leaving behind bloodstains on objects. Will be decremented whenever a bloodstain is left behind, and be incremented when the gloves become bloody.
@@ -41,13 +46,19 @@
 
 /obj/item/clothing/gloves/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
-	if(!isinhands)
+	if(isinhands)
 		return
-
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
+
+/obj/item/clothing/gloves/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands, icon_file)
+	. = ..()
+	if(isinhands)
+		return
 	if(GET_ATOM_BLOOD_DNA_LENGTH(src))
-		. += mutable_appearance('icons/effects/blood.dmi', "bloodyhands")
+		var/mutable_appearance/blood_overlay = mutable_appearance('icons/effects/blood.dmi', "gloveblood")
+		blood_overlay.color = get_blood_dna_color(GET_ATOM_BLOOD_DNA(src))
+		. += blood_overlay
 
 /obj/item/clothing/gloves/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()
@@ -62,7 +73,7 @@
 		return FALSE // We don't want to cut dyed gloves.
 	return TRUE
 
-/obj/item/clothing/gloves/attackby(obj/item/tool, mob/user, params)
+/obj/item/clothing/gloves/attackby(obj/item/tool, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(.)
 		return

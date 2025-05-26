@@ -4,13 +4,14 @@
 	desc = "A genome that causes the holder's skin to become transparent over time."
 	quality = POSITIVE
 	difficulty = 16
-	text_gain_indication = "<span class='notice'>You feel one with your surroundings.</span>"
-	text_lose_indication = "<span class='notice'>You feel oddly exposed.</span>"
-	instability = 25
+	text_gain_indication = span_notice("You feel one with your surroundings.")
+	text_lose_indication = span_notice("You feel oddly exposed.")
+	instability = POSITIVE_INSTABILITY_MAJOR
 	power_coeff = 1
 
 /datum/mutation/human/chameleon/on_acquiring(mob/living/carbon/human/owner)
-	if(..())
+	. = ..()
+	if(!.)
 		return
 	owner.alpha = CHAMELEON_MUTATION_DEFAULT_TRANSPARENCY
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
@@ -18,6 +19,12 @@
 
 /datum/mutation/human/chameleon/on_life(seconds_per_tick, times_fired)
 	owner.alpha = max(owner.alpha - (12.5 * (GET_MUTATION_POWER(src)) * seconds_per_tick), 0)
+
+//Upgraded mutation of the base variant, used for changelings. No instability and better power_coeff
+/datum/mutation/human/chameleon/changeling
+	instability = 0
+	power_coeff = 2.5
+	locked = TRUE
 
 /**
  * Resets the alpha of the host to the chameleon default if they move.

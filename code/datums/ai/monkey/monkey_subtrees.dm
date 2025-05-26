@@ -26,9 +26,6 @@
 ///monkey combat subtree.
 /datum/ai_planning_subtree/monkey_combat/SelectBehaviors(datum/ai_controller/monkey/controller, seconds_per_tick)
 	var/mob/living/living_pawn = controller.pawn
-	if(QDELETED(living_pawn))
-		return
-
 	var/list/enemies = controller.blackboard[BB_MONKEY_ENEMIES]
 
 	if((HAS_TRAIT(controller.pawn, TRAIT_PACIFISM)) || (!length(enemies) && !controller.blackboard[BB_MONKEY_AGGRESSIVE])) //Pacifist, or we have no enemies and we're not pissed
@@ -56,6 +53,8 @@
 
 		if(controller.blackboard[BB_MONKEY_RECRUIT_COOLDOWN] < world.time)
 			controller.queue_behavior(/datum/ai_behavior/recruit_monkeys, BB_MONKEY_CURRENT_ATTACK_TARGET)
+			return
+
 		controller.queue_behavior(/datum/ai_behavior/battle_screech/monkey)
 		controller.queue_behavior(/datum/ai_behavior/monkey_attack_mob, BB_MONKEY_CURRENT_ATTACK_TARGET)
 		return SUBTREE_RETURN_FINISH_PLANNING

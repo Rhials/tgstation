@@ -9,13 +9,12 @@
 	desc = "An exosuit module that allows exosuits to teleport to any position in view."
 	icon_state = "mecha_teleport"
 	equip_cooldown = 150
-	energy_drain = 1000
+	energy_drain = STANDARD_CELL_CHARGE
 	range = MECHA_RANGED
 	var/teleport_range = 7
 
 /obj/item/mecha_parts/mecha_equipment/teleporter/action(mob/source, atom/target, list/modifiers)
-	var/area/ourarea = get_area(src)
-	if(!action_checks(target) || ourarea.area_flags & NOTELEPORT)
+	if(!action_checks(target) || !check_teleport_valid(source, target, TELEPORT_CHANNEL_BLUESPACE))
 		return
 	var/turf/T = get_turf(target)
 	if(T && (loc.z == T.z) && (get_dist(loc, T) <= teleport_range))
@@ -28,7 +27,7 @@
 
 /obj/item/mecha_parts/mecha_equipment/wormhole_generator
 	name = "mounted wormhole generator"
-	desc = "An exosuit module that allows generating of small quasi-stable wormholes, allowing for long-range inneacurate teleportation."
+	desc = "An exosuit module that allows generating of small quasi-stable wormholes, allowing for long-range inaccurate teleportation."
 	icon_state = "mecha_wholegen"
 	equip_cooldown = 50
 	energy_drain = 300
@@ -36,8 +35,7 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/wormhole_generator/action(mob/source, atom/target, list/modifiers)
-	var/area/ourarea = get_area(src)
-	if(!action_checks(target) || ourarea.area_flags & NOTELEPORT)
+	if(!action_checks(target) || !check_teleport_valid(source, target, TELEPORT_CHANNEL_WORMHOLE))
 		return
 	var/area/targetarea = pick(get_areas_in_range(100, chassis))
 	if(!targetarea)//Literally middle of nowhere how did you even get here
@@ -129,7 +127,7 @@
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/proc/do_scatter(atom/movable/scatter, atom/movable/target)
 	var/dist = 5 - get_dist(scatter, target)
 	var/delay = 2
-	SSmove_manager.move_away(scatter, target, delay = delay, timeout = delay * dist, flags = MOVEMENT_LOOP_START_FAST, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
+	GLOB.move_manager.move_away(scatter, target, delay = delay, timeout = delay * dist, flags = MOVEMENT_LOOP_START_FAST, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
 
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/get_snowflake_data()
 	return list(
@@ -167,7 +165,7 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/armor/anticcw_armor_booster
-	name = "Impact Cushion Plates"
+	name = "exosuit impact cushion plates"
 	desc = "Boosts exosuit armor against melee attacks"
 	icon_state = "mecha_abooster_ccw"
 	iconstate_name = "melee"
@@ -175,10 +173,10 @@
 	armor_mod = /datum/armor/mecha_equipment_ccw_boost
 
 /datum/armor/mecha_equipment_ccw_boost
-	melee = 15
+	melee = 20
 
 /obj/item/mecha_parts/mecha_equipment/armor/antiproj_armor_booster
-	name = "Projectile Shielding"
+	name = "exosuit projectile shielding"
 	desc = "Boosts exosuit armor against ranged kinetic and energy projectiles. Completely blocks taser shots."
 	icon_state = "mecha_abooster_proj"
 	iconstate_name = "range"
@@ -186,8 +184,38 @@
 	armor_mod = /datum/armor/mecha_equipment_ranged_boost
 
 /datum/armor/mecha_equipment_ranged_boost
-	bullet = 10
-	laser = 10
+	bullet = 15
+	laser = 15
+
+/obj/item/mecha_parts/mecha_equipment/armor/antiemp_armor_booster
+	name = "exosuit ablative insulation"
+	desc = "Boosts exosuit armor against energy-based attacks. Also shields the exosuit's internal wiring from hostile EMP attacks. However, this may leave the \
+		exosuit slightly more vulnerable to kinetic blows due to taking up valuable hull cushioning."
+	icon_state = "mecha_abooster_emp"
+	iconstate_name = "range"
+	protect_name = "EMP and Energy Armor"
+	armor_mod = /datum/armor/mecha_equipment_energy_boost
+
+/datum/armor/mecha_equipment_energy_boost
+	melee = -5
+	bullet = -10
+	energy = 15
+
+/obj/item/mecha_parts/mecha_equipment/armor/antiemp_armor_booster/attach(obj/vehicle/sealed/mecha/new_mecha, attach_right)
+	. = ..()
+	chassis.AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
+
+/obj/item/mecha_parts/mecha_equipment/armor/antiemp_armor_booster/detach(atom/moveto)
+	chassis.RemoveElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
+	return ..()
+
+/obj/item/mecha_parts/mecha_equipment/armor/antiemp_armor_booster/clandestine
+	name = "exosuit hardened ablative insulation"
+	desc = "Boosts exosuit armor against energy-based attacks. Also shields the exosuit's internal wiring from hostile EMP attacks."
+	armor_mod = /datum/armor/mecha_equipment_improved_energy_boost
+
+/datum/armor/mecha_equipment_improved_energy_boost
+	energy = 20
 
 ////////////////////////////////// REPAIR DROID //////////////////////////////////////////////////
 
@@ -198,6 +226,7 @@
 	icon_state = "repair_droid"
 	energy_drain = 50
 	range = 0
+	unstackable = TRUE
 	can_be_toggled = TRUE
 	active = FALSE
 	equipment_slot = MECHA_UTILITY
@@ -254,7 +283,7 @@
 		chassis.repair_damage(h_boost)
 		repaired = TRUE
 	if(repaired)
-		if(!chassis.use_power(energy_drain))
+		if(!chassis.use_energy(energy_drain))
 			active = FALSE
 			return PROCESS_KILL
 	else //no repair needed, we turn off
@@ -285,7 +314,7 @@
 	///Maximum fuel capacity of the generator, in units
 	var/max_fuel = 75 * SHEET_MATERIAL_AMOUNT
 	///Energy recharged per second
-	var/rechargerate = 10
+	var/rechargerate = 0.05 * STANDARD_CELL_RATE
 
 /obj/item/mecha_parts/mecha_equipment/generator/Initialize(mapload)
 	. = ..()
@@ -318,7 +347,7 @@
 			log_message("Deactivated.", LOG_MECHA)
 		return TRUE
 
-/obj/item/mecha_parts/mecha_equipment/generator/attackby(obj/item/weapon, mob/user, params)
+/obj/item/mecha_parts/mecha_equipment/generator/attackby(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
 	if(!istype(weapon, fuel))
 		return FALSE
@@ -458,7 +487,7 @@
 /obj/item/mecha_parts/mecha_equipment/thrusters/ion/thrust(movement_dir)
 	if(!chassis)
 		return FALSE
-	if(chassis.use_power(chassis.step_energy_drain))
+	if(chassis.use_energy(chassis.step_energy_drain))
 		generate_effect(movement_dir)
 		return TRUE
 	return FALSE
@@ -508,7 +537,7 @@
 /obj/item/mecha_parts/camera_kit
 	name = "exosuit-mounted camera"
 	desc = "A security camera meant for exosuit-mounted surveillance-on-the-go."
-	icon = 'icons/mob/mecha_equipment.dmi'
+	icon = 'icons/obj/devices/mecha_equipment.dmi'
 	icon_state = "mecha_camera"
 	w_class = WEIGHT_CLASS_SMALL
 
@@ -519,7 +548,6 @@
 
 	. = ..()
 
-	mech.chassis_camera = new /obj/machinery/camera/exosuit (mech)
+	mech.chassis_camera = new /obj/machinery/camera/exosuit(mech)
 	mech.chassis_camera.update_c_tag(mech)
 	mech.diag_hud_set_camera()
-

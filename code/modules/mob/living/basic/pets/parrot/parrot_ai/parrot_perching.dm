@@ -8,9 +8,6 @@
 
 /datum/ai_planning_subtree/perch_on_target/SelectBehaviors(datum/ai_controller/controller, seconds_per_tick)
 	var/mob/living/living_pawn = controller.pawn
-	if(QDELETED(living_pawn))
-		return
-
 	var/atom/buckled_to = living_pawn.buckled
 
 	//do we have a current target or is chance to unbuckle has passed? then unbuckle!
@@ -50,25 +47,21 @@
 	set_movement_target(controller, target)
 
 /datum/ai_behavior/perch_on_target/perform(seconds_per_tick, datum/ai_controller/controller, target_key)
-	. = ..()
 	var/atom/target = controller.blackboard[target_key]
 	if(QDELETED(target))
-		finish_action(controller, FALSE, target_key)
-		return
+		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
 	var/mob/living/basic/parrot/living_pawn = controller.pawn
 
 	if(!ishuman(target))
 		living_pawn.start_perching(target)
-		finish_action(controller, TRUE, target_key)
-		return
+		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 	if(!check_human_conditions(target))
-		finish_action(controller, FALSE, target_key)
-		return
+		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
 	living_pawn.start_perching(target)
-	finish_action(controller, TRUE, target_key)
+	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 
 /datum/ai_behavior/perch_on_target/proc/check_human_conditions(mob/living/living_human)
 	if(living_human.stat == DEAD || LAZYLEN(living_human.buckled_mobs) >= living_human.max_buckled_mobs)

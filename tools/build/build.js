@@ -13,6 +13,8 @@ import Juke from './juke/index.js';
 import { DreamDaemon, DreamMaker, NamedVersionFile } from './lib/byond.js';
 import { yarn } from './lib/yarn.js';
 
+const TGS_MODE = process.env.CBT_BUILD_MODE === 'TGS';
+
 Juke.chdir('../..', import.meta.url);
 Juke.setup({ file: import.meta.url }).then((code) => {
   // We're using the currently available quirk in Juke Build, which
@@ -21,11 +23,18 @@ Juke.setup({ file: import.meta.url }).then((code) => {
     Juke.logger.error('Please inspect the error and close the window.');
     return;
   }
-  process.exit(code);
+
+  if (TGS_MODE) {
+    // workaround for ESBuild process lingering
+    // Once https://github.com/privatenumber/esbuild-loader/pull/354 is merged and updated to, this can be removed
+    setTimeout(() => process.exit(code), 10000);
+  }
+  else {
+    process.exit(code);
+  }
 });
 
 const DME_NAME = 'tgstation';
-const CUTTER_SUFFIX = '.png.toml'
 
 // Stores the contents of dependencies.sh as a key value pair
 // Best way I could figure to get ahold of this stuff
@@ -67,7 +76,12 @@ export const CiParameter = new Juke.Parameter({ type: 'boolean' });
 
 export const ForceRecutParameter = new Juke.Parameter({
   type: 'boolean',
-  name: "force_recut",
+  name: "force-recut",
+});
+
+export const SkipIconCutter = new Juke.Parameter({
+  type: 'boolean',
+  name: "skip-icon-cutter",
 });
 
 export const WarningParameter = new Juke.Parameter({
@@ -77,7 +91,7 @@ export const WarningParameter = new Juke.Parameter({
 
 export const NoWarningParameter = new Juke.Parameter({
   type: 'string[]',
-  alias: 'NW',
+  alias: 'I',
 });
 
 export const CutterTarget = new Juke.Target({
@@ -138,20 +152,34 @@ export const IconCutterTarget = new Juke.Target({
   dependsOn: () => [
     CutterTarget,
   ],
-  inputs: [
-    'icons/**/*.png',
-    `icons/**/*${CUTTER_SUFFIX}`,
-    `cutter_templates/**/*${CUTTER_SUFFIX}`,
-    cutter_path,
-  ],
+  inputs: ({ get }) => {
+    const standard_inputs = [
+      `icons/**/*.png.toml`,
+      `icons/**/*.dmi.toml`,
+      `cutter_templates/**/*.toml`,
+      cutter_path,
+    ]
+    // Alright we're gonna search out any existing toml files and convert
+    // them to their matching .dmi or .png file
+    const existing_configs = [
+      ...Juke.glob(`icons/**/*.png.toml`),
+      ...Juke.glob(`icons/**/*.dmi.toml`),
+    ];
+    return [
+      ...standard_inputs,
+      ...existing_configs.map((file) => file.replace('.toml', '')),
+    ]
+  },
   outputs: ({ get }) => {
     if(get(ForceRecutParameter))
       return [];
     const folders = [
-      ...Juke.glob(`icons/**/*${CUTTER_SUFFIX}`),
+      ...Juke.glob(`icons/**/*.png.toml`),
+      ...Juke.glob(`icons/**/*.dmi.toml`),
     ];
     return folders
-      .map((file) => file.replace(`${CUTTER_SUFFIX}`, '.dmi'));
+      .map((file) => file.replace(`.png.toml`, '.dmi'))
+      .map((file) => file.replace(`.dmi.toml`, '.png'));
   },
   executes: async () => {
     await Juke.exec(cutter_path, [
@@ -181,17 +209,20 @@ export const DmMapsIncludeTarget = new Juke.Target({
 });
 
 export const DmTarget = new Juke.Target({
-  parameters: [DefineParameter, DmVersionParameter, WarningParameter, NoWarningParameter],
+  parameters: [DefineParameter, DmVersionParameter, WarningParameter, NoWarningParameter, SkipIconCutter],
   dependsOn: ({ get }) => [
-    get(DefineParameter).includes('ALL_MAPS') && DmMapsIncludeTarget,
-    IconCutterTarget,
+    get(DefineParameter).includes('ALL_TEMPLATES') && DmMapsIncludeTarget,
+    !get(SkipIconCutter) && IconCutterTarget,
   ],
   inputs: [
     '_maps/map_files/generic/**',
+    'maps/**/*.dm',
     'code/**',
     'html/**',
     'icons/**',
     'interface/**',
+    'sound/**',
+    'tgui/public/tgui.html',
     `${DME_NAME}.dme`,
     NamedVersionFile,
   ],
@@ -253,7 +284,7 @@ export const DmTestTarget = new Juke.Target({
 export const AutowikiTarget = new Juke.Target({
   parameters: [DefineParameter, DmVersionParameter, WarningParameter, NoWarningParameter],
   dependsOn: ({ get }) => [
-    get(DefineParameter).includes('ALL_MAPS') && DmMapsIncludeTarget,
+    get(DefineParameter).includes('ALL_TEMPLATES') && DmMapsIncludeTarget,
     IconCutterTarget,
   ],
   outputs: [
@@ -305,18 +336,17 @@ export const TgFontTarget = new Juke.Target({
   dependsOn: [YarnTarget],
   inputs: [
     'tgui/.yarn/install-target',
-    'tgui/packages/tgfont/**/*.+(js|cjs|svg)',
+    'tgui/packages/tgfont/**/*.+(js|mjs|svg)',
     'tgui/packages/tgfont/package.json',
   ],
   outputs: [
     'tgui/packages/tgfont/dist/tgfont.css',
-    'tgui/packages/tgfont/dist/tgfont.eot',
     'tgui/packages/tgfont/dist/tgfont.woff2',
   ],
   executes: async () => {
     await yarn('tgfont:build');
+    fs.mkdirSync('tgui/packages/tgfont/static', { recursive: true });
     fs.copyFileSync('tgui/packages/tgfont/dist/tgfont.css', 'tgui/packages/tgfont/static/tgfont.css');
-    fs.copyFileSync('tgui/packages/tgfont/dist/tgfont.eot', 'tgui/packages/tgfont/static/tgfont.eot');
     fs.copyFileSync('tgui/packages/tgfont/dist/tgfont.woff2', 'tgui/packages/tgfont/static/tgfont.woff2');
   }
 });
@@ -325,9 +355,9 @@ export const TguiTarget = new Juke.Target({
   dependsOn: [YarnTarget],
   inputs: [
     'tgui/.yarn/install-target',
-    'tgui/webpack.config.js',
+    'tgui/rspack.config.cjs',
     'tgui/**/package.json',
-    'tgui/packages/**/*.+(js|cjs|ts|tsx|scss)',
+    'tgui/packages/**/*.+(js|cjs|ts|tsx|jsx|scss)',
   ],
   outputs: [
     'tgui/public/tgui.bundle.css',
@@ -421,7 +451,7 @@ export const TguiCleanTarget = new Juke.Target({
     Juke.rm('tgui/public/*.map');
     Juke.rm('tgui/public/*.{chunk,bundle,hot-update}.*');
     Juke.rm('tgui/packages/tgfont/dist', { recursive: true });
-    Juke.rm('tgui/.yarn/{cache,unplugged,webpack}', { recursive: true });
+    Juke.rm('tgui/.yarn/{cache,unplugged,rspack}', { recursive: true });
     Juke.rm('tgui/.yarn/build-state.yml');
     Juke.rm('tgui/.yarn/install-state.gz');
     Juke.rm('tgui/.yarn/install-target');
@@ -433,8 +463,6 @@ export const CleanTarget = new Juke.Target({
   dependsOn: [TguiCleanTarget],
   executes: async () => {
     Juke.rm('*.{dmb,rsc}');
-    Juke.rm('*.mdme*');
-    Juke.rm('*.m.*');
     Juke.rm('_maps/templates.dm');
   },
 });
@@ -471,6 +499,5 @@ export const TgsTarget = new Juke.Target({
   },
 });
 
-const TGS_MODE = process.env.CBT_BUILD_MODE === 'TGS';
 
 export default TGS_MODE ? TgsTarget : BuildTarget;

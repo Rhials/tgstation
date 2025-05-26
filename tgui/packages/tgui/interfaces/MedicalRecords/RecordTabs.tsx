@@ -1,16 +1,17 @@
 import { filter, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
+import { useState } from 'react';
 import { useBackend, useLocalState } from 'tgui/backend';
 import {
-  Stack,
-  Input,
-  Section,
-  Tabs,
-  NoticeBox,
   Box,
-  Icon,
   Button,
-} from 'tgui/components';
+  Icon,
+  Input,
+  NoticeBox,
+  Section,
+  Stack,
+  Tabs,
+} from 'tgui-core/components';
+
 import { JOB2ICON } from '../common/JobToIcon';
 import { isRecordMatch } from '../SecurityRecords/helpers';
 import { MedicalRecord, MedicalRecordData } from './types';
@@ -24,20 +25,21 @@ export const MedicalRecordTabs = (props) => {
     ? 'No records found.'
     : 'No match. Refine your search.';
 
-  const [search, setSearch] = useLocalState('search', '');
+  const [search, setSearch] = useState('');
 
-  const sorted: MedicalRecord[] = flow([
-    filter((record: MedicalRecord) => isRecordMatch(record, search)),
-    sortBy((record: MedicalRecord) => record.name?.toLowerCase()),
-  ])(records);
+  const sorted: MedicalRecord[] = sortBy(
+    filter(records, (record) => isRecordMatch(record, search)),
+    (record) => record.name?.toLowerCase(),
+  );
 
   return (
     <Stack fill vertical>
       <Stack.Item>
         <Input
           fluid
-          onInput={(_, value) => setSearch(value)}
+          onChange={setSearch}
           placeholder="Name/Job/DNA"
+          expensive
         />
       </Stack.Item>
       <Stack.Item grow>
@@ -88,13 +90,26 @@ const CrewTab = (props: { record: MedicalRecord }) => {
   const { act, data } = useBackend<MedicalRecordData>();
   const { assigned_view } = data;
   const { record } = props;
-  const { crew_ref, name, rank } = record;
+  const { crew_ref, name, trim } = record;
 
   /** Sets the record to preview */
   const selectRecord = (record: MedicalRecord) => {
     if (selectedRecord?.crew_ref === crew_ref) {
       setSelectedRecord(undefined);
     } else {
+      // GOD, I REALLY HATE IT!
+      // THIS FUCKING HACK NEEDED CAUSE "WINSET MAP"
+      // MAKING UI DISAPPEAR, AND WE NEED RE-RENDER SHIT
+      // AFTER BYOND DONE MAKING THEIR SHIT
+      // Anyway... that's better than hack before
+      if (selectedRecord === undefined) {
+        setTimeout(() => {
+          act('view_record', {
+            assigned_view: assigned_view,
+            crew_ref: crew_ref,
+          });
+        });
+      }
       setSelectedRecord(record);
       act('view_record', { assigned_view: assigned_view, crew_ref: crew_ref });
     }
@@ -103,12 +118,11 @@ const CrewTab = (props: { record: MedicalRecord }) => {
   return (
     <Tabs.Tab
       className="candystripe"
-      label={name}
       onClick={() => selectRecord(record)}
       selected={selectedRecord?.crew_ref === crew_ref}
     >
-      <Box wrap>
-        <Icon name={JOB2ICON[rank] || 'question'} /> {name}
+      <Box>
+        <Icon name={JOB2ICON[trim] || 'question'} /> {name}
       </Box>
     </Tabs.Tab>
   );

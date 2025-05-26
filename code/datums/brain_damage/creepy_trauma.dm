@@ -17,23 +17,22 @@
 	var/obsession_hug_count = 0
 
 /datum/brain_trauma/special/obsessed/on_gain()
-
 	//setup, linking, etc//
 	if(!obsession)//admins didn't set one
 		obsession = find_obsession()
 		if(!obsession)//we didn't find one
 			lose_text = ""
-			qdel(src)
-			return
+			return FALSE
 	gain_text = span_warning("You hear a sickening, raspy voice in your head. It wants one small task of you...")
 	owner.mind.add_antag_datum(/datum/antagonist/obsessed)
 	antagonist = owner.mind.has_antag_datum(/datum/antagonist/obsessed)
 	antagonist.trauma = src
 	RegisterSignal(obsession, COMSIG_MOB_EYECONTACT, PROC_REF(stare))
-	..()
+	. = ..()
 	//antag stuff//
 	antagonist.forge_objectives(obsession.mind)
 	antagonist.greet()
+	log_game("[key_name(antagonist)] has developed an obsession with [key_name(obsession)].")
 	RegisterSignal(owner, COMSIG_CARBON_HELPED, PROC_REF(on_hug))
 
 /datum/brain_trauma/special/obsessed/on_life(seconds_per_tick, times_fired)
@@ -66,9 +65,11 @@
 
 /datum/brain_trauma/special/obsessed/on_lose()
 	..()
-	owner.mind.remove_antag_datum(/datum/antagonist/obsessed)
+	if (owner.mind.remove_antag_datum(/datum/antagonist/obsessed))
+		owner.mind.add_antag_datum(/datum/antagonist/former_obsessed)
 	owner.clear_mood_event("creeping")
 	if(obsession)
+		log_game("[key_name(owner)] is no longer obsessed with [key_name(obsession)].")
 		UnregisterSignal(obsession, COMSIG_MOB_EYECONTACT)
 
 /datum/brain_trauma/special/obsessed/handle_speech(datum/source, list/speech_args)
@@ -76,7 +77,7 @@
 		return
 	if(prob(25)) // 25% chances to be nervous and stutter.
 		if(prob(50)) // 12.5% chance (previous check taken into account) of doing something suspicious.
-			addtimer(CALLBACK(src, PROC_REF(on_failed_social_interaction)), rand(1, 3) SECONDS)
+			addtimer(CALLBACK(src, PROC_REF(on_failed_social_interaction)), rand(1 SECONDS, 3 SECONDS))
 		else if(!owner.has_status_effect(/datum/status_effect/speech/stutter))
 			to_chat(owner, span_warning("Being near [obsession] makes you nervous and you begin to stutter..."))
 		owner.set_stutter_if_lower(6 SECONDS)

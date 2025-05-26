@@ -63,7 +63,7 @@
 		return
 	user.changeNext_move(CLICK_CD_MELEE) // Ugh. Ideally we shouldn't be setting cooldowns outside of click code.
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
-	playsound(loc, 'sound/weapons/tap.ogg', 40, TRUE, -1)
+	playsound(loc, 'sound/items/weapons/tap.ogg', 40, TRUE, -1)
 	user.visible_message(span_danger("[user] hits [src]. Nothing happens."), null, null, COMBAT_MESSAGE_RANGE)
 	log_message("Attack by hand/paw (no damage). Attacker - [user].", LOG_MECHA, color="red")
 
@@ -72,7 +72,7 @@
 
 /obj/vehicle/sealed/mecha/attack_alien(mob/living/user, list/modifiers)
 	log_message("Attack by alien. Attacker - [user].", LOG_MECHA, color="red")
-	playsound(loc, 'sound/weapons/slash.ogg', 100, TRUE)
+	playsound(loc, 'sound/items/weapons/slash.ogg', 100, TRUE)
 	attack_generic(user, rand(user.melee_damage_lower, user.melee_damage_upper), BRUTE, MELEE, 0)
 
 /obj/vehicle/sealed/mecha/attack_animal(mob/living/simple_animal/user, list/modifiers)
@@ -115,18 +115,15 @@
 	return ..()
 
 /obj/vehicle/sealed/mecha/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit) //wrapper
-	. = ..()
-	if(. != BULLET_ACT_HIT)
-		return .
-
 	//allows bullets to hit the pilot of open-canopy mechs
-	if(!enclosed \
+	if(!(mecha_flags & IS_ENCLOSED) \
 		&& LAZYLEN(occupants) \
 		&& !(mecha_flags & SILICON_PILOT) \
 		&& (def_zone == BODY_ZONE_HEAD || def_zone == BODY_ZONE_CHEST))
-		for(var/mob/living/hitmob as anything in occupants)
-			hitmob.bullet_act(hitting_projectile, def_zone, piercing_hit) //If the sides are open, the occupant can be hit
-		return BULLET_ACT_HIT
+		var/mob/living/hitmob = pick(occupants)
+		return hitmob.projectile_hit(hitting_projectile, def_zone, piercing_hit) //If the sides are open, the occupant can be hit
+
+	. = ..()
 
 	log_message("Hit by projectile. Type: [hitting_projectile]([hitting_projectile.damage_type]).", LOG_MECHA, color="red")
 	// yes we *have* to run the armor calc proc here I love tg projectile code too
@@ -137,6 +134,7 @@
 		attack_dir = REVERSE_DIR(hitting_projectile.dir),
 		armour_penetration = hitting_projectile.armour_penetration,
 	), def_zone)
+
 
 /obj/vehicle/sealed/mecha/ex_act(severity, target)
 	log_message("Affected by explosion of severity: [severity].", LOG_MECHA, color="red")
@@ -172,9 +170,15 @@
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
+
+	var/mecha_explodies_vulnerability = (severity * capacitor.rating) //The more severe the EMP, the worse the outcome. The higher the tier of the capacitor, the less severe the outcome.
+
 	if(get_charge())
-		use_power((cell.charge/3)/(severity*2))
-		take_damage(30 / severity, BURN, ENERGY, 1)
+		use_energy(round((cell.maxcharge / 2) / mecha_explodies_vulnerability, 1))
+
+	var/how_hard_are_we_explodies = rand(MECH_EMP_DAMAGE_LOWER, MECH_EMP_DAMAGE_UPPER)
+	take_damage(how_hard_are_we_explodies / mecha_explodies_vulnerability, BURN)
+
 	log_message("EMP detected", LOG_MECHA, color="red")
 
 	//Mess with the focus of the inbuilt camera if present
@@ -199,21 +203,21 @@
 
 /obj/vehicle/sealed/mecha/fire_act() //Check if we should ignite the pilot of an open-canopy mech
 	. = ..()
-	if(enclosed || mecha_flags & SILICON_PILOT)
+	if(mecha_flags & IS_ENCLOSED || mecha_flags & SILICON_PILOT)
 		return
 	for(var/mob/living/cookedalive as anything in occupants)
 		if(cookedalive.fire_stacks < 5)
 			cookedalive.adjust_fire_stacks(1)
 			cookedalive.ignite_mob()
 
-/obj/vehicle/sealed/mecha/attackby_secondary(obj/item/weapon, mob/user, params)
+/obj/vehicle/sealed/mecha/attackby_secondary(obj/item/weapon, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(weapon, /obj/item/mecha_parts))
 		var/obj/item/mecha_parts/parts = weapon
 		parts.try_attach_part(user, src, TRUE)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
-/obj/vehicle/sealed/mecha/attackby(obj/item/weapon, mob/living/user, params)
+/obj/vehicle/sealed/mecha/attackby(obj/item/weapon, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(user.combat_mode)
 		return ..()
 	if(istype(weapon, /obj/item/mmi))
@@ -225,6 +229,10 @@
 
 	if(istype(weapon, /obj/item/mecha_ammo))
 		ammo_resupply(weapon, user)
+		return
+
+	if(istype(weapon, /obj/item/rcd_upgrade))
+		upgrade_rcd(weapon, user)
 		return
 
 	if(weapon.GetID())
@@ -259,14 +267,14 @@
 		balloon_alert(user, "open the panel first!")
 		return
 
-	if(istype(weapon, /obj/item/stock_parts/cell))
+	if(istype(weapon, /obj/item/stock_parts/power_store/cell))
 		if(!cell)
 			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return
 			cell = weapon
 			balloon_alert(user, "installed power cell")
 			diag_hud_set_mechcell()
-			playsound(src, 'sound/items/screwdriver2.ogg', 50, FALSE)
+			playsound(src, 'sound/items/tools/screwdriver2.ogg', 50, FALSE)
 			log_message("Power cell installed", LOG_MECHA)
 		else
 			balloon_alert(user, "already installed!")
@@ -278,7 +286,7 @@
 				return
 			scanmod = weapon
 			balloon_alert(user, "installed scanning module")
-			playsound(src, 'sound/items/screwdriver2.ogg', 50, FALSE)
+			playsound(src, 'sound/items/tools/screwdriver2.ogg', 50, FALSE)
 			log_message("[weapon] installed", LOG_MECHA)
 			update_part_values()
 		else
@@ -291,7 +299,7 @@
 				return
 			capacitor = weapon
 			balloon_alert(user, "installed capacitor")
-			playsound(src, 'sound/items/screwdriver2.ogg', 50, FALSE)
+			playsound(src, 'sound/items/tools/screwdriver2.ogg', 50, FALSE)
 			log_message("[weapon] installed", LOG_MECHA)
 			update_part_values()
 		else
@@ -304,18 +312,19 @@
 				return
 			servo = weapon
 			balloon_alert(user, "installed servo")
-			playsound(src, 'sound/items/screwdriver2.ogg', 50, FALSE)
+			playsound(src, 'sound/items/tools/screwdriver2.ogg', 50, FALSE)
 			log_message("[weapon] installed", LOG_MECHA)
 			update_part_values()
 		else
 			balloon_alert(user, "already installed!")
 		return
 
-/obj/vehicle/sealed/mecha/attacked_by(obj/item/attacking_item, mob/living/user)
-	if(!attacking_item.force)
-		return
+/obj/vehicle/sealed/mecha/attacked_by(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
+	var/final_force = CALCULATE_FORCE(attacking_item, attack_modifiers) * attacking_item.get_demolition_modifier(src)
+	if(!final_force)
+		return 0
 
-	var/damage_taken = take_damage(attacking_item.force * attacking_item.demolition_mod, attacking_item.damtype, MELEE, 1)
+	var/damage_taken = take_damage(final_force, attacking_item.damtype, MELEE, 1, get_dir(src, user))
 	try_damage_component(damage_taken, user.zone_selected)
 
 	var/hit_verb = length(attacking_item.attack_verb_simple) ? "[pick(attacking_item.attack_verb_simple)]" : "hit"
@@ -328,6 +337,7 @@
 
 	log_combat(user, src, "attacked", attacking_item)
 	log_message("Attacked by [user]. Item - [attacking_item], Damage - [damage_taken]", LOG_MECHA)
+	return damage_taken
 
 /obj/vehicle/sealed/mecha/attack_generic(mob/user, damage_amount, damage_type, damage_flag, effects, armor_penetration)
 	. = ..()
@@ -346,21 +356,9 @@
 	..()
 	. = TRUE
 
-	if(!(mecha_flags & PANEL_OPEN) && LAZYLEN(occupants))
-		for(var/mob/occupant as anything in occupants)
-			occupant.show_message(
-				span_userdanger("[user] is trying to open the maintenance panel of [src]!"), MSG_VISUAL,
-				span_userdanger("You hear someone trying to open the maintenance panel of [src]!"), MSG_AUDIBLE,
-			)
-		visible_message(span_danger("[user] is trying to open the maintenance panel of [src]!"))
-		if(!do_after(user, 5 SECONDS, src))
-			return
-		for(var/mob/occupant as anything in occupants)
-			occupant.show_message(
-				span_userdanger("[user] has opened the maintenance panel of [src]!"), MSG_VISUAL,
-				span_userdanger("You hear someone opening the maintenance panel of [src]!"), MSG_AUDIBLE,
-			)
-		visible_message(span_danger("[user] has opened the maintenance panel of [src]!"))
+	if(LAZYLEN(occupants))
+		balloon_alert(user, "panel blocked")
+		return
 
 	mecha_flags ^= PANEL_OPEN
 	balloon_alert(user, (mecha_flags & PANEL_OPEN) ? "panel open" : "panel closed")
@@ -416,7 +414,7 @@
 	if(atom_integrity >= max_integrity)
 		balloon_alert(user, "it's not damaged!")
 		return
-	if(!W.tool_start_check(user, amount=1))
+	if(!W.tool_start_check(user, amount=1, heat_required = HIGH_TEMPERATURE_REQUIRED))
 		return
 	user.balloon_alert_to_viewers("started welding [src]", "started repairing [src]")
 	audible_message(span_hear("You hear welding."))
@@ -424,19 +422,18 @@
 	while(atom_integrity < max_integrity)
 		if(W.use_tool(src, user, 2.5 SECONDS, volume=50))
 			did_the_thing = TRUE
-			atom_integrity += min(10, (max_integrity - atom_integrity))
+			repair_damage(10)
 			audible_message(span_hear("You hear welding."))
 		else
 			break
 	if(did_the_thing)
 		user.balloon_alert_to_viewers("[(atom_integrity >= max_integrity) ? "fully" : "partially"] repaired [src]")
-		diag_hud_set_mechhealth()
 	else
 		user.balloon_alert_to_viewers("stopped welding [src]", "interrupted the repair!")
 
 
 /obj/vehicle/sealed/mecha/proc/full_repair(charge_cell)
-	atom_integrity = max_integrity
+	repair_damage(max_integrity)
 	if(cell && charge_cell)
 		cell.charge = cell.maxcharge
 		diag_hud_set_mechcell()
@@ -450,6 +447,9 @@
 		clear_internal_damage(MECHA_CABIN_AIR_BREACH)
 	if(internal_damage & MECHA_INT_CONTROL_LOST)
 		clear_internal_damage(MECHA_INT_CONTROL_LOST)
+
+/obj/vehicle/sealed/mecha/repair_damage(amount)
+	. = ..()
 	diag_hud_set_mechhealth()
 
 /obj/vehicle/sealed/mecha/narsie_act()
@@ -491,7 +491,7 @@
 			else
 				gun.projectiles_cache = gun.projectiles_cache + ammo_needed
 			playsound(get_turf(user),A.load_audio,50,TRUE)
-			to_chat(user, span_notice("You add [ammo_needed] [A.ammo_type][ammo_needed > 1?"s":""] to the [gun.name]"))
+			to_chat(user, span_notice("You add [ammo_needed] [A.ammo_type][ammo_needed > 1?"s":""] to \the [gun]"))
 			A.rounds = A.rounds - ammo_needed
 			if(A.custom_materials)	//Change material content of the ammo box according to the amount of ammo deposited into the weapon
 				/// list of materials contained in the ammo box after we put it through the equation so we can stick this list into set_custom_materials()
@@ -510,7 +510,7 @@
 		else
 			gun.projectiles_cache = gun.projectiles_cache + A.rounds
 		playsound(get_turf(user),A.load_audio,50,TRUE)
-		to_chat(user, span_notice("You add [A.rounds] [A.ammo_type][A.rounds > 1?"s":""] to the [gun.name]"))
+		to_chat(user, span_notice("You add [A.rounds] [A.ammo_type][A.rounds > 1?"s":""] to \the [gun]"))
 		if(A.qdel_on_empty)
 			qdel(A)
 			return TRUE
@@ -524,3 +524,9 @@
 		else
 			balloon_alert(user, "can't use this ammo!")
 	return FALSE
+
+///Upgrades any attached RCD equipment.
+/obj/vehicle/sealed/mecha/proc/upgrade_rcd(obj/item/rcd_upgrade/rcd_upgrade, mob/user)
+	for(var/obj/item/mecha_parts/mecha_equipment/rcd/rcd_equip in flat_equipment)
+		if(rcd_equip.internal_rcd.install_upgrade(rcd_upgrade, user))
+			return

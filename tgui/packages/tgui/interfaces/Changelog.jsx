@@ -1,5 +1,5 @@
-import { classes } from 'common/react';
-import { useBackend } from '../backend';
+import dateformat from 'dateformat';
+import yaml from 'js-yaml';
 import { Component, Fragment } from 'react';
 import {
   Box,
@@ -9,11 +9,12 @@ import {
   Section,
   Stack,
   Table,
-} from '../components';
-import { Window } from '../layouts';
+} from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
+
 import { resolveAsset } from '../assets';
-import dateformat from 'dateformat';
-import yaml from 'js-yaml';
+import { useBackend } from '../backend';
+import { Window } from '../layouts';
 
 const icons = {
   add: { icon: 'check-circle', color: 'green' },
@@ -36,6 +37,7 @@ const icons = {
   soundadd: { icon: 'tg-sound-plus', color: 'green' },
   sounddel: { icon: 'tg-sound-minus', color: 'red' },
   spellcheck: { icon: 'spell-check', color: 'green' },
+  map: { icon: 'map', color: 'green' },
   tgs: { icon: 'toolbox', color: 'purple' },
   tweak: { icon: 'wrench', color: 'green' },
   unknown: { icon: 'info-circle', color: 'label' },
@@ -117,7 +119,7 @@ export class Changelog extends Component {
     const { dateChoices } = this;
 
     const dateDropdown = dateChoices.length > 0 && (
-      <Stack mb={1}>
+      <Stack>
         <Stack.Item>
           <Button
             className="Changelog__Button"
@@ -140,7 +142,7 @@ export class Changelog extends Component {
         </Stack.Item>
         <Stack.Item>
           <Dropdown
-            displayText={selectedDate}
+            autoScroll={false}
             options={dateChoices}
             onSelected={(value) => {
               const index = dateChoices.indexOf(value);
@@ -156,7 +158,7 @@ export class Changelog extends Component {
               return this.getData(dates[index]);
             }}
             selected={selectedDate}
-            width={'150px'}
+            width="150px"
           />
         </Stack.Item>
         <Stack.Item>

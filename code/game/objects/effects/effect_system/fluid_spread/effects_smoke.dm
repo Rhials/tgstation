@@ -91,7 +91,7 @@
 		spread_smoke.lifetime = lifetime
 
 		// the smoke spreads rapidly, but not instantly
-		SSfoam.queue_spread(spread_smoke)
+		SSsmoke.queue_spread(spread_smoke)
 
 
 /obj/effect/particle_effect/fluid/smoke/process(seconds_per_tick)
@@ -235,7 +235,7 @@
 /// Green smoke that makes you cough.
 /obj/effect/particle_effect/fluid/smoke/bad/green
 	name = "green smoke"
-	color = "#00FF00"
+	color = COLOR_VIBRANT_LIME
 	opacity = FALSE
 
 /// A factory which produces green smoke that makes you cough.
@@ -374,11 +374,13 @@
 	for(var/atom/movable/thing as anything in location)
 		if(thing == src)
 			continue
+		if(thing.invisibility >= INVISIBILITY_ABSTRACT) // Don't smoke landmarks please
+			continue
 		if(location.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(thing, TRAIT_T_RAY_VISIBLE))
 			continue
-		reagents.expose(thing, TOUCH, fraction)
+		reagents.expose(thing, SMOKE_MACHINE, fraction)
 
-	reagents.expose(location, TOUCH, fraction)
+	reagents.expose(location, SMOKE_MACHINE, fraction)
 	return TRUE
 
 /obj/effect/particle_effect/fluid/smoke/chem/smoke_mob(mob/living/carbon/smoker, seconds_per_tick)
@@ -390,8 +392,8 @@
 		return FALSE
 
 	var/fraction = (seconds_per_tick SECONDS) / initial(lifetime)
-	reagents.copy_to(smoker, reagents.total_volume, fraction)
-	reagents.expose(smoker, INGEST, fraction)
+	reagents.copy_to(smoker, reagents.total_volume, fraction, copy_methods = SMOKE_MACHINE)
+	reagents.expose(smoker, SMOKE_MACHINE, fraction)
 	return TRUE
 
 /// Helper to quickly create a cloud of reagent smoke
@@ -431,17 +433,18 @@
 		contained_reagents += "[reagent.volume]u [reagent]"
 
 	var/where = "[AREACOORD(location)]"
-	var/contained = length(contained_reagents) ? "[contained_reagents.Join(", ", " \[", "\]")] @ [chemholder.chem_temp]K" : null
+	var/contained = length(contained_reagents) ? "\[[contained_reagents.Join(", ")]\] @ [chemholder.chem_temp]K" : null
+	var/area/fluid_area = get_area(location)
 	if(carry.my_atom?.fingerprintslast) //Some reagents don't have a my_atom in some cases
 		var/mob/M = get_mob_by_key(carry.my_atom.fingerprintslast)
 		var/more = ""
 		if(M)
 			more = "[ADMIN_LOOKUPFLW(M)] "
-		if(!istype(carry.my_atom, /obj/machinery/plumbing))
+		if(!istype(carry.my_atom, /obj/machinery/plumbing) && !(fluid_area.area_flags & QUIET_LOGS)) // I like to be able to see my logs thank you
 			message_admins("Smoke: ([ADMIN_VERBOSEJMP(location)])[contained]. Key: [more ? more : carry.my_atom.fingerprintslast].")
 		log_game("A chemical smoke reaction has taken place in ([where])[contained]. Last touched by [carry.my_atom.fingerprintslast].")
 	else
-		if(!istype(carry.my_atom, /obj/machinery/plumbing))
+		if(!istype(carry.my_atom, /obj/machinery/plumbing) && !(fluid_area.area_flags & QUIET_LOGS)) // Deathmatch has way too much smoke to log
 			message_admins("Smoke: ([ADMIN_VERBOSEJMP(location)])[contained]. No associated key.")
 		log_game("A chemical smoke reaction has taken place in ([where])[contained]. No associated key.")
 

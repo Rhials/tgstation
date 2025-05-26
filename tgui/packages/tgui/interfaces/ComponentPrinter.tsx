@@ -1,13 +1,14 @@
+import { Box, Icon, Section, Stack, Tooltip } from 'tgui-core/components';
+import { classes } from 'tgui-core/react';
+
 import { useBackend } from '../backend';
-import { Material } from './Fabrication/Types';
 import { Window } from '../layouts';
-import { Box, Tooltip, Icon, Stack, Section } from '../components';
-import { Design } from './Fabrication/Types';
-import { MaterialCostSequence } from './Fabrication/MaterialCostSequence';
-import { MaterialMap } from './Fabrication/Types';
-import { classes } from 'common/react';
 import { DesignBrowser } from './Fabrication/DesignBrowser';
 import { MaterialAccessBar } from './Fabrication/MaterialAccessBar';
+import { MaterialCostSequence } from './Fabrication/MaterialCostSequence';
+import { Material } from './Fabrication/Types';
+import { Design } from './Fabrication/Types';
+import { MaterialMap } from './Fabrication/Types';
 
 type ComponentPrinterData = {
   designs: Record<string, Design>;

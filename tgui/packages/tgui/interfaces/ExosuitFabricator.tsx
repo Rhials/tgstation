@@ -1,15 +1,21 @@
+import { Box, Button, Icon, Section, Stack } from 'tgui-core/components';
+import { Tooltip } from 'tgui-core/components';
+import { BooleanLike, classes } from 'tgui-core/react';
+
 import { useBackend } from '../backend';
-import { Box, Button, Section, Stack, Icon } from '../components';
 import { Window } from '../layouts';
-import { MaterialAccessBar } from './Fabrication/MaterialAccessBar';
-import { Design, FabricatorData, MaterialMap } from './Fabrication/Types';
 import { DesignBrowser } from './Fabrication/DesignBrowser';
+import { MaterialAccessBar } from './Fabrication/MaterialAccessBar';
 import { MaterialCostSequence } from './Fabrication/MaterialCostSequence';
-import { Tooltip } from '../components';
-import { BooleanLike, classes } from 'common/react';
+import { Design, FabricatorData, MaterialMap } from './Fabrication/Types';
+
+type ExosuitDesign = Design & {
+  constructionTime: number;
+};
 
 type ExosuitFabricatorData = FabricatorData & {
   processing: BooleanLike;
+  designs: Record<string, ExosuitDesign>;
 };
 
 export const ExosuitFabricator = (props) => {
@@ -236,8 +242,8 @@ const Queue = (props: QueueProps) => {
             />
           </Section>
         </Stack.Item>
-        <Stack.Item grow>
-          <Section fill style={{ overflow: 'auto' }}>
+        <Stack.Item grow style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+          <Section fill>
             <QueueList
               availableMaterials={availableMaterials}
               SHEET_MATERIAL_AMOUNT={SHEET_MATERIAL_AMOUNT}

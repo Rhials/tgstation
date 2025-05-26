@@ -1,7 +1,9 @@
-import { decodeHtmlEntities } from 'common/string';
+import { useState } from 'react';
+import { Box, Button, LabeledList, Section, Table } from 'tgui-core/components';
+import { decodeHtmlEntities } from 'tgui-core/string';
+
 import { resolveAsset } from '../assets';
-import { useBackend, useLocalState } from '../backend';
-import { Box, Button, LabeledList, Section, Table } from '../components';
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type PaintingAdminPanelData = {
@@ -27,11 +29,12 @@ type PaintingData = {
 
 export const PaintingAdminPanel = (props) => {
   const { act, data } = useBackend<PaintingAdminPanelData>();
-  const [chosenPaintingRef, setChosenPaintingRef] = useLocalState<
-    string | null
-  >('chosenPainting', null);
+  const [chosenPaintingRef, setChosenPaintingRef] = useState<
+    string | undefined
+  >();
   const { paintings } = data;
   const chosenPainting = paintings.find((p) => p.ref === chosenPaintingRef);
+
   return (
     <Window title="Painting Admin Panel" width={800} height={600}>
       <Window.Content scrollable>
@@ -39,7 +42,9 @@ export const PaintingAdminPanel = (props) => {
           <Section
             title="Painting Information"
             buttons={
-              <Button onClick={() => setChosenPaintingRef(null)}>Close</Button>
+              <Button onClick={() => setChosenPaintingRef(undefined)}>
+                Close
+              </Button>
             }
           >
             <img
@@ -126,12 +131,11 @@ export const PaintingAdminPanel = (props) => {
             <Section title="Actions">
               <Button.Confirm
                 onClick={() => {
-                  setChosenPaintingRef(null);
+                  setChosenPaintingRef(undefined);
                   act('delete', { ref: chosenPainting.ref });
                 }}
-              >
-                Delete
-              </Button.Confirm>
+                content="Delete"
+              />
               <Button
                 onClick={() => act('dumpit', { ref: chosenPainting.ref })}
               >
