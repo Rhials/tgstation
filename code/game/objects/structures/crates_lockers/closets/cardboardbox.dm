@@ -207,17 +207,20 @@
 	///Whether or not this has been used to paint a box already.
 	var/used = FALSE
 
+/obj/item/boxcar_spraycan/examine(mob/user)
+	. = ..()
+	if(used)
+		. += span_notice("It feels considerably lighter than it should be. This can is probably empty...")
+
 /obj/item/boxcar_spraycan/examine_more(mob/user)
 	. = ..()
 
-	. += span_notice("The label on the back reads: 'Thank you for purchasing a Decroux Box-Car Spraycan. ")
+	. += span_notice("The label on the back reads: 'Thank you for purchasing a Decroux Box-Car Spraycan. ") //rewrite all of this omg
 	. += span_notice("The spray nozzle will be electronically locked unless used by someone adhering to a vow of silence. ")
 	. += span_notice("Those who are bound to silence through other means may also qualify, due to their innate closeness to the spirit of mimery. ")
 	. += span_notice("This is a precaution to ensure excellence in mimery, and that a mockery isn't made of our craft. ")
 	. += span_notice("Lastly -- <i>No clowns.</i>'")
 
-	if(used)
-		. += span_notice("It feels considerably lighter than it should be. This can is probably empty...")
 
 /obj/item/boxcar_spraycan/attack_self(mob/living/user, direction) //Used to test if you're "worthy" without using it directly on a box.
 	. = ..()
