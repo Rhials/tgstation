@@ -175,7 +175,7 @@ modules = ["atmosscilower_attachment_b_1.dmm", "atmosscilower_attachment_b_2.dmm
 [rooms.dormenginelower]
 modules = ["dormenginelower_1.dmm", "dormenginelower_2.dmm", "dormenginelower_3.dmm"]
 # 1. Curved connection between the Dorms, Engineering and Engineering public hall. Has a section with closable privacy shutters and an abandoned path into the middle tunnel section.
-# 2. Curved connection between the Dorms, Engineering and Engineering public hall. The tunnel beside the Dorms has been breached and spaced with each sides blocked by holobarriers. 
+# 2. Curved connection between the Dorms, Engineering and Engineering public hall. The tunnel beside the Dorms has been breached and spaced with each sides blocked by holobarriers.
 # 3. Curved connection between the Dorms, Engineering and Engineering public hall. The tunnel beside the Dorms is a glass bridge with a view into space and blast doors if bridge is breached. Has an offshoot maintenance tunnel that leads into Dorms.
 
 [rooms.dormenginelower_attachment_a]
@@ -189,3 +189,9 @@ modules = ["dormenginelower_attachment_b_1.dmm", "dormenginelower_attachment_b_2
 # 1. Extra secure storage for Engineering with a filled pac#man and some extra shield generators/meteor shields.
 # 2. Side extension with bits of maintenance loot/atmos machinery. Has 2 extra random reagent tanks.
 # 3. Side room with 4 loot closets with random maintenance loot.
+
+[rooms.sci_maints_upper]
+modules = ["sci_maints_upper_1.dmm", "sci_maints_upper_2.dmm", "sci_maints_upper_3.dmm"]
+# 1. Dunno
+# 2. No damn idea
+# 3. No clue

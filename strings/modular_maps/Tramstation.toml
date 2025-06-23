@@ -102,3 +102,6 @@ modules = ["dormenginelower_attachment_a_1.dmm", "dormenginelower_attachment_a_2
 
 [rooms.dormenginelower_attachment_b]
 modules = ["dormenginelower_attachment_b_1.dmm", "dormenginelower_attachment_b_2.dmm", "dormenginelower_attachment_b_3.dmm"]
+
+[rooms.sci_maints_upper]
+modules = ["sci_maints_upper_1.dmm", "sci_maints_upper_2.dmm", "sci_maints_upper_3.dmm"]
