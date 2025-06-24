@@ -23,6 +23,3 @@
 	new /obj/item/pneumatic_cannon/pie(src)
 	new /obj/item/food/pie/cream(src)
 	new /obj/item/storage/crayons(src)
-
-	if(prob(33))
-		new /obj/item/boxcar_spraycan(src)
