@@ -1,0 +1,143 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/open/floor/asphalt/outdoors,
+/area/icemoon/surface/outdoors/nospawn)
+"l" = (
+/obj/effect/turf_decal{
+	dir = 1
+	},
+/turf/open/floor/asphalt/outdoors,
+/area/icemoon/surface/outdoors/nospawn)
+"q" = (
+/obj/structure/closet/crate/secure/trashcart/filled,
+/turf/open/floor/plating/snowed/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"A" = (
+/obj/effect/turf_decal{
+	dir = 1
+	},
+/obj/effect/turf_decal{
+	dir = 1
+	},
+/turf/open/floor/asphalt/outdoors,
+/area/icemoon/surface/outdoors/nospawn)
+"B" = (
+/turf/open/floor/plating/snowed/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"C" = (
+/turf/open/floor/grass/lavaland,
+/area/icemoon/surface/outdoors/nospawn)
+"L" = (
+/obj/item/boxcar_spraycan,
+/turf/open/floor/grass/lavaland,
+/area/icemoon/surface/outdoors/nospawn)
+"O" = (
+/obj/effect/turf_decal,
+/turf/open/floor/asphalt/outdoors,
+/area/icemoon/surface/outdoors/nospawn)
+"R" = (
+/obj/structure/closet/cardboard,
+/turf/open/floor/grass/lavaland,
+/area/icemoon/surface/outdoors/nospawn)
+"V" = (
+/obj/structure/chair/wood{
+	dir = 4
+	},
+/obj/item/wrench{
+	pixel_y = 3;
+	pixel_x = 8
+	},
+/turf/open/floor/grass/lavaland,
+/area/icemoon/surface/outdoors/nospawn)
+"W" = (
+/turf/template_noop,
+/area/template_noop)
+
+(1,1,1) = {"
+W
+W
+C
+a
+O
+l
+C
+W
+B
+"}
+(2,1,1) = {"
+W
+W
+q
+a
+O
+A
+C
+C
+C
+"}
+(3,1,1) = {"
+W
+C
+R
+a
+O
+l
+a
+C
+C
+"}
+(4,1,1) = {"
+W
+B
+C
+a
+a
+a
+a
+C
+W
+"}
+(5,1,1) = {"
+W
+B
+C
+a
+O
+l
+a
+C
+W
+"}
+(6,1,1) = {"
+B
+B
+C
+a
+O
+l
+a
+V
+C
+"}
+(7,1,1) = {"
+B
+B
+C
+C
+O
+l
+a
+L
+B
+"}
+(8,1,1) = {"
+W
+B
+B
+C
+a
+a
+a
+B
+B
+"}

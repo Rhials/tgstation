@@ -229,3 +229,10 @@
 	cost = 0
 	mineral_cost = 1
 	always_place = TRUE
+
+/datum/map_template/ruin/icemoon/boxcar
+	name = "Boxcar Parking Spot"
+	id = "boxcar"
+	description = "Someone left behind the tools to make yourself a BITCHIN' ride with. A MIME car."
+	suffix = "boxcar.dmm"
+	allow_duplicates = FALSE
