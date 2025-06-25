@@ -371,3 +371,10 @@
 
 /turf/open/floor/asphalt/lavaland/outdoors
 	planetary_atmos = TRUE
+
+/turf/open/floor/asphalt/icemoon
+	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	baseturfs = /turf/open/misc/asteroid/snow
+
+/turf/open/floor/asphalt/lavaland/outdoors
+	planetary_atmos = TRUE

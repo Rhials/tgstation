@@ -1,143 +1,250 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
-/turf/open/floor/asphalt/outdoors,
-/area/icemoon/surface/outdoors/nospawn)
-"l" = (
 /obj/effect/turf_decal{
 	dir = 1
 	},
-/turf/open/floor/asphalt/outdoors,
+/turf/open/floor/asphalt/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
-"q" = (
+"d" = (
+/obj/effect/decal/cleanable/oil/slippery,
+/obj/effect/decal/cleanable/crayon/shortline{
+	rotation = 90
+	},
+/turf/open/floor/asphalt/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"e" = (
+/obj/effect/decal/cleanable/crayon/shortline{
+	rotation = 40
+	},
+/turf/open/floor/asphalt/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"k" = (
 /obj/structure/closet/crate/secure/trashcart/filled,
+/obj/effect/decal/cleanable/crayon/x,
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
-"A" = (
-/obj/effect/turf_decal{
-	dir = 1
+"m" = (
+/obj/effect/decal/cleanable/crayon/shortline{
+	rotation = 90
 	},
-/obj/effect/turf_decal{
-	dir = 1
+/obj/effect/decal/cleanable/crayon/shortline{
+	rotation = 90
 	},
-/turf/open/floor/asphalt/outdoors,
+/turf/open/floor/asphalt/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
-"B" = (
+"n" = (
+/obj/structure/chair/sofa/bench/right,
+/turf/open/floor/grass/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"o" = (
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
-"C" = (
-/turf/open/floor/grass/lavaland,
-/area/icemoon/surface/outdoors/nospawn)
-"L" = (
-/obj/item/boxcar_spraycan,
-/turf/open/floor/grass/lavaland,
-/area/icemoon/surface/outdoors/nospawn)
-"O" = (
+"s" = (
 /obj/effect/turf_decal,
-/turf/open/floor/asphalt/outdoors,
+/turf/open/floor/asphalt/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
-"R" = (
-/obj/structure/closet/cardboard,
-/turf/open/floor/grass/lavaland,
-/area/icemoon/surface/outdoors/nospawn)
-"V" = (
-/obj/structure/chair/wood{
-	dir = 4
+"u" = (
+/obj/effect/decal/cleanable/crayon/shortline{
+	rotation = 40
 	},
+/turf/open/floor/grass/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"y" = (
+/obj/item/weldingtool/empty{
+	pixel_y = -1;
+	pixel_x = -14
+	},
+/obj/effect/decal/cleanable/fuel_pool/hivis,
+/turf/open/floor/grass/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"z" = (
 /obj/item/wrench{
 	pixel_y = 3;
 	pixel_x = 8
 	},
-/turf/open/floor/grass/lavaland,
+/obj/item/boxcar_spraycan,
+/obj/item/clothing/head/utility/welding{
+	pixel_x = -7;
+	pixel_y = 11
+	},
+/turf/open/floor/plating/snowed/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"B" = (
+/turf/open/floor/asphalt/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"D" = (
+/obj/structure/closet/cardboard,
+/obj/effect/decal/cleanable/fuel_pool/hivis,
+/obj/effect/decal/cleanable/glass,
+/obj/effect/decal/cleanable/wrapping,
+/turf/open/floor/grass/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"H" = (
+/obj/effect/spawner/random/structure/billboard,
+/turf/open/floor/grass/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"I" = (
+/obj/effect/turf_decal{
+	dir = 1
+	},
+/obj/effect/turf_decal{
+	dir = 1
+	},
+/turf/open/floor/asphalt/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"J" = (
+/obj/effect/decal/cleanable/crayon/shortline{
+	rotation = 90
+	},
+/turf/open/floor/asphalt/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"R" = (
+/obj/structure/chair/sofa/bench/left,
+/turf/open/floor/grass/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
+"U" = (
+/obj/effect/decal/cleanable/crayon/shortline{
+	rotation = 90
+	},
+/obj/effect/decal/cleanable/fuel_pool/hivis,
+/turf/open/floor/grass/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
 "W" = (
 /turf/template_noop,
 /area/template_noop)
+"X" = (
+/turf/open/floor/grass/icemoon,
+/area/icemoon/surface/outdoors/nospawn)
 
 (1,1,1) = {"
 W
 W
-C
-a
-O
-l
-C
-W
+X
 B
+W
+W
+o
+W
+W
 "}
 (2,1,1) = {"
 W
+o
+X
+B
+B
+B
+X
+o
 W
-q
-a
-O
-A
-C
-C
-C
 "}
 (3,1,1) = {"
 W
-C
-R
+o
+H
+B
+s
 a
-O
-l
-a
-C
-C
+X
+o
+W
 "}
 (4,1,1) = {"
 W
+o
+X
 B
-C
-a
-a
-a
-a
-C
-W
+s
+I
+X
+k
+z
 "}
 (5,1,1) = {"
 W
+X
+X
 B
-C
+s
 a
-O
-l
-a
-C
-W
+B
+D
+y
 "}
 (6,1,1) = {"
+W
+o
+X
 B
 B
-C
-a
-O
-l
-a
-V
-C
+B
+B
+U
+W
 "}
 (7,1,1) = {"
+o
+o
+X
 B
-B
-C
-C
-O
-l
+s
 a
-L
-B
+e
+u
+W
 "}
 (8,1,1) = {"
+o
+o
+X
+B
+s
+a
+d
+X
+X
+"}
+(9,1,1) = {"
+o
+o
+n
+X
+s
+a
+J
+X
+o
+"}
+(10,1,1) = {"
+W
+o
+R
+X
+B
+B
+m
+o
+o
+"}
+(11,1,1) = {"
+o
+o
+o
+X
+B
+B
+J
+o
+W
+"}
+(12,1,1) = {"
+W
+W
+o
 W
 B
-B
-C
-a
-a
-a
-B
-B
+W
+W
+W
+W
 "}

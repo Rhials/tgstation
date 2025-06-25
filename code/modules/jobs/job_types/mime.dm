@@ -26,6 +26,7 @@
 		/obj/item/food/baguette = 15,
 		/obj/item/food/cheese/wheel = 10,
 		/obj/item/reagent_containers/cup/glass/bottle/bottleofnothing = 10,
+		/obj/item/boxcar_spraycan = 3,
 		/obj/item/book/granter/action/spell/mime/mimery = 1,
 	)
 	rpg_title = "Fool"

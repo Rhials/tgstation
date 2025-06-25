@@ -173,6 +173,14 @@
 	stock_max = 8
 	availability_prob = 90
 
+/datum/market_item/misc/boxcar_spraycan
+	name = /obj/item/boxcar_spraycan::name
+	desc = "A spraycan powered by yet-not-understood Mime trickery. Allows you to convert a regular cardboard box into your very own car! Comes with four seats. Be sure to read the instructions label before using."
+	item = /obj/item/boxcar_spraycan
+	price_min = CARGO_CRATE_VALUE * 5
+	price_max = CARGO_CRATE_VALUE * 10
+	availability_prob = 60
+
 /datum/market_item/misc/girlypop
 	name = "Girlypop Posters"
 	desc = "A collection of cute and adorable posters. Girl power!"

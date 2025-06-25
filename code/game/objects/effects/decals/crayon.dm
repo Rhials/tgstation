@@ -73,3 +73,7 @@
 /obj/effect/decal/cleanable/crayon/i/orange
 	name = "graffiti"
 	paint_colour = COLOR_CRAYON_ORANGE
+
+/obj/effect/decal/cleanable/crayon/shortline
+	icon_state = "shortline"
+	paint_colour = COLOR_SILVER

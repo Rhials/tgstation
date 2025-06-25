@@ -177,6 +177,17 @@
 /turf/open/floor/grass/lavaland/spawniconchange()
 	return
 
+/turf/open/floor/grass/icemoon
+	name = "dead grass patch"
+	desc = "It turns out grass doesn't grow very nice in ice."
+	icon_state = "sand"
+	broken = TRUE
+	initial_gas_mix = ICEMOON_DEFAULT_ATMOS
+	damaged_dmi = 'icons/turf/damaged.dmi'
+
+/turf/open/floor/grass/lavaland/spawniconchange()
+	return
+
 /turf/open/floor/grass/fairy //like grass but fae-er
 	name = "fairygrass patch"
 	desc = "Something about this grass makes you want to frolic. Or get high."

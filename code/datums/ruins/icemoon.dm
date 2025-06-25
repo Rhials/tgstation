@@ -231,8 +231,8 @@
 	always_place = TRUE
 
 /datum/map_template/ruin/icemoon/boxcar
-	name = "Boxcar Parking Spot"
+	name = "Ice-Ruin Boxcar Highway Patch"
 	id = "boxcar"
 	description = "Someone left behind the tools to make yourself a BITCHIN' ride with. A MIME car."
-	suffix = "boxcar.dmm"
+	suffix = "icemoon_surface_boxcar.dmm"
 	allow_duplicates = FALSE
