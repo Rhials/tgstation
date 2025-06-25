@@ -158,7 +158,7 @@
 	desc = "A cardboard box, painted to distantly resemble a car. How can the driver even see where they're going?"
 	icon_state = "boxcar"
 	mob_storage_capacity = 4 //One door, four seats. Perfect for taxi services.
-	move_speed_multiplier = 0.5
+	move_speed_multiplier = 0.35
 	COOLDOWN_DECLARE(move_sound_cooldown)
 	should_alert = FALSE
 	car_convertible = FALSE

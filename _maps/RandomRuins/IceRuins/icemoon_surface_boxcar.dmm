@@ -5,17 +5,11 @@
 	},
 /turf/open/floor/asphalt/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
-"d" = (
-/obj/effect/decal/cleanable/oil/slippery,
-/obj/effect/decal/cleanable/crayon/shortline{
-	rotation = 90
-	},
-/turf/open/floor/asphalt/icemoon,
-/area/icemoon/surface/outdoors/nospawn)
 "e" = (
 /obj/effect/decal/cleanable/crayon/shortline{
 	rotation = 40
 	},
+/obj/effect/decal/cleanable/blood/oil/slippery,
 /turf/open/floor/asphalt/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
 "k" = (
@@ -200,7 +194,7 @@ X
 B
 s
 a
-d
+J
 X
 X
 "}
