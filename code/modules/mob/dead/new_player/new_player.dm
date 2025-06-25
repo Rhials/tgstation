@@ -23,7 +23,7 @@
 /mob/dead/new_player/Initialize(mapload)
 	if(client && SSticker.state == GAME_STATE_STARTUP)
 		var/atom/movable/screen/splash/fade_out = new(null, null, client, TRUE)
-		fade_out.Fade(TRUE)
+		fade_out.fade(TRUE)
 
 	if(length(GLOB.newplayer_start))
 		forceMove(pick(GLOB.newplayer_start))
@@ -297,10 +297,6 @@
 /mob/dead/new_player/proc/ViewManifest()
 	if(!client)
 		return
-	if(world.time < client.crew_manifest_delay)
-		return
-	client.crew_manifest_delay = world.time + (1 SECONDS)
-
 	GLOB.manifest.ui_interact(src)
 
 /mob/dead/new_player/Move()
