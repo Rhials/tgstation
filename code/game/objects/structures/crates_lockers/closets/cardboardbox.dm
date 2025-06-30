@@ -155,7 +155,7 @@
 
 /obj/structure/closet/cardboard/car
 	name = "cardboard box-car"
-	desc = "A cardboard box, painted to distantly resemble a car. How can the driver even see where they're going?"
+	desc = "A cardboard box, painted to distantly resemble a car. Through powers understood only by the most dedicated of Mimes, it actually functions like one too. How can the driver even see where they're going?"
 	icon_state = "boxcar"
 	mob_storage_capacity = 4 //One door, four seats. Perfect for taxi services.
 	move_speed_multiplier = 0.35
@@ -194,7 +194,7 @@
 
 /obj/item/boxcar_spraycan
 	name = "box car spraycan"
-	desc = "A Decroux brand cardboard box decal spraycan. Used to convert a large enough cardboard box into a fully functional car. "
+	desc = "A 'Decroux' brand cardboard box decal spraycan. Used to convert a large enough cardboard box into a fully functional car. "
 	icon = 'icons/obj/art/crayons.dmi'
 	icon_state = "boxcar_can"
 	inhand_icon_state = "spraycan"
@@ -223,7 +223,7 @@
 
 	. += span_notice("The label on the back reads: 'Thank you for purchasing a Decroux Cardboard Car Spraycan. \
 						Decroux treats the art of mimery with utmost respect. \
-						This product is electronically locked, and may only be wielded by mimes, or others whom are bound to silence. \
+						This product is electronically locked, and may only be operated by mimes, or others whom are bound to silence. \
 						Lastly -- <i>No clowns.</i>'")
 
 /obj/item/boxcar_spraycan/attack_self(mob/living/user, direction) //Used to test if you're "worthy" without using it directly on a box.
@@ -269,6 +269,6 @@
 
 	var/datum/job/user_job = user.mind?.assigned_role
 	if(user_job && is_clown_job(user_job)) //You had your warning, clown
-		to_chat(user, span_alert("\The nozzle on the [src] sends a jolt of electricity through your hand! Distant, French laughter echoes in the back of your mind..."))
+		to_chat(user, span_alert("\The nozzle on the [src] sends a jolt of electricity through your hand! Distant, French laughter plays from a speaker within [src]..."))
 		user.electrocute_act(5, src, flags = SHOCK_SUPPRESS_MESSAGE)
 	return FALSE
