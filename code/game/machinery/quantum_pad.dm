@@ -7,16 +7,24 @@
 	obj_flags = CAN_BE_HIT | UNIQUE_RENAME
 	circuit = /obj/item/circuitboard/machine/quantumpad
 	var/teleport_cooldown = 400 //30 seconds base due to base parts
+	///How quickly do we activate when triggered?
 	var/teleport_speed = 50
-	var/last_teleport //to handle the cooldown
-	var/teleporting = FALSE //if it's in the process of teleporting
+	///To handle the cooldown
+	var/last_teleport
+	///If it's in the process of teleporting
+	var/teleporting = FALSE
+	///How much power do we save due to parts?
 	var/power_efficiency = 1
+	///Which pad are we linked to?
 	var/obj/machinery/quantumpad/linked_pad
 
 	//mapping
 	var/static/list/mapped_quantum_pads = list()
 	var/map_pad_id = "" as text //what's my name
 	var/map_pad_link_id = "" as text //who's my friend
+
+	///Will the next activation send players to the quantum zone?
+	var/misfire = FALSE
 
 /obj/machinery/quantumpad/Initialize(mapload)
 	. = ..()
@@ -182,6 +190,14 @@
 	if(link)
 		linked_pad = link
 		. = TRUE
+
+/obj/machinery/quantumpad/emag_act(mob/user, obj/item/card/emag/emag_card)
+	if(obj_flags & EMAGGED)
+		return FALSE
+	balloon_alert(user, "misfire enabled...")
+	obj_flags |= EMAGGED
+	misfire = TRUE
+	return TRUE
 
 /obj/item/paper/guides/quantumpad
 	name = "Quantum Pad For Dummies"
