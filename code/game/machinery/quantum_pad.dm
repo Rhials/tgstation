@@ -258,3 +258,12 @@
 			failed.set_output(COMPONENT_SIGNAL)
 			return
 		attached_pad.doteleport(target_pad = attached_pad.linked_pad)
+
+/obj/machinery/quantumpad/somewhere
+	name = "resonating quantum pad"
+	desc = "A quantum teleportation pad, thrumming with residual power. Or... maybe it isn't?" //make this play a hum loop. Indicate that it is REALLY. IMPORTANT.
+	misfire = TRUE
+	/// Cooldown we use for repeated, random firing.
+	COOLDOWN_DECLARE(fire_loop)
+
+/obj/machinery/quantumpad/somewhere
