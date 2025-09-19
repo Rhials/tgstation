@@ -25,6 +25,9 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	var/max_mutation_severity = 20
 	///Minimum spread rate per second
 	var/minimum_spread_rate = 1
+	///Static list of what typepaths we can target for breaching.
+
+
 
 /datum/spacevine_controller/New(turf/location, list/muts, potency, production, datum/round_event/event = null)
 	vines = list()
@@ -153,6 +156,52 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	//So we shift the queue a bit
 	growth_queue += queue_end
 	queue_end = list()
+
+	if(!length(growth_queue))
+		INVOKE_ASYNC(src, PROC_REF(breach_area))
+	//Start a call to a self-looping proc that checks growth_queue until it finds something, then it doesn't call itself again. Re-call every 10-ish seconds?
+
+///Attempt to damage nearby windows, doors, and other things meant to be broken down. Only called when vines have no more room to spread.
+/datum/spacevine_controller/proc/breach_area(target_list)
+	if(length(growth_queue)) //Note GROWTH QUEUE IS NOT A GOOD METRIC FOR IF THERE IS NO SPREAD SPACE.
+		return
+
+	if(!target_list)
+		target_list = new list()
+		for(var/vine in vines)
+			//get objects to bash in step() add to list //make sure it doesnt breach space
+			var/turf/open/new_turf = get_step(get_turf(vine), NORTH)
+
+			if(is_type_in_list(new_turf))
+				hand_back += new_turf
+			new_turf = get_step(center, SOUTH)
+			if(istype(new_turf))
+				hand_back += new_turf
+			new_turf = get_step(center, EAST)
+		if(istype(new_turf))
+				hand_back += new_turf
+			new_turf = get_step(center, WEST)
+			if(istype(new_turf))
+				hand_back += new_turf
+
+		//start sound loop and return. No damage on first pass.
+
+	for(var/atom/atom_to_damage as anything in target_list)
+		for(var/obj/machinery/door/airlock/door in nearby_turf)
+			new /obj/effect/forcefield/slimewall/rainbow(door.loc)
+		for(var/obj/machinery/door/airlock/door in nearby_turf)
+			new /obj/effect/forcefield/slimewall/rainbow(door.loc)
+		for(var/obj/machinery/door/airlock/door in nearby_turf)
+			new /obj/effect/forcefield/slimewall/rainbow(door.loc)
+
+	addtimer(CALLBACK(src, PROC_REF(breach_area)), 10 SECONDS)
+	//complaint safeguard: make it only apply to event vines, not botanist vines
+
+	//if nothing in growth queue (find a better way of checking if no growth is possible IF you can)
+
+	//soundloop here for starting and stopping a "creaking" sound on whatever is being damaged.
+
+	//damage door/windoor/window/(soft wall??) a static amount (even out how fast it goes through each in testing) until new grow spot is found.
 
 /**
  * Used to determine whether the mob is immune to actions by the vine.
