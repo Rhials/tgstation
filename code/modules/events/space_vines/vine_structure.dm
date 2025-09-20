@@ -183,6 +183,7 @@
 	else
 		spawning_vine.pixel_x = direction == EAST ? -32 : 32
 		animate(spawning_vine, pixel_x = 0, time = 1 SECONDS)
+	return TRUE
 
 /// Destroying an explosive vine sets off a chain reaction
 /obj/structure/spacevine/ex_act(severity, target)

@@ -1,3 +1,5 @@
+#define VINE_BREACH_MAXIMUM 300
+
 ///A list of the possible mutations for a vine
 GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 
@@ -25,9 +27,15 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	var/max_mutation_severity = 20
 	///Minimum spread rate per second
 	var/minimum_spread_rate = 1
-	///Static list of what typepaths we can target for breaching.
-
-
+	///Typecache of what typepaths we can target for breaching.
+	var/static/list/breachable_atoms = typecacheof(list(
+		/obj/machinery/door, //Airlocks, doors, windoors
+		/obj/structure/window/reinforced/fulltile,
+	))
+	///Have we successfully spread at least once in the last process()?
+	var/successful_spread = FALSE
+	///Are we already running the window/door breach loop?
+	var/breaching = FALSE
 
 /datum/spacevine_controller/New(turf/location, list/muts, potency, production, datum/round_event/event = null)
 	vines = list()
@@ -133,6 +141,8 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	/// Actual maximum spread rate for this process tick
 	var/spread_max = round(clamp(seconds_per_tick * (spread_base + start_spread_bonus), max(seconds_per_tick * minimum_spread_rate, 1), spread_cap))
 	var/amount_processed = 0
+	successful_spread = FALSE
+
 	for(var/obj/structure/spacevine/vine in growth_queue)
 		if(!vine.can_spread)
 			continue
@@ -146,7 +156,8 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 		else if(SPT_PROB(10, seconds_per_tick)) //If tile isn't fully grown
 			vine.grow()
 
-		vine.spread()
+		if(vine.spread())
+			successful_spread = TRUE
 
 		amount_processed++
 		if(amount_processed >= spread_max)
@@ -157,42 +168,53 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	growth_queue += queue_end
 	queue_end = list()
 
-	if(!length(growth_queue))
+	if(!successful_spread && length(vines) < 300 && !breaching) //successful spread is n
 		INVOKE_ASYNC(src, PROC_REF(breach_area))
-	//Start a call to a self-looping proc that checks growth_queue until it finds something, then it doesn't call itself again. Re-call every 10-ish seconds?
 
-///Attempt to damage nearby windows, doors, and other things meant to be broken down. Only called when vines have no more room to spread.
-/datum/spacevine_controller/proc/breach_area(target_list)
-	if(length(growth_queue)) //Note GROWTH QUEUE IS NOT A GOOD METRIC FOR IF THERE IS NO SPREAD SPACE.
+///Attempt to damage adjacent windows, doors, and other things meant to be broken down. Only called when vines have no more room to spread.
+/datum/spacevine_controller/proc/breach_area(list/target_list)
+	if(successful_spread)
+		breaching = FALSE
 		return
 
 	if(!target_list)
-		target_list = new list()
+		target_list = list()
 		for(var/vine in vines)
-			//get objects to bash in step() add to list //make sure it doesnt breach space
-			var/turf/open/new_turf = get_step(get_turf(vine), NORTH)
+			//make sure it doesnt breach space
+			var/turf/vine_turf = get_turf(vine)
 
-			if(is_type_in_list(new_turf))
-				hand_back += new_turf
-			new_turf = get_step(center, SOUTH)
+			var/turf/open/new_turf = get_step(vine_turf, NORTH)
 			if(istype(new_turf))
-				hand_back += new_turf
-			new_turf = get_step(center, EAST)
-		if(istype(new_turf))
-				hand_back += new_turf
-			new_turf = get_step(center, WEST)
+				for(var/atom/object_on_tile in new_turf.contents)
+					if(is_type_in_typecache(object_on_tile.type, breachable_atoms))
+						target_list += object_on_tile
+
+			new_turf = get_step(vine_turf, SOUTH)
 			if(istype(new_turf))
-				hand_back += new_turf
+				for(var/atom/object_on_tile in new_turf.contents)
+					if(is_type_in_typecache(object_on_tile.type, breachable_atoms))
+						target_list += object_on_tile
 
-		//start sound loop and return. No damage on first pass.
+			new_turf = get_step(vine_turf, EAST)
+			if(istype(new_turf))
+				for(var/atom/object_on_tile in new_turf.contents)
+					if(is_type_in_typecache(object_on_tile.type, breachable_atoms))
+						target_list += object_on_tile
 
-	for(var/atom/atom_to_damage as anything in target_list)
-		for(var/obj/machinery/door/airlock/door in nearby_turf)
-			new /obj/effect/forcefield/slimewall/rainbow(door.loc)
-		for(var/obj/machinery/door/airlock/door in nearby_turf)
-			new /obj/effect/forcefield/slimewall/rainbow(door.loc)
-		for(var/obj/machinery/door/airlock/door in nearby_turf)
-			new /obj/effect/forcefield/slimewall/rainbow(door.loc)
+			new_turf = get_step(vine_turf, WEST)
+			for(var/atom/object_on_tile in new_turf.contents)
+				if(is_type_in_typecache(object_on_tile.type, breachable_atoms))
+					target_list += object_on_tile
+
+		breaching = TRUE
+
+		//start sound loop and return. No damage on first pass. //Maybe just do a creak instead
+
+	for(var/atom/atom_to_damage in target_list)
+		atom_to_damage.take_damage(rand(3, 8), BRUTE)
+		if(prob(5))
+			atom_to_damage.take_damage(10, BRUTE)
+			playsound(atom_to_damage, 'sound/effects/splat.ogg', 50, TRUE) //replace with creak or something
 
 	addtimer(CALLBACK(src, PROC_REF(breach_area)), 10 SECONDS)
 	//complaint safeguard: make it only apply to event vines, not botanist vines
@@ -200,8 +222,6 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 	//if nothing in growth queue (find a better way of checking if no growth is possible IF you can)
 
 	//soundloop here for starting and stopping a "creaking" sound on whatever is being damaged.
-
-	//damage door/windoor/window/(soft wall??) a static amount (even out how fast it goes through each in testing) until new grow spot is found.
 
 /**
  * Used to determine whether the mob is immune to actions by the vine.
@@ -213,3 +233,5 @@ GLOBAL_LIST_INIT(vine_mutations_list, init_vine_mutation_list())
 		if((FACTION_VINES in victim.faction) || (FACTION_PLANTS in victim.faction))
 			return TRUE
 	return FALSE
+
+#undef VINE_BREACH_MAXIMUM
