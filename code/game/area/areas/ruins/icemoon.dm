@@ -62,7 +62,6 @@
 	mood_bonus = -10
 	mood_message = "What the fuck."
 
-
 /area/ruin/planetengi
 	name = "\improper Engineering Outpost"
 

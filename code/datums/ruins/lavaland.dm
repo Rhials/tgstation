@@ -330,3 +330,12 @@
 	description = "They launched too early"
 	suffix = "lavaland_surface_crashsite.dmm"
 	allow_duplicates = FALSE
+
+/datum/map_template/ruin/lavaland/excalibur_mount
+	name = "Lava-Ruin Excalibur Mount"
+	id = "excalibur_mount"
+	description = "'Excalibur'. Once just a plot device of ancient literature, it was referenced, paralleled, parodied, and derived until traces of it could be found in just about anything. Why wouldn't it show up in this story, too?"
+	prefix = "_maps/RandomRuins/AnywhereRuins/"
+	suffix = "excalibur_mount.dmm"
+	allow_duplicates = FALSE
+	cost = 5
