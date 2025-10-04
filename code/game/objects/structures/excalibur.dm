@@ -10,16 +10,25 @@
 	. = ..()
 	if(!chosen_hero)
 		select_hero()
-	if(user.client?.ckey == chosen_hero)
-		to_chat(user, span_alert("The sword budges a little bit. You feel nothing."))
+	user.apply_damage(20, STAMINA)
+	to_chat(user, span_notice("You begin yanking at the sword with all of your might..."))
+	if(!do_after(user, 10 SECONDS, src))
+		return
+	user.apply_damage(40, STAMINA)
+	if(user.ckey == chosen_hero)
+		to_chat(user, span_alert("The sword doesn't budge. Perhaps you are unworthy of wielding such a blade?"))
 	else
-		to_chat(user, span_alert("The sword doesn't move. You feel suicidal."))
+		to_chat(user, span_alert("With a final tug, the sword slides out of the rock encasing it. You are worthy of wielding the mighty... Excalibur!"))
 
 /obj/structure/excalibur_mount/proc/select_hero()
 	var/list/candidate_list = list()
 	for(var/mob/living/carbon/human/candidate in shuffle(GLOB.player_list))
-		if(!candidate.client || !candidate.client.ckey)
-			continue
-		if(!(candidate.mind.assigned_role.job_flags & JOB_CREW_MEMBER))
-			continue
+		//if(!(candidate.mind.assigned_role.job_flags & JOB_CREW_MEMBER)) ///uncomment after testing
+		//	continue
 		candidate_list += candidate.client.ckey
+
+
+
+
+
+///Note to self. If you can't think of any sauce to give this idea, make it a toolbox sword. work from there.

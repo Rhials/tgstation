@@ -1,18 +1,18 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
-/turf/open/misc/asteroid/snow/icemoon/do_not_chasm,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
 "g" = (
 /obj/structure/flora/rock/pile/style_random,
-/turf/open/misc/asteroid/snow/icemoon/do_not_chasm,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
 "i" = (
 /obj/structure/excalibur_mount,
-/turf/open/misc/asteroid/snow/icemoon/do_not_chasm,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
 "s" = (
 /obj/structure/flora/tree/pine/style_random,
-/turf/open/misc/asteroid/snow/icemoon/do_not_chasm,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
 
 (1,1,1) = {"
@@ -101,7 +101,7 @@ a
 a
 a
 a
-a
+s
 "}
 (9,1,1) = {"
 a
