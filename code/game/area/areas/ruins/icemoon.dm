@@ -129,3 +129,6 @@
 
 /area/ruin/outpost31/commander_room
 	name = "\improper Outpost 31 Station Commander Office"
+
+/area/ruin/excalibur/icemoon
+	name = "\improper Icemoon Excalibur Mount Site"

@@ -102,3 +102,6 @@
 /area/ruin/unpowered/ratvar
 	outdoors = TRUE
 	ambient_buzz = 'sound/ambience/lavaland/magma.ogg'
+
+/area/ruin/excalibur/lavaland
+	name = "\improper Lavaland Excalibur Mount Site"

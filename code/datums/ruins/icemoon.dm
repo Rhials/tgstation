@@ -239,8 +239,8 @@
 /datum/map_template/ruin/icemoon/excalibur_mount
 	name = "Ice-Ruin Excalibur Mount"
 	id = "excalibur_mount"
-	description = "'Excalibur'. Once just a sword in ancient literature, the role it held in its story was referenced, paralleled, parodied, and derived until traces of it could be found in just about anything. Why wouldn't it show up in this story, too?"
+	description = "'Excalibur'. Once just a plot device of ancient literature, it was referenced, paralleled, parodied, and derived until traces of it could be found in just about anything. Why wouldn't it show up in this story, too?"
 	prefix = "_maps/RandomRuins/AnywhereRuins/"
-	suffix = "excalibur_mount.dmm"
+	suffix = "icemoon_excalibur_mount.dmm"
 	allow_duplicates = FALSE
 	cost = 5
