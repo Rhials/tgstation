@@ -13,14 +13,16 @@
 	. = ..()
 	if(!chosen_hero)
 		select_hero()
+	if(released_sword)
+		to_chat(user, span_notice("The sword has already b een freed from the stone. You peer into the hole the sword came out of and shrug. The hole smells faintly of motor oil."))
 	if(!isliving(user))
 		return
 	var/mob/living/living_user = user
-	living_user.take_damage(20, STAMINA)
+	living_user.apply_damage(20, STAMINA)
 	to_chat(living_user, span_notice("You begin yanking at the sword with all of your might..."))
 	if(!do_after(living_user, 12 SECONDS, src))
 		return
-	living_user.take_damage(40, STAMINA)
+	living_user.apply_damage(40, STAMINA)
 	if(living_user.ckey == chosen_hero)
 		to_chat(living_user, span_alert("The sword doesn't budge. Perhaps someone <i>else<i/> on the station is worthy of wielding such a blade?"))
 		living_user.mind?.adjust_experience(/datum/skill/athletics, 4)
@@ -29,7 +31,9 @@
 		released_sword = TRUE
 		icon_state = "excalibur_mountless"
 		living_user.mind?.adjust_experience(/datum/skill/athletics, 40) //A weapon such as this deserves a MIGHTY hero to wield it.
-		living_user.put_in_active_hand(new /obj/item/toolboxcalibur(get_turf(src)))
+		var/obj/item/toolboxcalibur/released_toolbox = new(get_turf(src))
+		released_toolbox.change_owner(living_user)
+		living_user.put_in_active_hand(released_toolbox)
 
 /obj/structure/excalibur_mount/proc/select_hero()
 	var/list/candidate_list = list()
@@ -42,18 +46,20 @@
 	name = "Toolboxcalibur"
 	desc = "A holy weapon of mythical rapport. It looks like it doesn't have an owner..."
 	icon = 'icons/obj/weapons/hammer.dmi'
-	icon_state = "carpenter_hammer"
-	inhand_icon_state = "carpenter_hammer"
+	icon_state = "toolboxcalibur"
+	inhand_icon_state = "toolboxcalibur"
 	worn_icon_state = "clawhammer"
 	lefthand_file = 'icons/mob/inhands/weapons/hammers_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/hammers_righthand.dmi'
 	force = 30
 	throwforce = 40
 	throw_range = 10
-	w_class = WEIGHT_CLASS_NORMAL
+	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT, /datum/material/gold = SHEET_MATERIAL_AMOUNT)
+	hitsound = 'sound/items/weapons/bladeslice.ogg' //Make this a beefy WHUMP
+	w_class = WEIGHT_CLASS_BULKY
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_BELT
 	wound_bonus = 30
-	demolition_mod = 1.15
-	slot_flags = ITEM_SLOT_BELT
+	demolition_mod = 1.25
 	///Who is our chosen hero, destined to wield us in glorious combat?
 	var/mob/chosen_owner
 
