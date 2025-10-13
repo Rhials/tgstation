@@ -44,20 +44,20 @@
 
 /obj/item/toolboxcalibur
 	name = "Toolboxcalibur"
-	desc = "A holy weapon of mythical rapport. It looks like it doesn't have an owner..."
+	desc = "The mythical <b>Toolboxcalibur</b>. A completely absurd and unwieldy weapon, with an equally ridiculous name."
 	icon = 'icons/obj/weapons/hammer.dmi'
 	icon_state = "toolboxcalibur"
 	inhand_icon_state = "toolboxcalibur"
-	worn_icon_state = "clawhammer"
+	worn_icon_state = "toolboxcalibur_worn"
 	lefthand_file = 'icons/mob/inhands/weapons/hammers_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/hammers_righthand.dmi'
 	force = 30
 	throwforce = 40
 	throw_range = 10
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT, /datum/material/gold = SHEET_MATERIAL_AMOUNT)
-	hitsound = 'sound/items/weapons/bladeslice.ogg' //Make this a beefy WHUMP
+	hitsound = 'sound/items/weapons/toolsword_slam.ogg' //Make this a beefy WHUMP
 	w_class = WEIGHT_CLASS_BULKY
-	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_BELT
+	slot_flags = ITEM_SLOT_BACK
 	wound_bonus = 30
 	demolition_mod = 1.25
 	///Who is our chosen hero, destined to wield us in glorious combat?
@@ -65,8 +65,9 @@
 
 /obj/item/toolboxcalibur/Initialize(mapload)
 	. = ..()
+	create_storage(/datum/storage/toolbox)
 	//AddElement(/datum/element/cuffable_item) //It's a sword you were chosen to wield, you should be able to bind it to yourself. Note, include a loop in the sprite for cuffing.
 
 /obj/item/toolboxcalibur/proc/change_owner(mob/new_owner)
 	chosen_owner = new_owner
-	desc = ("The legendary <b>Toolboxcalibur</b>. It has selected a hero worthy enough to wield it... The mighty " + span_hypnophrase("[chosen_owner.real_name]!"))
+	desc = (initial(src.desc) + "It has selected a hero worthy enough to wield it... The mighty " + span_hypnophrase("[chosen_owner.real_name]!"))
