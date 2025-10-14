@@ -239,6 +239,8 @@ sounds/mobs/humanoids/shadow/shadow_wail.ogg -- https://freesound.org/people/Rob
 
 sound/mobs/non-humanoids/roro/roro_warble.ogg -- Made by cutting, adjusting pitch, and adding echo of https://freesound.org/people/danlucaz/sounds/517734/ -- License: Creating Commons 0
 
-sound/items/weapons/toolsword_slam -- Created by sampling and combining:
+sound/effects/goresplat.ogg -- https://freesound.org/people/ThefitzyG/sounds/414296/ -- License: Creative Commons 0
+
+sound/items/weapons/toolsword_slam.ogg -- Created by sampling and combining:
 Cargo bike toolbox by Eelke -- https://freesound.org/s/522004/ -- License: Attribution 4.0
 throwing can.wav by kwahmah_02 -- https://freesound.org/s/250623/ -- License: Attribution 3.0
