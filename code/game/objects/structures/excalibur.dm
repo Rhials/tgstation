@@ -44,30 +44,53 @@
 
 /obj/item/toolboxcalibur
 	name = "Toolboxcalibur"
-	desc = "The mythical <b>Toolboxcalibur</b>. A completely absurd and unwieldy weapon, with an equally ridiculous name."
+	desc = "The mythical <b>Toolboxcalibur</b>. Its completely absurd design makes it near impossible to wield or swing in a fight. Fortunately, it's also so incredibly heavy that even a glancing blow will obliterate its target. \
+		Only a single chosen hero amongst the crew can lift this weapon."
 	icon = 'icons/obj/weapons/hammer.dmi'
-	icon_state = "toolboxcalibur"
+	icon_state = "toolboxcalibur_lame"
 	inhand_icon_state = "toolboxcalibur"
-	worn_icon_state = "toolboxcalibur_worn"
+	worn_icon_state = "toolboxcalibur"
 	lefthand_file = 'icons/mob/inhands/weapons/hammers_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/hammers_righthand.dmi'
+	attack_verb_simple = list("robust")
+	attack_verb_continuous = list("robusts")
 	force = 30
-	throwforce = 40
+	throwforce = 45
 	throw_range = 10
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT, /datum/material/gold = SHEET_MATERIAL_AMOUNT)
-	hitsound = 'sound/items/weapons/toolsword_slam.ogg' //Make this a beefy WHUMP
+	hitsound = 'sound/items/weapons/toolsword_slam.ogg'
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
 	wound_bonus = 30
-	demolition_mod = 1.25
+	armour_penetration = 30
+	demolition_mod = 1.30
 	///Who is our chosen hero, destined to wield us in glorious combat?
 	var/mob/chosen_owner
+	///Where were we last dropped by our hero?
+	var/turf/anchor_spot
 
 /obj/item/toolboxcalibur/Initialize(mapload)
 	. = ..()
-	create_storage(/datum/storage/toolbox)
-	//AddElement(/datum/element/cuffable_item) //It's a sword you were chosen to wield, you should be able to bind it to yourself. Note, include a loop in the sprite for cuffing.
+	anchor_spot = get_turf(src)
+	create_storage(storage_type = /datum/storage/toolbox)
+	AddElement(/datum/element/cuffable_item) //It's a sword you were chosen to wield, you should be able to bind it to yourself.
+
+/obj/item/toolboxcalibur/dropped(mob/user, silent)
+	. = ..()
+	anchor_spot = get_turf(src)
+	icon_state = "toolboxcalibur_lame"
+	update_appearance(UPDATE_ICON_STATE)
+
+/obj/item/toolboxcalibur/attack_hand(mob/living/carbon/user, list/modifiers)
+	. = ..()
+	if(user != chosen_owner)
+		to_chat(user, span_warning("You are UNWORTHY of wielding Toolboxcalibur!"))
+		user.dropItemToGround(anchor_spot, TRUE)
+		user.Paralyze(3 SECONDS)
+	else
+		icon_state = "toolboxcalibur"
+		update_appearance(UPDATE_ICON_STATE)
 
 /obj/item/toolboxcalibur/proc/change_owner(mob/new_owner)
 	chosen_owner = new_owner
-	desc = (initial(src.desc) + "It has selected a hero worthy enough to wield it... The mighty " + span_hypnophrase("[chosen_owner.real_name]!"))
+	desc = (initial(src.desc) + " That hero is... The mighty " + span_hypnophrase("[chosen_owner.real_name]!"))
