@@ -836,6 +836,36 @@ em {
   font-style: italic;
 }
 
+.holyflash {
+  color: hsl(224, 52%, 26%);
+  font-family: 'Times New Roman', cursive, sans-serif;
+  font-weight: bold;
+  animation: holyflash 2500ms infinite;
+  animation-direction: alternate;
+}
+
+@keyframes holyflash {
+  0% {
+    color: hsl(216, 55%, 27%);
+  }
+
+  25% {
+    color: hsl(219, 70%, 47%);
+  }
+
+  50% {
+    color: hsl(197, 67%, 52%);
+  }
+
+  75% {
+    color: hsl(212, 70%, 50%);
+  }
+
+  100% {
+    color: hsl(224, 59%, 28%);
+  }
+}
+
 .hypnophrase {
   color: hsl(0, 0%, 12.5%);
   font-weight: bold;

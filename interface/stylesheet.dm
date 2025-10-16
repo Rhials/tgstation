@@ -144,6 +144,14 @@ h1.alert, h2.alert		{color: #000000;}
 		75%		{color: #410194;}
 		100%	{color: #3bb5d3;}
 }
+.holyflash			{color: #124CD5;	font-weight: bold;	animation: holyflash 2500ms infinite; animation-direction: alternate;}
+	@keyframes holyflash {
+		0%		{color: #124CD5;}
+		25%		{color: #21CBDE;}
+		50%		{color: #14FFED;}
+		75%		{color: #21CBDE;}
+		100%	{color: #124CD5;}
+}
 
 .phobia			{color: #dd0000;	font-weight: bold;	animation: phobia 750ms infinite;}
 	@keyframes phobia {
